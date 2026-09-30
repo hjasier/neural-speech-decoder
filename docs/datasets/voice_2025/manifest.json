@@ -1,0 +1,32 @@
+{
+  "key": "voice_2025",
+  "doi": "10.5061/dryad.2280gb64f",
+  "title": "Data for: An instantaneous voice synthesis neuroprosthesis",
+  "license": "https://spdx.org/licenses/CC0-1.0.html",
+  "publication_date": "2026-05-08",
+  "api_version_id": 441124,
+  "files": [
+    {
+      "name": "README.md",
+      "size_bytes": 4635,
+      "sha256": "f9d05e8a8390579e025489146ecc4d2334c42a531c1e66fd222dffe147f69d70",
+      "file_id": 4750573,
+      "url": "https://datadryad.org/downloads/file_stream/4750573"
+    },
+    {
+      "name": "t15_control_experiment.zip",
+      "size_bytes": 710843261,
+      "sha256": "c1ed4ea95f552901cb3bfe9220600a0657d0bba81caed57950c49ed5479f09bc",
+      "file_id": 4750563,
+      "url": "https://datadryad.org/downloads/file_stream/4750563"
+    },
+    {
+      "name": "t15_neural_data.zip",
+      "size_bytes": 26158469306,
+      "sha256": "26e40f7aa693345a181ad175d9f0b3dbadadc45a82a9461711da2fdc0e1292dc",
+      "file_id": 4750565,
+      "url": "https://datadryad.org/downloads/file_stream/4750565"
+    }
+  ],
+  "retrieved_on": "2026-09-30"
+}

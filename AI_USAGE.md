@@ -15,7 +15,7 @@ comprueba en la defensa.
 
 | Fecha | Tarea | Herramienta | Qué devolvió | Qué hicimos y por qué |
 |---|---|---|---|---|
-| | | | | |
+| 2026-09-30 | Revisar el cambio a speech e inventariar datos públicos | Codex | Catálogo con fuentes, manifiestos oficiales de cuatro publicaciones y script de descarga/verificación; señaló solapamientos y etiquetas ocultas | Trabajo solicitado por el autor. Datos, métricas y adaptación del modelo pendientes de inspección; las recomendaciones de alcance quedan para revisión humana. |
 
 ---
 

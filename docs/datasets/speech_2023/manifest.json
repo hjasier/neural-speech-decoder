@@ -1,0 +1,109 @@
+{
+  "key": "speech_2023",
+  "doi": "10.5061/dryad.x69p8czpq",
+  "title": "Data for: A high-performance speech neuroprosthesis",
+  "license": "https://spdx.org/licenses/CC0-1.0.html",
+  "publication_date": "2023-09-01",
+  "api_version_id": 253293,
+  "files": [
+    {
+      "name": "competitionData_readme.txt",
+      "size_bytes": 6247,
+      "sha256": "63d9da90bddd2403c84ff7beff846de63b0db853639686440cdfa72efea4603e",
+      "file_id": 2547362,
+      "url": "https://datadryad.org/downloads/file_stream/2547362"
+    },
+    {
+      "name": "competitionData.tar.gz",
+      "size_bytes": 3669638707,
+      "sha256": "5b5c9784d80d5286e69352621366be2e4ff468e043e082e7aa7cbc90d18336b3",
+      "file_id": 2547369,
+      "url": "https://datadryad.org/downloads/file_stream/2547369"
+    },
+    {
+      "name": "derived_readme.txt",
+      "size_bytes": 4957,
+      "sha256": "aa90051845d335f0a1769247aa4281f3803540f5884ab53da781e0f76bd60337",
+      "file_id": 2547357,
+      "url": "https://datadryad.org/downloads/file_stream/2547357"
+    },
+    {
+      "name": "derived.tar.gz",
+      "size_bytes": 8062039321,
+      "sha256": "44d31076a68969738a72475d3dc708fd91c3d6c2f9adcadba7496f48b3e31117",
+      "file_id": 2547370,
+      "url": "https://datadryad.org/downloads/file_stream/2547370"
+    },
+    {
+      "name": "diagnosticBlocks_readme.txt",
+      "size_bytes": 6126,
+      "sha256": "d0821b9950c18d5cbf6308732c63c30636b2072949b2d48f0a8c63cb3b513275",
+      "file_id": 2547358,
+      "url": "https://datadryad.org/downloads/file_stream/2547358"
+    },
+    {
+      "name": "diagnosticBlocks.tar.gz",
+      "size_bytes": 612391492,
+      "sha256": "dc204dda6a67f25824f6f9b7a7cb6b83ca8142376a9787ebb66fa223402882e7",
+      "file_id": 2547371,
+      "url": "https://datadryad.org/downloads/file_stream/2547371"
+    },
+    {
+      "name": "languageModel_5gram.tar.gz",
+      "size_bytes": 38245502441,
+      "sha256": "bb2b15cc13d40e484359ffe0afe74580cdbad02440c27586074bfe2e51e7867e",
+      "file_id": 2547359,
+      "url": "https://datadryad.org/downloads/file_stream/2547359"
+    },
+    {
+      "name": "languageModel_readme.txt",
+      "size_bytes": 1816,
+      "sha256": "d4d29bbcd83b5549374e3651f72964d3d1d56aef98156e5c3169efe1bc4d37cc",
+      "file_id": 2547360,
+      "url": "https://datadryad.org/downloads/file_stream/2547360"
+    },
+    {
+      "name": "languageModel.tar.gz",
+      "size_bytes": 14106240558,
+      "sha256": "7b64d36c64765dc0a5e890bb0cc795657c827b7d314fbf5ed5dc8778bd166d7e",
+      "file_id": 2547356,
+      "url": "https://datadryad.org/downloads/file_stream/2547356"
+    },
+    {
+      "name": "README.md",
+      "size_bytes": 4413,
+      "sha256": "678841c9f31ac185d3f8e6a0881c31e520bcd7019767ba1faa80b64ad419d38d",
+      "file_id": 2547377,
+      "url": "https://datadryad.org/downloads/file_stream/2547377"
+    },
+    {
+      "name": "sentences_readme.txt",
+      "size_bytes": 8416,
+      "sha256": "89a78456dbac4ca970498bafb35823666436faf85c9a9bf96c3612f2772d984e",
+      "file_id": 2547361,
+      "url": "https://datadryad.org/downloads/file_stream/2547361"
+    },
+    {
+      "name": "sentences.tar.gz",
+      "size_bytes": 14803440418,
+      "sha256": "d354c97d3fa5e4684adb7046de73e5a21fde805824954490e34cb042d1c948da",
+      "file_id": 2547372,
+      "url": "https://datadryad.org/downloads/file_stream/2547372"
+    },
+    {
+      "name": "tuningTasks_readme.txt",
+      "size_bytes": 6514,
+      "sha256": "22ab4d03ae92881b67704626fd7518653494c7cfe2f17f2277affda3ae96bbf9",
+      "file_id": 2547363,
+      "url": "https://datadryad.org/downloads/file_stream/2547363"
+    },
+    {
+      "name": "tuningTasks.tar.gz",
+      "size_bytes": 941344404,
+      "sha256": "8e245a00391f7d6558e6846effdfb29d0c145872864b110a85523a6a2a40fcbf",
+      "file_id": 2547373,
+      "url": "https://datadryad.org/downloads/file_stream/2547373"
+    }
+  ],
+  "retrieved_on": "2026-09-30"
+}

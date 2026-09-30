@@ -1,0 +1,260 @@
+{
+  "archive": "competitionData.tar.gz",
+  "sha256": "5b5c9784d80d5286e69352621366be2e4ff468e043e082e7aa7cbc90d18336b3",
+  "compressed_bytes": 3669638707,
+  "unpacked_file_bytes": 6949015400,
+  "files": [
+    {
+      "name": "./competitionData/competitionHoldOut/t12.2022.05.24.mat",
+      "size_bytes": 48059472
+    },
+    {
+      "name": "./competitionData/competitionHoldOut/t12.2022.06.14.mat",
+      "size_bytes": 45513808
+    },
+    {
+      "name": "./competitionData/competitionHoldOut/t12.2022.06.07.mat",
+      "size_bytes": 46867536
+    },
+    {
+      "name": "./competitionData/competitionHoldOut/t12.2022.07.27.mat",
+      "size_bytes": 48964688
+    },
+    {
+      "name": "./competitionData/competitionHoldOut/t12.2022.08.02.mat",
+      "size_bytes": 52134992
+    },
+    {
+      "name": "./competitionData/competitionHoldOut/t12.2022.06.28.mat",
+      "size_bytes": 42667088
+    },
+    {
+      "name": "./competitionData/competitionHoldOut/t12.2022.08.11.mat",
+      "size_bytes": 54795344
+    },
+    {
+      "name": "./competitionData/competitionHoldOut/t12.2022.06.21.mat",
+      "size_bytes": 42718288
+    },
+    {
+      "name": "./competitionData/competitionHoldOut/t12.2022.07.14.mat",
+      "size_bytes": 52347984
+    },
+    {
+      "name": "./competitionData/competitionHoldOut/t12.2022.06.16.mat",
+      "size_bytes": 54600784
+    },
+    {
+      "name": "./competitionData/competitionHoldOut/t12.2022.07.21.mat",
+      "size_bytes": 48632912
+    },
+    {
+      "name": "./competitionData/competitionHoldOut/t12.2022.08.13.mat",
+      "size_bytes": 49693776
+    },
+    {
+      "name": "./competitionData/competitionHoldOut/t12.2022.05.26.mat",
+      "size_bytes": 53906512
+    },
+    {
+      "name": "./competitionData/competitionHoldOut/t12.2022.07.05.mat",
+      "size_bytes": 45196368
+    },
+    {
+      "name": "./competitionData/competitionHoldOut/t12.2022.06.02.mat",
+      "size_bytes": 47516752
+    },
+    {
+      "name": "./competitionData/train/t12.2022.05.24.mat",
+      "size_bytes": 237826552
+    },
+    {
+      "name": "./competitionData/train/t12.2022.07.29.mat",
+      "size_bytes": 119765968
+    },
+    {
+      "name": "./competitionData/train/t12.2022.06.14.mat",
+      "size_bytes": 211619776
+    },
+    {
+      "name": "./competitionData/train/t12.2022.06.07.mat",
+      "size_bytes": 215158208
+    },
+    {
+      "name": "./competitionData/train/t12.2022.07.27.mat",
+      "size_bytes": 237107392
+    },
+    {
+      "name": "./competitionData/train/t12.2022.08.02.mat",
+      "size_bytes": 248049456
+    },
+    {
+      "name": "./competitionData/train/t12.2022.05.05.mat",
+      "size_bytes": 374149352
+    },
+    {
+      "name": "./competitionData/train/t12.2022.06.28.mat",
+      "size_bytes": 212930208
+    },
+    {
+      "name": "./competitionData/train/t12.2022.08.11.mat",
+      "size_bytes": 195551168
+    },
+    {
+      "name": "./competitionData/train/t12.2022.05.17.mat",
+      "size_bytes": 313980784
+    },
+    {
+      "name": "./competitionData/train/t12.2022.06.21.mat",
+      "size_bytes": 180652416
+    },
+    {
+      "name": "./competitionData/train/t12.2022.05.19.mat",
+      "size_bytes": 130980368
+    },
+    {
+      "name": "./competitionData/train/t12.2022.06.23.mat",
+      "size_bytes": 266591264
+    },
+    {
+      "name": "./competitionData/train/t12.2022.07.14.mat",
+      "size_bytes": 240924464
+    },
+    {
+      "name": "./competitionData/train/t12.2022.06.16.mat",
+      "size_bytes": 204699840
+    },
+    {
+      "name": "./competitionData/train/t12.2022.08.18.mat",
+      "size_bytes": 264905312
+    },
+    {
+      "name": "./competitionData/train/t12.2022.07.21.mat",
+      "size_bytes": 237492016
+    },
+    {
+      "name": "./competitionData/train/t12.2022.08.23.mat",
+      "size_bytes": 264968792
+    },
+    {
+      "name": "./competitionData/train/t12.2022.08.25.mat",
+      "size_bytes": 296311384
+    },
+    {
+      "name": "./competitionData/train/t12.2022.04.28.mat",
+      "size_bytes": 324602728
+    },
+    {
+      "name": "./competitionData/train/t12.2022.08.13.mat",
+      "size_bytes": 188860352
+    },
+    {
+      "name": "./competitionData/train/t12.2022.05.26.mat",
+      "size_bytes": 254280680
+    },
+    {
+      "name": "./competitionData/train/t12.2022.07.05.mat",
+      "size_bytes": 210617072
+    },
+    {
+      "name": "./competitionData/train/t12.2022.06.02.mat",
+      "size_bytes": 241429376
+    },
+    {
+      "name": "./competitionData/test/t12.2022.05.24.mat",
+      "size_bytes": 28130784
+    },
+    {
+      "name": "./competitionData/test/t12.2022.07.29.mat",
+      "size_bytes": 23145752
+    },
+    {
+      "name": "./competitionData/test/t12.2022.06.14.mat",
+      "size_bytes": 27072448
+    },
+    {
+      "name": "./competitionData/test/t12.2022.06.07.mat",
+      "size_bytes": 23379344
+    },
+    {
+      "name": "./competitionData/test/t12.2022.07.27.mat",
+      "size_bytes": 21155216
+    },
+    {
+      "name": "./competitionData/test/t12.2022.08.02.mat",
+      "size_bytes": 19315792
+    },
+    {
+      "name": "./competitionData/test/t12.2022.05.05.mat",
+      "size_bytes": 19910344
+    },
+    {
+      "name": "./competitionData/test/t12.2022.06.28.mat",
+      "size_bytes": 21339776
+    },
+    {
+      "name": "./competitionData/test/t12.2022.08.11.mat",
+      "size_bytes": 21970320
+    },
+    {
+      "name": "./competitionData/test/t12.2022.05.17.mat",
+      "size_bytes": 15489936
+    },
+    {
+      "name": "./competitionData/test/t12.2022.06.21.mat",
+      "size_bytes": 24848520
+    },
+    {
+      "name": "./competitionData/test/t12.2022.05.19.mat",
+      "size_bytes": 13671376
+    },
+    {
+      "name": "./competitionData/test/t12.2022.06.23.mat",
+      "size_bytes": 21302792
+    },
+    {
+      "name": "./competitionData/test/t12.2022.07.14.mat",
+      "size_bytes": 24479120
+    },
+    {
+      "name": "./competitionData/test/t12.2022.06.16.mat",
+      "size_bytes": 26351352
+    },
+    {
+      "name": "./competitionData/test/t12.2022.08.18.mat",
+      "size_bytes": 24608104
+    },
+    {
+      "name": "./competitionData/test/t12.2022.07.21.mat",
+      "size_bytes": 23340392
+    },
+    {
+      "name": "./competitionData/test/t12.2022.08.23.mat",
+      "size_bytes": 24305000
+    },
+    {
+      "name": "./competitionData/test/t12.2022.08.25.mat",
+      "size_bytes": 20053392
+    },
+    {
+      "name": "./competitionData/test/t12.2022.04.28.mat",
+      "size_bytes": 23383608
+    },
+    {
+      "name": "./competitionData/test/t12.2022.08.13.mat",
+      "size_bytes": 22246800
+    },
+    {
+      "name": "./competitionData/test/t12.2022.05.26.mat",
+      "size_bytes": 27651512
+    },
+    {
+      "name": "./competitionData/test/t12.2022.07.05.mat",
+      "size_bytes": 21306648
+    },
+    {
+      "name": "./competitionData/test/t12.2022.06.02.mat",
+      "size_bytes": 23485840
+    }
+  ]
+}

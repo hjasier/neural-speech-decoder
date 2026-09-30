@@ -1,0 +1,46 @@
+{
+  "key": "speech_2024_t15",
+  "doi": "10.5061/dryad.dncjsxm85",
+  "title": "Data for: An accurate and rapidly calibrating speech neuroprosthesis",
+  "license": "https://spdx.org/licenses/CC0-1.0.html",
+  "publication_date": "2025-07-03",
+  "api_version_id": 374060,
+  "files": [
+    {
+      "name": "README.md",
+      "size_bytes": 3183,
+      "sha256": "3516e6c4c20cfc8c66e5b73fe70474208093ce807034f32f1500087622908e70",
+      "file_id": 4150353,
+      "url": "https://datadryad.org/downloads/file_stream/4150353"
+    },
+    {
+      "name": "t15_copyTask_neuralData.zip",
+      "size_bytes": 11051034483,
+      "sha256": "fb828fa7ef937aca405d6912addc876f6747f75a8a1711f6d2052aacf34ec5b5",
+      "file_id": 4150350,
+      "url": "https://datadryad.org/downloads/file_stream/4150350"
+    },
+    {
+      "name": "t15_copyTask.pkl",
+      "size_bytes": 57786348,
+      "sha256": "7313b9a1102794cfd31455a85d3d16a1aca962aa730a7134d9346fb8f5e165e3",
+      "file_id": 4150348,
+      "url": "https://datadryad.org/downloads/file_stream/4150348"
+    },
+    {
+      "name": "t15_personalUse.pkl",
+      "size_bytes": 1132664,
+      "sha256": "1d18d59e6ee4bf7426f075ee3b5f25a130b7576a9356043db470e13bfc57fcac",
+      "file_id": 4150347,
+      "url": "https://datadryad.org/downloads/file_stream/4150347"
+    },
+    {
+      "name": "t15_pretrained_rnn_baseline.zip",
+      "size_bytes": 484944889,
+      "sha256": "04ab2275eeb48abad9b4011dde6f7c9e5dd9f643b8a677c1ba5e06dc53bb4111",
+      "file_id": 4150349,
+      "url": "https://datadryad.org/downloads/file_stream/4150349"
+    }
+  ],
+  "retrieved_on": "2026-09-30"
+}

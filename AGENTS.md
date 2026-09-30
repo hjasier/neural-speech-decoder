@@ -14,8 +14,17 @@ Dos páginas se leen enteras. Quince, no.
 
 ## Qué es esto
 
-Replicación de <paper> sobre <dataset>. Objetivo: reproducir <métrica> = <valor>.
-Encima se construye <aplicativo>.
+Proyecto elegido: replicación offline de *A high-performance speech
+neuroprosthesis* (Willett et al., 2023) sobre datos intracorticales públicos de
+Dryad. Evaluación con PER y WER; aún no hay resultados ni una métrica objetivo
+cerrada. Aplicativo previsto: decodificación y visualización de grabaciones,
+con transcripción y comparación con la referencia.
+
+El usuario decidió cambiar desde handwriting el 30 de septiembre de 2026.
+Quiere explorar los datos completos y otros participantes para desarrollar
+un decodificador funcional. En esta fase autoriza explorar escalas mayores
+sin limitar el diseño a la T4; no dar por medida la viabilidad ni por aceptados
+los cambios de requisitos docentes. El inventario está en `docs/datos.md`.
 
 ## Restricciones del curso
 
@@ -51,9 +60,19 @@ python tools/tiiac_check.py .                  # comprobador de reproducibilidad
 
 ## Estado actual
 
-<Actualiza esto cuando cambie. Es lo que evita que el asistente reinvente
-piezas que ya existen.>
-
-- Hecho: <...>
-- En curso: <...>
-- Pendiente: <...>
+- Hecho: inventario de cuatro publicaciones de Dryad y manifiestos oficiales
+  con tamaños, enlaces y SHA-256 en `docs/datasets/`; descarga reanudable y
+  verificación en `scripts/get_data.py`.
+- Hecho: `competitionData.tar.gz` y sus siete README descargados y
+  verificados con SHA-256 oficial; corpus extraído en
+  `data/speech_2023/competitionData/` (24 archivos de train, 24 de test,
+  15 de competitionHoldOut). Datos ignorados por Git.
+- En curso: adquisición e inspección de grabaciones; comprobar archivos
+  locales antes de afirmar que un dataset está disponible en el equipo.
+- Pendiente: adaptar datos, modelo, entrenamiento, métricas y aplicativo;
+  todos siguen siendo placeholders. README y propuestas conservan la ficha
+  inicial de handwriting y necesitan una actualización posterior.
+- No mezclar `competitionData` y `sentences` como muestras independientes;
+  comprobar solapamientos de participantes/sesiones entre publicaciones.
+- Los tests publicados de T15 no incluyen etiquetas. Los datos de T12 y T15
+  requieren adaptadores específicos; no asumir entradas intercambiables.
