@@ -1,0 +1,12 @@
+[
+  {
+    "asset": "assets/conversation.png",
+    "tool": "Codex image generation",
+    "prompt": "Use case: photorealistic-natural. Asset type: editorial landscape photograph for a university scientific presentation about restoring communication. Create a dignified, intimate, believable everyday scene: two adults, an older woman and a younger woman, sitting at eye level facing one another in a calm home interior, sharing attentive eye contact during conversation. Hands relaxed, gentle expressions, everyday clothes, no visible medical equipment, no wheelchair required, no pity or melodrama. These are fictional illustrative people, not depictions of study participants. Composition: wide 16:9, people concentrated on the right two thirds; left third quiet, soft dark blue shadow and no objects so white presentation text can be overlaid. Subtle natural daylight, realistic skin texture, navy and muted natural warm tones. Human documentary photography, cinematic framing, shallow depth of field. No text, no letters, no bubbles, no logos, no watermarks. Output a crisp large landscape image."
+  },
+  {
+    "asset": "assets/brain.png",
+    "tool": "Codex image generation",
+    "prompt": "Use case: scientific-educational. Asset type: conceptual anatomical illustration used as a hero image in a scientific HTML presentation. Create a striking high quality 3D lateral view of a human cerebral hemisphere, realistic cortical folds with delicate blue-white surface shading, floating in a deep midnight navy background. The brain occupies the right two thirds, left third dark negative space for a title. A restrained fine network of softly luminous blue points and thin connections follows the cortical surface to suggest recorded neural activity, without asserting specific implant locations. It should look like an elegant neuroscience editorial image, anatomically plausible and visually sophisticated, not a cartoon, not a sci-fi robot, not a brain with circuit board panels. Palette deep navy, ice blue, cool white and subtle cyan. Strong contrast, large readable silhouette, precise tissue contours. Wide 16:9 landscape. No words, numbers, labels, chart axes, logos or watermarks."
+  }
+]

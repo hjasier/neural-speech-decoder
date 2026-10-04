@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Presentación de Asier Aurre sobre A high-performance speech neuroprosthesis, Willett et al. (2023).">
+  <title>Decodificar el habla · Asier Aurre</title>
+  <link rel="stylesheet" href="vendor/reveal/dist/reset.css">
+  <link rel="stylesheet" href="vendor/reveal/dist/reveal.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section class="slide cover" id="paper" data-scene="cover">
+        <img class="cover-brain" src="assets/brain.png" alt="Ilustración conceptual de un cerebro humano con conexiones luminosas azules">
+        <div class="cover-shade"></div>
+        <div class="cover-copy">
+          <p class="paper-meta">Willett y colaboradores · Nature, 2023</p>
+          <h1>A high-performance<br>speech<br>neuroprosthesis</h1>
+          <p class="cover-subtitle">Decodificar el habla intentada</p>
+          <p class="cover-author">Asier Aurre <span>Trabajo Integrado</span></p>
+        </div>
+        <svg class="cover-signal" viewBox="0 0 1100 100" aria-hidden="true"><path d="M0 60 L70 60 82 57 88 63 94 28 100 85 106 58 230 60 247 60 255 42 262 75 267 56 350 60 369 60 378 11 386 91 392 59 530 60 542 48 550 71 558 60 650 60 670 54 678 63 685 25 693 87 700 60 820 60 832 54 838 68 845 40 852 75 859 60 1100 60"/></svg>
+        <a class="cover-paper image-zoom" href="assets/paper-cover.png" data-caption="Artículo original · Willett et al., Nature (2023)" aria-label="Ampliar la primera página del paper"><img src="assets/paper-cover.png" alt="Primera página del artículo original de Nature"></a>
+        <aside class="notes">Para el proyecto he elegido A high-performance speech neuroprosthesis, de Willett y colaboradores, publicado en 2023. [10 segundos]
+          <br>Fuente: https://doi.org/10.1038/s41586-023-06377-x. La imagen del cerebro es una ilustración generada, no una localización real de implantes.</aside>
+      </section>
+
+      <section class="slide human" id="comunicacion" data-scene="human">
+        <img class="scene-photo" src="assets/conversation.png" alt="Escena ilustrativa de dos mujeres conversando en casa">
+        <div class="photo-shade"></div>
+        <div class="human-copy">
+          <h2>Tener algo<br>que decir.</h2>
+          <p class="fragment human-line" data-fragment-index="0">Y no poder<br>hacerte entender.</p>
+          <p class="fragment participant" data-fragment-index="1"><strong>T12</strong><span>Una participante con ELA.<br>Habla que ya no resulta inteligible.</span></p>
+        </div>
+        <div class="photo-credit">Escena ilustrativa · las personas de la imagen no son T12</div>
+        <aside class="notes">Normalmente, si queremos contarle algo a alguien, simplemente lo decimos. Pero imaginad tener algo que decir y no poder hacer que los demás os entiendan. Una conversación con la familia, o algo tan básico como pedir ayuda, deja de ser sencillo. Esa es la situación de T12, una mujer con ELA que ya no puede hablar de forma inteligible. [25 segundos]
+          <br>Avanzar una vez al hablar de la dificultad y otra al introducir T12. La foto es una ilustración conceptual, no documentación de la participante. Fuente: Willett et al. 2023.</aside>
+      </section>
+
+      <section class="slide history" id="antes" data-scene="history">
+        <header><h2>Escribir para comunicarse</h2><p>Las interfaces cerebrales ya abrían una puerta.</p></header>
+        <div class="history-scenes">
+          <div class="cursor-scene">
+            <div class="scene-name">Controlar un cursor</div>
+            <div class="keyboard-display"><span id="cursor-output" aria-live="off"></span><i></i></div>
+            <div class="virtual-keyboard" aria-label="Esquema de un teclado en pantalla"></div>
+            <svg class="moving-cursor" viewBox="0 0 28 34" aria-hidden="true"><path d="M3 2L24 21L14 22L18 31L12 33L8 24L3 31Z"/></svg>
+            <div class="visual-caption">Esquema de selección de letras con una BCI</div>
+          </div>
+          <div class="handwriting-scene">
+            <div class="scene-name">Intentar escribir a mano</div>
+            <svg class="writing" viewBox="0 0 540 230" role="img" aria-label="Animación conceptual del trazo de la palabra hello">
+              <path class="writing-path" d="M55 180 C90 120 140 20 109 25 C76 27 76 180 90 180 C106 180 106 90 132 105 C150 115 113 177 140 174 C159 172 199 130 183 113 C173 101 155 127 157 151 C160 185 194 164 209 147 C231 118 252 27 234 24 C209 20 209 160 231 176 C248 184 260 151 273 126 C296 76 310 15 291 24 C267 35 277 181 300 178 C316 176 332 140 342 123 C355 101 393 114 387 144 C382 179 342 188 344 148 C346 107 399 105 397 143 C395 167 421 159 436 145"/>
+              <path class="writing-base" d="M30 192H500"/>
+            </svg>
+            <div class="recognized-text">hello</div>
+            <div class="visual-caption">Se reconoce el intento; la mano no tiene que moverse</div>
+          </div>
+        </div>
+        <p class="fragment history-takeaway">La conversación seguía teniendo que pasar por la escritura.</p>
+        <div class="citation">Willett et al., Nature 2021 · esquemas ilustrativos</div>
+        <aside class="notes">Antes de este trabajo ya había interfaces cerebrales que permitían controlar un cursor o reconocer intentos de escribir a mano. Eran avances importantes, pero comunicarse así seguía siendo mucho más lento que conversar. [20 segundos]
+          <br>No decir que siempre requieren movimiento físico: las BCI también decodifican intentos sin movimiento efectivo. La escritura alcanzó unos 18 términos por minuto en el antecedente citado por el artículo de 2023. Fuente: https://doi.org/10.1038/s41586-021-03506-2. Las dos animaciones son esquemas, no registros del experimento.</aside>
+      </section>
+
+      <section class="slide speech" id="habla" data-scene="speech" data-auto-animate data-auto-animate-id="neural">
+        <header><h2>Intentar hablar.<br>Ver aparecer las palabras.</h2></header>
+        <div class="speech-visual">
+          <img data-id="brain" class="speech-brain" src="assets/brain.png" alt="Ilustración conceptual de actividad cerebral">
+          <svg class="speech-wire" viewBox="0 0 1150 320" aria-hidden="true"><path d="M340 180 C480 180 430 85 590 85 S720 180 795 180"/><circle class="signal-dot" r="7"/></svg>
+          <div class="intent-label">Intento de hablar</div>
+          <div class="speech-output"><span class="output-label">Texto en pantalla</span><span id="speech-word">hello</span><i></i></div>
+        </div>
+        <p class="fragment speech-bottom">La actividad relacionada con el habla se convierte en texto.</p>
+        <div class="citation">Willett et al., 2023 · ilustración del método, no una predicción propia</div>
+        <aside class="notes">Este paper plantea una forma más directa: aprovechar la actividad neuronal que aparece cuando la persona intenta hablar y reconstruir sus palabras. La frase aparece en pantalla mientras intenta pronunciarla. [15 segundos]
+          <br>Se trata de habla intentada, no de leer cualquier pensamiento ni de recuperar físicamente la voz. El texto hello es un ejemplo didáctico, como en la figura 2a del artículo. Fuente: Willett et al. 2023.</aside>
+      </section>
+
+      <section class="slide signal-method" id="senales" data-scene="signal" data-auto-animate data-auto-animate-id="neural">
+        <header><h2>Señales que contienen información</h2></header>
+        <div class="signal-layout">
+          <div class="implant-evidence">
+            <a class="image-zoom" href="assets/implant.png" data-caption="Detalle de la figura 1a · ubicación de los microelectrodos en el estudio"><img src="assets/implant.png" alt="Figura original con los microelectrodos y su posición en el cerebro de T12"></a>
+            <p>Electrodos implantados</p><small>Detalle de la figura 1a</small>
+          </div>
+          <div class="method-arrow" aria-hidden="true">→</div>
+          <div class="neural-record">
+            <svg class="trace-plot" data-traces="0" viewBox="0 0 680 240" role="img" aria-label="Cuatro canales de una grabación real de T12"></svg>
+            <div class="trace-playhead"></div>
+            <p>Actividad neuronal</p><small>Ejemplo real · 4 canales de 6v</small>
+          </div>
+        </div>
+        <div class="fragment recurrent" data-fragment-index="0">
+          <div class="gru-graphic" aria-label="La red recurrente tiene cinco capas"><span></span><span></span><span></span><span></span><span></span></div>
+          <div><strong>GRU · cinco capas</strong><p>Aprender la secuencia de sonidos</p></div>
+          <div class="phone-output"><span>HH</span><span>AH</span><span>L</span><span>OW</span></div>
+        </div>
+        <div class="citation">Willett et al., 2023 · fonemas ilustrativos; las curvas son una muestra de entrada real</div>
+        <aside class="notes">Para hacerlo, registran las señales con electrodos implantados. Una red recurrente de tipo GRU predice los fonemas, los sonidos que forman las palabras. [20 segundos]
+          <br>La figura del cerebro es un recorte sin alterar de la figura 1a. Las curvas son spikePow real de competitionData, visualizado con log1p y escalado para la pantalla; no son predicciones ni una alineación de fonemas. HH AH L OW es únicamente un ejemplo didáctico. El original tiene cinco capas y usa TensorFlow 2; la adaptación del proyecto se hará en PyTorch.</aside>
+      </section>
+
+      <section class="slide phonemes" id="fonemas" data-scene="phonemes">
+        <header><h2>Sonidos que se convierten en palabras</h2></header>
+        <div class="ctc-line">
+          <div class="ctc-title"><strong>CTC</strong><span>Aprender sin marcar el instante de cada sonido</span></div>
+          <div class="ctc-raw" aria-label="Secuencia ilustrativa con repeticiones y blancos"><span>HH</span><span>HH</span><span class="blank">∅</span><span>AH</span><span>AH</span><span class="blank">∅</span><span>L</span><span class="blank">∅</span><span>OW</span><span>OW</span></div>
+          <div class="ctc-collapse fragment" data-fragment-index="0"><span>HH</span><span>AH</span><span>L</span><span>OW</span><div class="ctc-arrow">→</div><strong>hello</strong></div>
+        </div>
+        <div class="language-row fragment" data-fragment-index="1">
+          <div class="language-copy"><span>Modelo de lenguaje</span><p>Qué palabras encajan<br>con los sonidos.</p></div>
+          <div class="language-branches"><span class="candidate">yellow</span><span class="candidate selected">hello</span><span class="candidate">halo</span></div>
+          <a class="paper-method image-zoom" href="assets/paper-pipeline.png" data-caption="Figura 2a original · señales, RNN, fonemas y modelo de lenguaje"><img src="assets/paper-pipeline.png" alt="Diagrama original del método de decodificación del artículo"></a>
+        </div>
+        <div class="citation">Ejemplo didáctico · diagrama original: Willett et al., Fig. 2a</div>
+        <aside class="notes">Se entrena con CTC, que permite aprender su secuencia sin saber cuándo aparece cada sonido. Después, un modelo de lenguaje combina esas predicciones para obtener la frase más probable en inglés. [20 segundos]
+          <br>Primera pulsación: se colapsan repeticiones y se quitan blancos en un camino CTC ilustrativo. Segunda: se introduce la parte de lenguaje. La inferencia real combina probabilidades de múltiples caminos y no se limita a elegir una palabra después del greedy. Las candidatas son ilustrativas. El original usa un modelo trigram de 125.000 palabras.</aside>
+      </section>
+
+      <section class="slide dataset" id="datos" data-scene="dataset">
+        <header><h2>Una persona. Veinticuatro días.</h2></header>
+        <div class="data-heading"><div><strong>8.800</strong><span>frases de entrenamiento</span></div><p>T12 · competitionData<br><span>Grabaciones públicas de Dryad</span></p></div>
+        <div class="day-rail" aria-label="24 días de entrenamiento de abril a agosto de 2022"></div>
+        <div class="day-examples">
+          <figure><figcaption>28 abr. 2022</figcaption><img src="assets/session-1.png" alt="Mapa de actividad real de una sesión de T12 del 28 de abril de 2022"></figure>
+          <figure><figcaption>23 jun. 2022</figcaption><img src="assets/session-2.png" alt="Mapa de actividad real de una sesión de T12 del 23 de junio de 2022"></figure>
+          <figure><figcaption>25 ago. 2022</figcaption><img src="assets/session-3.png" alt="Mapa de actividad real de una sesión de T12 del 25 de agosto de 2022"></figure>
+        </div>
+        <p class="fragment data-takeaway">Las señales cambian. El modelo tiene que adaptarse.</p>
+        <div class="citation">Entradas reales · spikePow de 6v · log1p solo para visualizar · frases diferentes y escalas independientes</div>
+        <aside class="notes">Yo usaré las grabaciones públicas de T12: 8.800 frases de entrenamiento, recogidas en 24 días. Eso importa porque las señales cambian entre sesiones. No basta con aprender una frase en un día; el modelo tiene que funcionar también con esas variaciones. [20 segundos]
+          <br>Se muestran tres grabaciones reales de fechas distintas, no un experimento controlado de drift: las frases y las escalas de color son diferentes. El inventario incluye además 880 frases etiquetadas en test y 1.200 con etiquetas ocultas en competitionHoldOut. La división pública no evalúa por sí sola un día totalmente nuevo. Fuente: https://doi.org/10.5061/dryad.x69p8czpq.</aside>
+      </section>
+
+      <section class="slide results" id="resultados" data-scene="results">
+        <header><h2>Un avance en el ritmo de comunicación</h2></header>
+        <div class="results-layout">
+          <div class="speed-result"><div class="huge-number" data-count="62">62</div><span>palabras por minuto</span><div class="speed-comparison"><div class="speed-row previous"><span>Handwriting · 2021</span><div class="speed-bar"></div><strong>18</strong></div><div class="speed-row current"><span>Habla intentada · 2023</span><div class="speed-bar"></div><strong>62</strong></div></div></div>
+          <div class="accuracy-result fragment" data-fragment-index="0"><strong>23,8<span>%</span></strong><p>Error en palabras · WER</p><div class="vocabulary"><strong>125.000</strong><span>palabras en el vocabulario</span></div><a class="results-evidence image-zoom" href="assets/paper-results.png" data-caption="Figuras 2b y 2c · error en palabras y velocidad del estudio original"><img src="assets/paper-results.png" alt="Gráficos originales de error y palabras por minuto del artículo"></a></div>
+        </div>
+        <div class="citation">Resultados del paper · una participante · habla intentada con vocalización · la comparación de velocidad corresponde a estudios distintos</div>
+        <aside class="notes">Con su sistema alcanzaron 62 palabras por minuto y un error en palabras del 23,8 %, con un vocabulario de 125.000 palabras. Todavía había errores, pero el ritmo de comunicación suponía un avance respecto a escribir mediante otras interfaces cerebrales. [20 segundos]
+          <br>Mostrar primero la velocidad y después el WER. Son cifras del paper, no del proyecto. WER cuenta sustituciones, inserciones y omisiones respecto a las palabras de referencia. No interpretarlo como porcentaje de frases equivocadas. El valor 18 palabras/minuto para handwriting aparece como antecedente en el artículo de 2023. Fuente: Willett et al., Fig. 2 y Tabla 1. DOI 10.1038/s41586-023-06377-x.</aside>
+      </section>
+
+      <section class="slide application" id="proyecto" data-scene="application">
+        <header><h2>Mi proyecto con estas grabaciones</h2><p>Ejecutar el decodificador. Ver dónde acierta y dónde falla.</p></header>
+        <div class="app-preview">
+          <div class="app-topbar"><span class="app-mark"></span><strong>Explorador de habla neuronal</strong><span class="app-state">Diseño propuesto</span></div>
+          <div class="app-content">
+            <div class="app-selection"><label for="session-picker">Grabación</label><select id="session-picker" aria-label="Elegir uno de tres ejemplos de señal real"></select><div class="app-details"><span>6v</span><span>20 ms / intervalo</span><span id="app-duration">6,30 s</span></div></div>
+            <img id="app-heatmap" src="assets/session-1.png" alt="Actividad neuronal de la grabación seleccionada">
+            <div class="app-transcripts"><div><span>Frase de referencia</span><p id="reference-text">A good attitude is unbeatable.</p></div><div class="prediction"><span>Salida del decodificador</span><p>Transcripción por integrar</p></div></div>
+          </div>
+        </div>
+        <div class="app-bottom"><span>Visualización real de datos</span><span class="fragment">Modelo y evaluación: siguiente paso</span></div>
+        <div class="citation">Grabaciones existentes · la interfaz es una propuesta; todavía no hay un modelo de habla entrenado</div>
+        <aside class="notes">Mi idea es reproducir la decodificación con esas grabaciones y llevarla a una web donde podamos ver las señales, la transcripción y sus errores. [15 segundos]
+          <br>La pantalla es un prototipo de la aplicación propuesta. El selector y los mapas de actividad funcionan con tres entradas reales; la transcripción del modelo aún está pendiente y se indica como tal. Es decodificación offline, no una conexión con un implante. El texto mostrado es la referencia publicada del ensayo, no una predicción propia.</aside>
+      </section>
+
+      <section class="slide improvements" id="mejoras" data-scene="improvements">
+        <header><h2>Qué quiero mejorar</h2><p>Comparar cada cambio sobre los mismos datos.</p></header>
+        <div class="improvement-main">
+          <div class="baseline-model"><div class="model-mark gru-mark"><i></i><i></i><i></i><i></i><i></i></div><strong>GRU + CTC</strong><span>Referencia del proyecto</span></div>
+          <div class="comparison-arrow">↔</div>
+          <div class="transformer-model"><div class="mask-graphic"><img src="assets/session-1.png" alt="Ejemplo de señal al que se superpone un enmascaramiento temporal ilustrativo"><div class="time-mask mask-one"></div><div class="time-mask mask-two"></div><div class="time-mask mask-three"></div></div><strong>Transformer causal</strong><span>Enmascaramiento temporal · Feghhi et al., 2025</span></div>
+        </div>
+        <div class="further-ideas fragment" data-fragment-index="0"><div><span class="diphone-pair"><b>HH</b><i>→</i><b>AH</b></span><p>Transiciones entre fonemas</p></div><div><span class="lm-choice"><i>hello</i><i>yellow</i><i>hello</i></span><p>Mejorar el modelo de lenguaje</p></div></div>
+        <div class="evaluation fragment" data-fragment-index="1"><span>PER <small>Fonemas</small></span><span>WER <small>Palabras</small></span><span>Memoria</span><span>Tiempo</span></div>
+        <div class="citation">Experimentos propuestos · sin resultados propios todavía · Feghhi et al., 2025; Li et al., 2024</div>
+        <aside class="notes">Después quiero comparar la GRU con un Transformer causal y explorar transiciones entre fonemas o mejoras del modelo de lenguaje. Mediré el error en fonemas y palabras, además de la memoria y el tiempo. Todavía no tengo resultados propios: quiero comprobar qué cambios reducen los errores y cuáles permiten ejecutar el sistema con menos recursos. [15 segundos]
+          <br>La primera comparación propuesta es la GRU con un Transformer causal y enmascaramiento temporal. Las otras ideas se probarían por separado, según los recursos, sin garantizar una mejora. Fuentes: https://arxiv.org/abs/2507.02800; https://arxiv.org/abs/2411.10657.
+          <br>Setup opcional para preguntas: Python, notebooks, PyTorch por integrar, RTX 2060 de 6 GB. Colab de pago con 200 unidades es una posibilidad; el consumo sigue pendiente de medir. No hay límite docente de entrenamiento de veinte minutos este año.</aside>
+      </section>
+
+      <section class="slide closing" id="mila-esker" data-scene="closing">
+        <div class="closing-copy">
+          <h2 lang="eu">Mila esker!</h2>
+          <svg class="closing-signal" viewBox="0 0 960 120" aria-hidden="true"><path pathLength="1" d="M0 60H190L207 57L218 64L230 30L241 88L252 60H420L438 55L450 13L463 104L476 60H665L680 53L692 70L705 38L718 80L730 60H960"/></svg>
+        </div>
+        <aside class="notes">Mila esker! [Despedida]</aside>
+      </section>
+    </div>
+  </div>
+
+  <footer class="deck-footer"><span>Asier Aurre <i>/</i> Trabajo Integrado</span><div><button id="info-open" aria-haspopup="dialog">Fuentes y controles</button><span id="slide-counter" aria-live="polite">1 / 11</span></div></footer>
+  <dialog id="info-dialog" class="info-dialog" aria-labelledby="info-title"><button class="dialog-close" data-close="info-dialog" aria-label="Cerrar fuentes">×</button><h2 id="info-title">Fuentes y recursos</h2><p class="dialog-intro">El guion, las cifras y las figuras pertenecen al paper. Las mejoras son propuestas para el proyecto.</p><div class="source-list"><a href="https://doi.org/10.1038/s41586-023-06377-x" target="_blank" rel="noopener"><strong>Paper elegido · Willett et al., 2023</strong><span>A high-performance speech neuroprosthesis · Nature</span></a><a href="https://doi.org/10.1038/s41586-021-03506-2" target="_blank" rel="noopener"><strong>Antecedente · Willett et al., 2021</strong><span>High-performance brain-to-text communication via handwriting</span></a><a href="https://doi.org/10.5061/dryad.x69p8czpq" target="_blank" rel="noopener"><strong>Datos públicos · Dryad</strong><span>competitionData · 8.800 train / 880 etiquetadas / 1.200 ocultas</span></a><a href="https://arxiv.org/abs/2507.02800" target="_blank" rel="noopener"><strong>Comparación propuesta · Feghhi et al., 2025</strong><span>Time-Masked Transformers with Lightweight Test-Time Adaptation</span></a><a href="https://arxiv.org/abs/2411.10657" target="_blank" rel="noopener"><strong>Difonemas y lenguaje · Li et al., 2024</strong><span>Brain-to-Text Decoding with Context-Aware Neural Representations</span></a></div><div class="controls-guide"><span><kbd>→</kbd> / <kbd>Espacio</kbd> Avanzar</span><span><kbd>←</kbd> Volver</span><span><kbd>F</kbd> Pantalla completa</span><span><kbd>S</kbd> Notas del presentador</span><span><kbd>Esc</kbd> Vista general</span><span><kbd>R</kbd> Repetir animación</span><span><kbd>M</kbd> Activar / pausar movimiento</span><span><kbd>I</kbd> Fuentes</span></div><p class="credits-note">Cerebro y escena humana: ilustraciones generadas con IA. Figuras del paper: Willett et al. (2023), CC BY 4.0, detalles recortados sin alterar datos. Mapas: grabaciones reales de T12. Framework: Reveal.js 6.0.2 (MIT). Fuente Manrope (OFL). Créditos y prompts en <a href="CREDITOS.md" target="_blank" rel="noopener">CREDITOS.md</a>.</p></dialog>
+  <dialog id="image-dialog" class="image-dialog" aria-labelledby="image-caption"><button class="dialog-close" data-close="image-dialog" aria-label="Cerrar imagen">×</button><img id="expanded-image" alt=""><p id="image-caption"></p></dialog>
+  <noscript><div class="no-js">Esta presentación utiliza JavaScript. Abre este archivo en un navegador con JavaScript activado.</div></noscript>
+  <script src="vendor/reveal/dist/reveal.js"></script>
+  <script src="vendor/reveal/dist/plugin/notes.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="deck.js"></script>
+</body>
+</html>
