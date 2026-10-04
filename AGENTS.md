@@ -23,13 +23,18 @@ con transcripción y comparación con la referencia.
 El usuario decidió cambiar desde handwriting el 30 de septiembre de 2026.
 Quiere explorar los datos completos y otros participantes para desarrollar
 un decodificador funcional. En esta fase autoriza explorar escalas mayores
-sin limitar el diseño a la T4; no dar por medida la viabilidad ni por aceptados
-los cambios de requisitos docentes. El inventario está en `docs/datos.md`.
+sin limitar el diseño a la T4. El 4 de octubre de 2026 aclaró que el límite
+de entrenamiento de 20 minutos no se aplica este curso; no recortar datos
+o modelos para cumplirlo. La viabilidad y el consumo de cómputo siguen
+pendientes de medir. El inventario está en `docs/datos.md`.
 
 ## Restricciones del curso
 
-- **Regla 5/20:** `python run.py --smoke` en menos de 5 min en CPU;
-  el entrenamiento completo en menos de 20 min en una T4 de Colab gratuito.
+- **Prueba corta:** `python run.py --smoke` en menos de 5 min en CPU.
+- **Entrenamiento:** sin límite docente de 20 minutos, según aclaración
+  del usuario del 4 de octubre de 2026. Dispone de una RTX 2060 y contempla
+  Colab de pago con 200 unidades de cómputo; no asumir la contratación ni
+  una GPU concreta, ni prometer tiempos o consumo sin medir.
 - Todo entrenamiento se registra en Weights & Biases.
 - Las semillas se fijan **solo** en `src/utils/seed.py`.
 - Los hiperparámetros viven **solo** en `configs/`. Ninguno escrito a fuego.
