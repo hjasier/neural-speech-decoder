@@ -1,6 +1,6 @@
 # Presentación del paper
 
-Once diapositivas, incluida la despedida «Mila esker!», para la exposición de tres minutos de Asier Aurre. El recorrido sigue el [guion aprobado](../guion_presentacion.md): perder la posibilidad de comunicarse, los intentos de escritura, el salto al habla intentada, el método y el proyecto que quiero desarrollar.
+Diez diapositivas, incluida la despedida «Mila esker!», para la exposición de tres minutos de Asier Aurre. La cantidad de diapositivas no es un límite: ensayar el recorrido completo dentro de los tres minutos acordados. El recorrido sigue el [guion revisado](../guion_presentacion.md): cursor y escritura, método del paper, datos y resultados, aplicación e hipótesis de mejora.
 
 ## Abrirla
 
@@ -27,19 +27,19 @@ Después abrir [la presentación local](http://127.0.0.1:8765/). Permitir la ven
 | M | Pausar o activar el movimiento |
 | I | Consultar fuentes y controles |
 
-Las figuras originales se amplían al pulsarlas. En la diapositiva del proyecto se puede elegir entre tres grabaciones reales; la frase mostrada es su referencia publicada. El decodificador todavía está pendiente de integrar.
+Las figuras originales se amplían al pulsarlas. La diapositiva del proyecto muestra una grabación real de T12 y una maqueta animada de la salida por fonemas y palabras; esas salidas son ilustrativas, no predicciones del modelo. El decodificador todavía está pendiente de integrar.
 
 Conviene ensayar los avances con el guion: las animaciones se ejecutan al entrar y no obligan a esperar para pasar de diapositiva. La preferencia del sistema de reducir movimiento se respeta automáticamente.
 
 ## Material
 
-- Dos ilustraciones conceptuales y tres ejemplos de señales reales de T12.
+- Una ilustración conceptual y tres ejemplos de señales reales de T12.
 - Figuras originales del paper, ampliables.
 - Animaciones del cursor, handwriting, recorrido de la señal, CTC y enmascaramiento temporal.
 - Notas con el discurso y aclaraciones para preguntas.
-- Selector de grabaciones con mapas y frases de referencia reales.
+- Visor de una muestra neuronal con barrido temporal, fonemas secuenciales y texto ilustrativo.
 
-Los resultados de 62 palabras/minuto y 23,8 % de WER son del artículo original, no del proyecto. La comparación con un Transformer causal y las otras mejoras se presentan como experimentos propuestos.
+Los resultados de 62 palabras/minuto y 23,8 % de WER son del artículo original, no del proyecto. Empezaré con las 8.800 frases de T12, sin recortarlas por el antiguo límite de veinte minutos, y haré una primera versión de decodificación offline. Comparar el Transformer causal con la GRU es una hipótesis experimental: aún no hay resultados propios ni una mejora garantizada.
 
 Los [créditos, fuentes y prompts](CREDITOS.md) detallan la procedencia de cada recurso. Los ejemplos usados están documentados en `assets/data-source.json`. Las visualizaciones aplican `log1p` y escalas para mostrar la actividad; ese procesamiento no es una normalización de entrenamiento ni un experimento controlado de variación entre días.
 

@@ -59,24 +59,31 @@
     });
   });
 
-  const picker = document.querySelector('#session-picker');
-  const dateFormatter = new Intl.DateTimeFormat('es-ES', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' });
-  data.records.forEach((record, index) => {
-    const option = document.createElement('option');
-    option.value = String(index);
-    option.textContent = `${dateFormatter.format(new Date(record.date.replaceAll('/', '-') + 'T12:00:00Z'))} · ensayo ${record.trial + 1}`;
-    picker.append(option);
-  });
-  const updateRecord = () => {
-    const record = data.records[Number(picker.value)];
-    const heatmap = document.querySelector('#app-heatmap');
-    heatmap.src = `assets/${record.heatmap}`;
-    heatmap.alt = `Actividad neuronal real de ${record.session}, ensayo ${record.trial + 1}`;
-    document.querySelector('#reference-text').textContent = record.text;
-    document.querySelector('#app-duration').textContent = `${record.duration.toFixed(2).replace('.', ',')} s`;
-  };
-  picker.addEventListener('change', updateRecord);
-  updateRecord();
+  const appWaveform = document.querySelector('#app-waveform');
+  if (appWaveform) {
+    const record = data.records[2];
+    const colors = ['#6de4ea', '#8eb1ff', '#f0a6b8', '#a6cbe8'];
+    const plotLeft = 48;
+    const plotWidth = 830;
+    for (let tick = 0; tick <= 4; tick += 1) {
+      const x = plotLeft + tick * plotWidth / 4;
+      appWaveform.append(svgNode('line', { x1: x, y1: 5, x2: x, y2: 102, class: 'app-grid-line' }));
+      const label = svgNode('text', { x, y: 122, 'text-anchor': 'middle', class: 'app-axis-label' });
+      label.textContent = `${(record.duration * tick / 4).toFixed(1)} s`;
+      appWaveform.append(label);
+    }
+    record.traces.forEach((trace, index) => {
+      const base = 27 + index * 20;
+      const channel = svgNode('text', { x: 1, y: base + 4, class: 'app-channel-label' });
+      channel.textContent = String([9, 31, 64, 100][index]).padStart(2, '0');
+      appWaveform.append(channel);
+      appWaveform.append(svgNode('line', { x1: plotLeft, y1: base, x2: 890, y2: base, class: 'app-baseline' }));
+      const points = trace.map(([x, y], point) =>
+        `${point === 0 ? 'M' : 'L'}${(plotLeft + x * plotWidth).toFixed(2)},${(base - (y - 0.5) * 23).toFixed(2)}`
+      ).join(' ');
+      appWaveform.append(svgNode('path', { d: points, stroke: colors[index], class: 'app-trace' }));
+    });
+  }
 
   const clearScene = () => {
     timers.forEach(timer => window.clearTimeout(timer));
@@ -134,6 +141,25 @@
           if (fraction < 1) countFrame = requestAnimationFrame(count);
         };
         countFrame = requestAnimationFrame(count);
+      }
+    }
+    if (slide.dataset.scene === 'application') {
+      const phonemes = [...slide.querySelectorAll('.phoneme-token')];
+      const words = [...slide.querySelectorAll('.word-token')];
+      phonemes.forEach(token => token.classList.remove('is-active', 'is-complete'));
+      words.forEach(token => token.classList.remove('is-visible'));
+      if (motionPaused) {
+        phonemes.forEach(token => token.classList.add('is-complete'));
+        words.forEach(token => token.classList.add('is-visible'));
+      } else {
+        phonemes.forEach((token, index) => later(() => {
+          phonemes.forEach((item, itemIndex) => {
+            item.classList.toggle('is-active', itemIndex === index);
+            item.classList.toggle('is-complete', itemIndex < index);
+          });
+          const wordIndex = token.dataset.wordReady;
+          if (wordIndex !== undefined) words[Number(wordIndex)]?.classList.add('is-visible');
+        }, 420 + index * 360));
       }
     }
   };
