@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<!-- saved from url=(0105)https://alud.deusto.es/pluginfile.php/1912353/mod_resource/content/1/Como_trabajar_en_el_repositorio.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Como trabajar en el repositorio</title>
+<style>
+:root{ --fg:#1C1916; --dim:#5b544a; --rule:#d8cdb8; --acc:#B53341; --bg2:#F7F1E6; }
+*{box-sizing:border-box}
+body{max-width:46em;margin:0 auto;padding:2.5em 1.5em 4em;
+  font-family:"Segoe UI",-apple-system,Helvetica,Arial,sans-serif;
+  font-size:11.5pt;line-height:1.62;color:var(--fg);background:#fff}
+h1{font-size:1.85em;margin:0 0 .6em;line-height:1.2;
+   border-bottom:2px solid var(--acc);padding-bottom:.3em}
+h2{font-size:1.3em;margin:2em 0 .5em;color:var(--acc);
+   border-bottom:1px solid var(--rule);padding-bottom:.25em}
+h3{font-size:1.06em;margin:1.5em 0 .4em}
+p,li{orphans:3;widows:3}
+ul,ol{padding-left:1.4em}
+li{margin-bottom:.25em}
+hr{border:0;border-top:1px solid var(--rule);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:.7em 1.1em;background:var(--bg2);
+  border-left:4px solid var(--acc);border-radius:0 6px 6px 0}
+blockquote p{margin:.3em 0}
+code{font-family:"Cascadia Code",Consolas,monospace;font-size:.88em;
+  background:var(--bg2);padding:.12em .38em;border-radius:3px}
+pre{background:var(--bg2);border:1px solid var(--rule);border-radius:6px;
+  padding:.9em 1.1em;overflow-x:auto;page-break-inside:avoid}
+pre code{background:none;padding:0;font-size:.84em;line-height:1.5}
+table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:.92em;
+  page-break-inside:avoid}
+th{text-align:left;background:var(--bg2);border-bottom:2px solid var(--rule);
+   padding:.45em .6em;font-size:.88em}
+td{border-bottom:1px solid var(--rule);padding:.45em .6em;vertical-align:top}
+a{color:var(--acc)}
+@page{ margin:2cm; }
+@media print{ body{padding:0;max-width:none} h2{page-break-after:avoid} }
+</style>
+</head>
+<body>
+<h1 id="como-trabajar-en-el-repositorio">Cómo trabajar en el repositorio</h1>
+<p>Guía paso a paso. Si algo no te sale, busca aquí antes de preguntar.</p>
+<hr>
+<h2 id="parte-1-el-primer-dia">Parte 1 · El primer día</h2>
+<p>Esto se hace <strong>una sola vez</strong>, y solo lo hace <strong>una persona de la pareja</strong>.</p>
+<h3 id="1-crear-vuestro-repositorio">1. Crear vuestro repositorio</h3>
+<p>Entra en el repositorio de la plantilla y pulsa el botón verde que dice <strong>«Use this template»</strong>, y luego <strong>«Create a new repository»</strong>.</p>
+<p>Ponle un nombre, por ejemplo <code>resnet-cifar10</code>. Déjalo en <strong>Private</strong>. Pulsa crear.</p>
+<blockquote>
+<p>No hagáis «clone» de la plantilla. Con «Use this template» el repositorio es vuestro y empieza limpio. Clonando os llevaríais mi historial.</p>
+</blockquote>
+<h3 id="2-dar-acceso-a-los-demas">2. Dar acceso a los demás</h3>
+<p>En vuestro repositorio nuevo: <strong>Settings → Collaborators → Add people</strong>.</p>
+<p>Añadid a dos personas: <strong>tu pareja</strong> y <strong>el profesor</strong>.</p>
+<p>Sin esto, tu compañero no puede tocar nada y yo no puedo corregir.</p>
+<h3 id="3-descargarlo-a-vuestro-ordenador">3. Descargarlo a vuestro ordenador</h3>
+<p>Esto lo hacéis <strong>los dos</strong>, cada uno en su ordenador.</p>
+<pre><code class="language-bash">git clone https://github.com/TU-USUARIO/TU-REPO.git
+cd TU-REPO
+</code></pre>
+<p><code>clone</code> significa «tráete una copia». Ahora tienes el proyecto en tu disco.</p>
+<h3 id="4-preparar-el-entorno-de-python">4. Preparar el entorno de Python</h3>
+<pre><code class="language-bash">python -m venv .venv
+source .venv/bin/activate          # en Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+</code></pre>
+<p>Un <em>entorno virtual</em> es una caja donde se instalan las librerías de este proyecto y de ningún otro. Así no se mezclan versiones entre asignaturas.</p>
+<p><strong>Tendrás que activarlo cada vez que abras una terminal nueva.</strong> Si ves <code>(.venv)</code> al principio de la línea, está activado.</p>
+<h3 id="5-comprobar-que-funciona">5. Comprobar que funciona</h3>
+<pre><code class="language-bash">python run.py --smoke
+python tools/tiiac_check.py .
+</code></pre>
+<p>El primero entrena un poquito y saca dos números. El segundo te da una nota sobre 100.</p>
+<p><strong>Tiene que salir 88 y en VERDE.</strong> Si sale eso, ya está.</p>
+<blockquote>
+<p>Verás dos avisos: que falta el enlace de W&amp;B y que el <code>AI_USAGE.md</code> está vacío. <strong>Es normal.</strong> Son 12 puntos que iréis completando durante el curso.</p>
+</blockquote>
+<h3 id="6-decirle-a-git-quien-eres">6. Decirle a git quién eres</h3>
+<p>Solo la primera vez en tu ordenador:</p>
+<pre><code class="language-bash">git config --global user.name "Tu Nombre"
+git config --global user.email "tu.correo@opendeusto.es"
+</code></pre>
+<p>Esto es lo que hace que cada cambio quede a nombre de quien lo hizo. Importa: es como se ve quién ha trabajado.</p>
+<hr>
+<h2 id="parte-2-el-dia-a-dia">Parte 2 · El día a día</h2>
+<p>Este es el ciclo que vas a repetir todo el semestre. <strong>Cuatro pasos.</strong></p>
+<h3 id="paso-1-antes-de-empezar-traete-lo-nuevo">Paso 1 · Antes de empezar, tráete lo nuevo</h3>
+<pre><code class="language-bash">git pull
+</code></pre>
+<p>Trae los cambios que haya hecho tu compañero.</p>
+<p><strong>Hazlo siempre.</strong> El 90 % de los líos con git salen de no hacer <code>pull</code> antes de ponerse.</p>
+<h3 id="paso-2-trabaja">Paso 2 · Trabaja</h3>
+<p>Escribe código. Cambia lo que tengas que cambiar.</p>
+<h3 id="paso-3-comprueba-que-no-has-roto-nada">Paso 3 · Comprueba que no has roto nada</h3>
+<pre><code class="language-bash">python run.py --smoke
+pytest tests/ -q
+</code></pre>
+<p>Si algo falla, arréglalo <strong>antes</strong> de subirlo. Subir código roto le hace perder tiempo a tu compañero.</p>
+<h3 id="paso-4-guarda-y-sube">Paso 4 · Guarda y sube</h3>
+<pre><code class="language-bash">git add -A
+git commit -m "Añade la normalización de CIFAR"
+git push
+</code></pre>
+<p>Qué hace cada uno:</p>
+<ul>
+<li><code>git add -A</code> marca los ficheros que quieres guardar.</li>
+<li><code>git commit</code> los guarda <strong>en tu ordenador</strong>, con un mensaje.</li>
+<li><code>git push</code> los sube a GitHub, para que tu compañero los vea.</li>
+</ul>
+<blockquote>
+<p><strong><code>commit</code> no es <code>push</code>.</strong> Si haces commit y no push, el cambio sigue solo en tu ordenador. Es el error más común.</p>
+</blockquote>
+<h3 id="y-luego-mira-el-semaforo">Y luego, mira el semáforo</h3>
+<p>Entra en tu repositorio en GitHub, pestaña <strong>Actions</strong>. Verás una marca:</p>
+<ul>
+<li><strong>Verde:</strong> tu código funciona también en un ordenador limpio.</li>
+<li><strong>Rojo:</strong> funciona en el tuyo pero no en otro. Pincha y mira qué dice.</li>
+</ul>
+<hr>
+<h2 id="parte-3-mensajes-de-commit">Parte 3 · Mensajes de commit</h2>
+<p>Un buen mensaje se entiende dentro de tres meses. Tres reglas:</p>
+<p><strong>Uno por idea.</strong> Si el mensaje necesita un «y», son dos commits.</p>
+<p><strong>Empieza con un verbo.</strong> «Añade», «Corrige», «Elimina».</p>
+<p><strong>Di el porqué si no es evidente.</strong></p>
+<p>Malos:</p>
+<pre><code>cambios
+mas cambios
+ahora si
+Update train.py
+</code></pre>
+<p>Buenos:</p>
+<pre><code>Añade la normalización con las medias del paper
+Corrige el orden de canales en el DataLoader
+Reduce el subset a 5000 imágenes para caber en la regla 5/20
+</code></pre>
+<p>Esto se mira en la nota de E1, dentro de los 4 puntos del repositorio. Y en noviembre otra pareja va a leer vuestro historial para entender por dónde fuisteis.</p>
+<hr>
+<h2 id="parte-4-tres-cosas-que-hay-que-ir-alimentando">Parte 4 · Tres cosas que hay que ir alimentando</h2>
+<p>Los tests, la bitácora de IA y el registro de experimentos <strong>no se hacen en diciembre</strong>. Se van llenando sobre la marcha, y valen puntos.</p>
+<p>Si los dejáis para el final, se nota: no os vais a acordar de lo que hicisteis en octubre.</p>
+<hr>
+<h3 id="41-los-tests">4.1 · Los tests</h3>
+<p><strong>Los que trae la plantilla son ejemplos, y dejan de servir en cuanto cambiéis el modelo.</strong> Están escritos contra un modelo de juguete. Cuando metáis el de vuestro paper se van a romper. Es normal: hay que reescribirlos.</p>
+<h4 id="cuando-escribir-uno">Cuándo escribir uno</h4>
+<p><strong>Cuando arregles un fallo que no daba error.</strong> Esa es la regla. Si has perdido dos horas porque los datos iban mal ordenados y no saltaba ninguna excepción, escribe un test que lo habría cazado.</p>
+<p>También cuando escribas algo que pueda romperse en silencio: formas de tensores, orden de canales, cómo se parten los datos.</p>
+<h4 id="que-tipos-hay">Qué tipos hay</h4>
+<p><strong>De forma.</strong> Comprueba que la salida tiene el tamaño que dice el paper.</p>
+<pre><code class="language-python">def test_la_salida_tiene_10_clases():
+    modelo = construir_modelo(CFG)
+    x = torch.randn(4, 3, 32, 32)
+    assert modelo(x).shape == (4, 10)
+</code></pre>
+<p><strong>De que no se mezclan los datos.</strong> Si el modelo mezcla ejemplos entre sí, pasar cuatro imágenes juntas o de una en una tendría que dar lo mismo. Si no, hay un fallo grave.</p>
+<pre><code class="language-python">def test_el_batch_no_se_mezcla():
+    modelo = construir_modelo(CFG).eval()
+    x = torch.randn(8, 3, 32, 32)
+    with torch.no_grad():
+        juntas = modelo(x)
+        sueltas = torch.cat([modelo(x[i:i+1]) for i in range(8)])
+    assert torch.allclose(juntas, sueltas, atol=1e-4)
+</code></pre>
+<p><strong>De reproducibilidad.</strong> La misma semilla tiene que dar los mismos pesos. Si esto falla, comparar dos experimentos no significa nada.</p>
+<h4 id="como-se-ejecutan">Cómo se ejecutan</h4>
+<pre><code class="language-bash">pytest tests/ -q
+</code></pre>
+<p>Tienen que pasar <strong>antes</strong> de subir código.</p>
+<h4 id="cuanto-hace-falta">Cuánto hace falta</h4>
+<p>No hay que cubrirlo todo. Con las partes que pueden fallar sin avisar ya vale.</p>
+<p>Valen <strong>4 puntos de E2</strong>, junto con la calidad del código. Y hay media clase sobre esto el <strong>18 de noviembre</strong>.</p>
+<blockquote>
+<p>Si borráis los tests, la comprobación automática pasa igual: pytest sin tests no falla. Pero los puntos se pierden, y en la auditoría de noviembre otra pareja va a mirar vuestro código.</p>
+</blockquote>
+<hr>
+<h3 id="42-la-bitacora-de-ia">4.2 · La bitácora de IA</h3>
+<p>Es el fichero <code>AI_USAGE.md</code>, en la raíz del repositorio. Vale <strong>2 puntos de E2</strong>.</p>
+<h4 id="que-se-apunta">Qué se apunta</h4>
+<p>Una fila cada vez que uséis una herramienta de IA para algo que acabe en el proyecto:</p>
+<table>
+<thead>
+<tr>
+<th>Fecha</th>
+<th>Qué le pedisteis</th>
+<th>Qué os devolvió</th>
+<th>Qué hicisteis con ello y por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>14-oct</td>
+<td>«¿Por qué mi loss no baja?»</td>
+<td>Cinco posibles causas</td>
+<td><strong>No lo usamos como diagnóstico.</strong> Nos sirvió de lista de comprobación; el fallo lo encontramos nosotros: el pooling estaba después del flatten</td>
+</tr>
+</tbody>
+</table>
+<h4 id="cuando-se-escribe">Cuándo se escribe</h4>
+<p><strong>En el momento.</strong> Cuesta treinta segundos, y en diciembre no te acuerdas.</p>
+<h4 id="que-se-puntua">Qué se puntúa</h4>
+<p><strong>El criterio, no la cantidad.</strong> Podéis usarla mucho y sacar los 2 puntos, o poco y sacar 0.</p>
+<p>La entrada que mejor puntúa es la que dice <strong>«nos dio esto y lo rechazamos porque…»</strong>. Demuestra que leísteis lo que os dio y que sabéis cuándo no fiaros.</p>
+<h4 id="lo-que-no-se-puede-pedir">Lo que no se puede pedir</h4>
+<p>Se puede usar para escribir código, entender una API o traducir el pseudocódigo del paper.</p>
+<p><strong>No</strong> para interpretar vuestras curvas ni para escribir la discusión de resultados. Eso es lo que evalúa la asignatura.</p>
+<p>Y hay una razón práctica: <strong>ninguna IA ha visto vuestros datos</strong>. Lo que os diga sobre vuestros resultados se lo está inventando, y suena bien mientras lo dice.</p>
+<hr>
+<h3 id="43-weights-biases">4.3 · Weights &amp; Biases</h3>
+<p>Es una web que guarda las curvas de vuestros entrenamientos. Sin ella, cuando hayáis entrenado veinte veces no vais a saber cuál fue cuál.</p>
+<h4 id="preparacion-una-sola-vez">Preparación, una sola vez</h4>
+<p><strong>1. Cread una cuenta gratis</strong> en <a href="https://wandb.ai/">https://wandb.ai</a>. Con el correo de la universidad tenéis plan académico.</p>
+<p><strong>2. Copiad vuestra clave</strong> desde <a href="https://wandb.ai/authorize">https://wandb.ai/authorize</a>.</p>
+<p><strong>3. Identificaos en vuestro ordenador:</strong></p>
+<pre><code class="language-bash">wandb login
+</code></pre>
+<p>Os pedirá la clave. Se guarda y no hay que repetirlo.</p>
+<p><strong>4. Poned vuestro usuario en la configuración.</strong> En <code>configs/default.yaml</code>:</p>
+<pre><code class="language-yaml">wandb:
+  proyecto: tiiac-2026
+  entidad: vuestro-usuario-de-wandb
+  modo: online
+</code></pre>
+<p><strong>5. Enlazad el proyecto en el README:</strong></p>
+<pre><code>- **Experimentos:** https://wandb.ai/vuestro-usuario/tiiac-2026
+</code></pre>
+<blockquote>
+<p>Ese enlace <strong>son 5 puntos del <em>checker</em></strong>. Sin él os avisa de que falta, y es uno de los dos avisos que veis desde el primer día.</p>
+</blockquote>
+<h4 id="como-se-usa">Cómo se usa</h4>
+<p>Nada más. <code>run.py</code> ya registra los entrenamientos. Cada vez que ejecutéis:</p>
+<pre><code class="language-bash">python run.py --config configs/default.yaml
+</code></pre>
+<p>aparecerá un <em>run</em> nuevo en la web, con sus curvas.</p>
+<p>En el <code>--smoke</code> no se registra nada, a propósito: sería ruido.</p>
+<h4 id="que-se-mira">Qué se mira</h4>
+<p>Que los experimentos que citáis en el informe <strong>se puedan encontrar en W&amp;B</strong>. Si en el informe decís «con learning rate 0.01 sale 0.71», tiene que haber un <em>run</em> que lo enseñe.</p>
+<p>La fecha para tenerlo funcionando es el <strong>hito H3, el 4 de octubre</strong>.</p>
+<hr>
+<h2 id="parte-5-trabajar-por-funcionalidades">Parte 5 · Trabajar por funcionalidades</h2>
+<p>Al principio, cuando el proyecto es pequeño, trabajad los dos directamente. Ya está bien así.</p>
+<p><strong>Cuando el proyecto crezca</strong>, y sobre todo a partir de noviembre, conviene cambiar a este método. Lo vemos en clase el 16 de noviembre.</p>
+<h3 id="que-es-una-funcionalidad">Qué es una funcionalidad</h3>
+<p>Una cosa concreta que quieres añadir. Por ejemplo: «meter <em>early stopping</em>», «añadir el mapa de calor», «hacer que se guarden los pesos».</p>
+<p>No es «avanzar el proyecto». Eso es demasiado grande.</p>
+<h3 id="los-pasos">Los pasos</h3>
+<p><strong>1. Crea una rama</strong></p>
+<pre><code class="language-bash">git switch -c early-stopping
+</code></pre>
+<p>Una <em>rama</em> es una copia paralela donde trabajas sin molestar. Si la lías, la borras y no pasa nada.</p>
+<p><strong>2. Trabaja y haz commits pequeños</strong></p>
+<p>Igual que siempre: <code>add</code>, <code>commit</code>. Varios commits pequeños son mejor que uno gigante.</p>
+<p><strong>3. Súbela</strong></p>
+<pre><code class="language-bash">git push -u origin early-stopping
+</code></pre>
+<p><strong>4. Abre un <em>pull request</em></strong></p>
+<p>En GitHub te aparecerá un botón amarillo que dice «Compare &amp; pull request». Púlsalo y créalo.</p>
+<p>Un <em>pull request</em> es decir: «he hecho esto, ¿lo miras antes de meterlo?».</p>
+<p><strong>5. Que tu compañero lo lea</strong></p>
+<p>Él mira el código, comenta si ve algo raro, tú corriges.</p>
+<blockquote>
+<p><strong>Nadie mete su propio código sin que el otro lo lea.</strong> No es burocracia: el que escribió el código ya no ve los fallos, y el que no lo escribió sí. Además evita que solo uno entienda cada parte, y en la defensa se os pregunta a los dos.</p>
+</blockquote>
+<p><strong>6. Júntalo y borra la rama</strong></p>
+<p>Cuando esté bien, pulsáis «Merge pull request» y luego «Delete branch».</p>
+<p>Y en tu ordenador:</p>
+<pre><code class="language-bash">git switch main
+git pull
+</code></pre>
+<h3 id="dos-consejos">Dos consejos</h3>
+<p><strong>Ramas cortas.</strong> Dos o tres días como mucho. Una rama de dos semanas da problemas seguro.</p>
+<p><strong>Pull requests pequeños.</strong> Uno de 800 líneas nadie lo lee, se aprueba y ya. Uno de 80 sí se lee.</p>
+<hr>
+<h2 id="parte-6-cuando-algo-va-mal">Parte 6 · Cuando algo va mal</h2>
+<h3 id="no-me-deja-hacer-push">«No me deja hacer push»</h3>
+<pre><code>! [rejected]  main -&gt; main (fetch first)
+</code></pre>
+<p>Significa que tu compañero subió algo y tú no lo tienes. No es un error, es git protegiéndote.</p>
+<pre><code class="language-bash">git pull
+git push
+</code></pre>
+<h3 id="un-conflicto">Un conflicto</h3>
+<p>Si los dos habéis tocado la misma línea, al hacer <code>pull</code> verás:</p>
+<pre><code>CONFLICT (content): Merge conflict in configs/default.yaml
+</code></pre>
+<p>Abre el fichero. Verás algo así:</p>
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+learning_rate: 0.0001
+=======
+learning_rate: 0.01
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; a3f21b8
+</code></pre>
+<ul>
+<li>Arriba está <strong>lo tuyo</strong>.</li>
+<li>Abajo está <strong>lo de tu compañero</strong>.</li>
+</ul>
+<p>Git no ha perdido nada. Solo te pregunta cuál quieres.</p>
+<p>Borra las líneas de <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code> y <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>, deja el texto que queráis, y:</p>
+<pre><code class="language-bash">git add configs/default.yaml
+git commit -m "Resuelve el conflicto: nos quedamos con lr 0.01"
+git push
+</code></pre>
+<blockquote>
+<p><strong>Habladlo entre vosotros antes de decidir.</strong> Un conflicto no es un problema técnico, es que los dos queríais cosas distintas.</p>
+</blockquote>
+<h3 id="la-he-liado-quiero-volver-atras">«La he liado, quiero volver atrás»</h3>
+<p>Si aún no has hecho commit:</p>
+<pre><code class="language-bash">git restore nombre-del-fichero
+</code></pre>
+<p>Si ya lo subiste y quieres deshacerlo:</p>
+<pre><code class="language-bash">git revert EL-CODIGO-DEL-COMMIT
+</code></pre>
+<p><strong>Nunca borréis la carpeta para volver a clonar.</strong> Es la reacción instintiva y se pierde trabajo. Todo tiene arreglo.</p>
+<hr>
+<h2 id="parte-7-que-no-se-sube">Parte 7 · Qué NO se sube</h2>
+<p>La regla, en una frase: <strong>al repositorio va lo que escribes tú, no lo que se genera solo.</strong></p>
+<table>
+<thead>
+<tr>
+<th>No subas</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data/</code></td>
+<td>Pesa mucho y tiene licencia propia</td>
+</tr>
+<tr>
+<td>Los pesos del modelo (<code>.pt</code>, <code>.pth</code>)</td>
+<td>Se regeneran entrenando. Y un fichero de 200 MB no se borra nunca del historial</td>
+</tr>
+<tr>
+<td><code>.venv/</code></td>
+<td>Se reconstruye con <code>pip install -r requirements.txt</code></td>
+</tr>
+<tr>
+<td><code>__pycache__/</code>, <code>wandb/</code></td>
+<td>Son ficheros temporales</td>
+</tr>
+<tr>
+<td>Contraseñas o claves</td>
+<td><strong>Una clave subida está comprometida para siempre</strong>, aunque la borres después. Habría que cambiarla</td>
+</tr>
+</tbody>
+</table>
+<p>El <code>.gitignore</code> de la plantilla ya se encarga de casi todo. Si el <em>checker</em> te avisa de algo de esta lista, hazle caso.</p>
+<h3 id="y-como-consigue-los-datos-quien-clone-el-repositorio">¿Y cómo consigue los datos quien clone el repositorio?</h3>
+<p>Con <code>scripts/get_data.py</code>. Ese script sí va al repositorio: pesa nada, descarga los datos del sitio oficial y comprueba que son los correctos.</p>
+<p>Lo que <strong>no</strong> vale es «te lo paso por Drive». En noviembre otra pareja tiene que poder descargarse vuestros datos sola.</p>
+<hr>
+<h2 id="parte-8-entregar">Parte 8 · Entregar</h2>
+<p>Entregar es poner una <strong>etiqueta</strong> en el punto exacto del historial que queréis que se corrija.</p>
+<pre><code class="language-bash">git tag -a e1 -m "Entrega E1"
+git push origin e1
+</code></pre>
+<p>Y en ALUD escribís dos cosas: el nombre de la etiqueta (<code>e1</code>) y el código del commit, que sacáis con:</p>
+<pre><code class="language-bash">git rev-parse e1
+</code></pre>
+<p><strong>Se corrige lo que marca la etiqueta</strong>, no lo último que haya. Podéis seguir tocando el repositorio después: eso no se mira.</p>
+<table>
+<thead>
+<tr>
+<th>Etiqueta</th>
+<th>Fecha</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>e1</code></td>
+<td>viernes 30 de octubre, 23:59</td>
+</tr>
+<tr>
+<td><code>e2</code></td>
+<td>viernes 4 de diciembre, 23:59</td>
+</tr>
+</tbody>
+</table>
+<p>Antes de poner la etiqueta, comprobad que el <em>checker</em> está en verde. <strong>Si está en rojo, la entrega no se corrige</strong> hasta que lo arregléis.</p>
+<hr>
+<h2 id="chuleta">Chuleta</h2>
+<pre><code class="language-bash"># empezar a trabajar
+git pull
+
+# ver cómo está la cosa
+git status
+
+# guardar y subir
+git add -A
+git commit -m "Un mensaje que se entienda"
+git push
+
+# comprobar antes de subir
+python run.py --smoke
+pytest tests/ -q
+python tools/tiiac_check.py .
+
+# ver el historial
+git log --oneline
+
+# por funcionalidades
+git switch -c nombre-de-la-cosa
+git push -u origin nombre-de-la-cosa
+</code></pre>
+<p>Si te pierdes, <code>git status</code> casi siempre te dice qué hacer. Léelo antes de buscar en internet.</p>
+
+
+<protonpass-root-efdd data-protonpass-role="root" data-protonpass-theme="os"><template shadowrootmode="closed"></template></protonpass-root-efdd></body></html>
