@@ -1,0 +1,57 @@
+T12 - Willett 2023
+https://doi.org/10.5061/dryad.x69p8czpq
+Replicar el paper: decodificar fonemas y frases a partir de habla intentada.
+80,44 GB comprimidos (publicación completa, incluidos modelos y recursos auxiliares).
+
+T12 - competitionData
+https://datadryad.org/downloads/file_stream/2547369
+Entrenar y evaluar la transcripción de frases.
+3,67 GB comprimidos.
+
+T12 - sentences
+https://datadryad.org/downloads/file_stream/2547372
+Explorar las grabaciones continuas y los tiempos de cada ensayo.
+14,80 GB comprimidos.
+
+T12 - tuningTasks
+https://datadryad.org/downloads/file_stream/2547373
+Hacer pruebas con fonemas, palabras aisladas y movimientos orofaciales.
+0,94 GB comprimidos.
+
+T12 - diagnosticBlocks
+https://datadryad.org/downloads/file_stream/2547371
+Estudiar cómo cambia la respuesta a las mismas palabras entre días.
+0,61 GB comprimidos.
+
+LibriBrain - Sherlock Holmes
+https://huggingface.co/datasets/pnpl/LibriBrain
+Experimentar con fonemas y palabras usando MEG durante la escucha de audiolibros.
+552 GB aproximadamente (repositorio completo; empezaremos con una sesión).
+
+T15 - Card 2024
+https://doi.org/10.5061/dryad.dncjsxm85
+Probar la decodificación de habla intentada con otro participante.
+11,05 GB comprimidos de señales; 11,59 GB la publicación completa.
+
+Inner speech - Kunz 2025
+https://doi.org/10.5061/dryad.gf1vhhn1j
+Comparar habla intentada e imaginada.
+10,80 GB comprimidos.
+
+Brain-to-voice - Wairagkar 2025
+https://doi.org/10.5061/dryad.2280gb64f
+Explorar la temporización del habla y la síntesis de voz desde señales cerebrales.
+26,87 GB comprimidos.
+
+Alice in Wonderland - EEG
+https://www.nemar.org/dataset/nm000180
+Experimentar con EEG durante la escucha de un audiolibro.
+3,4 GB aproximadamente (archivo comprimido).
+
+ChineseEEG-2
+https://doi.org/10.57760/sciencedb.CHNNeuro.00001
+Experimentar con EEG durante lectura en voz alta y escucha en mandarín.
+Tamaño en GB pendiente de confirmar.
+
+total aprox 500gb
+
