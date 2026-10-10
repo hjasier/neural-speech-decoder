@@ -22,5 +22,5 @@ entrenamiento:
 
 wandb:
   proyecto: tiiac-2026
-  entidad: null         # tu usuario o equipo de W&B
+  entidad: aaurre-deusto         # tu usuario o equipo de W&B
   modo: online          # 'disabled' en los tests
