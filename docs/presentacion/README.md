@@ -39,7 +39,7 @@ Conviene ensayar los avances con el guion: las animaciones se ejecutan al entrar
 - Notas con el discurso y aclaraciones para preguntas.
 - Visor de una muestra neuronal con barrido temporal, fonemas secuenciales y texto ilustrativo.
 
-Los resultados de 62 palabras/minuto y 23,8 % de WER son del artículo original, no del proyecto. Empezaré con las 8.800 frases de T12, sin recortarlas por el antiguo límite de veinte minutos, y haré una primera versión de decodificación offline. Comparar el Transformer causal con la GRU es una hipótesis experimental: aún no hay resultados propios ni una mejora garantizada.
+Los resultados de 62 palabras/minuto y 23,8 % de WER son del artículo original, no del proyecto. Haré dos versiones de decodificación offline con el mismo código y configuraciones distintas: una de entrega con los recortes necesarios para entrenar en menos de veinte minutos, y otra completa con las 8.800 frases de entrenamiento de T12 y el tiempo que necesite. Ambas mantienen las demás restricciones del curso, incluida la prueba corta de menos de cinco minutos en CPU. El tiempo, el consumo y la calidad de cada versión están pendientes de medir. Comparar el Transformer causal con la GRU es una hipótesis experimental: aún no hay resultados propios ni una mejora garantizada.
 
 Los [créditos, fuentes y prompts](CREDITOS.md) detallan la procedencia de cada recurso. Los ejemplos usados están documentados en `assets/data-source.json`. Las visualizaciones aplican `log1p` y escalas para mostrar la actividad; ese procesamiento no es una normalización de entrenamiento ni un experimento controlado de variación entre días.
 

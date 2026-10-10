@@ -23,18 +23,27 @@ con transcripción y comparación con la referencia.
 El usuario decidió cambiar desde handwriting el 30 de septiembre de 2026.
 Quiere explorar los datos completos y otros participantes para desarrollar
 un decodificador funcional. En esta fase autoriza explorar escalas mayores
-sin limitar el diseño a la T4. El 4 de octubre de 2026 aclaró que el límite
-de entrenamiento de 20 minutos no se aplica este curso; no recortar datos
-o modelos para cumplirlo. La viabilidad y el consumo de cómputo siguen
-pendientes de medir. El inventario está en `docs/datos.md`.
+sin limitar el diseño de la versión completa a la T4. El 10 de octubre de
+2026 aclaró que el límite docente de entrenamiento de 20 minutos sigue
+vigente: se harán dos versiones con el mismo código y configuraciones en
+`configs/`. La versión de entrega debe cumplir ese límite, con los recortes
+de datos o modelo necesarios y una posible menor calidad. La versión
+completa usará todos los datos de entrenamiento previstos y el tiempo
+necesario, sin ese límite de 20 minutos. Ambas deben respetar las demás
+restricciones del proyecto. La viabilidad, las métricas y el consumo de
+cómputo siguen pendientes de medir. El inventario está en `docs/datos.md`.
 
 ## Restricciones del curso
 
 - **Prueba corta:** `python run.py --smoke` en menos de 5 min en CPU.
-- **Entrenamiento:** sin límite docente de 20 minutos, según aclaración
-  del usuario del 4 de octubre de 2026. Dispone de una RTX 2060 y contempla
-  Colab de pago con 200 unidades de cómputo; no asumir la contratación ni
-  una GPU concreta, ni prometer tiempos o consumo sin medir.
+- **Entrenamiento de entrega:** menos de 20 minutos; medir el tiempo con
+  la configuración y el hardware utilizados antes de afirmar que cumple.
+- **Entrenamiento de la versión completa:** sin el límite de 20 minutos,
+  manteniendo las demás restricciones y registrando tiempo, recursos y
+  métricas por separado de la versión de entrega.
+- Dispone de una RTX 2060 y contempla Colab de pago con 200 unidades de
+  cómputo; no asumir la contratación ni una GPU concreta, ni prometer
+  tiempos o consumo sin medir.
 - Todo entrenamiento se registra en Weights & Biases.
 - Las semillas se fijan **solo** en `src/utils/seed.py`.
 - Los hiperparámetros viven **solo** en `configs/`. Ninguno escrito a fuego.
