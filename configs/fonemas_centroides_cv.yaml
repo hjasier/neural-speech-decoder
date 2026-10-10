@@ -1,0 +1,15 @@
+experimento:
+  nombre: bah_pah_centroides_cv
+  seed: 42
+
+validacion:
+  metodo: dejar_un_bloque_fuera
+  bloques: [17, 18, 19, 20, 21, 22, 23, 24]
+
+modelo:
+  nombre: centroides_euclideos
+  estandarizar: true
+
+wandb:
+  proyecto: tiiac-2026
+  modo: offline
