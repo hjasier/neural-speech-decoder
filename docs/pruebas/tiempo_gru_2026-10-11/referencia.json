@@ -1,0 +1,118 @@
+{
+  "name": "referencia",
+  "config": {
+    "capas": 5,
+    "unidades": 1024,
+    "batch": 4
+  },
+  "parameters": 55129129,
+  "gpu": "NVIDIA GeForce RTX 2060",
+  "precision": "float32",
+  "setup_and_warmup_seconds": 2.3869637509999393,
+  "steps": 12,
+  "mean_step_seconds": 0.18027217483331506,
+  "p90_step_seconds": 0.19737423480007693,
+  "mean_forward_seconds": 0.0673369903333499,
+  "mean_padding_ratio": 1.3707594024785827,
+  "peak_allocated_mb": 1437.7421875,
+  "peak_reserved_mb": 1792.0,
+  "total_process_seconds": 4.760540259999971,
+  "step_records": [
+    {
+      "seconds": 0.18837042100005874,
+      "prepare_seconds": 0.0028125960000124905,
+      "compute_seconds": 0.18555782500004625,
+      "loss": 7.495136737823486,
+      "padding": 1.209688581314879,
+      "logging_seconds": 0.00029873699998006487
+    },
+    {
+      "seconds": 0.19752714100002322,
+      "prepare_seconds": 0.0025066700000024866,
+      "compute_seconds": 0.19502047100002073,
+      "loss": 5.333518981933594,
+      "padding": 1.3664501337409247,
+      "logging_seconds": 0.0002246070000637701
+    },
+    {
+      "seconds": 0.18754042099999424,
+      "prepare_seconds": 0.0022568819999833067,
+      "compute_seconds": 0.18528353900001093,
+      "loss": 4.670721054077148,
+      "padding": 1.2876611418047883,
+      "logging_seconds": 0.0002227869999842369
+    },
+    {
+      "seconds": 0.1645614309999246,
+      "prepare_seconds": 0.002096553999990647,
+      "compute_seconds": 0.16246487699993395,
+      "loss": 4.826531410217285,
+      "padding": 1.2922817376634332,
+      "logging_seconds": 0.00021080700003039965
+    },
+    {
+      "seconds": 0.19375219899995955,
+      "prepare_seconds": 0.002262243000018316,
+      "compute_seconds": 0.19148995599994123,
+      "loss": 7.598951816558838,
+      "padding": 1.2542967379866714,
+      "logging_seconds": 0.00022441700002673315
+    },
+    {
+      "seconds": 0.1624347569999145,
+      "prepare_seconds": 0.0017916279999781182,
+      "compute_seconds": 0.16064312899993638,
+      "loss": 3.8793857097625732,
+      "padding": 1.642734060884549,
+      "logging_seconds": 0.00023566699996990792
+    },
+    {
+      "seconds": 0.20568994500001736,
+      "prepare_seconds": 0.0022332830000095782,
+      "compute_seconds": 0.20345666200000778,
+      "loss": 3.9252817630767822,
+      "padding": 1.6444026340545626,
+      "logging_seconds": 0.0002210170000580547
+    },
+    {
+      "seconds": 0.17150646699997196,
+      "prepare_seconds": 0.0018833459999996194,
+      "compute_seconds": 0.16962312099997234,
+      "loss": 3.780017375946045,
+      "padding": 1.4545454545454546,
+      "logging_seconds": 0.00023942699999679462
+    },
+    {
+      "seconds": 0.17211789999998928,
+      "prepare_seconds": 0.001976455999965765,
+      "compute_seconds": 0.1701414440000235,
+      "loss": 3.742701530456543,
+      "padding": 1.5091575091575091,
+      "logging_seconds": 0.00023179699996944692
+    },
+    {
+      "seconds": 0.1737794619999704,
+      "prepare_seconds": 0.002097544999969614,
+      "compute_seconds": 0.1716819170000008,
+      "loss": 3.7581472396850586,
+      "padding": 1.2144304823672476,
+      "logging_seconds": 0.00021964799998386297
+    },
+    {
+      "seconds": 0.17034217399998397,
+      "prepare_seconds": 0.0019489969999995083,
+      "compute_seconds": 0.16839317699998446,
+      "loss": 3.685506582260132,
+      "padding": 1.2045365662886194,
+      "logging_seconds": 0.00029711699994550145
+    },
+    {
+      "seconds": 0.17279485500000646,
+      "prepare_seconds": 0.002202764000003299,
+      "compute_seconds": 0.17059209100000317,
+      "loss": 3.610595464706421,
+      "padding": 1.3689277899343544,
+      "logging_seconds": 0.0002228969999578112
+    }
+  ]
+}

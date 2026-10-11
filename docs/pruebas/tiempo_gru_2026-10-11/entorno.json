@@ -1,0 +1,25 @@
+{
+  "fecha": "2026-10-11",
+  "python_medicion": "3.12.14",
+  "paquetes_medicion": {
+    "torch": "2.5.1",
+    "numpy": "2.1.3",
+    "scipy": "1.14.1",
+    "pyyaml": "6.0.2",
+    "wandb": "0.18.7"
+  },
+  "cuda_pytorch": "12.4",
+  "gpu": "NVIDIA GeForce RTX 2060",
+  "precision": "float32",
+  "limites_proceso": {
+    "ram_max_bytes": 3221225472,
+    "swap_max_bytes": 0,
+    "cpu_quota_percent": 200,
+    "timeout_seconds": 75,
+    "kill_after_seconds": 5
+  },
+  "limite_asignador_pytorch_gpu_fraccion": 0.35,
+  "script_original_sha256": "05a22a649c436876c3ce3ba5f446a78772d287adb37bd03158b4a60398e3ff82",
+  "config_original_sha256": "c11eabf276ff3914e141be02778687e27aaac71230dbc9f088f0a83fee5d0935",
+  "nota": "Mediciones de la ejecución temporal original. El script publicado adapta las rutas y añade descarga verificada y resumen; no se han repetido los ajustes en GPU."
+}

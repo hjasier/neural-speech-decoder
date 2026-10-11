@@ -18,6 +18,7 @@ comprueba en la defensa.
 | 2026-09-30 | Revisar el cambio a speech e inventariar datos públicos | Codex | Catálogo con fuentes, manifiestos oficiales de cuatro publicaciones y script de descarga/verificación; señaló solapamientos y etiquetas ocultas | Trabajo solicitado por el autor. Datos, métricas y adaptación del modelo pendientes de inspección; las recomendaciones de alcance quedan para revisión humana. |
 | 2026-09-30 | Primer contacto con competitionData del paciente T12 | Codex | Crear un notebook para ver y leer los datos de una sesión | Usado para ver cómo están organizados los ensayos y las señales antes de empezar a entrenar. |
 | 2026-10-11 | Ampliar las pruebas con fonemas, palabras y frases de T12 | Codex | Generó código para comparar señales y canales, probar centroides y LDA, validar por bloques y entre días, mezclar etiquetas y revisar las frases. | El usuario marco la ruta a explorar. |
+| 2026-10-11 | Medir el tiempo de entrenamiento y guardar la prueba en el repo | Codex | Generó y ejecutó un piloto de GRU + CTC en RTX 2060, guardó las medidas por paso y el código, y calculó escenarios de duración. Preparó un borrador para explicar el recorte. | Yo pedí medir el tiempo, usar la GPU y guardar la prueba para valorar mantener 5 capas con 2.000 frases. El recorte sigue pendiente de entrenamiento completo y de mi revisión; no se ha comprobado aún PER ni el límite en T4. |
 
 ---
 

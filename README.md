@@ -79,6 +79,8 @@ run.py        Punto de entrada único
 - Presupuesto de cómputo declarado: **<tiempo real> en <hardware>**.
 - Qué se recortó respecto al paper y qué se pierde con ello: <explicación>.
 
+La [prueba de tiempo con GRU y frases reales](docs/prueba_tiempo_entrenamiento.md) contiene el código, las medidas en RTX 2060 y la estimación del recorte que queda por comprobar.
+
 ## Decisiones donde el paper no especifica
 
 <La sección que distingue replicar de copiar. Lista lo que tuvisteis que
