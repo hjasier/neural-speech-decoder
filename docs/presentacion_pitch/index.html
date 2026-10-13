@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Pitch de Asier Aurre: problema, plan y aplicativo de decodificación de habla intentada.">
+  <title>Habla intentada a texto · Pitch de Asier</title>
+  <link rel="stylesheet" href="vendor/reveal/dist/reset.css">
+  <link rel="stylesheet" href="vendor/reveal/dist/reveal.css">
+  <link rel="stylesheet" href="styles.css?v=20261012-scenarios">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section class="pitch-slide problem-slide" id="problema" data-scene="problem">
+        <span class="slide-index" aria-label="Diapositiva 1 de 3">01 / 03</span>
+        <header class="slide-heading">
+          <p class="section-label">El problema</p>
+          <h1>Del intento de hablar<br>al texto.</h1>
+        </header>
+        <p class="problem-line">Poder intentarlo no significa poder comunicarse.</p>
+
+        <div class="speech-diagram" aria-label="Esquema de electrodos, actividad neuronal, fonemas y texto">
+          <div class="brain-stage">
+            <svg class="brain" viewBox="0 0 460 345" role="img" aria-label="Cerebro esquemático con un implante. No representa una ubicación anatómica exacta.">
+              <path class="brain-outline" d="M51 198C26 180 26 143 46 127C40 99 58 77 86 73C93 40 121 34 144 46C163 17 193 24 208 36C234 17 264 28 273 47C310 35 336 48 344 75C373 69 405 88 407 114C438 129 441 154 425 177C451 209 427 242 400 244C394 278 362 289 337 278C313 303 283 299 266 285C237 307 207 291 197 273C172 291 141 282 131 261C95 268 75 245 79 225C66 224 55 213 51 198Z"/>
+              <g class="brain-folds">
+                <path d="M87 76C110 78 120 91 114 115C89 108 74 124 81 145C103 147 113 165 102 182C80 175 65 187 69 206"/>
+                <path d="M145 48C139 72 157 80 170 70C185 52 204 58 206 83C182 88 177 109 193 123C205 137 194 153 174 155C155 155 149 178 159 188"/>
+                <path d="M211 39C227 57 225 78 238 87C254 93 266 80 263 62"/>
+                <path d="M279 53C298 76 287 97 265 103C245 115 248 139 266 145C285 153 294 140 293 125C292 109 314 103 327 117"/>
+                <path d="M347 79C330 88 335 104 350 113C368 117 381 133 367 149C350 158 351 178 367 184C387 185 394 168 414 177"/>
+                <path d="M118 121C139 107 159 112 160 134C158 151 144 160 126 154C110 150 108 132 118 121Z"/>
+                <path d="M192 126C221 109 230 128 221 147C213 164 225 179 246 177C265 172 278 184 274 203"/>
+                <path d="M304 145C319 132 339 142 333 163C320 181 304 172 291 184C278 201 293 213 314 211"/>
+                <path d="M109 187C124 171 142 177 140 195C136 213 154 223 174 213C192 203 205 218 199 240"/>
+                <path d="M85 225C113 229 109 246 132 260"/>
+                <path d="M205 189C190 172 173 183 180 197"/>
+                <path d="M203 263C222 254 215 231 236 226C258 216 274 232 266 251C257 267 269 280 286 278"/>
+                <path d="M332 274C330 252 310 260 304 242C300 223 326 220 338 233C354 247 370 229 364 213C382 201 395 212 398 242"/>
+              </g>
+              <path class="implant-lead" d="M160 159C158 111 191 88 205 6"/>
+              <g class="implant-array" transform="translate(142 143)">
+                <rect x="0" y="0" width="38" height="38" rx="4"/>
+                <circle cx="10" cy="10" r="2.5"/><circle cx="19" cy="10" r="2.5"/><circle cx="28" cy="10" r="2.5"/>
+                <circle cx="10" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><circle cx="28" cy="19" r="2.5"/>
+                <circle cx="10" cy="28" r="2.5"/><circle cx="19" cy="28" r="2.5"/><circle cx="28" cy="28" r="2.5"/>
+              </g>
+              <circle class="implant-pulse pulse-one" cx="161" cy="162" r="23"/>
+              <circle class="implant-pulse pulse-two" cx="161" cy="162" r="23"/>
+            </svg>
+            <span class="stage-label">Intento de hablar</span>
+            <span class="stage-detail">Electrodos implantados</span>
+          </div>
+
+          <svg class="diagram-link link-one" viewBox="0 0 150 100" aria-hidden="true">
+            <path class="link-base" d="M4 50H136"/><path class="link-active" d="M4 50H136"/>
+            <path class="arrow-tip" d="M124 39L138 50L124 61"/>
+          </svg>
+
+          <div class="signal-stage">
+            <svg id="problem-wave" class="problem-wave" viewBox="0 0 340 170" role="img" aria-label="Visualización de cuatro canales neuronales de T12"></svg>
+            <span class="stage-label">Actividad neuronal</span>
+            <div class="method-stage"><span>GRU</span><span class="method-connector" aria-hidden="true">→</span><span>Fonemas</span></div>
+            <div class="method-phones" aria-label="Ejemplo de fonemas para hello"><span>HH</span><span>AH</span><span>L</span><span>OW</span></div>
+          </div>
+
+          <svg class="diagram-link link-two" viewBox="0 0 150 100" aria-hidden="true">
+            <path class="link-base" d="M4 50H136"/><path class="link-active" d="M4 50H136"/>
+            <path class="arrow-tip" d="M124 39L138 50L124 61"/>
+          </svg>
+
+          <div class="text-stage">
+            <p class="text-label">Texto</p>
+            <div class="paper-word" aria-label="hello, ejemplo ilustrativo"><span>h</span><span>e</span><span>l</span><span>l</span><span>o</span><i aria-hidden="true"></i></div>
+            <p class="example-caption">Esquema del método</p>
+          </div>
+        </div>
+
+        <span class="fragment step-trigger" data-fragment-index="0" data-step="decode" aria-hidden="true"></span>
+        <p class="slide-source">Willett et al. (2023) · A high-performance speech neuroprosthesis</p>
+        <aside class="notes">
+          <strong>0:00–1:30 · El problema</strong><br>
+          Empezar por la persona: puede intentar hablar aunque el habla no sea comprensible. El paper trabaja con habla intentada y electrodos intracorticales.<br>
+          Primera pulsación: recorrer la señal, la GRU, los fonemas y el texto. «hello» y la colocación del implante son esquemas. No es una predicción de mi proyecto.<br>
+          Fuente: https://doi.org/10.1038/s41586-023-06377-x.<br>
+          Las curvas proceden de un registro real de T12; no están alineadas con los fonemas ilustrativos de hello.
+        </aside>
+      </section>
+
+      <section class="pitch-slide plan-slide" id="plan" data-scene="plan">
+        <span class="slide-index" aria-label="Diapositiva 2 de 3">02 / 03</span>
+        <header class="slide-heading">
+          <p class="section-label">El plan</p>
+          <h1>Mantener 5 capas.<br>Recortar la escala.</h1>
+        </header>
+
+        <div class="plan-layout">
+          <div class="data-plan">
+            <p class="plan-label">Datos públicos de T12</p>
+            <div class="dataset-count"><span id="trial-count">8.800</span><span>frases</span></div>
+            <div class="sample-grid" aria-label="Representación del recorte de 8.800 a 2.000 frases"></div>
+            <p class="dataset-caption"><span class="full-caption">Dryad · competitionData</span><span class="reduced-caption">2.000 repartidas entre días</span></p>
+          </div>
+
+          <div class="model-plan">
+            <p class="plan-label">GRU + CTC</p>
+            <div class="layer-stack" aria-label="Cinco capas; la anchura representa el número de unidades">
+              <div class="model-layer"><div></div></div><div class="layer-join"></div>
+              <div class="model-layer"><div></div></div><div class="layer-join"></div>
+              <div class="model-layer"><div></div></div><div class="layer-join"></div>
+              <div class="model-layer"><div></div></div><div class="layer-join"></div>
+              <div class="model-layer"><div></div></div>
+            </div>
+            <p class="units-line"><strong id="unit-count">1.024</strong><span>unidades por capa</span></p>
+            <p class="model-caption">Mismo número de capas, menos anchura.</p>
+          </div>
+
+          <div class="time-plan">
+            <p class="plan-label">Entrenamiento</p>
+            <div class="time-metric"><span class="estimate-symbol">≈</span><strong id="minute-count">14</strong><span class="time-unit">min</span></div>
+            <p class="time-caption">Estimados en RTX 2060</p>
+            <div class="budget-track" role="img" aria-label="14 minutos estimados frente al límite de 20 minutos">
+              <span class="budget-fill"></span><span class="budget-start">0</span><span class="budget-end">Límite: 20 min</span>
+            </div>
+            <p class="measurement-caption">12 pasos reales → 20 épocas estimadas</p>
+            <p class="pending-caption">T4 y ejecución completa: pendientes</p>
+          </div>
+        </div>
+
+        <span class="fragment step-trigger" data-fragment-index="0" data-step="reduce" aria-hidden="true"></span>
+        <span class="fragment step-trigger" data-fragment-index="1" data-step="time" aria-hidden="true"></span>
+        <div class="fragment quality-comparison" data-fragment-index="2">
+          <div class="quality-item quality-paper">
+            <span>Paper original</span><strong class="quality-value">76,2<span>%</span></strong>
+            <small>100 − WER · Vocabulario de 125.000 palabras</small>
+          </div>
+          <div class="quality-item quality-reduced">
+            <span>Con recorte</span><strong class="quality-value">≈70<span>%</span></strong>
+            <small>Esperado · 23,8 + ≈7 = ≈31 % WER</small>
+          </div>
+          <p class="quality-rationale">2.000 frases ≈ 5 días del paper. Fig. 5i: ≈7 puntos más de WER al pasar de 15 a 5 días.</p>
+        </div>
+        <p class="slide-source">Recorte candidato · 2.000 frases, 5 × 512, lote 8, 20 épocas</p>
+        <aside class="notes">
+          <strong>1:30–3:00 · El plan</strong><br>
+          T12 tiene 8.800 frases de entrenamiento en competitionData, descargadas de Dryad.<br>
+          Primera pulsación: candidato de entrega, 2.000 frases de varios días, 5 capas de 512 unidades y lote 8. La versión completa conservará las 8.800 y podrá dedicar más tiempo. Aquí no se seleccionaron ni entrenaron todavía las 2.000.<br>
+          Segunda pulsación: el piloto midió 12 pasos tras dos de calentamiento sobre 48 frases de una sesión. Proyectar a 20 épocas, con 25 % de margen, da 13,58 min solo de entrenamiento en RTX 2060. ≈14 min no es un tiempo completo medido. Faltan preparación, validación, guardado y comprobación en T4. La viabilidad docente sigue pendiente.<br>
+          Tercera pulsación: comparar con el resultado principal del paper, 23,8 % WER con vocabulario de 125.000 palabras y habla vocalizada. El 76,2 % de la diapositiva es 100 − WER, no una accuracy de clasificación ni el porcentaje exacto de palabras correctas: WER cuenta sustituciones, omisiones e inserciones.<br>
+          La cifra esperada se apoya en Extended Data Fig. 5i: leemos aproximadamente 25 % WER con 5 días previos y 18 % con 15. La diferencia es de unos 7 puntos. El paper registra 260–480 frases por día de evaluación; tomando unas 400 como aproximación, 2.000 frases tienen el volumen de unos 5 días. Es una equivalencia de cantidad, no de selección de sesiones.<br>
+          Como estimación orientativa, trasladamos esa pérdida de unos 7 puntos al 23,8 % WER del resultado principal: 23,8 + 7 ≈ 31 % WER, o alrededor de 70 % en 100 − WER. Los valores de la curva se leen a ojo y el barrido offline no es el mismo experimento que la evaluación en tiempo real; esta cuenta aproxima la penalización por reducir datos, no predice exactamente nuestro recorte.<br>
+          Esta expectativa supone un modelo de lenguaje y un tratamiento de los cambios entre días comparables, y que 20 épocas bastan para aprender. No hemos medido el efecto de limitar las épocas. El piloto solo midió tiempo; si no se cumplen esas condiciones, el error puede ser mayor. La cifra se comprobará al entrenar y evaluar con datos separados.<br>
+          La referencia de 1.024 unidades de esta animación es la variante grande del piloto. El paper ya usa cinco capas de 512 unidades (Extended Data Fig. 5h); reducir de 1.024 a 512 compara variantes del piloto, no describe una reducción de anchura respecto al paper.<br>
+          Fuente: ../prueba_tiempo_entrenamiento.md y ../pruebas/tiempo_gru_2026-10-11/grande.json. Las 20 épocas son un escenario, no una duración validada para calidad.
+        </aside>
+      </section>
+
+      <section class="pitch-slide app-slide" id="aplicativo" data-scene="app">
+        <span class="slide-index" aria-label="Diapositiva 3 de 3">03 / 03</span>
+        <header class="slide-heading">
+          <p class="section-label">Aplicativo</p>
+          <h1>La señal llega.<br>El texto aparece.</h1>
+        </header>
+
+        <div class="app-window" aria-label="Maqueta de habla a texto con una grabación emitida por bloques en tiempo real simulado">
+          <div class="app-toolbar">
+            <div><span class="window-dot" aria-hidden="true"></span><strong>Habla a texto</strong><span class="mockup-label" id="demo-scenario-label">Tiempo real simulado</span></div>
+            <div class="stream-controls"><span id="stream-status">Recibiendo</span><span id="stream-clock" aria-label="Tiempo transcurrido">0,0 s</span><button id="replay-demo" type="button" aria-label="Reiniciar la entrada de señal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5L19 12L8 19Z"/></svg>Reiniciar</button></div>
+          </div>
+          <div class="app-signal-row">
+            <span class="app-row-label">Señal</span>
+            <div class="wave-container">
+              <svg id="app-wave" viewBox="0 0 1050 128" preserveAspectRatio="none" role="img" aria-label="Cuatro canales reales de T12 del 25 de agosto de 2022, de 0 a 4,14 segundos"></svg>
+              <div class="signal-legend" aria-hidden="true"><span>Señal recibida</span><span>Señal procesada</span></div>
+              <div class="wave-reveal"><div class="pending-band"></div><div class="playhead received-playhead"><i></i></div><div class="playhead processing-playhead"><i></i></div></div>
+            </div>
+          </div>
+          <div class="app-phone-row">
+            <span class="app-row-label">Fonemas</span>
+            <div id="demo-phones" class="demo-phones" aria-label="Secuencia de fonemas inventada para ilustrar la salida"></div>
+          </div>
+          <div class="app-queue-row" aria-hidden="true">
+            <span class="app-row-label">En espera</span>
+            <div class="queue-content"><div class="pending-queue" aria-label="Cantidad de señal recibida que aún no se ha procesado"></div><span id="pending-time">0,0 s pendientes</span></div>
+          </div>
+          <div class="app-text-row">
+            <span class="app-row-label">Texto</span>
+            <p class="demo-text"><span class="demo-word" data-word="0">Is</span><span class="demo-word" data-word="1">that</span><span class="demo-word" data-word="2">pollution?</span><i class="demo-caret" aria-hidden="true"></i></p>
+          </div>
+          <div class="reference-row">
+            <span class="app-row-label">Referencia</span><p>Is <span class="reference-word" data-word="1">that</span> <span class="reference-word" data-word="2">pollution?</span></p>
+          </div>
+          <div class="app-footnote"><span>Grabación → entrada por bloques</span><span>Señal real · Decodificación simulada</span></div>
+        </div>
+
+        <div class="risk-row">
+          <div class="risk-scenario risk-slow fragment" data-fragment-index="0"><span>Modelo demasiado lento</span><strong>La señal se acumula.<br>El texto llega tarde.</strong></div>
+          <div class="risk-scenario risk-error fragment" data-fragment-index="1"><span>No predice bien</span><strong>El texto sale a tiempo,<br>pero con errores.</strong></div>
+        </div>
+        <p class="slide-source">Emular la llegada de señal y decodificar mientras se recibe</p>
+        <aside class="notes">
+          <strong>3:00–4:00 · Aplicativo</strong><br>
+          La aplicación emulará la llegada de una señal en tiempo real usando grabaciones. Recibirá bloques sucesivos y actualizará los fonemas y el texto sin esperar a que llegue toda la frase.<br>
+          Esta pantalla es una maqueta: emite la señal real por bloques de 20 ms. La salida inicial ilustrativa es «Is that pollution?». Ni los fonemas ni el texto los genera un modelo entrenado.<br>
+          Primera pulsación: reiniciar la señal con un modelo que procesa tres veces más despacio de lo que llega. El cursor azul indica lo recibido y el naranja lo procesado. La zona naranja y la fila «En espera» muestran la señal pendiente; las palabras salen tarde y siguen apareciendo después de acabar la entrada. El factor tres y los tiempos son ilustrativos, no medidas del proyecto.<br>
+          Segunda pulsación: reiniciar al ritmo normal, pero generar «Is this solution?» frente a «Is that pollution?». Mostrar la referencia y resaltar los dos errores al aparecer las palabras. Este segundo caso representa falta de calidad de predicción, no lentitud.<br>
+          «Reiniciar» o R repiten el escenario actual. Retroceder vuelve al anterior. Con movimiento desactivado se muestran ejemplos estáticos de ambos fallos.<br>
+          Cerrar explicando que habrá que comprobar tanto el retraso como la calidad del texto.<br>
+          Cerrar aquí y dejar el quinto minuto para preguntas.
+        </aside>
+      </section>
+    </div>
+  </div>
+
+  <div class="deck-author">Asier Aurre</div>
+  <nav class="section-nav" aria-label="Diapositivas del pitch">
+    <button type="button" data-slide="0" aria-label="Ir a El problema">El problema</button>
+    <button type="button" data-slide="1" aria-label="Ir a El plan">El plan</button>
+    <button type="button" data-slide="2" aria-label="Ir a Aplicativo">Aplicativo</button>
+  </nav>
+  <div class="deck-tools"><button type="button" id="motion-toggle" aria-label="Desactivar animaciones" aria-pressed="false">M</button><button type="button" id="info-open" aria-label="Abrir fuentes y controles">i</button></div>
+
+  <dialog id="info-dialog" aria-labelledby="info-title">
+    <button type="button" id="info-close" aria-label="Cerrar fuentes y controles">×</button>
+    <h2 id="info-title">Para presentar</h2>
+    <p>→ o espacio: avanzar · ←: volver<br>F: pantalla completa · S: notas<br>R: repetir la animación · M: activar o desactivar movimiento</p>
+    <h3>Fuentes</h3>
+    <p><a href="https://doi.org/10.1038/s41586-023-06377-x" target="_blank" rel="noopener">Willett et al. (2023)</a><br><a href="https://doi.org/10.5061/dryad.x69p8czpq" target="_blank" rel="noopener">Datos públicos en Dryad</a><br><a href="../prueba_tiempo_entrenamiento.md" target="_blank" rel="noopener">Prueba de tiempo y resultados del proyecto</a></p>
+    <p>El tiempo de 14 min es una proyección en RTX 2060. La pantalla del aplicativo es una maqueta con salida simulada.</p>
+  </dialog>
+
+  <script src="vendor/reveal/dist/reveal.js"></script>
+  <script src="vendor/reveal/dist/plugin/notes.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="deck.js?v=20261012-scenarios"></script>
+</body>
+</html>

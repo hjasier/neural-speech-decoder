@@ -1,0 +1,23 @@
+{
+  "signal": {
+    "session": "t12.2022.08.25",
+    "date": "2022/08/25",
+    "trial": 0,
+    "block": 1,
+    "text": "Is that pollution?",
+    "duration": 4.14
+  },
+  "source": "Dryad 10.5061/dryad.x69p8czpq · competitionData · train",
+  "visualization": "spikePow, primeras 128 columnas de 6v; log1p solo para visualizar",
+  "channels": [
+    9,
+    31,
+    64,
+    100
+  ],
+  "scaling": "Curvas originales de la presentación anterior: log1p y escala entre percentiles 2 y 98, solo para visualizar.",
+  "signal_source": "../presentacion/assets/data-source.json",
+  "measurement_source": "../pruebas/tiempo_gru_2026-10-11/grande.json",
+  "prediction": "Is that solution? es una salida inventada para mostrar un error. No procede de un modelo.",
+  "alignment": "El barrido y el ritmo de aparición de fonemas son ilustrativos, no una alineación medida."
+}

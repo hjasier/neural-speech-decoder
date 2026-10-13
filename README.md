@@ -81,6 +81,8 @@ run.py        Punto de entrada único
 
 La [prueba de tiempo con GRU y frases reales](docs/prueba_tiempo_entrenamiento.md) contiene el código, las medidas en RTX 2060 y la estimación del recorte que queda por comprobar.
 
+La [presentación del pitch](docs/presentacion_pitch/index.html) resume el problema, el plan y el aplicativo en tres diapositivas blancas con animaciones. [Cómo abrirla y ensayar](docs/presentacion_pitch/README.md).
+
 ## Decisiones donde el paper no especifica
 
 <La sección que distingue replicar de copiar. Lista lo que tuvisteis que

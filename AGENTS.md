@@ -17,8 +17,10 @@ Dos páginas se leen enteras. Quince, no.
 Proyecto elegido: replicación offline de *A high-performance speech
 neuroprosthesis* (Willett et al., 2023) sobre datos intracorticales públicos de
 Dryad. Evaluación con PER y WER; aún no hay resultados ni una métrica objetivo
-cerrada. Aplicativo previsto: decodificación y visualización de grabaciones,
-con transcripción y comparación con la referencia.
+cerrada. Aplicativo previsto: emular la llegada de señal en tiempo real a
+partir de grabaciones, decodificar por bloques y mostrar texto durante la
+recepción. El usuario aclaró este enfoque el 12 de octubre de 2026. La
+comparación con la referencia sirve para evaluar el sistema.
 
 El usuario decidió cambiar desde handwriting el 30 de septiembre de 2026.
 Quiere explorar los datos completos y otros participantes para desarrollar
