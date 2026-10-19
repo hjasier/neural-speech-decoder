@@ -92,6 +92,31 @@ python run.py --config configs/speech_original.yaml --solo-evaluar \
     --checkpoint checkpoints/speech_original/ID_RUN/ultimo.pt
 ```
 
+Para entrenar en una máquina de Colab, abre
+[`notebooks/04_entrenamiento_colab.ipynb`](notebooks/04_entrenamiento_colab.ipynb).
+Sube ese archivo a Colab, selecciona GPU y ejecuta sus celdas en orden. Contiene
+un snapshot de las fuentes verificado por SHA-256, de modo que funciona sin
+dar acceso de Colab al repositorio. No incluye datos, pesos ni credenciales.
+Instala un entorno aislado con Python 3.12.11 y las dependencias fijadas,
+descarga y verifica el corpus público y llama al mismo `run.py`. Conserva
+arquitectura, sesiones y lote efectivo; fuerza CUDA para evitar entrenar por
+accidente en CPU. W&B usa la clave de Secretos de Colab o una entrada oculta.
+
+El notebook solicita acceso a Drive para guardar checkpoints, fuentes,
+configuración, entorno y log; las señales se preparan en el disco temporal
+de Colab. Admite también el archivo original de datos desde Drive si falla
+la descarga de Dryad. Colab puede interrumpir la sesión: los checkpoints
+actuales permiten evaluar e inferir, pero todavía no reanudar el optimizador.
+La duración completa no está medida. No se ha ejecutado este entrenamiento
+en Colab ni se ha vuelto a entrenar en el PC para crear el notebook.
+
+Si cambias las fuentes o la configuración, actualiza la copia del notebook
+antes de subirlo de nuevo:
+
+```bash
+python scripts/export_colab.py
+```
+
 El entrenamiento reproduce los parámetros del [comando offline de los
 autores](https://github.com/fwillett/speechBCI/blob/522a9605ccf0818def80b6fd80007598e790408e/AnalysisExamples/rnn_step2_trainBaselineRNN.ipynb)
 y su [implementación TensorFlow](https://github.com/fwillett/speechBCI/blob/522a9605ccf0818def80b6fd80007598e790408e/NeuralDecoder/neuralDecoder/neuralSequenceDecoder.py):
@@ -177,7 +202,8 @@ checkpoint guardado y se revisaron estos registros sin volver a entrenar.
 El registro del sistema no permite atribuir una causa concluyente al bloqueo.
 En el equipo local, las comprobaciones de cómputo se ejecutarán de una en una.
 El entrenamiento completo y su comparación de calidad siguen pendientes.
-No se añaden notebooks ni archivos de pruebas.
+No se añadieron archivos de pruebas; el lanzador de Colab se añadió después
+por petición expresa del autor.
 
 ## Estructura
 

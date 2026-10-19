@@ -100,8 +100,15 @@ python tools/tiiac_check.py .                  # comprobador de reproducibilidad
   de 19 sesiones (6.640 frases de train). El paquete completo tiene 24 sesiones.
   El modelo recibe características ya normalizadas y suavizadas. Los comandos
   de preparación y entrenamiento están en README.
-- Los notebooks se conservan como trabajo anterior. El usuario ha pedido
-  continuar con código de la entrega, sin nuevos notebooks.
+- Los notebooks de exploración se conservan como trabajo anterior. El usuario
+  pidió continuar con código de la entrega y el 19 de octubre autorizó
+  expresamente un notebook para entrenar en Colab tras los bloqueos del PC.
+  `notebooks/04_entrenamiento_colab.ipynb` es un lanzador de run.py, no otra
+  implementación del modelo. `scripts/export_colab.py` actualiza su snapshot
+  de fuentes con hashes; no incluye datos, pesos ni credenciales. Usa un
+  Python 3.12.11 aislado, prepara datos en la VM y guarda resultados en Drive,
+  con W&B online. Su estructura y código se han validado sin entrenar, pero
+  no se ha ejecutado en Colab. Sigue pendiente reanudar el optimizador.
 - Hecho: `src/data/preprocessing.py` extrae tx1 antes de spikePow, ajusta
   normalización por sesión leyendo exclusivamente train y restaura esas
   estadísticas sin volver a ajustarlas. Incluye el suavizado gaussiano del
