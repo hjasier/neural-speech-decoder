@@ -94,8 +94,8 @@ python tools/tiiac_check.py .                  # comprobador de reproducibilidad
   `configs/speech_original.yaml`: baseline offline TensorFlow, cinco GRU
   unidireccionales de 1.024 unidades, kernel 32 y stride 4; selección oficial
   de 19 sesiones (6.640 frases de train). El paquete completo tiene 24 sesiones.
-  El modelo recibe características ya normalizadas y suavizadas; conectarlo
-  con el entrenamiento sigue pendiente. Los comandos de datos están en README.
+  El modelo recibe características ya normalizadas y suavizadas. Los comandos
+  de preparación y entrenamiento están en README.
 - Los notebooks se conservan como trabajo anterior. El usuario ha pedido
   continuar con código de la entrega, sin nuevos notebooks.
 - Hecho: `src/data/preprocessing.py` extrae tx1 antes de spikePow, ajusta
@@ -119,14 +119,36 @@ python tools/tiiac_check.py .                  # comprobador de reproducibilidad
   uniformemente una sesión por lote; el muestreo usa un RNG independiente
   creado en `src/utils/seed.py`. El segundo loader es el test publicado,
   no una validación independiente. Los datos preparados están fuera de Git.
-- Pendiente: conectar entrenamiento, métricas y aplicativo. El pipeline de `run.py`
-  sigue siendo la plantilla sintética. README aún contiene campos de la
+- Hecho: `run.py --config configs/speech_original.yaml` conecta datos reales,
+  ruido solo en train, suavizado, CTC, Adam con epsilon-hat de TF, L2 y clipping.
+  Evalúa PER greedy agregado por fonemas sobre el test publicado, sin WER ni
+  validación independiente. Registra W&B (online por defecto), tiempos y
+  recuentos. Guarda ultimo.pt por run con pesos, configuración, normalización
+  y firma de los datos; --solo-evaluar exige checkpoint compatible. No selecciona
+  el mejor checkpoint por PER de test ni reanuda entrenamiento todavía.
+  Comprobado con dos actualizaciones reales en CPU y RTX 2060, recarga con
+  CTC/PER idénticos en CPU y evaluación completa de las 680 frases en GPU.
+  El sandbox ocultaba CUDA; fuera de él sí está disponible la RTX 2060.
+  Estas ejecuciones cortas no son el entrenamiento completo ni un resultado
+  de calidad. Sus configs, pesos e historiales W&B están ignorados por Git.
+- El primer run completo sincronizó W&B pero agotó la memoria de la RTX 2060
+  al llegar a un lote de 64 frases con 904 bins (paso 21 con seed 0). La
+  comprobación anterior usaba lotes de dos frases y no cubría esa memoria.
+  Se mantiene batch_size=64 y se acumulan gradientes con micro_batch_size=4;
+  CTC se pondera por el número total de frases, L2/clipping/Adam se aplican
+  una vez por lote efectivo. Evaluación también usa microlotes y conserva
+  todo el test. No recortar padding temporal de train: el ruido y suavizado
+  se definen sobre la extensión del lote original. Cambia el orden del RNG
+  frente al lote monolítico, sin reducir datos, arquitectura o precisión.
+- Pendiente: entrenamiento completo, configuración reducida y aplicativo.
+  `run.py --smoke` y default.yaml conservan la plantilla sintética y no
+  comprueban el pipeline de habla. README aún contiene campos de la
   plantilla. La propuesta vigente de habla está en `docs/propuesta_final.md`;
   `docs/propuestas.md` conserva las propuestas históricas.
 - Entorno local: `pip check` señala un conflicto previo entre
   `googleapis-common-protos==1.75.5` (requiere protobuf >=6.33.5) y
   `protobuf==5.29.6`. Ninguno fue cambiado al instalar g2p-en. Las
-  comprobaciones de etiquetas y CTC pasan; revisar al conectar entrenamiento.
+  comprobaciones de etiquetas y CTC pasan; W&B 0.18.7 importa correctamente.
 - No mezclar `competitionData` y `sentences` como muestras independientes;
   comprobar solapamientos de participantes/sesiones entre publicaciones.
 - Los tests publicados de T15 no incluyen etiquetas. Los datos de T12 y T15

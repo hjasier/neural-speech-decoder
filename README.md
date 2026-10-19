@@ -23,7 +23,7 @@ con <aplicativo: buscador semántico / detector en vídeo / lo que sea> construi
 
 | Métrica | Paper | Nuestra réplica | Escala |
 |---|---|---|---|
-| <accuracy> | <0.72> | <0.68> | <CIFAR-10, subset de 5.000> |
+| PER greedy | Pendiente de comparación | Pendiente de entrenamiento completo | 19 sesiones T12 |
 
 <Una frase honesta sobre la diferencia. Una desviación bien explicada puntúa
 igual que un acierto; una desviación sin explicar, no.>
@@ -81,22 +81,90 @@ de sesión. **El ID 0 es un fonema válido y el blank CTC es 40.** El segundo
 loader recorre el test publicado, sin barajar ni descartar el último lote;
 no constituye una validación independiente.
 
-**El entrenamiento de habla aún no está conectado a `run.py`.** Los comandos
-de ejecución siguientes siguen correspondiendo a la plantilla hasta completar
-esa integración.
-
 ## Ejecución
 
 ```bash
-# Smoke test: el pipeline entero en miniatura. Menos de 5 minutos en CPU.
-python run.py --smoke
+# Baseline de habla: datos reales, cinco GRU de 1.024 unidades, CTC y PER.
+python run.py --config configs/speech_original.yaml
 
-# Entrenamiento completo. Menos de 20 minutos en una T4 de Colab gratuito.
-python run.py --config configs/default.yaml
-
-# El aplicativo, sobre el checkpoint entrenado.
-python -m src.app.serve --checkpoint checkpoints/mejor.pt
+# Evaluar pesos guardados, sin entrenar; sustituir ID_RUN por el ID impreso.
+python run.py --config configs/speech_original.yaml --solo-evaluar \
+    --checkpoint checkpoints/speech_original/ID_RUN/ultimo.pt
 ```
+
+El entrenamiento reproduce los parámetros del [comando offline de los
+autores](https://github.com/fwillett/speechBCI/blob/522a9605ccf0818def80b6fd80007598e790408e/AnalysisExamples/rnn_step2_trainBaselineRNN.ipynb)
+y su [implementación TensorFlow](https://github.com/fwillett/speechBCI/blob/522a9605ccf0818def80b6fd80007598e790408e/NeuralDecoder/neuralDecoder/neuralSequenceDecoder.py):
+ruido blanco (SD 1) y offset por frase (SD 0,2) antes del suavizado, Adam con
+epsilon-hat 0,1, tasa lineal de 0,02 a 0 en 10.000 pasos, clipping de norma
+global a 10 y L2 de 1e-5 en kernels de entrada GRU y de la capa diaria activa.
+El bucle original incluye los índices 0–10.000: el YAML pide 10.001
+actualizaciones y la última tiene tasa cero. Los parámetros están en el YAML.
+La pérdida CTC se promedia por frase,
+sin dividir cada pérdida por su longitud de referencia.
+
+Para ajustarse a la memoria de la RTX 2060 se conserva el **lote efectivo de
+64 frases**, procesándolo en grupos de 4 (`entrenamiento.micro_batch_size`).
+Se acumula la suma CTC de cada grupo dividida por las 64 frases; L2,
+clipping, Adam y el avance del learning rate se aplican una sola vez por lote
+completo. No se recortan frases ni se reduce la arquitectura. Train conserva
+la extensión temporal del padding del lote original para añadir ruido antes
+del suavizado. El orden de los números aleatorios y el redondeo pueden cambiar
+respecto a procesar las 64 frases simultáneamente.
+
+Evaluación también usa grupos de 4 (`evaluacion.micro_batch_size`), recortando
+solo padding temporal sobrante y manteniendo todos los ejemplos y fonemas.
+W&B registra los picos de memoria CUDA asignada y reservada en MiB.
+
+Cada evaluación registra CTC y **PER greedy = errores de edición totales /
+fonemas de referencia totales**, incluyendo SIL, con blank 40 y sin contar
+el padding. PER se guarda como proporción (0,25 equivale al 25 %) y puede
+superar 1 si hay muchas inserciones. Se registran también los recuentos y si
+se recorrió el test completo. No se calcula WER: falta el decodificador de
+palabras/modelo de lenguaje.
+
+El test publicado se monitoriza tras la primera actualización, cada 50 pasos
+después y al terminar, como en la referencia. Se guarda
+`ultimo.pt` por ID de ejecución, sin seleccionar el mejor por PER de test.
+Es una diferencia explícita respecto al original, que selecciona el mejor
+checkpoint sobre ese conjunto. Tampoco hay aún una validación independiente.
+El checkpoint contiene pesos, configuración, sesiones, vocabulario,
+estadísticas de normalización de train, firma de los datos y métricas;
+`ultimo.json` conserva los recuentos y las métricas. `--solo-evaluar` exige
+checkpoint y comprueba su compatibilidad. Estos checkpoints permiten evaluar
+e inferir; todavía no permiten reanudar el optimizador.
+
+W&B está configurado en **online**: sincroniza configuración, pérdidas, tasa,
+norma de gradiente, tiempos y métricas con el proyecto `speech-bci` de la
+cuenta autenticada. Antes del primer entrenamiento:
+
+```bash
+wandb login
+```
+
+Para trabajar sin conexión se puede usar `wandb.modo: offline` en el YAML;
+el historial queda bajo `runs/tracking/wandb/` y se puede subir después:
+
+```bash
+wandb sync runs/tracking/wandb/offline-run-FECHA-ID
+```
+
+Se puede establecer la entidad en el YAML para usar un equipo concreto.
+La ejecución de habla rechaza el modo disabled y se detiene si falta W&B.
+`ejecucion.dispositivo: auto` elige CUDA cuando está disponible; también admite
+`cpu` o `cuda`. La versión completa no tiene un tiempo de entrenamiento medido
+ni cumple aún el límite docente de 20 minutos; la configuración reducida está
+pendiente. `python run.py --smoke` y `configs/default.yaml` conservan la plantilla
+sintética anterior y **no verifican el pipeline de habla**. El aplicativo sigue
+pendiente de conexión con el checkpoint de habla.
+
+La primera comprobación de integración del 19 de octubre usó dos
+actualizaciones con lotes de dos frases y la arquitectura completa, en CPU
+y RTX 2060. No comprobaba la memoria necesaria para lotes de 64: el primer
+entrenamiento completo falló al llegar a un lote con 904 bins. La acumulación
+de gradientes en grupos de 4 aborda ese caso. El entrenamiento completo y su
+comparación de calidad siguen pendientes. No se añaden notebooks ni archivos
+de pruebas.
 
 ## Estructura
 

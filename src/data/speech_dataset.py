@@ -88,6 +88,31 @@ class SpeechBatch:
             session_ids=self.session_ids.to(device, non_blocking=non_blocking),
         )
 
+    def microbatches(self, size: int, *, trim_padding: bool = False) -> Iterator[SpeechBatch]:
+        """Divide frases y objetivos CTC alineados, conservando todos los ejemplos.
+
+        Train conserva la extensión temporal del lote original, incluido el
+        padding donde se añade ruido. Evaluación puede recortar ceros finales.
+        """
+        if size <= 0:
+            raise ValueError("El tamaño del microlote debe ser positivo.")
+        target_start = 0
+        for start in range(0, len(self.references), size):
+            stop = min(start + size, len(self.references))
+            lengths = self.input_lengths[start:stop]
+            target_lengths = self.target_lengths[start:stop]
+            target_stop = target_start + int(target_lengths.sum().item())
+            time_steps = int(lengths.max().item()) if trim_padding else self.features.shape[1]
+            yield SpeechBatch(
+                features=self.features[start:stop, :time_steps],
+                targets=self.targets[target_start:target_stop],
+                input_lengths=lengths, target_lengths=target_lengths,
+                session_ids=self.session_ids[start:stop],
+                references=self.references[start:stop],
+                trial_indices=self.trial_indices[start:stop], blocks=self.blocks[start:stop],
+            )
+            target_start = target_stop
+
     def pin_memory(self) -> SpeechBatch:
         """Permite que DataLoader reserve memoria fijada para transferencias GPU."""
         return replace(

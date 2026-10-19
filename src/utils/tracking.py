@@ -6,6 +6,7 @@ que los tests puedan correr con modo='disabled'.
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 
@@ -13,19 +14,24 @@ def abrir_run(cfg: dict) -> Any | None:
     """Abre un run de W&B, o devuelve None si esta desactivado."""
     wcfg = cfg.get("wandb", {})
     if wcfg.get("modo") == "disabled":
+        if cfg["modelo"]["nombre"] == "speech_gru":
+            raise ValueError("El entrenamiento de habla requiere W&B; usa modo offline u online.")
         return None
     try:
         import wandb
-    except ImportError:
-        print("aviso: wandb no esta instalado; se sigue sin registrar")
-        return None
+    except ImportError as error:
+        raise RuntimeError("Falta W&B; instala requirements.txt antes de entrenar.") from error
 
+    directory = wcfg.get("directorio")
+    if directory is not None:
+        Path(directory).mkdir(parents=True, exist_ok=True)
     return wandb.init(
         project=wcfg.get("proyecto", "tiiac-2026"),
         entity=wcfg.get("entidad"),
         name=cfg["experimento"]["nombre"],
         config=cfg,
         mode=wcfg.get("modo", "online"),
+        dir=directory,
     )
 
 

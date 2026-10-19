@@ -1,6 +1,6 @@
 # Arquitectura y datos del baseline OFFLINE publicado en speechBCI.
 # Fuente fijada: 522a9605ccf0818def80b6fd80007598e790408e.
-# Modelo, preparación de señales y etiquetas; run.py aún no consume este YAML.
+# Modelo, preparación de señales, etiquetas y entrenamiento desde run.py.
 # No es la configuración reducida de la regla 5/20.
 
 experimento:
@@ -79,5 +79,45 @@ modelo:
   dropout_gru: 0.4
 
 entrenamiento:
-  # Número de actualizaciones del comando offline de referencia.
-  pasos: 10000
+  # TF usa range(0, nBatchesToTrain + 1): 10.001 actualizaciones,
+  # aunque el comando fija nBatchesToTrain=10000. La última tiene lr=0.
+  pasos: 10001
+  # Lote efectivo de 64; acumular gradientes de grupos de 4 para la RTX 2060.
+  micro_batch_size: 4
+  optimizador: adam_tensorflow
+  # epsilon-hat de TF: se suma a sqrt(v) antes de corregir el sesgo.
+  betas: [0.9, 0.999]
+  epsilon: 0.1
+  learning_rate:
+    inicio: 0.02
+    final: 0.0
+    decay_pasos: 10000
+    potencia: 1.0
+  clip_grad_norm: 10.0
+  # L2 solo en kernels de entrada GRU y de la transformación diaria activa.
+  l2: 1.0e-5
+  ruido:
+    blanco_sd: 1.0
+    offset_sd: 0.2
+  imprimir_cada: 10
+
+evaluacion:
+  micro_batch_size: 4
+  cada_pasos: 50
+  # null recorre las 680 frases; limitarlo solo comprueba la integración.
+  max_lotes: null
+
+ejecucion:
+  dispositivo: auto
+  hilos_cpu: 8
+
+salida:
+  # Se crea un subdirectorio por ID de W&B, sin sobrescribir otros runs.
+  directorio: checkpoints/speech_original
+
+wandb:
+  proyecto: speech-bci
+  entidad: null
+  # Sincroniza el entrenamiento con la cuenta autenticada mediante wandb login.
+  modo: online
+  directorio: runs/tracking

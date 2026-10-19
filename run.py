@@ -2,9 +2,9 @@
 """
 Punto de entrada unico del proyecto.
 
-    python run.py --smoke                        # pipeline entero en miniatura, < 5 min en CPU
-    python run.py --config configs/default.yaml  # entrenamiento completo, < 20 min en T4
-    python run.py --config configs/default.yaml --solo-evaluar
+    python run.py --smoke                        # plantilla sintética anterior
+    python run.py --config configs/speech_original.yaml
+    python run.py --config configs/speech_original.yaml --solo-evaluar --checkpoint RUTA
 
 Este fichero es deliberadamente corto: orquesta, no implementa. La logica vive
 en src/. Si run.py crece por encima de un centenar de lineas, algo tendria que
@@ -29,52 +29,65 @@ from src.training.loop import entrenar, evaluar  # noqa: E402
 
 
 def cargar_config(ruta: Path) -> dict:
+    """Lee los parámetros del experimento desde YAML."""
     with open(ruta, encoding="utf-8") as f:
         return yaml.safe_load(f)
 
 
 def main() -> int:
+    """Orquesta datos, modelo, seguimiento y entrenamiento o evaluación."""
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--config", type=Path, default=Path("configs/default.yaml"),
                     help="fichero de configuracion")
     ap.add_argument("--smoke", action="store_true",
-                    help="usa configs/smoke.yaml: el pipeline entero en miniatura")
+                    help="usa configs/smoke.yaml: prueba corta de la plantilla sintética")
     ap.add_argument("--solo-evaluar", action="store_true",
                     help="carga el checkpoint y evalua, sin entrenar")
+    ap.add_argument("--checkpoint", type=Path,
+                    help="checkpoint de habla para --solo-evaluar")
     args = ap.parse_args()
+    if args.solo_evaluar and args.checkpoint is None:
+        ap.error("--solo-evaluar requiere --checkpoint")
+    if args.checkpoint is not None and not args.solo_evaluar:
+        ap.error("--checkpoint requiere --solo-evaluar; no se admite reanudar entrenamiento todavía")
+    if args.checkpoint is not None and not args.checkpoint.is_file():
+        ap.error(f"no existe el checkpoint {args.checkpoint}")
 
     ruta = Path("configs/smoke.yaml") if args.smoke else args.config
     if not ruta.is_file():
         print(f"error: no existe {ruta}", file=sys.stderr)
         return 2
     cfg = cargar_config(ruta)
+    speech = cfg["modelo"]["nombre"] == "speech_gru"
+    if args.solo_evaluar and not speech:
+        ap.error("la evaluación desde checkpoint está implementada para speech_gru")
 
     # 1 · reproducibilidad, antes que nada
     fijar_seed(cfg["experimento"]["seed"])
 
     # 2 · seguimiento del experimento
     run = abrir_run(cfg)
+    try:
+        if speech:
+            from src.training.speech import ejecutar_habla
 
-    # 3 · datos
-    train_loader, val_loader = construir_loaders(cfg)
-
-    # 4 · modelo
-    modelo = construir_modelo(cfg)
-
-    # 5 · entrenar y evaluar
-    if not args.solo_evaluar:
-        entrenar(modelo, train_loader, val_loader, cfg, run)
-    metricas = evaluar(modelo, val_loader, cfg)
-
-    # 6 · el smoke test TIENE que imprimir una metrica: es la prueba de que el
-    #     pipeline llega hasta el final. El checker lo comprueba.
-    print("\n=== metricas ===")
-    for k, v in metricas.items():
-        print(f"{k}: {v:.4f}")
-
-    if run is not None:
-        run.finish()
+            metricas = ejecutar_habla(cfg, run, checkpoint=args.checkpoint, solo_evaluar=args.solo_evaluar)
+        else:
+            train_loader, val_loader = construir_loaders(cfg)
+            modelo = construir_modelo(cfg)
+            entrenar(modelo, train_loader, val_loader, cfg, run)
+            metricas = evaluar(modelo, val_loader, cfg)
+        print("\n=== metricas (test publicado) ===" if speech else "\n=== metricas ===")
+        for key, value in metricas.items():
+            print(f"{key}: {value:.4f}")
+    except BaseException:
+        if run is not None:
+            run.finish(exit_code=1)
+        raise
+    else:
+        if run is not None:
+            run.finish()
     return 0
 
 
