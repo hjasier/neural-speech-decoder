@@ -85,20 +85,24 @@ python tools/tiiac_check.py .                  # comprobador de reproducibilidad
   15 de competitionHoldOut). Datos ignorados por Git.
 - En curso: adquisición e inspección de grabaciones; comprobar archivos
   locales antes de afirmar que un dataset está disponible en el equipo.
-- Hecho: lector real `src/data/speech.py` e informe reproducible con
-  `scripts/explore_data.py`, `configs/exploration.yaml` y entorno ligero
-  Python 3.12 (`requirements-exploration.txt`). Guía en `docs/primeros_pasos.md`.
-  Inventario por metadatos: 8.800/880/1.200 ensayos en train/test/holdout.
-  Validación de valores limitada a la sesión seleccionada; cuatro pruebas
-  específicas del lector pasan. No normaliza ni entrena.
-- Preferencia del usuario: exploración en notebooks Python para ver y
-  ejecutar celdas. Entrada principal `notebooks/01_exploracion_t12.ipynb`;
-  diez celdas de código ejecutadas con gráficos incrustados. Kernel local
-  `trabajo-integrado-exploracion` en `.venv` (Python 3.12). El HTML es alternativo.
+- Hecho: lector real `src/data/speech.py` y notebooks de exploración. Inventario
+  por metadatos: 8.800/880/1.200 ensayos en train/test/holdout. El lector no
+  normaliza ni entrena. `scripts/explore_data.py`, `docs/primeros_pasos.md`
+  y los tests específicos del lector mencionados anteriormente no existen
+  en el checkout del 19 de octubre.
+- Hecho: modelo `src/models/speech_gru.py`, integrado en la factoría y con
+  `configs/speech_original.yaml`: baseline offline TensorFlow, cinco GRU
+  unidireccionales de 1.024 unidades, kernel 32 y stride 4; selección oficial
+  de 19 sesiones (6.640 frases de train). El paquete completo tiene 24 sesiones.
+  El modelo recibe características ya normalizadas y suavizadas; preparar
+  estas entradas sigue pendiente. Ver `docs/replicacion.md`.
+- Los notebooks se conservan como trabajo anterior. El usuario ha pedido
+  continuar con código de la entrega, sin nuevos notebooks.
 - Pendiente: conectar el lector con batches de longitud variable, fonemas,
   modelo, entrenamiento, métricas y aplicativo. El pipeline de `run.py`
-  sigue siendo la plantilla sintética. README actualizado; las propuestas
-  conservan ideas históricas de handwriting y necesitan revisión posterior.
+  sigue siendo la plantilla sintética. README aún contiene campos de la
+  plantilla. La propuesta vigente de habla está en `docs/propuesta_final.md`;
+  `docs/propuestas.md` conserva las propuestas históricas.
 - No mezclar `competitionData` y `sentences` como muestras independientes;
   comprobar solapamientos de participantes/sesiones entre publicaciones.
 - Los tests publicados de T15 no incluyen etiquetas. Los datos de T12 y T15

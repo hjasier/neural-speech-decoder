@@ -1,0 +1,47 @@
+# Arquitectura y datos del baseline OFFLINE publicado en speechBCI.
+# Fuente fijada: 522a9605ccf0818def80b6fd80007598e790408e.
+# Este primer cambio construye el modelo; run.py aún no consume este YAML.
+# No es la configuración reducida de la regla 5/20.
+
+experimento:
+  nombre: speech_original_pytorch
+  seed: 0
+
+datos:
+  raiz: data/speech_2023/competitionData
+  # Mismo orden y selección de speech_release_baseline.yaml: 19 sesiones.
+  sesiones:
+    - t12.2022.04.28
+    - t12.2022.05.05
+    - t12.2022.05.17
+    - t12.2022.05.19
+    - t12.2022.05.24
+    - t12.2022.05.26
+    - t12.2022.06.02
+    - t12.2022.06.07
+    - t12.2022.06.14
+    - t12.2022.06.16
+    - t12.2022.06.21
+    - t12.2022.06.28
+    - t12.2022.07.05
+    - t12.2022.07.14
+    - t12.2022.07.21
+    - t12.2022.07.27
+    - t12.2022.08.02
+    - t12.2022.08.11
+    - t12.2022.08.13
+  # IDs 0–39; el blank de CTC ocupa la última salida, ID 40, como en TF.
+  fonemas: [AA, AE, AH, AO, AW, AY, B, CH, D, DH, EH, ER, EY, F, G, HH, IH, IY, JH, K, L, M, N, NG, OW, OY, P, R, S, SH, T, TH, UH, UW, V, W, Y, Z, ZH, SIL]
+
+modelo:
+  nombre: speech_gru
+  entrada: 256
+  capa_dia: 256
+  capas: 5
+  # Override de rnn_step2_trainBaselineRNN.ipynb; el YAML base tiene 512.
+  unidades: 1024
+  bidireccional: false
+  kernel: 32
+  stride: 4
+  dropout_entrada: 0.2
+  dropout_gru: 0.4
