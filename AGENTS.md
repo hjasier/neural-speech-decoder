@@ -94,8 +94,8 @@ python tools/tiiac_check.py .                  # comprobador de reproducibilidad
   `configs/speech_original.yaml`: baseline offline TensorFlow, cinco GRU
   unidireccionales de 1.024 unidades, kernel 32 y stride 4; selección oficial
   de 19 sesiones (6.640 frases de train). El paquete completo tiene 24 sesiones.
-  El modelo recibe características ya normalizadas y suavizadas; preparar
-  estas entradas sigue pendiente. Ver `docs/replicacion.md`.
+  El modelo recibe características ya normalizadas y suavizadas; conectarlo
+  con el pipeline sigue pendiente. Ver `docs/replicacion.md`.
 - Los notebooks se conservan como trabajo anterior. El usuario ha pedido
   continuar con código de la entrega, sin nuevos notebooks.
 - Hecho: `src/data/preprocessing.py` extrae tx1 antes de spikePow, ajusta
@@ -103,11 +103,22 @@ python tools/tiiac_check.py .                  # comprobador de reproducibilidad
   estadísticas sin volver a ajustarlas. Incluye el suavizado gaussiano del
   original, sobre tensores PyTorch, para aplicarlo después de la futura
   ampliación con ruido. Parámetros en `configs/speech_original.yaml`.
-- Pendiente: conectar el lector con batches de longitud variable, fonemas,
+- Hecho: `src/data/phonemes.py` convierte las referencias con g2p-en 2.1.0,
+  siguiendo la limpieza y SIL del original. IDs 0–39; blank CTC 40. Rechaza
+  etiquetas ocultas. Recursos NLTK fijados por commit y SHA-256, preparados
+  con `scripts/get_phoneme_resources.py`; conversión posterior sin red.
+  `scripts/prepare_phoneme_labels.py` genera los JSON en data/ para las 19
+  sesiones: 6.640 referencias de train y 680 de test, con manifiesto de
+  versiones, vocabulario y hashes. No carga matrices neuronales ni entrena.
+- Pendiente: conectar el lector y las etiquetas con batches de longitud variable,
   modelo, entrenamiento, métricas y aplicativo. El pipeline de `run.py`
   sigue siendo la plantilla sintética. README aún contiene campos de la
   plantilla. La propuesta vigente de habla está en `docs/propuesta_final.md`;
   `docs/propuestas.md` conserva las propuestas históricas.
+- Entorno local: `pip check` señala un conflicto previo entre
+  `googleapis-common-protos==1.75.5` (requiere protobuf >=6.33.5) y
+  `protobuf==5.29.6`. Ninguno fue cambiado al instalar g2p-en. Las
+  comprobaciones de etiquetas y CTC pasan; revisar al conectar entrenamiento.
 - No mezclar `competitionData` y `sentences` como muestras independientes;
   comprobar solapamientos de participantes/sesiones entre publicaciones.
 - Los tests publicados de T15 no incluyen etiquetas. Los datos de T12 y T15

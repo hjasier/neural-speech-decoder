@@ -1,6 +1,6 @@
 # Arquitectura y datos del baseline OFFLINE publicado en speechBCI.
 # Fuente fijada: 522a9605ccf0818def80b6fd80007598e790408e.
-# Este primer cambio construye el modelo; run.py aún no consume este YAML.
+# Modelo, preparación de señales y etiquetas; run.py aún no consume este YAML.
 # No es la configuración reducida de la regla 5/20.
 
 experimento:
@@ -32,6 +32,25 @@ datos:
     - t12.2022.08.13
   # IDs 0–39; el blank de CTC ocupa la última salida, ID 40, como en TF.
   fonemas: [AA, AE, AH, AO, AW, AY, B, CH, D, DH, EH, ER, EY, F, G, HH, IH, IY, JH, K, L, M, N, NG, OW, OY, P, R, S, SH, T, TH, UH, UW, V, W, Y, Z, ZH, SIL]
+
+etiquetas:
+  silencio: SIL
+  max_fonemas: 500
+  recursos: data/speech_2023/recursos_g2p
+  salida: data/speech_2023/fonemas_original
+  timeout_descarga: 30
+  # NLTK data fijado al commit 550b6625bcef1f2abff2ff770a5a0d272c9c6b2a.
+  # El tagger antiguo evita la descarga implícita de g2p-en; NLTK 3.9.2 usa el JSON.
+  recursos_nltk:
+    - archivo: corpora/cmudict.zip
+      url: https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.zip
+      sha256: d07cca47fd72ad32ea9d8ad1219f85301eeaf4568f8b6b73747506a71fb5afd6
+    - archivo: taggers/averaged_perceptron_tagger.zip
+      url: https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger.zip
+      sha256: e1f13cf2532daadfd6f3bc481a49859f0b8ea6432ccdcd83e6a49a5f19008de9
+    - archivo: taggers/averaged_perceptron_tagger_eng.zip
+      url: https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger_eng.zip
+      sha256: 6025f530624335c67d6547d44757b357b4e79bae030a0383e9887a92c1718f0b
 
 preprocesamiento:
   # Media y desviación por sesión, ajustadas exclusivamente con train.
