@@ -98,6 +98,11 @@ python tools/tiiac_check.py .                  # comprobador de reproducibilidad
   estas entradas sigue pendiente. Ver `docs/replicacion.md`.
 - Los notebooks se conservan como trabajo anterior. El usuario ha pedido
   continuar con código de la entrega, sin nuevos notebooks.
+- Hecho: `src/data/preprocessing.py` extrae tx1 antes de spikePow, ajusta
+  normalización por sesión leyendo exclusivamente train y restaura esas
+  estadísticas sin volver a ajustarlas. Incluye el suavizado gaussiano del
+  original, sobre tensores PyTorch, para aplicarlo después de la futura
+  ampliación con ruido. Parámetros en `configs/speech_original.yaml`.
 - Pendiente: conectar el lector con batches de longitud variable, fonemas,
   modelo, entrenamiento, métricas y aplicativo. El pipeline de `run.py`
   sigue siendo la plantilla sintética. README aún contiene campos de la

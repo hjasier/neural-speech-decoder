@@ -33,6 +33,15 @@ datos:
   # IDs 0–39; el blank de CTC ocupa la última salida, ID 40, como en TF.
   fonemas: [AA, AE, AH, AO, AW, AY, B, CH, D, DH, EH, ER, EY, F, G, HH, IH, IY, JH, K, L, M, N, NG, OW, OY, P, R, S, SH, T, TH, UH, UW, V, W, Y, Z, ZH, SIL]
 
+preprocesamiento:
+  # Media y desviación por sesión, ajustadas exclusivamente con train.
+  normalizacion_epsilon: 1.0e-8
+  suavizado:
+    sigma: 2.0
+    umbral: 0.01
+    longitud_impulso: 100
+    truncate: 4.0
+
 modelo:
   nombre: speech_gru
   entrada: 256
