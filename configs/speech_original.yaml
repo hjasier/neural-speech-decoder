@@ -109,7 +109,8 @@ evaluacion:
 
 ejecucion:
   dispositivo: auto
-  hilos_cpu: 8
+  # Limitar la carga de CPU del proceso en el equipo de escritorio.
+  hilos_cpu: 2
 
 salida:
   # Se crea un subdirectorio por ID de W&B, sin sobrescribir otros runs.

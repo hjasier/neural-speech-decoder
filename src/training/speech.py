@@ -171,8 +171,13 @@ def entrenar_habla(
         logged["train/segundos_acumulados"] = training_seconds
         registrar(run, logged, step)
         if step == 1 or step % training["imprimir_cada"] == 0 or step == training["pasos"]:
+            memory = (
+                f"  pico CUDA asignado={logged['cuda/pico_asignado_mib']:.0f} MiB"
+                f"  reservado={logged['cuda/pico_reservado_mib']:.0f} MiB"
+                if device.type == "cuda" else ""
+            )
             print(f"paso {step}/{training['pasos']}  ctc={logged['train/ctc_loss']:.4f}  "
-                  f"l2={logged['train/l2']:.4f}  lr={learning_rate:.6f}", flush=True)
+                  f"l2={logged['train/l2']:.4f}  lr={learning_rate:.6f}{memory}", flush=True)
         if (step - 1) % cfg["evaluacion"]["cada_pasos"] == 0 or step == training["pasos"]:
             metrics = evaluar_habla(model, test_loader, cfg, smoother, device)
             registrar(run, {f"test/{key}": value for key, value in metrics.items()}, step)
@@ -230,7 +235,8 @@ def ejecutar_habla(
     run.summary.update({"dispositivo": str(device), "hardware": hardware,
                         "train/frases_disponibles": len(train_loader.dataset),
                         "test/frases_disponibles": len(test_loader.dataset)})
-    print(f"dispositivo: {device} ({hardware})  train={len(train_loader.dataset)}  "
+    print(f"dispositivo: {device} ({hardware})  hilos CPU={cfg['ejecucion']['hilos_cpu']}  "
+          f"train={len(train_loader.dataset)}  "
           f"test={len(test_loader.dataset)}", flush=True)
     print(f"lote efectivo: {cfg['datos']['batch_size']}  "
           f"microlote train: {training['micro_batch_size']}  "

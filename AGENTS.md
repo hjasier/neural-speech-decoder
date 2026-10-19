@@ -49,6 +49,10 @@ cómputo siguen pendientes de medir. El inventario está en `docs/datos.md`.
 - Todo entrenamiento se registra en Weights & Biases.
 - Las semillas se fijan **solo** en `src/utils/seed.py`.
 - Los hiperparámetros viven **solo** en `configs/`. Ninguno escrito a fuego.
+- Tras el bloqueo del PC del 19 de octubre, no ejecutar comprobaciones
+  pesadas de CPU y GPU en paralelo en este equipo. Aprovechar los registros
+  existentes y acotar las comprobaciones; no usar un entrenamiento largo
+  para verificar cambios pequeños.
 
 ## Cómo se ejecuta
 
@@ -140,6 +144,14 @@ python tools/tiiac_check.py .                  # comprobador de reproducibilidad
   todo el test. No recortar padding temporal de train: el ruido y suavizado
   se definen sobre la extensión del lote original. Cambia el orden del RNG
   frente al lote monolítico, sin reducir datos, arquitectura o precisión.
+  El run de comprobación llegó al menos al paso 51 y guardó checkpoint con
+  evaluación completa de 680 frases; PyTorch registró 1.342 MiB de pico
+  asignado y 2.098 MiB reservado. La comprobación prevista de 64 pasos no
+  terminó: hubo bloqueo y reinicio del PC, con causa no determinada. Tras
+  reiniciar se comprobó el CRC del checkpoint y se recuperaron los registros
+  sin entrenar. La comparación de gradientes con cinco frases sin ruido ni
+  dropout pasó para grupos 2+2+1. hilos_cpu=2 limita la carga de CPU y los
+  picos CUDA se muestran también en consola.
 - Pendiente: entrenamiento completo, configuración reducida y aplicativo.
   `run.py --smoke` y default.yaml conservan la plantilla sintética y no
   comprueban el pipeline de habla. README aún contiene campos de la

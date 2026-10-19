@@ -114,7 +114,9 @@ respecto a procesar las 64 frases simultáneamente.
 
 Evaluación también usa grupos de 4 (`evaluacion.micro_batch_size`), recortando
 solo padding temporal sobrante y manteniendo todos los ejemplos y fonemas.
-W&B registra los picos de memoria CUDA asignada y reservada en MiB.
+W&B registra los picos de memoria CUDA asignada y reservada en MiB; también
+se imprimen con el avance del entrenamiento. El proceso usa dos hilos de CPU
+para limitar su carga en el equipo de escritorio.
 
 Cada evaluación registra CTC y **PER greedy = errores de edición totales /
 fonemas de referencia totales**, incluyendo SIL, con blank 40 y sin contar
@@ -161,10 +163,21 @@ pendiente de conexión con el checkpoint de habla.
 La primera comprobación de integración del 19 de octubre usó dos
 actualizaciones con lotes de dos frases y la arquitectura completa, en CPU
 y RTX 2060. No comprobaba la memoria necesaria para lotes de 64: el primer
-entrenamiento completo falló al llegar a un lote con 904 bins. La acumulación
-de gradientes en grupos de 4 aborda ese caso. El entrenamiento completo y su
-comparación de calidad siguen pendientes. No se añaden notebooks ni archivos
-de pruebas.
+entrenamiento completo falló al llegar a un lote con 904 bins. Con acumulación
+en grupos de 4, el run de comprobación llegó al menos al paso 51, guardó un
+checkpoint y recorrió las 680 frases de test. PyTorch registró picos de
+1.342 MiB asignados y 2.098 MiB reservados en la RTX 2060. Otra comprobación
+con cinco frases reales, sin ruido ni dropout, verificó CTC y todos los
+gradientes al dividir el lote en 2+2+1 (diferencia máxima absoluta de gradiente
+2,87e-5), incluyendo L2 una sola vez.
+
+La comprobación prevista de 64 pasos quedó interrumpida por el bloqueo y
+reinicio del PC; no se completó. Tras el reinicio se comprobó el CRC del
+checkpoint guardado y se revisaron estos registros sin volver a entrenar.
+El registro del sistema no permite atribuir una causa concluyente al bloqueo.
+En el equipo local, las comprobaciones de cómputo se ejecutarán de una en una.
+El entrenamiento completo y su comparación de calidad siguen pendientes.
+No se añaden notebooks ni archivos de pruebas.
 
 ## Estructura
 
