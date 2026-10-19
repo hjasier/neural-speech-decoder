@@ -34,8 +34,32 @@ class DatasetPlaceholder(Dataset):
 
 
 def construir_loaders(cfg: dict) -> tuple[DataLoader, DataLoader]:
-    """Devuelve (train_loader, val_loader) segun la configuracion."""
+    """Devuelve train/evaluación; para habla, evaluación es el test publicado."""
     dcfg = cfg["datos"]
+
+    if cfg["modelo"]["nombre"] == "speech_gru":
+        from src.data.speech_dataset import SpeechDataset, SessionBatchSampler, collate_speech
+        from src.utils.seed import crear_generador
+
+        train_ds = SpeechDataset(cfg, "train")
+        test_ds = SpeechDataset(cfg, "test")
+        sampler = SessionBatchSampler(
+            train_ds.session_indices, dcfg["batch_size"], cfg["entrenamiento"]["pasos"],
+            crear_generador(cfg["experimento"]["seed"]),
+        )
+        common = dict(
+            num_workers=dcfg["num_workers"], pin_memory=dcfg["pin_memory"], collate_fn=collate_speech,
+        )
+        return (
+            DataLoader(
+                train_ds, batch_sampler=sampler,
+                generator=crear_generador(cfg["experimento"]["seed"]), **common,
+            ),
+            DataLoader(
+                test_ds, batch_size=dcfg["batch_size"], shuffle=False,
+                generator=crear_generador(cfg["experimento"]["seed"]), **common,
+            ),
+        )
 
     train_ds: Dataset = DatasetPlaceholder()
     val_ds: Dataset = DatasetPlaceholder(n=128)

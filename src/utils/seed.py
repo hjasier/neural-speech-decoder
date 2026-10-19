@@ -13,6 +13,11 @@ import numpy as np
 import torch
 
 
+def crear_generador(seed: int) -> torch.Generator:
+    """Crea un RNG CPU independiente para muestreo o workers, con semilla YAML."""
+    return torch.Generator().manual_seed(seed)
+
+
 def fijar_seed(seed: int, determinista: bool = True) -> None:
     """Fija las semillas de las tres fuentes de aleatoriedad del proyecto.
 

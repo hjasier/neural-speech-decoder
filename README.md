@@ -40,11 +40,50 @@ pip install -r requirements.txt
 ## Datos
 
 ```bash
-python scripts/get_data.py
+python scripts/get_data.py --dataset speech_2023 --files competitionData.tar.gz
 ```
 
-Descarga <dataset> de <origen oficial> y verifica el SHA-256. Ocupa <N> GB.
-Licencia: <licencia del dataset>.
+Descarga `competitionData` de Dryad y verifica su SHA-256 oficial: 3,67 GB
+comprimidos y unos 6,95 GB extraídos, con licencia CC0. Los `.mat` deben
+quedar en `data/speech_2023/competitionData/{train,test,competitionHoldOut}/`.
+Para extraer el archivo verificado:
+
+```bash
+python - <<'PY'
+import tarfile
+with tarfile.open("data/speech_2023/competitionData.tar.gz") as archive:
+    archive.extractall("data/speech_2023", filter="data")
+PY
+```
+
+La configuración `configs/speech_original.yaml` selecciona las 19 sesiones
+del baseline TensorFlow publicado: **6.640 ensayos de train y 680 de test**.
+Desde la raíz del repositorio, con las dependencias instaladas:
+
+```bash
+python scripts/get_phoneme_resources.py --config configs/speech_original.yaml
+python scripts/prepare_phoneme_labels.py --config configs/speech_original.yaml
+python scripts/prepare_speech_data.py --config configs/speech_original.yaml
+```
+
+La preparación procesa una sesión cada vez. Guarda señales en el orden
+`tx1 → spikePow`, normalizadas con estadísticas de train del mismo día,
+en 38 archivos NPY que ocupan **2,44 GB adicionales**. No aplica suavizado
+ni ruido: se harán al formar la entrada del modelo. Los manifiestos conservan
+estadísticas, límites de los ensayos, referencias y hashes. Todo queda en
+`data/`, ignorado por Git; no se modifican los `.mat` originales.
+
+`construir_loaders(cfg)` ya devuelve lotes reales para esta configuración.
+Entrenamiento elige una sesión uniformemente por lote y recorre sus ensayos
+barajados, con un RNG independiente del modelo. Cada lote conserva señales
+con padding cero, fonemas concatenados sin padding, longitudes reales e IDs
+de sesión. **El ID 0 es un fonema válido y el blank CTC es 40.** El segundo
+loader recorre el test publicado, sin barajar ni descartar el último lote;
+no constituye una validación independiente.
+
+**El entrenamiento de habla aún no está conectado a `run.py`.** Los comandos
+de ejecución siguientes siguen correspondiendo a la plantilla hasta completar
+esa integración.
 
 ## Ejecución
 

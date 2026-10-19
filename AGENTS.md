@@ -95,7 +95,7 @@ python tools/tiiac_check.py .                  # comprobador de reproducibilidad
   unidireccionales de 1.024 unidades, kernel 32 y stride 4; selección oficial
   de 19 sesiones (6.640 frases de train). El paquete completo tiene 24 sesiones.
   El modelo recibe características ya normalizadas y suavizadas; conectarlo
-  con el pipeline sigue pendiente. Ver `docs/replicacion.md`.
+  con el entrenamiento sigue pendiente. Los comandos de datos están en README.
 - Los notebooks se conservan como trabajo anterior. El usuario ha pedido
   continuar con código de la entrega, sin nuevos notebooks.
 - Hecho: `src/data/preprocessing.py` extrae tx1 antes de spikePow, ajusta
@@ -110,8 +110,16 @@ python tools/tiiac_check.py .                  # comprobador de reproducibilidad
   `scripts/prepare_phoneme_labels.py` genera los JSON en data/ para las 19
   sesiones: 6.640 referencias de train y 680 de test, con manifiesto de
   versiones, vocabulario y hashes. No carga matrices neuronales ni entrena.
-- Pendiente: conectar el lector y las etiquetas con batches de longitud variable,
-  modelo, entrenamiento, métricas y aplicativo. El pipeline de `run.py`
+- Hecho: `scripts/prepare_speech_data.py` guarda las señales normalizadas en
+  38 NPY (2,44 GB) con estadísticas de train, referencias y hashes. No añade
+  ruido ni suaviza. `src/data/speech_dataset.py` lee ensayos por memmap,
+  verifica la correspondencia con las etiquetas y su longitud mínima CTC.
+  `construir_loaders` devuelve lotes de habla: padding cero solo para señal,
+  objetivos concatenados, longitudes e IDs de sesión. El entrenamiento elige
+  uniformemente una sesión por lote; el muestreo usa un RNG independiente
+  creado en `src/utils/seed.py`. El segundo loader es el test publicado,
+  no una validación independiente. Los datos preparados están fuera de Git.
+- Pendiente: conectar entrenamiento, métricas y aplicativo. El pipeline de `run.py`
   sigue siendo la plantilla sintética. README aún contiene campos de la
   plantilla. La propuesta vigente de habla está en `docs/propuesta_final.md`;
   `docs/propuestas.md` conserva las propuestas históricas.

@@ -9,6 +9,10 @@ experimento:
 
 datos:
   raiz: data/speech_2023/competitionData
+  preparados: data/speech_2023/preparados_original
+  batch_size: 64
+  num_workers: 0
+  pin_memory: false
   # Mismo orden y selección de speech_release_baseline.yaml: 19 sesiones.
   sesiones:
     - t12.2022.04.28
@@ -73,3 +77,7 @@ modelo:
   stride: 4
   dropout_entrada: 0.2
   dropout_gru: 0.4
+
+entrenamiento:
+  # Número de actualizaciones del comando offline de referencia.
+  pasos: 10000
