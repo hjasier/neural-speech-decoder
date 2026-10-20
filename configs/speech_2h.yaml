@@ -1,0 +1,126 @@
+# Prueba de habla con presupuesto de dos horas en Colab; no es la réplica completa.
+# Misma arquitectura, señales y 19 sesiones que speech_original.yaml.
+# 2.001 pasos: unos 88 min al ritmo observado por el autor (250 pasos / 11 min).
+# Microlotes de 16: posible mejora en T4, todavía sin medir velocidad ni memoria.
+# Límite suave de 90 min de bucle; después acaba la evaluación y el guardado.
+# Reservar margen para preparación, lote en curso, evaluación final y sincronización.
+# No cumple por sí sola el límite docente de 20 min. No reanuda el optimizador.
+
+experimento:
+  nombre: speech_2h_pytorch
+  seed: 0
+
+datos:
+  raiz: data/speech_2023/competitionData
+  preparados: data/speech_2023/preparados_original
+  batch_size: 64
+  num_workers: 0
+  pin_memory: false
+  # Mismo orden y selección de speech_release_baseline.yaml: 19 sesiones.
+  sesiones:
+    - t12.2022.04.28
+    - t12.2022.05.05
+    - t12.2022.05.17
+    - t12.2022.05.19
+    - t12.2022.05.24
+    - t12.2022.05.26
+    - t12.2022.06.02
+    - t12.2022.06.07
+    - t12.2022.06.14
+    - t12.2022.06.16
+    - t12.2022.06.21
+    - t12.2022.06.28
+    - t12.2022.07.05
+    - t12.2022.07.14
+    - t12.2022.07.21
+    - t12.2022.07.27
+    - t12.2022.08.02
+    - t12.2022.08.11
+    - t12.2022.08.13
+  # IDs 0–39; el blank de CTC ocupa la última salida, ID 40, como en TF.
+  fonemas: [AA, AE, AH, AO, AW, AY, B, CH, D, DH, EH, ER, EY, F, G, HH, IH, IY, JH, K, L, M, N, NG, OW, OY, P, R, S, SH, T, TH, UH, UW, V, W, Y, Z, ZH, SIL]
+
+etiquetas:
+  silencio: SIL
+  max_fonemas: 500
+  recursos: data/speech_2023/recursos_g2p
+  salida: data/speech_2023/fonemas_original
+  timeout_descarga: 30
+  # NLTK data fijado al commit 550b6625bcef1f2abff2ff770a5a0d272c9c6b2a.
+  # El tagger antiguo evita la descarga implícita de g2p-en; NLTK 3.9.2 usa el JSON.
+  recursos_nltk:
+    - archivo: corpora/cmudict.zip
+      url: https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.zip
+      sha256: d07cca47fd72ad32ea9d8ad1219f85301eeaf4568f8b6b73747506a71fb5afd6
+    - archivo: taggers/averaged_perceptron_tagger.zip
+      url: https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger.zip
+      sha256: e1f13cf2532daadfd6f3bc481a49859f0b8ea6432ccdcd83e6a49a5f19008de9
+    - archivo: taggers/averaged_perceptron_tagger_eng.zip
+      url: https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger_eng.zip
+      sha256: 6025f530624335c67d6547d44757b357b4e79bae030a0383e9887a92c1718f0b
+
+preprocesamiento:
+  # Media y desviación por sesión, ajustadas exclusivamente con train.
+  normalizacion_epsilon: 1.0e-8
+  suavizado:
+    sigma: 2.0
+    umbral: 0.01
+    longitud_impulso: 100
+    truncate: 4.0
+
+modelo:
+  nombre: speech_gru
+  entrada: 256
+  capa_dia: 256
+  capas: 5
+  # Override de rnn_step2_trainBaselineRNN.ipynb; el YAML base tiene 512.
+  unidades: 1024
+  bidireccional: false
+  kernel: 32
+  stride: 4
+  dropout_entrada: 0.2
+  dropout_gru: 0.4
+
+entrenamiento:
+  # Se acorta el entrenamiento y su calendario de LR; se conserva el lote efectivo.
+  pasos: 2001
+  max_segundos: 5400
+  micro_batch_size: 16
+  optimizador: adam_tensorflow
+  # epsilon-hat de TF: se suma a sqrt(v) antes de corregir el sesgo.
+  betas: [0.9, 0.999]
+  epsilon: 0.1
+  learning_rate:
+    inicio: 0.02
+    final: 0.0
+    decay_pasos: 2000
+    potencia: 1.0
+  clip_grad_norm: 10.0
+  # L2 solo en kernels de entrada GRU y de la transformación diaria activa.
+  l2: 1.0e-5
+  ruido:
+    blanco_sd: 1.0
+    offset_sd: 0.2
+  imprimir_cada: 10
+
+evaluacion:
+  micro_batch_size: 16
+  cada_pasos: 250
+  # null recorre las 680 frases; limitarlo solo comprueba la integración.
+  max_lotes: null
+
+ejecucion:
+  dispositivo: auto
+  # Limitar la carga de CPU del proceso en el equipo de escritorio.
+  hilos_cpu: 2
+
+salida:
+  # Se crea un subdirectorio por ID de W&B, sin sobrescribir otros runs.
+  directorio: checkpoints/speech_original
+
+wandb:
+  proyecto: tiiac-2026
+  entidad: null
+  # Sincroniza el entrenamiento con la cuenta autenticada mediante wandb login.
+  modo: online
+  directorio: runs/tracking

@@ -28,6 +28,7 @@ def build_source_bundle() -> tuple[bytes, dict[str, Any]]:
     """Empaqueta una lista explícita de archivos y registra sus SHA-256."""
     paths = [
         Path("run.py"), Path("requirements.txt"), Path("configs/speech_original.yaml"),
+        Path("configs/speech_2h.yaml"),
         Path("docs/datasets/speech_2023/manifest.json"),
         *(Path("scripts") / name for name in (
             "get_data.py", "get_phoneme_resources.py",

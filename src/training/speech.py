@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from math import isfinite
 from pathlib import Path
 from time import perf_counter
 from typing import Any
@@ -137,6 +138,8 @@ def entrenar_habla(
     )
     start = perf_counter()
     training_seconds = 0.0
+    time_limit = training.get("max_segundos")
+    stopped_for_time = False
     if device.type == "cuda":
         torch.cuda.reset_peak_memory_stats(device)
     metrics: dict[str, float | int] = {}
@@ -178,16 +181,25 @@ def entrenar_habla(
             )
             print(f"paso {step}/{training['pasos']}  ctc={logged['train/ctc_loss']:.4f}  "
                   f"l2={logged['train/l2']:.4f}  lr={learning_rate:.6f}{memory}", flush=True)
-        if (step - 1) % cfg["evaluacion"]["cada_pasos"] == 0 or step == training["pasos"]:
+        time_reached = time_limit is not None and perf_counter() - start >= time_limit
+        evaluation_due = (step - 1) % cfg["evaluacion"]["cada_pasos"] == 0 or step == training["pasos"] or time_reached
+        if evaluation_due:
             metrics = evaluar_habla(model, test_loader, cfg, smoother, device)
             registrar(run, {f"test/{key}": value for key, value in metrics.items()}, step)
             print(f"test: PER={metrics['per']:.2%}  CTC={metrics['ctc_loss']:.4f}  "
                   f"frases={metrics['frases']}  completo={bool(metrics['completo'])}", flush=True)
             save_checkpoint(output / "ultimo.pt", model, cfg, train_loader.dataset, step, metrics)
+        if evaluation_due and step < training["pasos"] and time_limit is not None and perf_counter() - start >= time_limit:
+            stopped_for_time = True
+            print(f"Límite de {time_limit:g} s alcanzado; parada tras el paso {step}, "
+                  "con evaluación y checkpoint guardados.", flush=True)
+            break
     if not metrics:
         raise ValueError("No se completó ningún paso con evaluación.")
     run.summary.update({
         "entrenamiento/pasos": step, "entrenamiento/segundos": training_seconds,
+        "entrenamiento/pasos_previstos": training["pasos"],
+        "entrenamiento/parada_por_tiempo": stopped_for_time,
         "ejecucion/segundos": perf_counter() - start,
         "checkpoint": str(output / "ultimo.pt"),
         **_memory_metrics(device),
@@ -205,6 +217,12 @@ def ejecutar_habla(
         raise ValueError("El pipeline de habla requiere W&B: usa modo offline u online.")
     training = cfg["entrenamiento"]
     schedule = training["learning_rate"]
+    time_limit = training.get("max_segundos")
+    if time_limit is not None and (
+        isinstance(time_limit, bool) or not isinstance(time_limit, (int, float))
+        or not isfinite(time_limit) or time_limit <= 0
+    ):
+        raise ValueError("entrenamiento.max_segundos debe ser un número finito positivo o null.")
     if (
         training["optimizador"] != "adam_tensorflow" or training["pasos"] <= 0
         or training["epsilon"] <= 0 or training["clip_grad_norm"] <= 0 or training["l2"] < 0

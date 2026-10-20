@@ -117,7 +117,7 @@ salida:
   directorio: checkpoints/speech_original
 
 wandb:
-  proyecto: speech-bci
+  proyecto: tiiac-2026
   entidad: null
   # Sincroniza el entrenamiento con la cuenta autenticada mediante wandb login.
   modo: online

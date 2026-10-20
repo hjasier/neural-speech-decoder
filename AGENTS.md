@@ -160,6 +160,17 @@ python tools/tiiac_check.py .                  # comprobador de reproducibilidad
   dropout pasó para grupos 2+2+1. hilos_cpu=2 limita la carga de CPU y los
   picos CUDA se muestran también en consola.
 - Pendiente: entrenamiento completo, configuración reducida y aplicativo.
+  El 20 de octubre el usuario comunicó 250 pasos en 11 minutos en Colab y
+  un presupuesto de dos horas. `configs/speech_2h.yaml` mantiene modelo y
+  datos, con 2.001 pasos, LR hasta cero en 2.000, microlotes de 16 y test
+  completo cada 250, al principio y al final. Añade max_segundos=5400 como
+  límite suave del bucle, más evaluación/guardado final. La velocidad y
+  memoria con microlotes de 16 siguen sin medirse. El notebook permite
+  elegir ese perfil o el completo, que conserva sus parámetros. La parada
+  temporal y sus metadatos se han comprobado con reloj y dependencias
+  simuladas, sin entrenar. No presentar esta prueba como réplica completa
+  ni como la configuración docente de menos de 20 minutos. Cambiar el YAML
+  no modifica un run ya activo y los checkpoints no reanudan el optimizador.
   `run.py --smoke` y default.yaml conservan la plantilla sintética y no
   comprueban el pipeline de habla. README aún contiene campos de la
   plantilla. La propuesta vigente de habla está en `docs/propuesta_final.md`;

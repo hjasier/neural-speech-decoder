@@ -87,6 +87,9 @@ no constituye una validación independiente.
 # Baseline de habla: datos reales, cinco GRU de 1.024 unidades, CTC y PER.
 python run.py --config configs/speech_original.yaml
 
+# Prueba acortada con presupuesto de dos horas; no es la réplica completa.
+python run.py --config configs/speech_2h.yaml
+
 # Evaluar pesos guardados, sin entrenar; sustituir ID_RUN por el ID impreso.
 python run.py --config configs/speech_original.yaml --solo-evaluar \
     --checkpoint checkpoints/speech_original/ID_RUN/ultimo.pt
@@ -102,10 +105,44 @@ descarga y verifica el corpus público y llama al mismo `run.py`. Conserva
 arquitectura, sesiones y lote efectivo; fuerza CUDA para evitar entrenar por
 accidente en CPU. W&B usa la clave de Secretos de Colab o una entrada oculta.
 
+La celda 4 elige el perfil. Por defecto usa `configs/speech_2h.yaml`: misma
+arquitectura, normalización, 19 sesiones y lote efectivo de 64, con
+microlotes de 16, hasta 2.001 pasos, learning rate de 0,02 a 0 en 2.000 pasos
+y evaluación completa cada 250 pasos, además de la primera y la última.
+El autor observó 250 pasos en 11 minutos con microlotes de 4: al mismo ritmo,
+2.001 pasos serían unos 88 minutos. La velocidad y memoria del perfil de
+16 todavía no se han medido; no se promete una mejora concreta.
+
+`entrenamiento.max_segundos: 5400` añade un límite suave de 90 minutos al
+bucle, incluidas sus evaluaciones periódicas y guardados. Se comprueba entre
+actualizaciones y se termina con evaluación y checkpoint del paso alcanzado;
+si una evaluación periódica ya agotó el presupuesto, se reutiliza ese
+resultado. Preparación, lote en curso, evaluación final, guardado y
+sincronización pueden añadir tiempo. W&B registra los pasos previstos,
+completados y si terminó por tiempo. El perfil completo mantiene sus
+10.001 pasos, microlotes de 4, evaluación cada 50 y ningún límite temporal.
+El perfil de dos horas no equivale al entrenamiento completo ni cumple la
+regla docente de menos de 20 minutos.
+
+Cambiar un YAML no modifica un run ya iniciado. Para usar el perfil nuevo
+en una sesión de Colab ya preparada, detén la celda 9 y ejecuta las celdas
+2 (fuentes actualizadas), 4 (configuración y experimento nuevo) y 9; no
+repitas instalación ni preparación de señales. El entrenamiento empieza
+desde cero: el checkpoint anterior se conserva para evaluación, pero aún
+no se reanuda el optimizador.
+
 El notebook solicita acceso a Drive para guardar checkpoints, fuentes,
 configuración, entorno y log; las señales se preparan en el disco temporal
-de Colab. Admite también el archivo original de datos desde Drive si falla
-la descarga de Dryad. Colab puede interrumpir la sesión: los checkpoints
+de Colab. La celda 6 usa por defecto el archivo original desde Drive: busca
+en las carpetas habituales y después por nombre en Mi unidad, con límites
+de profundidad, carpetas y tiempo. También acepta la ruta completa obtenida
+con «Copiar ruta» en el panel Archivos de Colab o una ruta relativa a Mi unidad.
+Si no lo encuentra, muestra cómo indicar su ubicación; solo intenta descargar
+de Dryad cuando se selecciona expresamente ese origen. Comprueba tamaño y
+SHA-256 antes de publicar la copia local y reutiliza una copia local válida.
+La salida stdout/stderr de los scripts se muestra en la celda y los errores
+incluyen el motivo, además del código de salida. Colab puede interrumpir la
+sesión: los checkpoints
 actuales permiten evaluar e inferir, pero todavía no reanudar el optimizador.
 La duración completa no está medida. No se ha ejecutado este entrenamiento
 en Colab ni se ha vuelto a entrenar en el PC para crear el notebook.
@@ -117,7 +154,7 @@ antes de subirlo de nuevo:
 python scripts/export_colab.py
 ```
 
-El entrenamiento reproduce los parámetros del [comando offline de los
+`configs/speech_original.yaml` reproduce los parámetros del [comando offline de los
 autores](https://github.com/fwillett/speechBCI/blob/522a9605ccf0818def80b6fd80007598e790408e/AnalysisExamples/rnn_step2_trainBaselineRNN.ipynb)
 y su [implementación TensorFlow](https://github.com/fwillett/speechBCI/blob/522a9605ccf0818def80b6fd80007598e790408e/NeuralDecoder/neuralDecoder/neuralSequenceDecoder.py):
 ruido blanco (SD 1) y offset por frase (SD 0,2) antes del suavizado, Adam con
@@ -162,7 +199,7 @@ checkpoint y comprueba su compatibilidad. Estos checkpoints permiten evaluar
 e inferir; todavía no permiten reanudar el optimizador.
 
 W&B está configurado en **online**: sincroniza configuración, pérdidas, tasa,
-norma de gradiente, tiempos y métricas con el proyecto `speech-bci` de la
+norma de gradiente, tiempos y métricas con el proyecto `tiiac-2026` de la
 cuenta autenticada. Antes del primer entrenamiento:
 
 ```bash
