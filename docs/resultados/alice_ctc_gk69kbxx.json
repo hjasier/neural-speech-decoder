@@ -1,0 +1,570 @@
+{
+  "tarea": "EEG de escucha a fonemas; adaptación propia de SpeechGRU + CTC",
+  "run_id": "gk69kbxx",
+  "hardware": "CPU",
+  "device": "cpu",
+  "config": {
+    "tarea": "alice_ctc",
+    "experimento": {
+      "nombre": "alice_ctc_sub001",
+      "seed": 0
+    },
+    "datos": {
+      "raiz": "data/alice_eeg",
+      "catalogo": "docs/datasets/alice_eeg/catalogo_ctc.json",
+      "sujeto": "sub-001",
+      "sesiones": [
+        "sub-001"
+      ],
+      "preparados": "data/alice_eeg/preparados_ctc",
+      "train_segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "val_segmentos": [
+        9,
+        10
+      ],
+      "test_segmentos": [
+        11,
+        12
+      ],
+      "palabras_por_secuencia": 8,
+      "contexto_pre_s": 0.1,
+      "contexto_post_s": 0.5,
+      "tolerancia_alineacion_s": 0.01,
+      "batch_size": 8,
+      "num_workers": 0,
+      "pin_memory": false,
+      "fonemas": [
+        "AA",
+        "AE",
+        "AH",
+        "AO",
+        "AW",
+        "AY",
+        "B",
+        "CH",
+        "D",
+        "DH",
+        "EH",
+        "ER",
+        "EY",
+        "F",
+        "G",
+        "HH",
+        "IH",
+        "IY",
+        "JH",
+        "K",
+        "L",
+        "M",
+        "N",
+        "NG",
+        "OW",
+        "OY",
+        "P",
+        "R",
+        "S",
+        "SH",
+        "T",
+        "TH",
+        "UH",
+        "UW",
+        "V",
+        "W",
+        "Y",
+        "Z",
+        "ZH",
+        "SIL"
+      ]
+    },
+    "etiquetas": {
+      "silencio": "SIL",
+      "max_fonemas": 500,
+      "recursos": "data/speech_2023/recursos_g2p",
+      "timeout_descarga": 30,
+      "recursos_nltk": [
+        {
+          "archivo": "corpora/cmudict.zip",
+          "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.zip",
+          "sha256": "d07cca47fd72ad32ea9d8ad1219f85301eeaf4568f8b6b73747506a71fb5afd6"
+        },
+        {
+          "archivo": "taggers/averaged_perceptron_tagger.zip",
+          "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger.zip",
+          "sha256": "e1f13cf2532daadfd6f3bc481a49859f0b8ea6432ccdcd83e6a49a5f19008de9"
+        },
+        {
+          "archivo": "taggers/averaged_perceptron_tagger_eng.zip",
+          "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger_eng.zip",
+          "sha256": "6025f530624335c67d6547d44757b357b4e79bae030a0383e9887a92c1718f0b"
+        }
+      ]
+    },
+    "preprocesamiento": {
+      "banda_hz": [
+        0.5,
+        20.0
+      ],
+      "orden_filtro": 4,
+      "frecuencia_salida": 64,
+      "margen_segmento_s": 2.0,
+      "normalizacion_epsilon": 1e-06,
+      "clip_z": 8.0
+    },
+    "modelo": {
+      "nombre": "speech_gru",
+      "entrada": 60,
+      "capa_dia": 60,
+      "capas": 2,
+      "unidades": 128,
+      "bidireccional": false,
+      "kernel": 8,
+      "stride": 2,
+      "dropout_entrada": 0.2,
+      "dropout_gru": 0.2
+    },
+    "entrenamiento": {
+      "pasos": 1000,
+      "max_segundos": 180,
+      "micro_batch_size": 8,
+      "optimizador": "adam_tensorflow",
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "epsilon": 0.1,
+      "learning_rate": {
+        "inicio": 0.02,
+        "final": 0.0,
+        "decay_pasos": 1000,
+        "potencia": 1.0
+      },
+      "clip_grad_norm": 10.0,
+      "l2": 1e-05,
+      "ruido": {
+        "blanco_sd": 0.0,
+        "offset_sd": 0.0
+      },
+      "imprimir_cada": 25
+    },
+    "evaluacion": {
+      "micro_batch_size": 8,
+      "cada_pasos": 50,
+      "max_lotes": null
+    },
+    "ejecucion": {
+      "dispositivo": "cpu",
+      "hilos_cpu": 2
+    },
+    "salida": {
+      "directorio": "runs/alice_ctc"
+    },
+    "wandb": {
+      "proyecto": "tiiac-2026",
+      "entidad": null,
+      "modo": "online",
+      "directorio": "runs/tracking"
+    }
+  },
+  "data_manifest_sha256": "f4bcf865296e60ef21d15779845b2ecba0bc18f4b6a8a6e87aa413222154d367",
+  "sources_sha256": {
+    "README.md": "b3595453550c26d9c3201b6451fa3100eaac872e93658a8f9688e03fb7475e9e",
+    "dataset_description.json": "49a87d8e37ff7a8ef2b35e5ee67a1690683fee32865aab9734bf1d3cc4838840",
+    "participants.json": "4cfc4e837ba5ba5c1ea72a01a0155be7ff7746ae2594ed3b8e2b3846bcec1bb7",
+    "participants.tsv": "dab792466c5596a1812f75f4c852616eafb39154f5cb6042d38785a64afb49c4",
+    "sub-001/eeg/sub-001_task-alicelistening_channels.tsv": "89183efaa1ce657916ae33f18427b691abd5829103f9a706b05918cfb87a4858",
+    "sub-001/eeg/sub-001_task-alicelistening_eeg.eeg": "e101562b63c01904cfe9637b84aa698bf01a8c90060e950a7ef4d6680b024da2",
+    "sub-001/eeg/sub-001_task-alicelistening_eeg.json": "225d8eaa249c2d98b3022595d4ff02a429a79f3f7aa6cce30129a29a9ca612b9",
+    "sub-001/eeg/sub-001_task-alicelistening_eeg.vhdr": "86568dcbf992dd8942a048d460b71504d0fb09ac316412b090a1a85d6bc99efb",
+    "sub-001/eeg/sub-001_task-alicelistening_eeg.vmrk": "92784b05bc52b776d9248e3679585a86059b94fbd3714b09d5ac2359fe02c04a",
+    "sub-001/eeg/sub-001_task-alicelistening_events.tsv": "82c458681dd4b7f02000c80113d0a2ce937bb2e2ad4d3105136d41630aae5cad",
+    "task-alicelistening_events.json": "281fdd59c30ee110e2351ceb847bf766e5f06660ba8a1b43582267b4aafcd74c",
+    "sourcedata/AliceChapterOne-EEG.csv": "f3e0deb7bd6ac9baf638f1aec9139732fbb692d91b8cc4bba2569fdb59f191d0"
+  },
+  "counts": {
+    "train": 190,
+    "val": 44,
+    "test": 36
+  },
+  "channels": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "30",
+    "31",
+    "32",
+    "33",
+    "34",
+    "35",
+    "36",
+    "37",
+    "38",
+    "39",
+    "40",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50",
+    "51",
+    "52",
+    "53",
+    "54",
+    "55",
+    "56",
+    "57",
+    "58",
+    "59",
+    "60",
+    "61"
+  ],
+  "model_parameters": 342389,
+  "reused": [
+    "SpeechGRU",
+    "PhonemeEncoder",
+    "SpeechSample/SpeechBatch/collate_speech",
+    "SessionBatchSampler",
+    "TensorFlowAdam",
+    "bucle CTC/microlotes/L2/clipping",
+    "evaluar_habla/PER"
+  ],
+  "versions": {
+    "torch": "2.5.1",
+    "numpy": "2.1.3",
+    "scipy": "1.14.1",
+    "g2p-en": "2.1.0",
+    "nltk": "3.9.2",
+    "wandb": "0.18.7"
+  },
+  "source_code_sha256": {
+    "run.py": "8192e5b3cd34da86f1ebcf5814564b0071ce9bd656b1997830a1076bbe7e41c7",
+    "src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/app/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/app/serve.py": "2231eaab409f06f8d775fbc69ee4793ababc445218eabc956feb7a2041ce5aaa",
+    "src/data/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/data/alice.py": "a0eba5edd5c130790c4cd2add8b6e4fd2453244e79dd3cd4352da3b66f6eb97f",
+    "src/data/alice_catalog.py": "6b4aeeaa1c8875a560d1cabf0a76e3b219a057c79eaa6b43119b3a01b0a6675b",
+    "src/data/alice_ctc.py": "52823b919f297f19394b559c14e83b356e18d9a31aaa83073ad01c425b8f8bec",
+    "src/data/loaders.py": "c9a4a76700236fecde1093f48faceeee5e62924a8e935d9245f16a3ef03426f4",
+    "src/data/phonemes.py": "457d6340375b7cd909eda4e24b90c30fa8bc4b843118360666f92828766aa5a0",
+    "src/data/preprocessing.py": "d304c8eac0cf4a636c9f10c318498af493de1c336a2ed71499280611ffbbd323",
+    "src/data/speech.py": "e82fa4625fb7c1ff32031e9f3bfeb00d4050171dcefdc4a2543aeb2d5728b432",
+    "src/data/speech_dataset.py": "90412bdc8396a3f43822a194e22c1fa8b845dbd339109e0cb2cafe3b931df367",
+    "src/models/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/models/alice_gru.py": "a312e4f7df34cb7d6e6598912f6b8465baf298727e967debd509f0f767b955b2",
+    "src/models/factory.py": "93ad8b2524d4e5e15b4e5ade55d73c2f40edc1ed40d5dea8815bf640f03348c2",
+    "src/models/speech_gru.py": "cac7f2c14eb039599385e4dcd0fce413a3075e49076485f26ce3b9b081078159",
+    "src/training/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/training/alice.py": "df36e5f5f1598f664549b50d02ca8a982bbfd480ce9a25edb8f248003bc528ed",
+    "src/training/alice_ctc.py": "7f250bc063cf146825b8ca51461e866ab59054802ecf93ce819a84e04905c67f",
+    "src/training/checkpoints.py": "b369f1dfc0ee49bcbb24d02e8877f5b9b25e5d76890d7c35cfeca97db1338b62",
+    "src/training/loop.py": "88408bc498be5bd0946794e6f0f7ddbac5c4d60cd8f17e69244212d0029efb02",
+    "src/training/metrics.py": "eac1ade9b4f26adcbd5bb6015a1fd867bde514af4e96c7dabe6a6569f13affd9",
+    "src/training/optim.py": "db12c15f8620fe2ebedacff3cd592a9fe062637e308e466d7ed09b82a0e551da",
+    "src/training/speech.py": "d5f71eaf7f42fb0376e3948dd7196270c31d30dbc3a9dfa0a231fcde3b474855",
+    "src/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/utils/seed.py": "ac7587fdf1eeb16e8ec010034daaa8f04ef8b9e3236d32c4f7f5ae6890b7ffe9",
+    "src/utils/tracking.py": "f6c196b1f7337dc3aead2aeb225622899bf2ac1494e7a38d9f1bd10da5542b08"
+  },
+  "completed_steps": 1000,
+  "best_val_step": 450,
+  "best_val": {
+    "ctc_loss": 94.61041190407492,
+    "per": 0.7531411677753141,
+    "errores": 1019,
+    "fonemas": 1353,
+    "frases": 44,
+    "completo": 1,
+    "segundos": 0.13652061100219726
+  },
+  "stopped_for_time": false,
+  "validation_history": [
+    {
+      "step": 1,
+      "ctc_loss": 237.65796453302556,
+      "per": 0.9793052475979305,
+      "errores": 1325,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.13391586899888352
+    },
+    {
+      "step": 50,
+      "ctc_loss": 100.3472602150657,
+      "per": 0.8972653362897265,
+      "errores": 1214,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.14011370799926226
+    },
+    {
+      "step": 100,
+      "ctc_loss": 100.08012251420455,
+      "per": 0.8920916481892092,
+      "errores": 1207,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.1264150279966998
+    },
+    {
+      "step": 150,
+      "ctc_loss": 99.7760176225142,
+      "per": 0.8780487804878049,
+      "errores": 1188,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.13608496699816897
+    },
+    {
+      "step": 200,
+      "ctc_loss": 99.27140253240412,
+      "per": 0.8300073909830007,
+      "errores": 1123,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.1306190670002252
+    },
+    {
+      "step": 250,
+      "ctc_loss": 97.52188665216619,
+      "per": 0.8033998521803399,
+      "errores": 1087,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.1302601430033974
+    },
+    {
+      "step": 300,
+      "ctc_loss": 97.16255950927734,
+      "per": 0.7775314116777532,
+      "errores": 1052,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.1344088610021572
+    },
+    {
+      "step": 350,
+      "ctc_loss": 95.06062802401456,
+      "per": 0.8004434589800443,
+      "errores": 1083,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.13125846800176078
+    },
+    {
+      "step": 400,
+      "ctc_loss": 95.00569152832031,
+      "per": 0.7531411677753141,
+      "errores": 1019,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.13708531299926108
+    },
+    {
+      "step": 450,
+      "ctc_loss": 94.61041190407492,
+      "per": 0.7531411677753141,
+      "errores": 1019,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.13652061100219726
+    },
+    {
+      "step": 500,
+      "ctc_loss": 95.88975663618608,
+      "per": 0.7464892830746489,
+      "errores": 1010,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.12617202199908206
+    },
+    {
+      "step": 550,
+      "ctc_loss": 95.26169863614169,
+      "per": 0.7575757575757576,
+      "errores": 1025,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.12753169300049194
+    },
+    {
+      "step": 600,
+      "ctc_loss": 95.06442399458452,
+      "per": 0.7501847745750185,
+      "errores": 1015,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.1320931059999566
+    },
+    {
+      "step": 650,
+      "ctc_loss": 95.25071716308594,
+      "per": 0.7501847745750185,
+      "errores": 1015,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.1329860229998303
+    },
+    {
+      "step": 700,
+      "ctc_loss": 95.92746526544744,
+      "per": 0.7472283813747228,
+      "errores": 1011,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.1323329320002813
+    },
+    {
+      "step": 750,
+      "ctc_loss": 95.80626054243608,
+      "per": 0.7531411677753141,
+      "errores": 1019,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.1318654200003948
+    },
+    {
+      "step": 800,
+      "ctc_loss": 95.87179565429688,
+      "per": 0.753880266075388,
+      "errores": 1020,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.1412492729978112
+    },
+    {
+      "step": 850,
+      "ctc_loss": 96.47737676447088,
+      "per": 0.7597930524759793,
+      "errores": 1028,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.1288221329996304
+    },
+    {
+      "step": 900,
+      "ctc_loss": 96.3175839510831,
+      "per": 0.7435328898743533,
+      "errores": 1006,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.1300194069990539
+    },
+    {
+      "step": 950,
+      "ctc_loss": 96.25452769886364,
+      "per": 0.7487065779748706,
+      "errores": 1013,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.1353942680034379
+    },
+    {
+      "step": 1000,
+      "ctc_loss": 96.4676909013228,
+      "per": 0.7531411677753141,
+      "errores": 1019,
+      "fonemas": 1353,
+      "frases": 44,
+      "completo": 1,
+      "segundos": 0.13155792399993516
+    }
+  ],
+  "training_seconds_including_val_and_saves": 97.80438949299787,
+  "test": {
+    "ctc_loss": 94.91417694091797,
+    "per": 0.7504537205081669,
+    "errores": 827,
+    "fonemas": 1102,
+    "frases": 36,
+    "completo": 1,
+    "segundos": 0.11039573300149641
+  },
+  "zero_eeg_control": {
+    "ctc_loss": 110.2759255303277,
+    "per": 1.0,
+    "errores": 1102,
+    "fonemas": 1102,
+    "frases": 36,
+    "completo": 1,
+    "segundos": 0.1031200479992549
+  },
+  "phone_prior_control": {
+    "symbol": "SIL",
+    "repetitions": 8,
+    "errors": 852,
+    "phones": 1102,
+    "per": 0.7731397459165155,
+    "rule": "fonema más frecuente de train; repeticiones = mediana de su recuento por secuencia train"
+  },
+  "empty_prediction_per": 1.0,
+  "checkpoint": "runs/alice_ctc/gk69kbxx/mejor_val.pt",
+  "checkpoint_sha256": "ee2cbb4ac6f76df8c15b0a969df337e44e3286ad553ddf39a4fba8d87783882c",
+  "checkpoint_reloaded_before_test": true,
+  "evaluation_only": false,
+  "limits": [
+    "Un participante y un audiolibro: experimento exploratorio.",
+    "No prueba generalización entre personas, habla intentada ni funcionamiento en tiempo real.",
+    "Referencias fonéticas generadas por g2p-en; no anotación fonética del audio.",
+    "Sin ICA ni rechazo manual de artefactos; el control de ceros no descarta todos los confusores.",
+    "Sin modelo de lenguaje ni WER; PER greedy agregado incluyendo SIL."
+  ]
+}

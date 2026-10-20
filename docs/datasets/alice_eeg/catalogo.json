@@ -1,0 +1,101 @@
+{
+  "key": "alice_eeg",
+  "dataset": "nm000180",
+  "version": "v1.1.3",
+  "git_tree": "708a03314d2954949e0989e8078d5b6c714c9eea",
+  "license": "CC-BY-4.0",
+  "citation": "Brennan, J. R. & Hale, J. T. (2019). Hierarchical structure guides rapid linguistic predictions during naturalistic listening. PLoS ONE 14(1): e0207741.",
+  "doi": "10.82901/nemar.nm000180",
+  "source_manifest": "https://data.nemar.org/nm000180/v1.1.3/manifest.json",
+  "subject": "sub-001",
+  "files": [
+    {
+      "path": "README.md",
+      "size": 5862,
+      "checksum_algorithm": "git",
+      "checksum": "cebe91ca317813f00bbaeaaea974930db4abca97",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/README.md",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/README.md"
+    },
+    {
+      "path": "dataset_description.json",
+      "size": 2432,
+      "checksum_algorithm": "git",
+      "checksum": "32d49ed199e51541dc7adee7b90b9962fef24efb",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/dataset_description.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/dataset_description.json"
+    },
+    {
+      "path": "participants.json",
+      "size": 1930,
+      "checksum_algorithm": "git",
+      "checksum": "c30a3e5280e29a21da61947ea8cf5acb7d91413d",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/participants.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/participants.json"
+    },
+    {
+      "path": "participants.tsv",
+      "size": 2344,
+      "checksum_algorithm": "git",
+      "checksum": "105085719ae20c3c9b404a4b0b8c102b9b564907",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/participants.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/participants.tsv"
+    },
+    {
+      "path": "sub-001/eeg/sub-001_task-alicelistening_channels.tsv",
+      "size": 3618,
+      "checksum_algorithm": "git",
+      "checksum": "9ba886388290a66b40fa68bf93d2c6988df158ac",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-001/eeg/sub-001_task-alicelistening_eeg.eeg",
+      "size": 90898200,
+      "checksum_algorithm": "sha256",
+      "checksum": "e101562b63c01904cfe9637b84aa698bf01a8c90060e950a7ef4d6680b024da2",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-001/eeg/sub-001_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "3537b6c29a7510e8e1ee9321144a73c542abbdea",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-001/eeg/sub-001_task-alicelistening_eeg.vhdr",
+      "size": 1729,
+      "checksum_algorithm": "sha256",
+      "checksum": "86568dcbf992dd8942a048d460b71504d0fb09ac316412b090a1a85d6bc99efb",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-001/eeg/sub-001_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "60866dc1c107de52f95668ff7176ea64970b2f1e",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-001/eeg/sub-001_task-alicelistening_events.tsv",
+      "size": 300309,
+      "checksum_algorithm": "git",
+      "checksum": "5e8755b32ff2ce84bdca963692a4e3f58af9f0da",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "task-alicelistening_events.json",
+      "size": 1946,
+      "checksum_algorithm": "git",
+      "checksum": "51ed074e1ff4a3e229d3afbbe93337b34b14a7b7",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/task-alicelistening_events.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/task-alicelistening_events.json"
+    }
+  ]
+}

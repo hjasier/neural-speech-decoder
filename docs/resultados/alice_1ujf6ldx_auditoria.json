@@ -1,0 +1,95 @@
+{
+  "status": "objetivo anterior en revisión; no utilizado por Alice CTC",
+  "kind": "descripción posterior al entrenamiento; sin selección de hiperparámetros",
+  "segments": [
+    {
+      "segment": 1,
+      "first_20s_count": 59,
+      "first_20s_sound_power_median": 3.84e-09,
+      "remaining_sound_power_median": 0.0030614,
+      "eeg_audio_offset_range_s": 0.001959000000000266
+    },
+    {
+      "segment": 2,
+      "first_20s_count": 59,
+      "first_20s_sound_power_median": 3.85e-09,
+      "remaining_sound_power_median": 0.00137545,
+      "eeg_audio_offset_range_s": 0.0019490000000104146
+    },
+    {
+      "segment": 3,
+      "first_20s_count": 64,
+      "first_20s_sound_power_median": 3.8949999999999995e-09,
+      "remaining_sound_power_median": 0.0019773,
+      "eeg_audio_offset_range_s": 0.0019399999999905049
+    },
+    {
+      "segment": 4,
+      "first_20s_count": 72,
+      "first_20s_sound_power_median": 3.775e-09,
+      "remaining_sound_power_median": 0.00135505,
+      "eeg_audio_offset_range_s": 0.0019860000000164746
+    },
+    {
+      "segment": 5,
+      "first_20s_count": 52,
+      "first_20s_sound_power_median": 3.86e-09,
+      "remaining_sound_power_median": 0.0028478,
+      "eeg_audio_offset_range_s": 0.001965997000013431
+    },
+    {
+      "segment": 6,
+      "first_20s_count": 57,
+      "first_20s_sound_power_median": 3.84e-09,
+      "remaining_sound_power_median": 0.00164485,
+      "eeg_audio_offset_range_s": 0.001959999999996853
+    },
+    {
+      "segment": 7,
+      "first_20s_count": 62,
+      "first_20s_sound_power_median": 3.82e-09,
+      "remaining_sound_power_median": 0.00118735,
+      "eeg_audio_offset_range_s": 0.0019730000000208747
+    },
+    {
+      "segment": 8,
+      "first_20s_count": 65,
+      "first_20s_sound_power_median": 3.84e-09,
+      "remaining_sound_power_median": 0.0019017,
+      "eeg_audio_offset_range_s": 0.0019953200000486504
+    },
+    {
+      "segment": 9,
+      "first_20s_count": 61,
+      "first_20s_sound_power_median": 3.81e-09,
+      "remaining_sound_power_median": 0.0027046,
+      "eeg_audio_offset_range_s": 0.0019859999999312095
+    },
+    {
+      "segment": 10,
+      "first_20s_count": 63,
+      "first_20s_sound_power_median": 3.87e-09,
+      "remaining_sound_power_median": 0.0017393999999999999,
+      "eeg_audio_offset_range_s": 0.001987000000099215
+    },
+    {
+      "segment": 11,
+      "first_20s_count": 58,
+      "first_20s_sound_power_median": 3.795e-09,
+      "remaining_sound_power_median": 0.0014833,
+      "eeg_audio_offset_range_s": 0.001986995000152092
+    },
+    {
+      "segment": 12,
+      "first_20s_count": 60,
+      "first_20s_sound_power_median": 3.805e-09,
+      "remaining_sound_power_median": 0.0016002,
+      "eeg_audio_offset_range_s": 0.001986999999985528
+    }
+  ],
+  "extra_sources_sha256": {
+    "code/build_events.py": "5bab9c89dc1f8198cf2deb7eacc8b8ce64be61538a5b0a60e20fe6c84bd37740",
+    "sourcedata/AliceChapterOne-EEG.csv": "f3e0deb7bd6ac9baf638f1aec9139732fbb692d91b8cc4bba2569fdb59f191d0",
+    "stimuli/DownTheRabbitHoleFinal_SoundFile1.wav": "0d283709e216b2a3142011ee70d0ddcdb629319f98b787ddc5a21b59647ff49e"
+  }
+}

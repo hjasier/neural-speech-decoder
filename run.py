@@ -59,9 +59,11 @@ def main() -> int:
         print(f"error: no existe {ruta}", file=sys.stderr)
         return 2
     cfg = cargar_config(ruta)
-    speech = cfg["modelo"]["nombre"] == "speech_gru"
-    if args.solo_evaluar and not speech:
-        ap.error("la evaluación desde checkpoint está implementada para speech_gru")
+    alice_ctc = cfg.get("tarea") == "alice_ctc"
+    speech = cfg["modelo"]["nombre"] == "speech_gru" and not alice_ctc
+    alice = cfg.get("tarea") == "alice_power"
+    if args.solo_evaluar and not (speech or alice_ctc):
+        ap.error("la evaluación desde checkpoint está implementada para habla y Alice CTC")
 
     # 1 · reproducibilidad, antes que nada
     fijar_seed(cfg["experimento"]["seed"])
@@ -69,7 +71,15 @@ def main() -> int:
     # 2 · seguimiento del experimento
     run = abrir_run(cfg)
     try:
-        if speech:
+        if alice_ctc:
+            from src.training.alice_ctc import ejecutar_alice_ctc
+
+            metricas = ejecutar_alice_ctc(cfg, run, checkpoint=args.checkpoint, solo_evaluar=args.solo_evaluar)
+        elif alice:
+            from src.training.alice import ejecutar_alice
+
+            metricas = ejecutar_alice(cfg, run)
+        elif speech:
             from src.training.speech import ejecutar_habla
 
             metricas = ejecutar_habla(cfg, run, checkpoint=args.checkpoint, solo_evaluar=args.solo_evaluar)

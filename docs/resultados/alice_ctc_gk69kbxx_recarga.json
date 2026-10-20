@@ -1,0 +1,43 @@
+{
+  "run_id": "fdvgwaol",
+  "checkpoint_run": "gk69kbxx",
+  "evaluation_only": true,
+  "completed_steps": 0,
+  "checkpoint_sha256": "ee2cbb4ac6f76df8c15b0a969df337e44e3286ad553ddf39a4fba8d87783882c",
+  "data_manifest_sha256": "f4bcf865296e60ef21d15779845b2ecba0bc18f4b6a8a6e87aa413222154d367",
+  "test": {
+    "ctc_loss": 94.91417694091797,
+    "per": 0.7504537205081669,
+    "errores": 827,
+    "fonemas": 1102,
+    "frases": 36,
+    "completo": 1,
+    "segundos": 0.13001698800144368
+  },
+  "zero_eeg_control": {
+    "ctc_loss": 110.2759255303277,
+    "per": 1.0,
+    "errores": 1102,
+    "fonemas": 1102,
+    "frases": 36,
+    "completo": 1,
+    "segundos": 0.1156530059997749
+  },
+  "phone_prior_control": {
+    "symbol": "SIL",
+    "repetitions": 8,
+    "errors": 852,
+    "phones": 1102,
+    "per": 0.7731397459165155,
+    "rule": "fonema m\u00e1s frecuente de train; repeticiones = mediana de su recuento por secuencia train"
+  },
+  "same_test_metrics_exactly": [
+    "per",
+    "ctc_loss",
+    "errores",
+    "fonemas",
+    "frases",
+    "completo"
+  ],
+  "source_hashes_match_training": true
+}

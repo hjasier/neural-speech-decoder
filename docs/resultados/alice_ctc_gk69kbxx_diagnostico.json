@@ -1,0 +1,17 @@
+{
+  "tipo": "medición descriptiva posterior; no usada para seleccionar el modelo",
+  "errores_sin_sil": 768,
+  "fonemas_sin_sil": 845,
+  "per_sin_sil": 0.9088757396449704,
+  "fonemas_predichos": {
+    "SIL": 266,
+    "N": 72,
+    "IY": 16,
+    "T": 51,
+    "AH": 13,
+    "Z": 3,
+    "IH": 5,
+    "NG": 8
+  },
+  "nota": "SIL se inserta como separador entre palabras siguiendo el código T12; no es silencio acústico anotado."
+}

@@ -23,6 +23,10 @@ class ModeloPlaceholder(nn.Module):
 def construir_modelo(cfg: dict) -> nn.Module:
     """Construye la GRU de habla o la plantilla durante la migración del pipeline."""
     nombre = cfg["modelo"]["nombre"]
+    if nombre == "alice_gru":
+        from src.models.alice_gru import AliceGRU
+
+        return AliceGRU(cfg["modelo"])
     if nombre == "speech_gru":
         from src.models.speech_gru import SpeechGRU
 

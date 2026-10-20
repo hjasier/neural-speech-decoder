@@ -18,6 +18,11 @@ def crear_generador(seed: int) -> torch.Generator:
     return torch.Generator().manual_seed(seed)
 
 
+def crear_generador_numpy(seed: int) -> np.random.Generator:
+    """Crea un RNG independiente para controles estadísticos con semilla YAML."""
+    return np.random.default_rng(seed)
+
+
 def fijar_seed(seed: int, determinista: bool = True) -> None:
     """Fija las semillas de las tres fuentes de aleatoriedad del proyecto.
 

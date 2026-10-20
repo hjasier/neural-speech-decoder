@@ -24,8 +24,10 @@ ROOT = Path(__file__).resolve().parents[1]
 NOTEBOOK = Path("notebooks/04_entrenamiento_colab.ipynb")
 
 
-def build_source_bundle() -> tuple[bytes, dict[str, Any]]:
+def build_source_bundle(perfil: str = "speech") -> tuple[bytes, dict[str, Any]]:
     """Empaqueta una lista explícita de archivos y registra sus SHA-256."""
+    if perfil not in {"speech", "alice"}:
+        raise ValueError(f"Perfil desconocido: {perfil}")
     paths = [
         Path("run.py"), Path("requirements.txt"), Path("configs/speech_original.yaml"),
         Path("configs/speech_2h.yaml"),
@@ -36,6 +38,12 @@ def build_source_bundle() -> tuple[bytes, dict[str, Any]]:
         )),
         *(path.relative_to(ROOT) for path in sorted((ROOT / "src").rglob("*.py"))),
     ]
+    if perfil == "alice":
+        paths = [Path("run.py"), Path("requirements-alice.txt"),
+                 Path("configs/alice_ctc.yaml"), Path("configs/alice_ctc_cpu.yaml"),
+                 Path("docs/datasets/alice_eeg/catalogo_ctc.json"),
+                 *(Path("scripts") / name for name in ("get_alice.py", "get_phoneme_resources.py", "prepare_alice_ctc.py", "report_alice_ctc.py")),
+                 *(path.relative_to(ROOT) for path in sorted((ROOT / "src").rglob("*.py")))]
     files = {path.as_posix(): (ROOT / path).read_bytes() for path in sorted(paths)}
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     manifest = {
@@ -53,13 +61,13 @@ def build_source_bundle() -> tuple[bytes, dict[str, Any]]:
     return buffer.getvalue(), manifest
 
 
-def export_notebook(path: Path) -> dict[str, Any]:
+def export_notebook(path: Path, perfil: str = "speech") -> dict[str, Any]:
     """Refresca la celda marcada source_bundle y elimina salidas del notebook."""
     notebook = json.loads(path.read_text(encoding="utf-8"))
     cells = [cell for cell in notebook["cells"] if "source_bundle" in cell["metadata"].get("tags", [])]
     if len(cells) != 1:
         raise ValueError("El notebook debe contener una celda marcada source_bundle.")
-    payload, manifest = build_source_bundle()
+    payload, manifest = build_source_bundle(perfil)
     digest = hashlib.sha256(payload).hexdigest()
     chunks = "\n".join(f"    {chunk!r}" for chunk in textwrap.wrap(base64.b64encode(payload).decode(), 120))
     header = (
@@ -102,10 +110,12 @@ print("SHA-256 del paquete:", SOURCE_SHA256)
 def main() -> int:
     """Genera el snapshot dentro del notebook indicado, sin entrenar."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--notebook", type=Path, default=NOTEBOOK)
+    parser.add_argument("--notebook", type=Path)
+    parser.add_argument("--perfil", choices=("speech", "alice"), default="speech")
     args = parser.parse_args()
-    path = args.notebook if args.notebook.is_absolute() else ROOT / args.notebook
-    print(json.dumps({"notebook": str(args.notebook), **export_notebook(path)}, indent=2))
+    relative = args.notebook or (NOTEBOOK if args.perfil == "speech" else Path("notebooks/05_alice_colab.ipynb"))
+    path = relative if relative.is_absolute() else ROOT / relative
+    print(json.dumps({"notebook": str(relative), **export_notebook(path, args.perfil)}, indent=2))
     return 0
 
 

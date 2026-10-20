@@ -1,4 +1,4 @@
-"""Transcripciones de T12 a etiquetas de fonemas, siguiendo speechBCI.
+"""Transcripciones a etiquetas de fonemas, siguiendo el vocabulario de speechBCI.
 
 Los recursos de g2p-en se preparan explícitamente antes de construir el
 codificador. Este módulo no descarga recursos al importarse ni al codificar.

@@ -1,0 +1,153 @@
+{
+  "format_version": 1,
+  "fecha": "2026-10-20",
+  "tipo": "entrenamiento acortado; test publicado",
+  "wandb": {
+    "entidad": "aaurre-deusto",
+    "proyecto": "tiiac-2026",
+    "id": "unjiabqs",
+    "nombre": "speech_2h_colab",
+    "url": "https://wandb.ai/aaurre-deusto/tiiac-2026/runs/unjiabqs"
+  },
+  "fuentes": {
+    "notebook": "notebooks/04_entrenamiento_colab.ipynb",
+    "sha256_paquete": "e9e9abefd71b6c290671f06be2508070932deb9837d264071d505b95cde72530",
+    "commit_base": "40101370a0a32ac3c49f2bc2508c107b23530593",
+    "config_base": "configs/speech_2h.yaml",
+    "sha256_config_base": "36212d8858f6d787d8bd8121143ad96b323eafb62f957118be9296c6b5a08d89",
+    "sha256_salida_entrenamiento": "d4f7fbec29eb1fff2e122fb8819316882b3d3134a617d382eddcadc9bd57287e"
+  },
+  "entorno": {
+    "python": "3.12.11 (main, Oct  7 2025, 15:34:39) [Clang 20.1.4 ]",
+    "platform": "Linux-6.6.122+-x86_64-with-glibc2.39",
+    "torch": "2.5.1+cu124",
+    "numpy": "2.1.3",
+    "wandb": "0.18.7",
+    "cuda": "12.4",
+    "gpu": "Tesla T4",
+    "capability": [
+      7,
+      5
+    ],
+    "gpu_total_mib": 14912.6875
+  },
+  "datos": {
+    "participante": "T12",
+    "sesiones": 19,
+    "train_frases": 6640,
+    "test_frases": 680
+  },
+  "entrenamiento": {
+    "semilla": 0,
+    "pasos": 2001,
+    "pasos_previstos": 2001,
+    "parada_por_tiempo": false,
+    "lote_efectivo": 64,
+    "microlote_train": 16,
+    "microlote_test": 16,
+    "evaluar_cada_pasos": 250,
+    "max_segundos": 5400,
+    "learning_rate": {
+      "inicio": 0.02,
+      "final": 0.0,
+      "decay_pasos": 2000,
+      "potencia": 1.0
+    }
+  },
+  "tiempos_segundos": {
+    "actualizaciones": 2598.10025,
+    "bucle_con_evaluaciones_y_guardados": 2702.8273,
+    "evaluacion_final": 5.659953716000018
+  },
+  "memoria_mib": {
+    "pico_asignado": 1994.10449,
+    "pico_reservado": 3010.0
+  },
+  "test_final": {
+    "step": 2001,
+    "split": "test",
+    "ctc_loss": 31.681986864875345,
+    "per": 0.32217199327165685,
+    "errores": 6129,
+    "fonemas": 19024,
+    "frases": 680,
+    "completo": 1,
+    "segundos": 5.659953716000018
+  },
+  "evaluaciones_consola": [
+    {
+      "paso": 1,
+      "per_porcentaje_redondeado": 90.11,
+      "ctc_redondeada": 192.7532,
+      "frases": 680,
+      "completo": true
+    },
+    {
+      "paso": 251,
+      "per_porcentaje_redondeado": 65.39,
+      "ctc_redondeada": 67.8787,
+      "frases": 680,
+      "completo": true
+    },
+    {
+      "paso": 501,
+      "per_porcentaje_redondeado": 49.3,
+      "ctc_redondeada": 51.566,
+      "frases": 680,
+      "completo": true
+    },
+    {
+      "paso": 751,
+      "per_porcentaje_redondeado": 42.44,
+      "ctc_redondeada": 43.193,
+      "frases": 680,
+      "completo": true
+    },
+    {
+      "paso": 1001,
+      "per_porcentaje_redondeado": 38.78,
+      "ctc_redondeada": 38.5757,
+      "frases": 680,
+      "completo": true
+    },
+    {
+      "paso": 1251,
+      "per_porcentaje_redondeado": 36.28,
+      "ctc_redondeada": 36.2293,
+      "frases": 680,
+      "completo": true
+    },
+    {
+      "paso": 1501,
+      "per_porcentaje_redondeado": 33.99,
+      "ctc_redondeada": 33.4561,
+      "frases": 680,
+      "completo": true
+    },
+    {
+      "paso": 1751,
+      "per_porcentaje_redondeado": 32.62,
+      "ctc_redondeada": 32.1373,
+      "frases": 680,
+      "completo": true
+    },
+    {
+      "paso": 2001,
+      "per_porcentaje_redondeado": 32.22,
+      "ctc_redondeada": 31.682,
+      "frases": 680,
+      "completo": true
+    }
+  ],
+  "artefactos_relativos_a_mi_unidad": {
+    "experimento": "speech_bci/experimentos/20261020_122153_5effafcb",
+    "checkpoint": "speech_bci/checkpoints/speech_original/unjiabqs/ultimo.pt",
+    "resumen_checkpoint": "speech_bci/checkpoints/speech_original/unjiabqs/ultimo.json"
+  },
+  "verificacion": {
+    "fuente_resultados": "Salidas guardadas por el autor en el notebook; checkpoint en Drive.",
+    "hashes_paquete_verificados": true,
+    "checkpoint_recargado_y_evaluado": false,
+    "pendiente": "Reevaluar el checkpoint en Colab con run.py --solo-evaluar."
+  }
+}

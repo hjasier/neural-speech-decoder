@@ -1,0 +1,23 @@
+{
+  "recarga_verificada": true,
+  "dispositivo_reevaluacion": "cpu",
+  "ejemplos": 272,
+  "test": {
+    "gru": {
+      "pearson": 0.36656810446691185,
+      "r2": 0.12966007779216637,
+      "mse_z": 0.8989587039024376
+    },
+    "ridge": {
+      "pearson": 0.10094917173140683,
+      "r2": -0.00840009151130583,
+      "mse_z": 1.041558609629804
+    }
+  },
+  "error_maximo_log10_frente_csv": {
+    "gru": 4.5361328204762685e-07,
+    "ridge": 0.0
+  },
+  "checkpoint_sha256": "8d8688ffffaefbbebb9475cd093676baea0c956e060fa0094dffa70e69fe75bc",
+  "ridge_sha256": "7610b6e04f87dd2699a733ebd23433d6f43705b3015d311c0f13d755fe305671"
+}

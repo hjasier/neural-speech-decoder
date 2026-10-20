@@ -9,24 +9,29 @@ intentar reproducir una métrica SIN PREGUNTAROS NADA. Este fichero es lo único
 que van a tener.
 -->
 
-# <Título del proyecto>
+# Decodificación de habla con señales cerebrales
 
-Replicación de **<Autores, año · Título del paper>** sobre **<dataset>**,
-con <aplicativo: buscador semántico / detector en vídeo / lo que sea> construido encima.
+Implementación PyTorch del baseline offline de **Willett et al. (2023),
+A high-performance speech neuroprosthesis**, con datos intracorticales T12.
+Incluye una adaptación propia del mismo decodificador GRU + CTC a EEG de
+escucha de *Alice in Wonderland*. El aplicativo previsto recibirá señales
+grabadas por bloques y mostrará la decodificación; su conexión sigue pendiente.
 
-- **Paper:** <enlace a arXiv o DOI>
-- **Implementación de referencia:** <enlace, o «ninguna: el paper se implementa desde cero»>
-- **Seguimiento de experimentos:** <enlace al proyecto de W&B — obligatorio>
-- **Autoría:** <Nombre 1>, <Nombre 2>
+- **Paper de referencia:** [Willett et al., 2023](https://doi.org/10.1038/s41586-023-06377-x).
+- **Implementación de referencia:** [speechBCI](https://github.com/fwillett/speechBCI).
+- **Seguimiento:** [W&B · tiiac-2026](https://wandb.ai/aaurre-deusto/tiiac-2026).
 
 ## Resultado
 
-| Métrica | Paper | Nuestra réplica | Escala |
-|---|---|---|---|
-| PER greedy | Pendiente de comparación | Pendiente de entrenamiento completo | 19 sesiones T12 |
+| Ejecución | PER greedy | Tiempo medido | Alcance |
+|---|---:|---:|---|
+| T12, perfil de 2.001 pasos | 32,22 % | 45 min 03 s, T4 | 680 frases test; entrenamiento original de 10.001 pasos pendiente. |
+| Alice, adaptación de 1.000 pasos | 75,05 % | 97,80 s, CPU con 2 hilos | Un participante, 36 fragmentos test; prior sin EEG: 77,31 %. |
 
-<Una frase honesta sobre la diferencia. Una desviación bien explicada puntúa
-igual que un acierto; una desviación sin explicar, no.>
+Los tiempos corresponden a los bucles con sus validaciones/evaluaciones y
+guardados, sin instalación ni descarga. Son tareas y modalidades diferentes.
+Alice sigue siendo exploratorio: su PER sin SIL es 90,89 %. La adaptación no
+replica el método del artículo de Alice ni acredita un decodificador funcional.
 
 ## Instalación
 
@@ -109,9 +114,13 @@ La celda 4 elige el perfil. Por defecto usa `configs/speech_2h.yaml`: misma
 arquitectura, normalización, 19 sesiones y lote efectivo de 64, con
 microlotes de 16, hasta 2.001 pasos, learning rate de 0,02 a 0 en 2.000 pasos
 y evaluación completa cada 250 pasos, además de la primera y la última.
-El autor observó 250 pasos en 11 minutos con microlotes de 4: al mismo ritmo,
-2.001 pasos serían unos 88 minutos. La velocidad y memoria del perfil de
-16 todavía no se han medido; no se promete una mejora concreta.
+La primera ejecución de este perfil, en Tesla T4, completó los 2.001 pasos
+en 2.702,83 s de bucle con evaluaciones y guardados (unos 45 min 03 s),
+con PER del 32,22 % sobre las 680 frases y picos de 1.994 MiB asignados y
+3.010 MiB reservados. El resultado, configuración y procedencia están en
+[`docs/resultados/speech_2h_unjiabqs.md`](docs/resultados/speech_2h_unjiabqs.md).
+La recarga y reevaluación de ese checkpoint sigue pendiente. Este tiempo
+no incluye instalación y preparación, y supera el límite docente de 20 min.
 
 `entrenamiento.max_segundos: 5400` añade un límite suave de 90 minutos al
 bucle, incluidas sus evaluaciones periódicas y guardados. Se comprueba entre
@@ -144,8 +153,9 @@ La salida stdout/stderr de los scripts se muestra en la celda y los errores
 incluyen el motivo, además del código de salida. Colab puede interrumpir la
 sesión: los checkpoints
 actuales permiten evaluar e inferir, pero todavía no reanudar el optimizador.
-La duración completa no está medida. No se ha ejecutado este entrenamiento
-en Colab ni se ha vuelto a entrenar en el PC para crear el notebook.
+La duración del perfil original de 10.001 pasos sigue sin medirse. El perfil
+acortado ya fue ejecutado por el autor en Colab; las comprobaciones del
+lanzador y la documentación no volvieron a entrenar en el PC.
 
 Si cambias las fuentes o la configuración, actualiza la copia del notebook
 antes de subirlo de nuevo:
@@ -241,6 +251,39 @@ En el equipo local, las comprobaciones de cómputo se ejecutarán de una en una.
 El entrenamiento completo y su comparación de calidad siguen pendientes.
 No se añadieron archivos de pruebas; el lanzador de Colab se añadió después
 por petición expresa del autor.
+
+## Adaptación a Alice EEG
+
+Se reutilizan la clase `SpeechGRU`, el conversor a fonemas, lotes variables,
+CTC, Adam-TF y PER de T12, adaptando la entrada a 60 canales EEG y el tamaño
+del modelo. Las referencias son las palabras escuchadas; los pesos parten
+de cero. Separación por segmentos antes de filtrar y normalización solo con
+train. El checkpoint se elige con validación y test se evalúa al final.
+
+```bash
+python scripts/get_alice.py --catalogo docs/datasets/alice_eeg/catalogo_ctc.json
+python scripts/get_phoneme_resources.py --config configs/alice_ctc.yaml
+python scripts/prepare_alice_ctc.py --config configs/alice_ctc.yaml
+OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 MKL_NUM_THREADS=2 \
+    python run.py --config configs/alice_ctc.yaml
+```
+
+Son unos 91,5 MB de fuentes EEG/anotaciones, más los recursos g2p-en. La
+configuración pide 1.000 pasos con un límite suave de tres minutos en CPU y
+W&B online en `tiiac-2026`. La ejecución real completó todos los pasos, y la
+recarga en otro proceso conservó exactamente CTC/PER sin actualizar pesos.
+
+[Método, resultados y límites](docs/experimentos/alice_ctc.md) ·
+[Lanzador Colab](notebooks/05_alice_colab.ipynb) ·
+[Run W&B](https://wandb.ai/aaurre-deusto/tiiac-2026/runs/gk69kbxx).
+El notebook nuevo conserva fuentes, pesos y logs en Drive; falta comprobarlo
+en una VM de Colab. Su snapshot se actualiza con
+`python scripts/export_colab.py --perfil alice`, conservando el notebook 04.
+
+El [piloto previo con sound_power](docs/experimentos/alice_piloto.md) se
+conserva como exploración histórica; su objetivo sigue en auditoría y no
+interviene en CTC. La [propuesta T15](docs/experimentos/voice_2025_plan.md)
+sigue sin grabaciones descargadas ni entrenamiento realizado.
 
 ## Estructura
 
