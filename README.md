@@ -252,6 +252,32 @@ El entrenamiento completo y su comparación de calidad siguen pendientes.
 No se añadieron archivos de pruebas; el lanzador de Colab se añadió después
 por petición expresa del autor.
 
+## Demo de AHPSN con un checkpoint entrenado
+
+Abrir `notebooks/06_demo_ahpsn.ipynb` localmente en VS Code y seleccionar el
+kernel de `.venv`. Usa **CUDA en la GPU local** y dos hilos de CPU; no entrena
+ni abre W&B. La configuración está en `configs/speech_demo.yaml`.
+
+Espera `checkpoints/speech_original/unjiabqs/ultimo.pt`: copia ahí los pesos
+del entrenamiento de 2.001 pasos o cambia la ruta en el YAML. No sustituye
+ese archivo por otro checkpoint si falta. Los datos locales se leen de
+`data/speech_2023/competitionData`; no instala, descarga ni monta carpetas.
+
+Las cuatro celdas de código comprueban CUDA, cargan el checkpoint, dibujan
+la actividad de una frase test y predicen sus fonemas en la celda siguiente.
+Se comparan con g2p-en y se muestra el PER de esa frase. Arquitectura,
+vocabulario y estadísticas de train se leen del checkpoint. La demo usa
+directamente el código local y guarda figura/predicción en `runs/demo_ahpsn/`.
+
+La misma demo puede ejecutarse desde terminal:
+
+```bash
+python scripts/demo_speech.py preparar --checkpoint RUTA/ultimo.pt \
+    --corpus data/speech_2023/competitionData --salida runs/demo_ahpsn
+python scripts/demo_speech.py predecir --checkpoint RUTA/ultimo.pt \
+    --salida runs/demo_ahpsn
+```
+
 ## Adaptación a Alice EEG
 
 Se reutilizan la clase `SpeechGRU`, el conversor a fonemas, lotes variables,
@@ -276,8 +302,12 @@ recarga en otro proceso conservó exactamente CTC/PER sin actualizar pesos.
 [Método, resultados y límites](docs/experimentos/alice_ctc.md) ·
 [Lanzador Colab](notebooks/05_alice_colab.ipynb) ·
 [Run W&B](https://wandb.ai/aaurre-deusto/tiiac-2026/runs/gk69kbxx).
-El notebook nuevo conserva fuentes, pesos y logs en Drive; falta comprobarlo
-en una VM de Colab. Su snapshot se actualiza con
+El notebook 05 utiliza ahora el **perfil CUDA T4 ampliado**: 27 participantes,
+cinco GRU de 512 unidades, lote 64/microlote 16 y hasta 10.001 pasos con límite
+suave de una hora. Descarga 2,47 GB y conserva fuentes, pesos y logs en Drive.
+Requiere CUDA y registra en `tiiac-2026`; falta ejecutarlo y medirlo en Colab.
+[Configuración y protocolo T4](docs/experimentos/alice_ctc_t4.md).
+Su snapshot se actualiza con
 `python scripts/export_colab.py --perfil alice`, conservando el notebook 04.
 
 El [piloto previo con sound_power](docs/experimentos/alice_piloto.md) se

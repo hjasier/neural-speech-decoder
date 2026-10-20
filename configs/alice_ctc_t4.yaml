@@ -1,0 +1,173 @@
+# Perfil CUDA T4: 27 participantes conocidos; texto de test reservado en todos.
+# 10.001 pasos previstos, límite suave 1 h; no es el perfil docente de 20 min.
+tarea: alice_ctc
+experimento:
+  nombre: alice_ctc_27s_t4_gru512
+  seed: 0
+datos:
+  raiz: data/alice_eeg
+  catalogo: docs/datasets/alice_eeg/catalogo_ctc_t4.json
+  sesiones: &id001
+  - sub-001
+  - sub-003
+  - sub-005
+  - sub-006
+  - sub-008
+  - sub-010
+  - sub-011
+  - sub-012
+  - sub-013
+  - sub-014
+  - sub-015
+  - sub-017
+  - sub-018
+  - sub-019
+  - sub-020
+  - sub-021
+  - sub-022
+  - sub-025
+  - sub-037
+  - sub-038
+  - sub-039
+  - sub-040
+  - sub-041
+  - sub-042
+  - sub-044
+  - sub-045
+  - sub-048
+  preparados: data/alice_eeg/preparados_ctc_t4
+  train_segmentos:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  val_segmentos:
+  - 9
+  - 10
+  test_segmentos:
+  - 11
+  - 12
+  palabras_por_secuencia: 8
+  contexto_pre_s: 0.1
+  contexto_post_s: 0.5
+  tolerancia_alineacion_s: 0.01
+  batch_size: 64
+  num_workers: 0
+  pin_memory: true
+  fonemas:
+  - AA
+  - AE
+  - AH
+  - AO
+  - AW
+  - AY
+  - B
+  - CH
+  - D
+  - DH
+  - EH
+  - ER
+  - EY
+  - F
+  - G
+  - HH
+  - IH
+  - IY
+  - JH
+  - K
+  - L
+  - M
+  - N
+  - NG
+  - OW
+  - OY
+  - P
+  - R
+  - S
+  - SH
+  - T
+  - TH
+  - UH
+  - UW
+  - V
+  - W
+  - Y
+  - Z
+  - ZH
+  - SIL
+  sujetos: *id001
+  permitir_segmentos_ausentes: false
+  limites_segmento: palabras
+etiquetas:
+  silencio: SIL
+  max_fonemas: 500
+  recursos: data/speech_2023/recursos_g2p
+  timeout_descarga: 30
+  recursos_nltk:
+  - archivo: corpora/cmudict.zip
+    url: https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.zip
+    sha256: d07cca47fd72ad32ea9d8ad1219f85301eeaf4568f8b6b73747506a71fb5afd6
+  - archivo: taggers/averaged_perceptron_tagger.zip
+    url: https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger.zip
+    sha256: e1f13cf2532daadfd6f3bc481a49859f0b8ea6432ccdcd83e6a49a5f19008de9
+  - archivo: taggers/averaged_perceptron_tagger_eng.zip
+    url: https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger_eng.zip
+    sha256: 6025f530624335c67d6547d44757b357b4e79bae030a0383e9887a92c1718f0b
+preprocesamiento:
+  banda_hz:
+  - 0.5
+  - 20.0
+  orden_filtro: 4
+  frecuencia_salida: 64
+  margen_segmento_s: 2.0
+  normalizacion_epsilon: 1.0e-06
+  clip_z: 8.0
+modelo:
+  nombre: speech_gru
+  entrada: 60
+  capa_dia: 60
+  capas: 5
+  unidades: 512
+  bidireccional: false
+  kernel: 8
+  stride: 2
+  dropout_entrada: 0.2
+  dropout_gru: 0.4
+entrenamiento:
+  pasos: 10001
+  max_segundos: 3600
+  micro_batch_size: 16
+  optimizador: adam_tensorflow
+  betas:
+  - 0.9
+  - 0.999
+  epsilon: 0.1
+  learning_rate:
+    inicio: 0.02
+    final: 0.0
+    decay_pasos: 10000
+    potencia: 1.0
+  clip_grad_norm: 10.0
+  l2: 1.0e-05
+  ruido:
+    blanco_sd: 0.0
+    offset_sd: 0.0
+  imprimir_cada: 100
+evaluacion:
+  micro_batch_size: 16
+  cada_pasos: 250
+  max_lotes: null
+ejecucion:
+  dispositivo: cuda
+  hilos_cpu: 2
+salida:
+  directorio: runs/alice_ctc_t4
+wandb:
+  proyecto: tiiac-2026
+  entidad: null
+  modo: online
+  directorio: runs/tracking

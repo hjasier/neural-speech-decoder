@@ -1,0 +1,33 @@
+{
+  "tipo": "comprobación de integración con datos reales; sin entrenamiento ni actualizaciones",
+  "dispositivo": "CPU",
+  "hilos_cpu": 2,
+  "sujetos_EEG_leidos": [
+    "sub-001",
+    "sub-003"
+  ],
+  "sujetos_modelo": 27,
+  "parametros": 7950893,
+  "forma_logits": [
+    2,
+    80,
+    41
+  ],
+  "ctc_finita": true,
+  "muestreo_por_participante_lote_64": true,
+  "texto_anotado_disjunto_entre_splits": true,
+  "counts_dos_sujetos": {
+    "train": 372,
+    "val": 88,
+    "test": 68
+  },
+  "manifest_sha256": "bacbc3994fb6b2142768d8a542686d7716964e9ca9f3eca390880e8afdcd51b1",
+  "config_sha256": "e6175bee1fba0cd64e9bd6abfb4cf82480d2a0b79a201bce9b66ca2a31fff429",
+  "limite": "No mide memoria, velocidad ni calidad del entrenamiento en T4. Los 25 EEG restantes se verifican y preparan en Colab.",
+  "compatibilidad_checkpoint_CPU_anterior": {
+    "run_recarga": "uxtktq24",
+    "updates": 0,
+    "test_ctc_per_recuentos_identicos": true,
+    "checkpoint_sha256": "ee2cbb4ac6f76df8c15b0a969df337e44e3286ad553ddf39a4fba8d87783882c"
+  }
+}

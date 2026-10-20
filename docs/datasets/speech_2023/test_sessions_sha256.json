@@ -1,0 +1,85 @@
+{
+  "dataset": "speech_2023",
+  "archive": "competitionData.tar.gz",
+  "archive_sha256": "5b5c9784d80d5286e69352621366be2e4ff468e043e082e7aa7cbc90d18336b3",
+  "archive_size_bytes": 3669638707,
+  "provenance": "SHA-256 individuales calculados sobre los MAT locales extra\u00eddos del tar verificado con SHA-256 oficial. No son hashes individuales publicados por Dryad.",
+  "files": {
+    "t12.2022.04.28.mat": {
+      "size_bytes": 23383608,
+      "sha256": "63619231079163068c16a9246fa176ce748efba07371202eb6e43b4fa6a391ab"
+    },
+    "t12.2022.05.05.mat": {
+      "size_bytes": 19910344,
+      "sha256": "d4566b31ab8d32f04caab11b98bb4802e3e1f52ff16d4ba96f68e8773ca84cb4"
+    },
+    "t12.2022.05.17.mat": {
+      "size_bytes": 15489936,
+      "sha256": "15993be3bc4460072968952e67b728ed9e6e5ece9a352df796cc222a736f0516"
+    },
+    "t12.2022.05.19.mat": {
+      "size_bytes": 13671376,
+      "sha256": "61186ed96aa91c6e92f74359310bcfb7aea2425b2fd897e0ef0e97e781b23b70"
+    },
+    "t12.2022.05.24.mat": {
+      "size_bytes": 28130784,
+      "sha256": "c8ef101f53b710e8b3c97e5c886ae55f5b6c33e5606d019e1e69a868ec06f3e8"
+    },
+    "t12.2022.05.26.mat": {
+      "size_bytes": 27651512,
+      "sha256": "4591d22bb67a29d671fe467c5c79fa1f012ff9b6a4ddd84d6d7ce8234858054e"
+    },
+    "t12.2022.06.02.mat": {
+      "size_bytes": 23485840,
+      "sha256": "2bcbfb0c405aca719eb6c098f25f787097e670b14a4c12271e2b07173dd2e2f1"
+    },
+    "t12.2022.06.07.mat": {
+      "size_bytes": 23379344,
+      "sha256": "04a1d9ff1d4a3f015aac8b2ef8ff934d1b8edc4551f0b96c7267febaa9b61f89"
+    },
+    "t12.2022.06.14.mat": {
+      "size_bytes": 27072448,
+      "sha256": "e93960b9868fb42f82bfbcc954b87849cca1bf7e8c4ba830fe6dc49243603a0c"
+    },
+    "t12.2022.06.16.mat": {
+      "size_bytes": 26351352,
+      "sha256": "a84cbf72860ad0f1f5fae0258c9be46074532df6be001f8b49a19ce21b3dc992"
+    },
+    "t12.2022.06.21.mat": {
+      "size_bytes": 24848520,
+      "sha256": "48030669e39b7201b59d552cbb5281fa185c5a601c1da718dde734238b644ff0"
+    },
+    "t12.2022.06.28.mat": {
+      "size_bytes": 21339776,
+      "sha256": "2e048234ababd0dd9574ac249949f2adb90475443817f08be885e3b3aff3224e"
+    },
+    "t12.2022.07.05.mat": {
+      "size_bytes": 21306648,
+      "sha256": "eba6fdd2ce50da276b274e467baa4d51d19e366aa93402d1be518ecd6e498c44"
+    },
+    "t12.2022.07.14.mat": {
+      "size_bytes": 24479120,
+      "sha256": "5752ae3355e6fecb97ec2ccc813c9ea43201b161ad0596f38637ed32a159638f"
+    },
+    "t12.2022.07.21.mat": {
+      "size_bytes": 23340392,
+      "sha256": "c4dcf8f22b2afe7f328c1787fcf565016bb80cf100c2c6a980f6109d68573803"
+    },
+    "t12.2022.07.27.mat": {
+      "size_bytes": 21155216,
+      "sha256": "86d0572e8431ae40d3033a78a0af494ffb39a82e7b0c6213d06f69820d69b361"
+    },
+    "t12.2022.08.02.mat": {
+      "size_bytes": 19315792,
+      "sha256": "2d87a5833592ce2868901e578f2c350e60183df8465e461d6073c7c62c0846a0"
+    },
+    "t12.2022.08.11.mat": {
+      "size_bytes": 21970320,
+      "sha256": "03a1767c9a0d449c49234b5d0683f69d22fbaa29f57411b1c50addcc1643ba27"
+    },
+    "t12.2022.08.13.mat": {
+      "size_bytes": 22246800,
+      "sha256": "baa3019b1d674dca8610e789c3535a8ffb9c29ded7889b769e1bdd1eea4bda0d"
+    }
+  }
+}

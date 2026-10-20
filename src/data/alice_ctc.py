@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import configparser
+from copy import deepcopy
 import csv
 import hashlib
 import json
@@ -47,7 +48,7 @@ def _tokens(events: list[dict[str, str]]) -> list[dict[str, Any]]:
     return tokens
 
 
-def prepare_alice_ctc(cfg: dict[str, Any], *, force: bool = False) -> dict[str, Any]:
+def _prepare_single(cfg: dict[str, Any], *, force: bool = False) -> dict[str, Any]:
     """Verifica fuentes, separa segmentos y guarda EEG/fonemas sin mezclar splits."""
     data, pre = cfg["datos"], cfg["preprocesamiento"]
     root, output = Path(data["raiz"]), Path(data["preparados"])
@@ -61,10 +62,13 @@ def prepare_alice_ctc(cfg: dict[str, Any], *, force: bool = False) -> dict[str, 
                 raise ValueError(f"Señal preparada modificada: {name}")
         return manifest
     catalog = load_catalog(Path(data["catalogo"]))
-    hashes = verify_catalog(root, catalog)
     subject = data["sujeto"]
-    if subject != catalog["subject"] or data["sesiones"] != [subject]:
-        raise ValueError("Este catálogo y adaptador están fijados a un participante.")
+    allowed = catalog.get("subjects") or [catalog.get("subject")]
+    if subject not in allowed or data["sesiones"] != [subject]:
+        raise ValueError("El participante no corresponde al catálogo o al adaptador individual.")
+    subject_catalog = {**catalog, "files": [e for e in catalog["files"]
+                       if not e["path"].startswith("sub-") or e["path"].startswith(subject + "/")]}
+    hashes = verify_catalog(root, subject_catalog)
     participant = next(e for e in _table(root / "participants.tsv") if e["participant_id"] == subject)
     if participant["analyzed"] != "yes":
         raise ValueError("El participante no se incluyó en el análisis original.")
@@ -103,8 +107,13 @@ def prepare_alice_ctc(cfg: dict[str, Any], *, force: bool = False) -> dict[str, 
     groups = {split: data[f"{split}_segmentos"] for split in ("train", "val", "test")}
     segments = sorted({int(e["segment"]) for e in events})
     assigned = sum(groups.values(), [])
-    if len(assigned) != len(set(assigned)) or set(assigned) != set(segments):
+    missing = sorted(set(assigned) - set(segments))
+    if (len(assigned) != len(set(assigned)) or not set(segments).issubset(assigned)
+            or (missing and not data.get("permitir_segmentos_ausentes", False))):
         raise ValueError("Cada segmento debe pertenecer exactamente a una partición.")
+    groups = {k: [seg for seg in ids if seg in segments] for k, ids in groups.items()}
+    if any(not ids for ids in groups.values()):
+        raise ValueError("Un participante no tiene segmentos en alguna partición.")
     rate = pre["frecuencia_salida"]
     if fs != int(fs) or rate != int(rate) or rate <= 2 * max(pre["banda_hz"]):
         raise ValueError("Frecuencia de muestreo o banda no válida.")
@@ -118,7 +127,11 @@ def prepare_alice_ctc(cfg: dict[str, Any], *, force: bool = False) -> dict[str, 
     blocks, block_info = {}, []
     for i, seg in enumerate(segments):
         start = int(np.ceil(starts[seg] * fs))
-        end = int(np.floor(starts[segments[i + 1]] * fs)) if i + 1 < len(segments) else len(raw)
+        selected = [e for e in events if int(e["segment"]) == seg]
+        if data.get("limites_segmento", "siguiente_segmento") == "palabras":
+            end = int(np.floor(max(float(e["onset"]) + float(e["duration"]) for e in selected) * fs))
+        else:
+            end = int(np.floor(starts[segments[i + 1]] * fs)) if i + 1 < len(segments) else len(raw)
         if not 0 <= start < end <= len(raw):
             raise ValueError("Los eventos quedan fuera del binario EEG.")
         block = np.asarray(raw[start:end, columns], dtype=np.float64) * resolutions
@@ -127,7 +140,6 @@ def prepare_alice_ctc(cfg: dict[str, Any], *, force: bool = False) -> dict[str, 
         block -= block.mean(axis=1, keepdims=True)
         block = signal.sosfilt(sos, block, axis=0)
         blocks[seg] = signal.resample_poly(block, int(rate) // divisor, int(fs) // divisor, axis=0)
-        selected = [e for e in events if int(e["segment"]) == seg]
         deltas = [float(e["onset"]) - float(canonical[e["word_index"]]["onset"]) for e in selected]
         if np.ptp(deltas) > data["tolerancia_alineacion_s"]:
             raise ValueError("La temporización EEG/audio no es consistente dentro del segmento.")
@@ -195,10 +207,73 @@ def prepare_alice_ctc(cfg: dict[str, Any], *, force: bool = False) -> dict[str, 
                 "notes": ["EEG de escucha; fonemas generados por g2p-en, no anotación fonética manual.",
                           "Filtrado causal por segmento y remuestreo offline; no se mide latencia real.",
                           "Referencias usan tiempos de palabras para delimitar fragmentos; sin alineación de fonemas."]}
+    if data.get("permitir_segmentos_ausentes"):
+        manifest["missing_segments"] = missing
     temporary = manifest_path.with_suffix(".tmp")
     temporary.write_text(json.dumps(manifest, indent=2, ensure_ascii=False, allow_nan=False) + "\n")
     temporary.replace(manifest_path)
     return manifest
+
+
+def prepare_alice_ctc(cfg: dict[str, Any], *, force: bool = False) -> dict[str, Any]:
+    """Prepara uno o varios participantes, cada uno con normalización de su train."""
+    data = cfg["datos"]
+    if "sujetos" not in data:
+        return _prepare_single(cfg, force=force)
+    subjects = data["sujetos"]
+    catalog = load_catalog(Path(data["catalogo"]))
+    if (not subjects or len(subjects) != len(set(subjects)) or subjects != data["sesiones"]
+            or not set(subjects).issubset(catalog["subjects"])):
+        raise ValueError("Sujetos y sesiones deben coincidir, sin duplicados y dentro del catálogo.")
+    output = Path(data["preparados"])
+    manifest_path = output / "manifest.json"
+    if manifest_path.is_file() and not force:
+        manifest = json.loads(manifest_path.read_text())
+        if manifest["signature"] != alice_ctc_signature(cfg):
+            raise ValueError("La preparación multi-participante no corresponde al YAML; usa otro destino o --force.")
+        for name, entry in manifest["arrays"].items():
+            if file_sha256(output / name) != entry["sha256"]:
+                raise ValueError(f"Señal preparada modificada: {name}")
+        return manifest
+    manifests = {}
+    for index, subject in enumerate(subjects, start=1):
+        child = deepcopy(cfg)
+        child["datos"].pop("sujetos")
+        child["datos"].update(sujeto=subject, sesiones=[subject], preparados=str(output / subject))
+        print(f"Preparando {subject} ({index}/{len(subjects)})", flush=True)
+        manifests[subject] = _prepare_single(child, force=force)
+    first = manifests[subjects[0]]
+    if any(m["channels"] != first["channels"] or m["phones"] != first["phones"] for m in manifests.values()):
+        raise ValueError("El orden de canales o fonemas difiere entre participantes.")
+    records = {split: [] for split in ("train", "val", "test")}
+    arrays, sources, blocks = {}, {}, []
+    for session_id, (subject, manifest) in enumerate(manifests.items()):
+        arrays.update({f"{subject}/{name}": entry for name, entry in manifest["arrays"].items()})
+        for name, digest in manifest["sources_sha256"].items():
+            if name in sources and sources[name] != digest:
+                raise ValueError("Una fuente compartida cambió durante la preparación.")
+            sources[name] = digest
+        blocks.extend({**block, "subject": subject} for block in manifest["blocks"])
+        for split in records:
+            records[split].extend({**row, "path": f"{subject}/{row['path']}",
+                                   "subject": subject, "session_id": session_id}
+                                  for row in manifest["records"][split])
+    merged = {"format_version": 2, "signature": alice_ctc_signature(cfg),
+              "dataset": first["dataset"], "version": first["version"], "subjects": subjects,
+              "sources_sha256": sources, "channels": first["channels"],
+              "excluded_channels": {s: m["excluded_channels"] for s, m in manifests.items()},
+              "sample_rate": first["sample_rate"], "phones": first["phones"], "blank_id": first["blank_id"],
+              "normalization": {s: m["normalization"] for s, m in manifests.items()},
+              "arrays": arrays, "records": records, "blocks": blocks,
+              "counts": {k: len(rows) for k, rows in records.items()},
+              "counts_by_subject": {s: m["counts"] for s, m in manifests.items()},
+              "missing_segments": {s: m.get("missing_segments", []) for s, m in manifests.items()},
+              "notes": first["notes"] + ["Participantes conocidos; segmentos del relato reservados en todos."]}
+    output.mkdir(parents=True, exist_ok=True)
+    temporary = manifest_path.with_suffix(".tmp")
+    temporary.write_text(json.dumps(merged, indent=2, ensure_ascii=False, allow_nan=False) + "\n")
+    temporary.replace(manifest_path)
+    return merged
 
 
 class AliceCTCDataset(Dataset[SpeechSample]):
@@ -211,6 +286,12 @@ class AliceCTCDataset(Dataset[SpeechSample]):
         if self.manifest["signature"] != alice_ctc_signature(cfg) or split not in {"train", "val", "test"}:
             raise ValueError("Preparación Alice o partición incompatible con el YAML.")
         self.rows = self.manifest["records"][split]
+        self.session_indices = []
+        for session_id in range(len(cfg["datos"]["sesiones"])):
+            indices = [i for i, row in enumerate(self.rows) if row.get("session_id", 0) == session_id]
+            if not indices or indices != list(range(indices[0], indices[-1] + 1)):
+                raise ValueError("Los fragmentos de cada participante deben ser no vacíos y consecutivos.")
+            self.session_indices.append(range(indices[0], indices[-1] + 1))
         self._arrays: dict[str, np.ndarray] = {}
         for name in {row["path"] for row in self.rows}:
             if file_sha256(self.root / name) != self.manifest["arrays"][name]["sha256"]:
@@ -237,4 +318,4 @@ class AliceCTCDataset(Dataset[SpeechSample]):
             self._arrays[row["path"]] = np.load(self.root / row["path"], mmap_mode="r", allow_pickle=False)
         features = self._arrays[row["path"]][row["start"]:row["stop"]].copy()
         return SpeechSample(torch.from_numpy(features), torch.tensor(row["ids"], dtype=torch.int64),
-                            0, row["reference"], index, row["segment"])
+                            row.get("session_id", 0), row["reference"], index, row["segment"])

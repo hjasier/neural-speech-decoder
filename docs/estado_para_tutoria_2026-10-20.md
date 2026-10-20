@@ -22,6 +22,11 @@ y discusión de la entrega corresponden al autor.
   Fuentes, configuración y hashes documentados; entrenamiento sincronizado
   en [W&B](https://wandb.ai/aaurre-deusto/tiiac-2026/runs/gk69kbxx).
   El lanzador Colab nuevo está preparado, pendiente de ejecución remota.
+- **Siguiente entrenamiento Alice en T4:** perfil ampliado con 27 participantes,
+  cinco GRU de 512 y CTC; hasta 10.001 pasos con presupuesto suave de una hora.
+  Metadatos auditados y lector/modelo comprobados con dos EEG reales, sin
+  entrenar localmente. Previsión de 5.022/1.188/918 fragmentos; test por tramos
+  de texto reservados en todos los participantes. Aún sin métricas T4.
 - **Posibles próximos bloques para decidir:** controles temporales más fuertes
   y revisión de las hipótesis de fonemas; después ampliar participantes con un
   protocolo que reserve texto de test en todos ellos. La validación entre

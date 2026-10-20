@@ -80,6 +80,38 @@ python tools/tiiac_check.py .                  # comprobador de reproducibilidad
 
 ## Estado actual
 
+- Demo notebooks/06_demo_ahpsn.ipynb: el autor pidió quitar toda preparación
+  de Colab y usar su GPU local. Ahora son cuatro celdas de código con el
+  kernel .venv: CUDA, checkpoint, mapa tx1/spikePow de una frase test y
+  predicción CTC en la siguiente celda. Usa directamente scripts/demo_speech.py;
+  sin instalación, Drive, snapshot ni descargas. Configuración en
+  configs/speech_demo.yaml: CUDA obligatorio, dos hilos CPU; checkpoint local
+  checkpoints/speech_original/unjiabqs/ultimo.pt y datos locales. No se ha
+  encontrado ese checkpoint en el equipo ni en Descargas/Downloads; hay que
+  copiar el archivo real, sin sustituirlo automáticamente por pesos cortos.
+  Modelo/configuración/normalización de train del checkpoint, eval e
+  inference_mode, cero entrenamiento/W&B. Resultados en runs/demo_ahpsn/.
+  La comprobación local usa un checkpoint previo de 51 pasos; no presentar
+  esas predicciones como las del entrenamiento de 2.001 pasos. Notebook 06
+  no pertenece al exportador Colab. No borrar salidas del 04 ni regenerar 05.
+- El autor pidió entrenar Alice con CUDA en la T4. Perfil ampliado separado:
+  configs/alice_ctc_t4.yaml y notebook 05, CUDA obligatorio, 27 participantes,
+  cinco GRU de 512 (7.950.893 parámetros), lote 64/microlote 16, hasta 10.001
+  pasos y límite suave 3.600 s de bucle, más preparación/evaluación final.
+  No afirmar cumplimiento de los 20 minutos docentes ni resultados en T4.
+  Selección: de los 31 analyzed=yes disponibles, se excluyen sub-026, sub-034,
+  sub-035 y sub-036 por falta del segmento 12 y tiempos duplicados entre
+  segmentos. Catálogo v1.1.3 fijado, 168 archivos/2.465.566.644 bytes.
+  Auditoría de metadatos en docs/datasets/alice_eeg/auditoria_t4.json:
+  previsión 5.022/1.188/918 fragmentos, 60 EEG buenos en orden común;
+  segmentos 1–8/9–10/11–12 reservados en todos. Adaptador y normalización
+  train por participante; GRU compartida. Son participantes conocidos,
+  no generalización a personas nuevas. Límites de cada tramo por palabras.
+  Comprobación real con EEG de dos participantes, CTC finita y cero updates;
+  los otros 25 EEG se descargarán/verificarán en Colab. No entrenar en GPU
+  local ni descargar todo el corpus aquí. Notebook 05 solo lanza código de
+  src y run.py; exportar --perfil alice, conservar notebook 04 y sus salidas.
+  Método en docs/experimentos/alice_ctc_t4.md. Entrenamiento T4 pendiente.
 - Línea activa confirmada el 20 de octubre: adaptar nuestro decodificador
   PyTorch de Willett a Alice EEG, sin replicar el método del paper de Alice.
   El autor pidió reutilizar GRU y CTC si es aplicable. No volver a sustituir
@@ -102,7 +134,7 @@ python tools/tiiac_check.py .                  # comprobador de reproducibilidad
   docs/experimentos/alice_ctc.md. Datos, pesos y logs ignorados por Git.
   configs/alice_ctc.yaml: 1.000 pasos, CPU dos hilos, límite suave 180 s, W&B online.
   configs/alice_ctc_cpu.yaml: comprobación de 50 pasos, W&B offline.
-  Notebook 05: lanzador independiente de run.py con entorno reutilizable/aislado,
+  Notebook 05: lanzador de run.py con entorno reutilizable/aislado,
   fuentes verificadas, preparación CTC, resultados en Drive y recarga sin entrenar.
   No se ha ejecutado en una VM de Colab. Exportar con --perfil alice, conservando
   las salidas del notebook 04. El entrenamiento Alice no resuelve por sí solo

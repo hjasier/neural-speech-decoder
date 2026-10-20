@@ -23,7 +23,7 @@ from src.training.optim import TensorFlowAdam
 # Reutilización literal del entrenamiento ya implementado para T12. El
 # preprocesamiento EEG está en disco, por lo que aquí el smoother es Identity.
 from src.training.speech import (
-    _backward_microbatch, _criterion, _learning_rate, _regularization, evaluar_habla,
+    _backward_microbatch, _criterion, _learning_rate, _regularization, _memory_metrics, evaluar_habla,
 )
 from src.utils.seed import crear_generador
 from src.utils.tracking import registrar
@@ -80,18 +80,21 @@ def ejecutar_alice_ctc(
     common = {"num_workers": cfg["datos"]["num_workers"], "pin_memory": cfg["datos"]["pin_memory"],
               "collate_fn": collate_speech, "generator": crear_generador(cfg["experimento"]["seed"])}
     train_loader = DataLoader(datasets["train"], batch_sampler=SessionBatchSampler(
-        [range(len(datasets["train"]))], cfg["datos"]["batch_size"], training["pasos"],
+        datasets["train"].session_indices, cfg["datos"]["batch_size"], training["pasos"],
         crear_generador(cfg["experimento"]["seed"])), **common)
     val_loader, test_loader = [DataLoader(datasets[split], batch_size=cfg["datos"]["batch_size"],
                                          shuffle=False, **common) for split in ("val", "test")]
     output = Path(cfg["salida"]["directorio"]) / run.id
     output.mkdir(parents=True, exist_ok=False)
     (output / "config.json").write_text(json.dumps(cfg, indent=2, ensure_ascii=False) + "\n")
+    if device.type == "cuda":
+        torch.cuda.reset_peak_memory_stats(device)
     model = construir_modelo(cfg).to(device)
     smoother = nn.Identity().to(device)
     hardware = torch.cuda.get_device_name(device) if device.type == "cuda" else "CPU"
     print(f"Alice CTC · SpeechGRU reutilizada · {hardware} · secuencias {manifest['counts']}", flush=True)
-    print(f"EEG {len(manifest['channels'])} canales; excluidos {manifest['excluded_channels']}; blank={manifest['blank_id']}", flush=True)
+    print(f"Participantes: {len(cfg['datos']['sesiones'])} · parámetros: {sum(p.numel() for p in model.parameters()):,}", flush=True)
+    print(f"EEG {len(manifest['channels'])} canales; blank={manifest['blank_id']}; normalización por participante con train", flush=True)
     best_metrics, best_step, step, history, stopped = None, 0, 0, [], False
     start = perf_counter()
     if not solo_evaluar:
@@ -112,10 +115,13 @@ def ejecutar_alice_ctc(
             norm = nn.utils.clip_grad_norm_(model.parameters(), training["clip_grad_norm"], error_if_nonfinite=True)
             optimizer.step()
             logged = {"train/ctc_loss": ctc, "train/l2": penalty.item(), "train/grad_norm": norm.item(),
-                      "train/learning_rate": lr, "train/segundos": perf_counter() - start}
+                      "train/learning_rate": lr, "train/segundos": perf_counter() - start,
+                      **_memory_metrics(device)}
             registrar(run, logged, step)
             if step == 1 or step % training["imprimir_cada"] == 0:
-                print(f"paso {step}/{training['pasos']} · CTC={ctc:.4f} · lr={lr:.6f}", flush=True)
+                memory = (f" · CUDA pico={logged['cuda/pico_asignado_mib']:.0f} MiB asignados / "
+                          f"{logged['cuda/pico_reservado_mib']:.0f} MiB reservados" if device.type == "cuda" else "")
+                print(f"paso {step}/{training['pasos']} · CTC={ctc:.4f} · lr={lr:.6f}{memory}", flush=True)
             stopped = perf_counter() - start >= training["max_segundos"] and step < training["pasos"]
             if step == 1 or step % cfg["evaluacion"]["cada_pasos"] == 0 or step == training["pasos"] or stopped:
                 validation = evaluar_habla(model, val_loader, cfg, smoother, device)
@@ -128,6 +134,7 @@ def ejecutar_alice_ctc(
                              "model_state": {k: v.detach().cpu().clone() for k, v in model.state_dict().items()},
                              "data_manifest_sha256": manifest_hash, "normalization": manifest["normalization"],
                              "channels": manifest["channels"], "phones": cfg["datos"]["fonemas"],
+                             "subjects": cfg["datos"]["sesiones"],
                              "blank_id": len(cfg["datos"]["fonemas"]), "step": step, "val_metrics": validation}
                     temporary = output / "mejor_val.tmp"
                     torch.save(state, temporary)
@@ -156,19 +163,34 @@ def ejecutar_alice_ctc(
                      "errors": prior_errors, "phones": test_metrics["fonemas"],
                      "per": prior_errors / test_metrics["fonemas"],
                      "rule": "fonema más frecuente de train; repeticiones = mediana de su recuento por secuencia train"}
-    predictions = []
+    predictions, subject_metrics = [], {}
     with torch.no_grad():
         for batch in test_loader:
-            moved = batch.to(device)
-            paths = decode_ctc(model(moved.features, moved.session_ids), model.output_lengths(batch.input_lengths), state["blank_id"])
-            for i, ids in enumerate(paths):
-                predictions.append({"sequence": batch.trial_indices[i], "segment": batch.blocks[i],
-                                    "reference": batch.references[i], "hypothesis_ids": ids,
-                                    "hypothesis_phones": [state["phones"][j] for j in ids]})
+            for small in batch.microbatches(cfg["evaluacion"]["micro_batch_size"], trim_padding=True):
+                moved = small.to(device)
+                paths = decode_ctc(model(moved.features, moved.session_ids), model.output_lengths(small.input_lengths), state["blank_id"])
+                references = small.targets.split(small.target_lengths.tolist())
+                for i, ids in enumerate(paths):
+                    subject = cfg["datos"]["sesiones"][int(small.session_ids[i])]
+                    reference = references[i].tolist()
+                    metrics = subject_metrics.setdefault(subject, {"errores": 0, "fonemas": 0, "fragmentos": 0})
+                    metrics["errores"] += edit_distance(reference, ids)
+                    metrics["fonemas"] += len(reference)
+                    metrics["fragmentos"] += 1
+                    predictions.append({"sequence": small.trial_indices[i], "segment": small.blocks[i],
+                                        "subject": subject, "reference": small.references[i], "hypothesis_ids": ids,
+                                        "hypothesis_phones": [state["phones"][j] for j in ids]})
+    for metrics in subject_metrics.values():
+        metrics["per"] = metrics["errores"] / metrics["fonemas"]
+    if (sum(m["errores"] for m in subject_metrics.values()) != test_metrics["errores"]
+            or sum(m["fonemas"] for m in subject_metrics.values()) != test_metrics["fonemas"]):
+        raise ValueError("Las predicciones por participante no reproducen los recuentos del test.")
     report = {"tarea": "EEG de escucha a fonemas; adaptación propia de SpeechGRU + CTC",
               "run_id": run.id, "hardware": hardware, "device": str(device), "config": cfg,
               "data_manifest_sha256": manifest_hash, "sources_sha256": manifest["sources_sha256"],
               "counts": manifest["counts"], "channels": manifest["channels"],
+              "subjects": cfg["datos"]["sesiones"], "counts_by_subject": manifest.get("counts_by_subject"),
+              "missing_segments": manifest.get("missing_segments", []),
               "model_parameters": sum(p.numel() for p in model.parameters()),
               "reused": ["SpeechGRU", "PhonemeEncoder", "SpeechSample/SpeechBatch/collate_speech",
                          "SessionBatchSampler", "TensorFlowAdam", "bucle CTC/microlotes/L2/clipping", "evaluar_habla/PER"],
@@ -178,10 +200,13 @@ def ejecutar_alice_ctc(
               "stopped_for_time": stopped, "validation_history": history,
               "training_seconds_including_val_and_saves": training_seconds,
               "test": test_metrics, "zero_eeg_control": control, "phone_prior_control": prior_control,
+              "test_by_subject": subject_metrics,
+              "test_macro_per": sum(m["per"] for m in subject_metrics.values()) / len(subject_metrics),
+              "cuda_memory": _memory_metrics(device),
               "empty_prediction_per": 1.0,
               "checkpoint": str(checkpoint), "checkpoint_sha256": file_sha256(checkpoint),
               "checkpoint_reloaded_before_test": True, "evaluation_only": solo_evaluar,
-              "limits": ["Un participante y un audiolibro: experimento exploratorio.",
+              "limits": [f"{len(cfg['datos']['sesiones'])} participantes conocidos y un audiolibro; texto reservado por segmentos.",
                          "No prueba generalización entre personas, habla intentada ni funcionamiento en tiempo real.",
                          "Referencias fonéticas generadas por g2p-en; no anotación fonética del audio.",
                          "Sin ICA ni rechazo manual de artefactos; el control de ceros no descarta todos los confusores.",
@@ -194,6 +219,9 @@ def ejecutar_alice_ctc(
                         **{f"alice_ctc/test_{k}": v for k, v in test_metrics.items()},
                         "alice_ctc/zero_eeg_per": control["per"], "alice_ctc/prior_per": prior_control["per"],
                         "alice_ctc/empty_per": 1.0})
+    run.summary.update({"alice_ctc/subjects": len(subject_metrics), "alice_ctc/test_macro_per": report["test_macro_per"],
+                        **_memory_metrics(device),
+                        **{f"alice_ctc/subjects/{subject}/per": m["per"] for subject, m in subject_metrics.items()}})
     registrar(run, {**{f"test_final/{k}": v for k, v in test_metrics.items()},
                     "control_ceros/per": control["per"], "control_prior/per": prior_control["per"]}, step + 1)
     print(f"test final: PER={test_metrics['per']:.2%} · EEG cero={control['per']:.2%} · "

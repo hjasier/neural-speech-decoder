@@ -22,8 +22,16 @@ def main() -> int:
     args = parser.parse_args()
     cfg = yaml.safe_load(args.config.read_text())
     manifest = prepare_alice_ctc(cfg, force=args.force)
+    excluded = manifest["excluded_channels"]
+    if isinstance(excluded, dict):
+        excluded = sorted({channel for channels in excluded.values() for channel in channels})
+    missing = manifest.get("missing_segments", {})
+    if isinstance(missing, dict):
+        missing = {subject: segments for subject, segments in missing.items() if segments}
     print(json.dumps({"destino": cfg["datos"]["preparados"], "secuencias": manifest["counts"],
-                      "canales": len(manifest["channels"]), "excluidos": manifest["excluded_channels"],
+                      "participantes": len(cfg["datos"]["sesiones"]),
+                      "canales": len(manifest["channels"]), "excluidos": excluded,
+                      "segmentos_ausentes": missing,
                       "blank_id": manifest["blank_id"], "signature": manifest["signature"]}, indent=2))
     return 0
 

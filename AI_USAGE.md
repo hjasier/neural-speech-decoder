@@ -29,6 +29,9 @@ comprueba en la defensa.
 | 2026-10-19 | Resolver el error genérico al descargar datos en Colab | Codex | Cambió el lanzador para mostrar stdout/stderr y conservar el motivo real del fallo. Añadió detección del archivo original en Drive y copia mediante parcial verificado por tamaño y SHA-256. Validó la captura de errores sin descargar el corpus ni entrenar y conservó las salidas de las demás celdas. | Corrección del error comunicado por el autor; el traceback recibido no identifica por sí solo la causa de la descarga. |
 | 2026-10-20 | Explorar una prueba propia con Alice EEG y revisar Brain-to-voice | Codex | Descargó y verificó sub-001, implementó lector y comparación media/ridge/GRU en PyTorch y ejecutó un piloto acotado en CPU con W&B. Verificó la recarga, guardó métricas/figura y detectó un patrón anómalo en sound_power al revisar los datos
 
+| 2026-10-20 | Ampliar Alice GRU + CTC a CUDA en Colab T4 | Codex | Añadió adaptadores por participante, perfil de cinco GRU de 512 y lote 64/microlote 16, catálogo verificado, métricas por persona y lanzador CUDA con fuentes/resultados en Drive.|
+
+
 
 
 ---

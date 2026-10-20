@@ -1,0 +1,1390 @@
+{
+  "key": "alice_eeg",
+  "dataset": "nm000180",
+  "version": "v1.1.3",
+  "git_tree": "708a03314d2954949e0989e8078d5b6c714c9eea",
+  "license": "CC-BY-4.0",
+  "citation": "Brennan, J. R. & Hale, J. T. (2019). Hierarchical structure guides rapid linguistic predictions during naturalistic listening. PLoS ONE 14(1): e0207741.",
+  "doi": "10.82901/nemar.nm000180",
+  "source_manifest": "https://data.nemar.org/nm000180/v1.1.3/manifest.json",
+  "files": [
+    {
+      "path": "README.md",
+      "size": 5862,
+      "checksum_algorithm": "git",
+      "checksum": "cebe91ca317813f00bbaeaaea974930db4abca97",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/README.md",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/README.md"
+    },
+    {
+      "path": "dataset_description.json",
+      "size": 2432,
+      "checksum_algorithm": "git",
+      "checksum": "32d49ed199e51541dc7adee7b90b9962fef24efb",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/dataset_description.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/dataset_description.json"
+    },
+    {
+      "path": "participants.json",
+      "size": 1930,
+      "checksum_algorithm": "git",
+      "checksum": "c30a3e5280e29a21da61947ea8cf5acb7d91413d",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/participants.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/participants.json"
+    },
+    {
+      "path": "participants.tsv",
+      "size": 2344,
+      "checksum_algorithm": "git",
+      "checksum": "105085719ae20c3c9b404a4b0b8c102b9b564907",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/participants.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/participants.tsv"
+    },
+    {
+      "path": "task-alicelistening_events.json",
+      "size": 1946,
+      "checksum_algorithm": "git",
+      "checksum": "51ed074e1ff4a3e229d3afbbe93337b34b14a7b7",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/task-alicelistening_events.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/task-alicelistening_events.json"
+    },
+    {
+      "path": "sourcedata/AliceChapterOne-EEG.csv",
+      "size": 247604,
+      "checksum_algorithm": "git",
+      "checksum": "4643a6f208850e0a8442f2549b303b0ec4f255ec",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sourcedata/AliceChapterOne-EEG.csv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sourcedata/AliceChapterOne-EEG.csv"
+    },
+    {
+      "path": "sub-001/eeg/sub-001_task-alicelistening_channels.tsv",
+      "size": 3618,
+      "checksum_algorithm": "git",
+      "checksum": "9ba886388290a66b40fa68bf93d2c6988df158ac",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-001/eeg/sub-001_task-alicelistening_eeg.eeg",
+      "size": 90898200,
+      "checksum_algorithm": "sha256",
+      "checksum": "e101562b63c01904cfe9637b84aa698bf01a8c90060e950a7ef4d6680b024da2",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-001/eeg/sub-001_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "3537b6c29a7510e8e1ee9321144a73c542abbdea",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-001/eeg/sub-001_task-alicelistening_eeg.vhdr",
+      "size": 1729,
+      "checksum_algorithm": "sha256",
+      "checksum": "86568dcbf992dd8942a048d460b71504d0fb09ac316412b090a1a85d6bc99efb",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-001/eeg/sub-001_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "60866dc1c107de52f95668ff7176ea64970b2f1e",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-001/eeg/sub-001_task-alicelistening_events.tsv",
+      "size": 300309,
+      "checksum_algorithm": "git",
+      "checksum": "5e8755b32ff2ce84bdca963692a4e3f58af9f0da",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-001/eeg/sub-001_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-003/eeg/sub-003_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-003/eeg/sub-003_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-003/eeg/sub-003_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-003/eeg/sub-003_task-alicelistening_eeg.eeg",
+      "size": 91090400,
+      "checksum_algorithm": "sha256",
+      "checksum": "ff37de0fc49553b13c2890a534d5195e8335e29644d416787d486219e73db797",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-003/eeg/sub-003_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-003/eeg/sub-003_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-003/eeg/sub-003_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "ecd10b3daf3922bbde4a95e802d63e71efb0fd0f",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-003/eeg/sub-003_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-003/eeg/sub-003_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-003/eeg/sub-003_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "0602b767a2df18a0cbb8482830ed75539f524636d7716cf6061ab060913a85b3",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-003/eeg/sub-003_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-003/eeg/sub-003_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-003/eeg/sub-003_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "558f1bd9be077ef09b8549db04e1c47e556e5a9b",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-003/eeg/sub-003_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-003/eeg/sub-003_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-003/eeg/sub-003_task-alicelistening_events.tsv",
+      "size": 300321,
+      "checksum_algorithm": "git",
+      "checksum": "754e9656866487fea4a56857f2de571866f11ebb",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-003/eeg/sub-003_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-003/eeg/sub-003_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-005/eeg/sub-005_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-005/eeg/sub-005_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-005/eeg/sub-005_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-005/eeg/sub-005_task-alicelistening_eeg.eeg",
+      "size": 92460600,
+      "checksum_algorithm": "sha256",
+      "checksum": "5edd182a4ae9ed9cfbd6671b4672fe6b5b3160fe4c1945795774472e2f1f8451",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-005/eeg/sub-005_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-005/eeg/sub-005_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-005/eeg/sub-005_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "d5f0cb8442595b4b9fa2ad961cb7278c1baf30fa",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-005/eeg/sub-005_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-005/eeg/sub-005_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-005/eeg/sub-005_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "e25aecd1721b9b965c376f051b0f446664219a3b2f1a3af738a80a679d3329b4",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-005/eeg/sub-005_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-005/eeg/sub-005_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-005/eeg/sub-005_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "d9c033f6696551af1883ca6588ae1d9ae4c753cc",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-005/eeg/sub-005_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-005/eeg/sub-005_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-005/eeg/sub-005_task-alicelistening_events.tsv",
+      "size": 300327,
+      "checksum_algorithm": "git",
+      "checksum": "d1d7a1433d9cf8f8572faa2a8ca4fc9814113df1",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-005/eeg/sub-005_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-005/eeg/sub-005_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-006/eeg/sub-006_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-006/eeg/sub-006_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-006/eeg/sub-006_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-006/eeg/sub-006_task-alicelistening_eeg.eeg",
+      "size": 91127600,
+      "checksum_algorithm": "sha256",
+      "checksum": "c45d3d22d1b58a1242e9bfd615e028bdd39a45a30a6510a04528731443f7c41e",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-006/eeg/sub-006_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-006/eeg/sub-006_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-006/eeg/sub-006_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "8ff341934f8cca44c5f64d9bb56b07f42fe4af46",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-006/eeg/sub-006_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-006/eeg/sub-006_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-006/eeg/sub-006_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "cf19cb346677508dc6f82e0b27a88b1f6ec340a6f6c38ba77e63a8e17ebfcf58",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-006/eeg/sub-006_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-006/eeg/sub-006_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-006/eeg/sub-006_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "9575fedb36dadbb16df677c087a1d1fa48d4394b",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-006/eeg/sub-006_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-006/eeg/sub-006_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-006/eeg/sub-006_task-alicelistening_events.tsv",
+      "size": 300286,
+      "checksum_algorithm": "git",
+      "checksum": "42584826ba40f602885e21f8a5c5ce2b1e45ee2c",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-006/eeg/sub-006_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-006/eeg/sub-006_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-008/eeg/sub-008_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-008/eeg/sub-008_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-008/eeg/sub-008_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-008/eeg/sub-008_task-alicelistening_eeg.eeg",
+      "size": 91654600,
+      "checksum_algorithm": "sha256",
+      "checksum": "9e38c07e726569e031b813cf40163c72cbbd959dc7960e2e22a28b4e8d270a58",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-008/eeg/sub-008_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-008/eeg/sub-008_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-008/eeg/sub-008_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "6b8ea4cca6bd68e8440e81bbd5bb227af1dc31f2",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-008/eeg/sub-008_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-008/eeg/sub-008_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-008/eeg/sub-008_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "9443957f17ec5abe2cee59ea9008995e21d5a2c3d0c63fd9133c9b669dbaa064",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-008/eeg/sub-008_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-008/eeg/sub-008_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-008/eeg/sub-008_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "5ce2d2a65ac03245b86d11153266d643a2a0748f",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-008/eeg/sub-008_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-008/eeg/sub-008_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-008/eeg/sub-008_task-alicelistening_events.tsv",
+      "size": 300299,
+      "checksum_algorithm": "git",
+      "checksum": "c6fbcc7cbfe5ee054c273019375a456a6a793418",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-008/eeg/sub-008_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-008/eeg/sub-008_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-010/eeg/sub-010_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-010/eeg/sub-010_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-010/eeg/sub-010_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-010/eeg/sub-010_task-alicelistening_eeg.eeg",
+      "size": 90420800,
+      "checksum_algorithm": "sha256",
+      "checksum": "b3f12a342677e735ef747c7f7b7430590c51bdf425005dc023ee0aaaedfc973d",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-010/eeg/sub-010_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-010/eeg/sub-010_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-010/eeg/sub-010_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "cb92c6f84bdc3deed2ae5711591459ac693d507b",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-010/eeg/sub-010_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-010/eeg/sub-010_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-010/eeg/sub-010_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "8a9685002deaa92a131cf68aa31686b1a45facff966e6aa1823662d09e2de8ba",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-010/eeg/sub-010_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-010/eeg/sub-010_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-010/eeg/sub-010_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "97129045ce7c9e32be8ce3c23317978475cb6340",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-010/eeg/sub-010_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-010/eeg/sub-010_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-010/eeg/sub-010_task-alicelistening_events.tsv",
+      "size": 300271,
+      "checksum_algorithm": "git",
+      "checksum": "a5b80f6448e5e5be02cde9076ceedc71fd9cb4d9",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-010/eeg/sub-010_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-010/eeg/sub-010_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-011/eeg/sub-011_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-011/eeg/sub-011_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-011/eeg/sub-011_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-011/eeg/sub-011_task-alicelistening_eeg.eeg",
+      "size": 91654600,
+      "checksum_algorithm": "sha256",
+      "checksum": "5b11cf3a3eef91f620da454f226577f9b917179ce2f0936c25c8694f8f990362",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-011/eeg/sub-011_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-011/eeg/sub-011_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-011/eeg/sub-011_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "6b8ea4cca6bd68e8440e81bbd5bb227af1dc31f2",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-011/eeg/sub-011_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-011/eeg/sub-011_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-011/eeg/sub-011_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "332bacc744183f38b34640dfafd4802fbbb8e44c1418883754acf5e3c6d8f00a",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-011/eeg/sub-011_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-011/eeg/sub-011_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-011/eeg/sub-011_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "a23e16c996af44947dd6acfa8c91e6d745a18527",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-011/eeg/sub-011_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-011/eeg/sub-011_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-011/eeg/sub-011_task-alicelistening_events.tsv",
+      "size": 300317,
+      "checksum_algorithm": "git",
+      "checksum": "b4f94497322567df6f87f3c8931d954154950273",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-011/eeg/sub-011_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-011/eeg/sub-011_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-012/eeg/sub-012_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-012/eeg/sub-012_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-012/eeg/sub-012_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-012/eeg/sub-012_task-alicelistening_eeg.eeg",
+      "size": 90551000,
+      "checksum_algorithm": "sha256",
+      "checksum": "9e952a7358b3c65a77b27ffb873b6072773c1b973b3f8dc96e76d965971a0dbe",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-012/eeg/sub-012_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-012/eeg/sub-012_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-012/eeg/sub-012_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "9a4775261be2b3cb373268143f1bca0881a4a6d2",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-012/eeg/sub-012_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-012/eeg/sub-012_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-012/eeg/sub-012_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "04ac3cc80cbdb0bf8fa930fc2d22b5ccf77f97d010483f103986f6060fb1e01f",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-012/eeg/sub-012_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-012/eeg/sub-012_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-012/eeg/sub-012_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "017d1d13b502e438536001043dc92e8aee4c15bf",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-012/eeg/sub-012_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-012/eeg/sub-012_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-012/eeg/sub-012_task-alicelistening_events.tsv",
+      "size": 300270,
+      "checksum_algorithm": "git",
+      "checksum": "10fcad1e96764bb953a27c69c40a72efbd4f30e7",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-012/eeg/sub-012_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-012/eeg/sub-012_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-013/eeg/sub-013_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-013/eeg/sub-013_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-013/eeg/sub-013_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-013/eeg/sub-013_task-alicelistening_eeg.eeg",
+      "size": 91332200,
+      "checksum_algorithm": "sha256",
+      "checksum": "a5f05549b3fcc4a4d0f95f144ed429f1525fdc41391b662450857904739ad4bf",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-013/eeg/sub-013_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-013/eeg/sub-013_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-013/eeg/sub-013_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "2ba3eed481c39cef86df2ed38f0d2af124ab911a",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-013/eeg/sub-013_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-013/eeg/sub-013_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-013/eeg/sub-013_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "77b64a5e6bae3932a981b304add89262f023578f0ace57d5449b206da6e81d46",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-013/eeg/sub-013_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-013/eeg/sub-013_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-013/eeg/sub-013_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "b3baf8a061c0cae7370e049f0554fbe9a2388797",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-013/eeg/sub-013_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-013/eeg/sub-013_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-013/eeg/sub-013_task-alicelistening_events.tsv",
+      "size": 300307,
+      "checksum_algorithm": "git",
+      "checksum": "ea362f52975352b78a554f3dceea29da0e26fa2f",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-013/eeg/sub-013_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-013/eeg/sub-013_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-014/eeg/sub-014_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-014/eeg/sub-014_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-014/eeg/sub-014_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-014/eeg/sub-014_task-alicelistening_eeg.eeg",
+      "size": 90972600,
+      "checksum_algorithm": "sha256",
+      "checksum": "f0c5246b7b4dd34861b4e6f5e32cb017541192d0e86993e1a86d4b19c0d53a88",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-014/eeg/sub-014_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-014/eeg/sub-014_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-014/eeg/sub-014_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "72348d30f2933b3e62f082970e544e822aa12a2f",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-014/eeg/sub-014_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-014/eeg/sub-014_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-014/eeg/sub-014_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "3441d6c6f096fe563fe14bece2e0c41393ff27043f3ddb37c8c4a1af90bd9747",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-014/eeg/sub-014_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-014/eeg/sub-014_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-014/eeg/sub-014_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "bbbc653c9864c25a7c1b489b55e7681708fd6e03",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-014/eeg/sub-014_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-014/eeg/sub-014_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-014/eeg/sub-014_task-alicelistening_events.tsv",
+      "size": 300324,
+      "checksum_algorithm": "git",
+      "checksum": "1255a559ce613352a59b069ec76980085412f59f",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-014/eeg/sub-014_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-014/eeg/sub-014_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-015/eeg/sub-015_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-015/eeg/sub-015_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-015/eeg/sub-015_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-015/eeg/sub-015_task-alicelistening_eeg.eeg",
+      "size": 91462400,
+      "checksum_algorithm": "sha256",
+      "checksum": "57b42b7d4064000c932c9cba5b93010812022d093806c67ea1465007629822ca",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-015/eeg/sub-015_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-015/eeg/sub-015_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-015/eeg/sub-015_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "749b980f8f370504f1b054b6001b82b47d231277",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-015/eeg/sub-015_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-015/eeg/sub-015_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-015/eeg/sub-015_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "3a71e63b572c86daa0fe185a5b081b22b5edc03d905f312f6c6911b7c17fb27f",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-015/eeg/sub-015_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-015/eeg/sub-015_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-015/eeg/sub-015_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "f389fc696afb8dc2379f2a06068caecbef4e87e9",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-015/eeg/sub-015_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-015/eeg/sub-015_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-015/eeg/sub-015_task-alicelistening_events.tsv",
+      "size": 300298,
+      "checksum_algorithm": "git",
+      "checksum": "37a976c8fd4aaeb8fb52212c5d158ed777015409",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-015/eeg/sub-015_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-015/eeg/sub-015_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-017/eeg/sub-017_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-017/eeg/sub-017_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-017/eeg/sub-017_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-017/eeg/sub-017_task-alicelistening_eeg.eeg",
+      "size": 90681200,
+      "checksum_algorithm": "sha256",
+      "checksum": "b315eeed477a795e29ce2d8bd5e48934fcf3934861ce02bee2da2b8504c7d7da",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-017/eeg/sub-017_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-017/eeg/sub-017_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-017/eeg/sub-017_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "d9bb3f8ba4a8f6c8b8264a7e4706e7f01d526fb0",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-017/eeg/sub-017_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-017/eeg/sub-017_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-017/eeg/sub-017_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "afbf385f6cbec2f31dcfbc1b3d21114f709da16de8d62c390b56137db71a47b4",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-017/eeg/sub-017_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-017/eeg/sub-017_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-017/eeg/sub-017_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "ab5f8e254719bc78daaacf6c18c774ffa39b9270",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-017/eeg/sub-017_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-017/eeg/sub-017_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-017/eeg/sub-017_task-alicelistening_events.tsv",
+      "size": 300308,
+      "checksum_algorithm": "git",
+      "checksum": "1a638e76bc899e6c5ef2e8f169df7a6e052dcff9",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-017/eeg/sub-017_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-017/eeg/sub-017_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-018/eeg/sub-018_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-018/eeg/sub-018_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-018/eeg/sub-018_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-018/eeg/sub-018_task-alicelistening_eeg.eeg",
+      "size": 91797200,
+      "checksum_algorithm": "sha256",
+      "checksum": "33d3c17280045e578132222c282555b8f66df24ca3e5070bdfe5a2cd1893e382",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-018/eeg/sub-018_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-018/eeg/sub-018_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-018/eeg/sub-018_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "51a593e2b2ad6a3ae0be2a7ddaa557ed97f4f312",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-018/eeg/sub-018_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-018/eeg/sub-018_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-018/eeg/sub-018_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "918ccea3a419ea0d878ec64b4443ce09b296d1c2b25cfd2694cd2465fa36e441",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-018/eeg/sub-018_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-018/eeg/sub-018_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-018/eeg/sub-018_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "f59e9d320aacf7a72e73925efabf97cd3434f7d9",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-018/eeg/sub-018_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-018/eeg/sub-018_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-018/eeg/sub-018_task-alicelistening_events.tsv",
+      "size": 300308,
+      "checksum_algorithm": "git",
+      "checksum": "ff6375d4fe0d0c40b6376250487d9ce1f4f3349a",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-018/eeg/sub-018_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-018/eeg/sub-018_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-019/eeg/sub-019_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-019/eeg/sub-019_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-019/eeg/sub-019_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-019/eeg/sub-019_task-alicelistening_eeg.eeg",
+      "size": 92597000,
+      "checksum_algorithm": "sha256",
+      "checksum": "04fc9da4cd624081a7126537f8bb272224ca6955a493f4b3b4499f8b2df98e4b",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-019/eeg/sub-019_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-019/eeg/sub-019_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-019/eeg/sub-019_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "c4c30879eda7af221b25101a002be1cee2b758f1",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-019/eeg/sub-019_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-019/eeg/sub-019_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-019/eeg/sub-019_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "9fe4a97ad2412a7a41473a9074d968f5074c4c074af6c7d596b5074976594b43",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-019/eeg/sub-019_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-019/eeg/sub-019_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-019/eeg/sub-019_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "a6593a9007d17a222d329864cf928190ab89d752",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-019/eeg/sub-019_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-019/eeg/sub-019_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-019/eeg/sub-019_task-alicelistening_events.tsv",
+      "size": 300324,
+      "checksum_algorithm": "git",
+      "checksum": "57db44f36f5716f9db4a8ae24538a6ace5f8bcf0",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-019/eeg/sub-019_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-019/eeg/sub-019_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-020/eeg/sub-020_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-020/eeg/sub-020_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-020/eeg/sub-020_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-020/eeg/sub-020_task-alicelistening_eeg.eeg",
+      "size": 91369400,
+      "checksum_algorithm": "sha256",
+      "checksum": "047b4b760f97ae074b083341e27ab5391f942bec72249e0ed7bb69f6543b2b04",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-020/eeg/sub-020_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-020/eeg/sub-020_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-020/eeg/sub-020_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "4b84f5452d28d8def38742376ed45e5dc9af7808",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-020/eeg/sub-020_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-020/eeg/sub-020_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-020/eeg/sub-020_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "e16cafcf04ba169ae97102e33915d539096d4232e5cb6c1e8e5df4a8daaae0ea",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-020/eeg/sub-020_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-020/eeg/sub-020_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-020/eeg/sub-020_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "581aef59176d0f165585ffc928acef48fcc9a630",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-020/eeg/sub-020_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-020/eeg/sub-020_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-020/eeg/sub-020_task-alicelistening_events.tsv",
+      "size": 300314,
+      "checksum_algorithm": "git",
+      "checksum": "4c794c846b33b2f3f837812a631579d8c7cb29eb",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-020/eeg/sub-020_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-020/eeg/sub-020_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-021/eeg/sub-021_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-021/eeg/sub-021_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-021/eeg/sub-021_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-021/eeg/sub-021_task-alicelistening_eeg.eeg",
+      "size": 91995600,
+      "checksum_algorithm": "sha256",
+      "checksum": "a17b686c6081ee231d047a7932c6323137579de6175bcb1aa3d6826301adbbd9",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-021/eeg/sub-021_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-021/eeg/sub-021_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-021/eeg/sub-021_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "34e14296035b51da40166c1d03a1de4349bc0a6c",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-021/eeg/sub-021_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-021/eeg/sub-021_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-021/eeg/sub-021_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "eea88812aeb370926803359f163088c02c5636041fbe6841dddc67eb0030af87",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-021/eeg/sub-021_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-021/eeg/sub-021_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-021/eeg/sub-021_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "68588f4f0fddb70969d0d32b3a55cc252e27249a",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-021/eeg/sub-021_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-021/eeg/sub-021_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-021/eeg/sub-021_task-alicelistening_events.tsv",
+      "size": 300293,
+      "checksum_algorithm": "git",
+      "checksum": "d192417248376d3b60424c31d1d98c21179fe64d",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-021/eeg/sub-021_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-021/eeg/sub-021_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-022/eeg/sub-022_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-022/eeg/sub-022_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-022/eeg/sub-022_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-022/eeg/sub-022_task-alicelistening_eeg.eeg",
+      "size": 90526200,
+      "checksum_algorithm": "sha256",
+      "checksum": "3b57311618d41a71e6840927c4439610d4ebd33e715d03fd787efa8c9d5e9528",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-022/eeg/sub-022_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-022/eeg/sub-022_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-022/eeg/sub-022_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "c1c78b4525eaf430e6c0c4e44dd13c9335d20f82",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-022/eeg/sub-022_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-022/eeg/sub-022_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-022/eeg/sub-022_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "006068ff029e79456d20dc06cfc8a7311e0cda08e45e8df7915e5435f35127ab",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-022/eeg/sub-022_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-022/eeg/sub-022_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-022/eeg/sub-022_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "e6444fa996065e460e21620c3944bce227f313d0",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-022/eeg/sub-022_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-022/eeg/sub-022_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-022/eeg/sub-022_task-alicelistening_events.tsv",
+      "size": 300291,
+      "checksum_algorithm": "git",
+      "checksum": "ca9e104641b13039e60323ff852b778c0b7aa3b1",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-022/eeg/sub-022_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-022/eeg/sub-022_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-025/eeg/sub-025_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-025/eeg/sub-025_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-025/eeg/sub-025_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-025/eeg/sub-025_task-alicelistening_eeg.eeg",
+      "size": 90693600,
+      "checksum_algorithm": "sha256",
+      "checksum": "7ace7d15ef179c5e27cf90f24b5c7669adaa2d8cba788f50eb9a69af6611999e",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-025/eeg/sub-025_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-025/eeg/sub-025_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-025/eeg/sub-025_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "0a40bbe3ee06ac065c55bfd1d3d7fff13c1e5254",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-025/eeg/sub-025_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-025/eeg/sub-025_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-025/eeg/sub-025_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "49f76829bb716a4708170e8f1bf10387b7f0d508f46acf5905e444b51138681b",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-025/eeg/sub-025_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-025/eeg/sub-025_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-025/eeg/sub-025_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "f7f9db40238a93ee64fb8a1d4497f8ff6167eae5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-025/eeg/sub-025_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-025/eeg/sub-025_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-025/eeg/sub-025_task-alicelistening_events.tsv",
+      "size": 300300,
+      "checksum_algorithm": "git",
+      "checksum": "9dd7a48d8b08c2cba3ceacaa6dbab39e1c1a31b7",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-025/eeg/sub-025_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-025/eeg/sub-025_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-037/eeg/sub-037_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-037/eeg/sub-037_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-037/eeg/sub-037_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-037/eeg/sub-037_task-alicelistening_eeg.eeg",
+      "size": 90203800,
+      "checksum_algorithm": "sha256",
+      "checksum": "e54e2a2b33386b9674a2860b78d719a9272f3eca0c2a19633013a272aea256d3",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-037/eeg/sub-037_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-037/eeg/sub-037_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-037/eeg/sub-037_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "7f1dfb6e3882b19c1c6e08550c862a8203f88c7d",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-037/eeg/sub-037_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-037/eeg/sub-037_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-037/eeg/sub-037_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "00b4bab3ceddff5f030813e1e6e40bf11a4374eb12721bfd77aea0af106e7faf",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-037/eeg/sub-037_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-037/eeg/sub-037_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-037/eeg/sub-037_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "11fcfb824347bbf9486190616f29a51d4bddf9d3",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-037/eeg/sub-037_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-037/eeg/sub-037_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-037/eeg/sub-037_task-alicelistening_events.tsv",
+      "size": 300282,
+      "checksum_algorithm": "git",
+      "checksum": "29935eb038ceb5230ebf55b6b9f273ed6f8cdeb8",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-037/eeg/sub-037_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-037/eeg/sub-037_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-038/eeg/sub-038_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-038/eeg/sub-038_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-038/eeg/sub-038_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-038/eeg/sub-038_task-alicelistening_eeg.eeg",
+      "size": 90309200,
+      "checksum_algorithm": "sha256",
+      "checksum": "3d5bf88c4e7d31fbd4b6f87b8dbd9ed3fdb739ff69b443a42fa63ad2aabc8da0",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-038/eeg/sub-038_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-038/eeg/sub-038_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-038/eeg/sub-038_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "426cad468fd61668f539e0d7b2abb64f22092953",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-038/eeg/sub-038_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-038/eeg/sub-038_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-038/eeg/sub-038_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "60ed010aee8aac5b8936fbb71e46a6d473b362eaa13c1fa08b069253ff79ee1f",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-038/eeg/sub-038_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-038/eeg/sub-038_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-038/eeg/sub-038_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "531b6e6e6c4bd1eb82dbd0fe7722b276476a888f",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-038/eeg/sub-038_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-038/eeg/sub-038_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-038/eeg/sub-038_task-alicelistening_events.tsv",
+      "size": 300313,
+      "checksum_algorithm": "git",
+      "checksum": "338a6faffd2c760be67876f8737afd7884321ed1",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-038/eeg/sub-038_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-038/eeg/sub-038_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-039/eeg/sub-039_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-039/eeg/sub-039_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-039/eeg/sub-039_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-039/eeg/sub-039_task-alicelistening_eeg.eeg",
+      "size": 90445600,
+      "checksum_algorithm": "sha256",
+      "checksum": "efcbb08648c747099353038c40348cd3def42824626ec2bd32633a8c299f3ac1",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-039/eeg/sub-039_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-039/eeg/sub-039_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-039/eeg/sub-039_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "894e531bfa332f6bec94ac594b36ed76b29cb41e",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-039/eeg/sub-039_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-039/eeg/sub-039_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-039/eeg/sub-039_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "a0da3887b58513920d5bbc7dc480dd33004670df654133fb0cab1fe0c492667c",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-039/eeg/sub-039_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-039/eeg/sub-039_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-039/eeg/sub-039_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "9830b972f9104ac384181f2617d1a50b9109a7da",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-039/eeg/sub-039_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-039/eeg/sub-039_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-039/eeg/sub-039_task-alicelistening_events.tsv",
+      "size": 300302,
+      "checksum_algorithm": "git",
+      "checksum": "c8afbee2485fb7502dbde5ed7e5c1c09313f43af",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-039/eeg/sub-039_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-039/eeg/sub-039_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-040/eeg/sub-040_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-040/eeg/sub-040_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-040/eeg/sub-040_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-040/eeg/sub-040_task-alicelistening_eeg.eeg",
+      "size": 90675000,
+      "checksum_algorithm": "sha256",
+      "checksum": "c7e7b2765b753edc7e66c7fe1ea55ae2aa1cb9b488080cf49a6beb38f861632c",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-040/eeg/sub-040_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-040/eeg/sub-040_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-040/eeg/sub-040_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "e4fcffb7a5f30777c3563ae8d4d9e9053de64456",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-040/eeg/sub-040_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-040/eeg/sub-040_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-040/eeg/sub-040_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "4dedd1d61d7be16885f6023b4ada20bbe390387e2b59800d8b390b82f8c3b751",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-040/eeg/sub-040_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-040/eeg/sub-040_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-040/eeg/sub-040_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "e147102ec0e422fad31c20c05287101f2a027527",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-040/eeg/sub-040_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-040/eeg/sub-040_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-040/eeg/sub-040_task-alicelistening_events.tsv",
+      "size": 300258,
+      "checksum_algorithm": "git",
+      "checksum": "659f1d13a2f8dd4a4c0377d7db5b4d831f388e65",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-040/eeg/sub-040_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-040/eeg/sub-040_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-041/eeg/sub-041_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-041/eeg/sub-041_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-041/eeg/sub-041_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-041/eeg/sub-041_task-alicelistening_eeg.eeg",
+      "size": 90526200,
+      "checksum_algorithm": "sha256",
+      "checksum": "aa1325678e6561b771e3b1c7fbd3d269de1648f782e07a95153891529f538120",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-041/eeg/sub-041_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-041/eeg/sub-041_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-041/eeg/sub-041_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "c1c78b4525eaf430e6c0c4e44dd13c9335d20f82",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-041/eeg/sub-041_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-041/eeg/sub-041_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-041/eeg/sub-041_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "1ac7b0ef3b651d9e6542be4ae6a353fcbcfdb9bc434f895476ac112b7a4eca38",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-041/eeg/sub-041_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-041/eeg/sub-041_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-041/eeg/sub-041_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "913ffaf258c5545a938bb5c72df5115d24ce4a1b",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-041/eeg/sub-041_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-041/eeg/sub-041_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-041/eeg/sub-041_task-alicelistening_events.tsv",
+      "size": 300271,
+      "checksum_algorithm": "git",
+      "checksum": "710cc7a8c2351dd6bbb8983cd2c17a302ac53d97",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-041/eeg/sub-041_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-041/eeg/sub-041_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-042/eeg/sub-042_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-042/eeg/sub-042_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-042/eeg/sub-042_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-042/eeg/sub-042_task-alicelistening_eeg.eeg",
+      "size": 90296800,
+      "checksum_algorithm": "sha256",
+      "checksum": "4b4d5658125ed421c7f214271c03a5886f3232459b26750e9a1af2e0ddf3c879",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-042/eeg/sub-042_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-042/eeg/sub-042_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-042/eeg/sub-042_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "69265cc1394b56929df2e4f26124ea4949181eff",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-042/eeg/sub-042_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-042/eeg/sub-042_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-042/eeg/sub-042_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "7670c19fa1b10ef9a1de766422301256e97cd1d1b5af218b8151427ed89e9e85",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-042/eeg/sub-042_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-042/eeg/sub-042_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-042/eeg/sub-042_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "ea2f8131d773e58f025acc9c8694ed08825ba452",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-042/eeg/sub-042_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-042/eeg/sub-042_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-042/eeg/sub-042_task-alicelistening_events.tsv",
+      "size": 300257,
+      "checksum_algorithm": "git",
+      "checksum": "ee2f3666aa1a91f7d8d482c2794618312720d2eb",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-042/eeg/sub-042_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-042/eeg/sub-042_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-044/eeg/sub-044_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-044/eeg/sub-044_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-044/eeg/sub-044_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-044/eeg/sub-044_task-alicelistening_eeg.eeg",
+      "size": 90396000,
+      "checksum_algorithm": "sha256",
+      "checksum": "490f8197e873f6d3bfa46f856a228139274fc98e582b8503e1ea053ea693f9d4",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-044/eeg/sub-044_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-044/eeg/sub-044_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-044/eeg/sub-044_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "e2ad935f17b0fc4418b8568349fe8153e0502dc6",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-044/eeg/sub-044_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-044/eeg/sub-044_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-044/eeg/sub-044_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "d87f0e5779a5b7bd04f768cb7376e4dfd0fc9298c8b4f8ec60564e3d580403eb",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-044/eeg/sub-044_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-044/eeg/sub-044_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-044/eeg/sub-044_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "6328379aa621e37c6d9bb9860ad0eb3204ea7a8c",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-044/eeg/sub-044_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-044/eeg/sub-044_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-044/eeg/sub-044_task-alicelistening_events.tsv",
+      "size": 300275,
+      "checksum_algorithm": "git",
+      "checksum": "6f99da3f1bb317e0e5e1021995b44958dab3064f",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-044/eeg/sub-044_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-044/eeg/sub-044_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-045/eeg/sub-045_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-045/eeg/sub-045_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-045/eeg/sub-045_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-045/eeg/sub-045_task-alicelistening_eeg.eeg",
+      "size": 90544800,
+      "checksum_algorithm": "sha256",
+      "checksum": "4f163d82713b091d88de291d6ed8e2a92b81f42958e0e2acb8c339ed55a7ae92",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-045/eeg/sub-045_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-045/eeg/sub-045_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-045/eeg/sub-045_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "3765a7de919f739876d99801d1580400738e383d",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-045/eeg/sub-045_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-045/eeg/sub-045_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-045/eeg/sub-045_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "df07b8e743a38480b3a05c6fe69142608975d215a83c935a5e02c4b53ef9c5c0",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-045/eeg/sub-045_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-045/eeg/sub-045_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-045/eeg/sub-045_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "55a78b56b71da128f0f2f984650a34433608f417",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-045/eeg/sub-045_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-045/eeg/sub-045_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-045/eeg/sub-045_task-alicelistening_events.tsv",
+      "size": 300252,
+      "checksum_algorithm": "git",
+      "checksum": "6bb7c300465a8197088fca3f8b1d5931c59cb1d4",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-045/eeg/sub-045_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-045/eeg/sub-045_task-alicelistening_events.tsv"
+    },
+    {
+      "path": "sub-048/eeg/sub-048_task-alicelistening_channels.tsv",
+      "size": 3617,
+      "checksum_algorithm": "git",
+      "checksum": "95aaf2c8cf6845d84c0daa29a706a9243d0265c5",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-048/eeg/sub-048_task-alicelistening_channels.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-048/eeg/sub-048_task-alicelistening_channels.tsv"
+    },
+    {
+      "path": "sub-048/eeg/sub-048_task-alicelistening_eeg.eeg",
+      "size": 90327800,
+      "checksum_algorithm": "sha256",
+      "checksum": "810c04a70cf9720f18e748695bed63f40adcd86fe2150aeb565d0edd2106cff0",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-048/eeg/sub-048_task-alicelistening_eeg.eeg",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-048/eeg/sub-048_task-alicelistening_eeg.eeg"
+    },
+    {
+      "path": "sub-048/eeg/sub-048_task-alicelistening_eeg.json",
+      "size": 1033,
+      "checksum_algorithm": "git",
+      "checksum": "b3260bb4cf92447b0714615ee9eb4500cd2a79c9",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-048/eeg/sub-048_task-alicelistening_eeg.json",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-048/eeg/sub-048_task-alicelistening_eeg.json"
+    },
+    {
+      "path": "sub-048/eeg/sub-048_task-alicelistening_eeg.vhdr",
+      "size": 1728,
+      "checksum_algorithm": "sha256",
+      "checksum": "3370a7650d137c3cf3e21fe5d66b5fed68281f23aa6e46040ed642d92d36e167",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-048/eeg/sub-048_task-alicelistening_eeg.vhdr",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-048/eeg/sub-048_task-alicelistening_eeg.vhdr"
+    },
+    {
+      "path": "sub-048/eeg/sub-048_task-alicelistening_eeg.vmrk",
+      "size": 518,
+      "checksum_algorithm": "git",
+      "checksum": "b3632f0f29c6e52923cf75fc63c61e4fd084406a",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-048/eeg/sub-048_task-alicelistening_eeg.vmrk",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-048/eeg/sub-048_task-alicelistening_eeg.vmrk"
+    },
+    {
+      "path": "sub-048/eeg/sub-048_task-alicelistening_events.tsv",
+      "size": 300255,
+      "checksum_algorithm": "git",
+      "checksum": "3f2c36c7bf9bdb73006fc8ec40414f93e3846112",
+      "bytes_url": "https://data.nemar.org/nm000180/v1.1.3/sub-048/eeg/sub-048_task-alicelistening_events.tsv",
+      "url": "https://data.nemar.org/nm000180/v1.1.3/sub-048/eeg/sub-048_task-alicelistening_events.tsv"
+    }
+  ],
+  "subjects": [
+    "sub-001",
+    "sub-003",
+    "sub-005",
+    "sub-006",
+    "sub-008",
+    "sub-010",
+    "sub-011",
+    "sub-012",
+    "sub-013",
+    "sub-014",
+    "sub-015",
+    "sub-017",
+    "sub-018",
+    "sub-019",
+    "sub-020",
+    "sub-021",
+    "sub-022",
+    "sub-025",
+    "sub-037",
+    "sub-038",
+    "sub-039",
+    "sub-040",
+    "sub-041",
+    "sub-042",
+    "sub-044",
+    "sub-045",
+    "sub-048"
+  ],
+  "selection": "participants.tsv: analyzed == yes; available participants in NEMAR v1.1.3",
+  "selection_notes": [
+    "27 participantes analyzed=yes con 12 segmentos y eventos estrictamente crecientes.",
+    "Excluidos sub-026, sub-034, sub-035 y sub-036: falta segmento 12 y tiempos duplicados entre segmentos; ver auditoria_t4.json."
+  ]
+}

@@ -1,0 +1,1042 @@
+{
+  "tipo": "auditoría de metadatos y referencias; no entrenamiento ni verificación de todas las señales EEG",
+  "dataset": "nm000180",
+  "version": "v1.1.3",
+  "catalogo_sha256": "cfc01b95dd0f02e604044c54ab1579982c135b08c2d0bffb4207b34224136408",
+  "config_sha256": "e6175bee1fba0cd64e9bd6abfb4cf82480d2a0b79a201bce9b66ca2a31fff429",
+  "subjects": [
+    "sub-001",
+    "sub-003",
+    "sub-005",
+    "sub-006",
+    "sub-008",
+    "sub-010",
+    "sub-011",
+    "sub-012",
+    "sub-013",
+    "sub-014",
+    "sub-015",
+    "sub-017",
+    "sub-018",
+    "sub-019",
+    "sub-020",
+    "sub-021",
+    "sub-022",
+    "sub-025",
+    "sub-037",
+    "sub-038",
+    "sub-039",
+    "sub-040",
+    "sub-041",
+    "sub-042",
+    "sub-044",
+    "sub-045",
+    "sub-048"
+  ],
+  "total_archivos": 168,
+  "total_bytes": 2465566644,
+  "metadatos_verificados_sha256": {
+    "sub-001/eeg/sub-001_task-alicelistening_eeg.vhdr": "86568dcbf992dd8942a048d460b71504d0fb09ac316412b090a1a85d6bc99efb",
+    "sub-001/eeg/sub-001_task-alicelistening_channels.tsv": "89183efaa1ce657916ae33f18427b691abd5829103f9a706b05918cfb87a4858",
+    "sub-001/eeg/sub-001_task-alicelistening_events.tsv": "82c458681dd4b7f02000c80113d0a2ce937bb2e2ad4d3105136d41630aae5cad",
+    "sub-003/eeg/sub-003_task-alicelistening_eeg.vhdr": "0602b767a2df18a0cbb8482830ed75539f524636d7716cf6061ab060913a85b3",
+    "sub-003/eeg/sub-003_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-003/eeg/sub-003_task-alicelistening_events.tsv": "7a470e39794c615803d5f77c6bd9d3db6372512a44068b564b03931ba0791bc6",
+    "sub-005/eeg/sub-005_task-alicelistening_eeg.vhdr": "e25aecd1721b9b965c376f051b0f446664219a3b2f1a3af738a80a679d3329b4",
+    "sub-005/eeg/sub-005_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-005/eeg/sub-005_task-alicelistening_events.tsv": "4ef471ce65a3981de0609760649e6412f67d5c55f771e1f247346ef816b780a2",
+    "sub-006/eeg/sub-006_task-alicelistening_eeg.vhdr": "cf19cb346677508dc6f82e0b27a88b1f6ec340a6f6c38ba77e63a8e17ebfcf58",
+    "sub-006/eeg/sub-006_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-006/eeg/sub-006_task-alicelistening_events.tsv": "31babffd7a448bf4e7e8121905624a715c7799efec37104b7354d9b131db2012",
+    "sub-008/eeg/sub-008_task-alicelistening_eeg.vhdr": "9443957f17ec5abe2cee59ea9008995e21d5a2c3d0c63fd9133c9b669dbaa064",
+    "sub-008/eeg/sub-008_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-008/eeg/sub-008_task-alicelistening_events.tsv": "37d7420fd24594ad2ecd9c8b140dbeed69db7684e89ee3d94ea2b94e564291c6",
+    "sub-010/eeg/sub-010_task-alicelistening_eeg.vhdr": "8a9685002deaa92a131cf68aa31686b1a45facff966e6aa1823662d09e2de8ba",
+    "sub-010/eeg/sub-010_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-010/eeg/sub-010_task-alicelistening_events.tsv": "d3633d7391b8b6668901724e90a2f37a203b53f52f887fe9001a0c5c480cca2d",
+    "sub-011/eeg/sub-011_task-alicelistening_eeg.vhdr": "332bacc744183f38b34640dfafd4802fbbb8e44c1418883754acf5e3c6d8f00a",
+    "sub-011/eeg/sub-011_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-011/eeg/sub-011_task-alicelistening_events.tsv": "e1d0d30d15355decb1b606c7f9d3b5901f0b8229a5998ccb502c6039eaedc98a",
+    "sub-012/eeg/sub-012_task-alicelistening_eeg.vhdr": "04ac3cc80cbdb0bf8fa930fc2d22b5ccf77f97d010483f103986f6060fb1e01f",
+    "sub-012/eeg/sub-012_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-012/eeg/sub-012_task-alicelistening_events.tsv": "10f9064016e3c0564dcfe933847c15ca3332bf08fd83565033648758b21d4f19",
+    "sub-013/eeg/sub-013_task-alicelistening_eeg.vhdr": "77b64a5e6bae3932a981b304add89262f023578f0ace57d5449b206da6e81d46",
+    "sub-013/eeg/sub-013_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-013/eeg/sub-013_task-alicelistening_events.tsv": "5c0e9bca27914194e282c90d84a4400423f50f4f78e8a71422c8dd1bb9439760",
+    "sub-014/eeg/sub-014_task-alicelistening_eeg.vhdr": "3441d6c6f096fe563fe14bece2e0c41393ff27043f3ddb37c8c4a1af90bd9747",
+    "sub-014/eeg/sub-014_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-014/eeg/sub-014_task-alicelistening_events.tsv": "209b1f5a50993416a8d871b70adccc55924e413678fd508be9cc4ce0798e7169",
+    "sub-015/eeg/sub-015_task-alicelistening_eeg.vhdr": "3a71e63b572c86daa0fe185a5b081b22b5edc03d905f312f6c6911b7c17fb27f",
+    "sub-015/eeg/sub-015_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-015/eeg/sub-015_task-alicelistening_events.tsv": "c99a4cd26c49e74f42690658a317dd544a1e81516ad90a8b011de1d8fb9055ef",
+    "sub-017/eeg/sub-017_task-alicelistening_eeg.vhdr": "afbf385f6cbec2f31dcfbc1b3d21114f709da16de8d62c390b56137db71a47b4",
+    "sub-017/eeg/sub-017_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-017/eeg/sub-017_task-alicelistening_events.tsv": "5f21fdbe0092384789b2295e54ed6e4c1d91ac27d8ffed734648c73a6e6c8cf3",
+    "sub-018/eeg/sub-018_task-alicelistening_eeg.vhdr": "918ccea3a419ea0d878ec64b4443ce09b296d1c2b25cfd2694cd2465fa36e441",
+    "sub-018/eeg/sub-018_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-018/eeg/sub-018_task-alicelistening_events.tsv": "25d896d2293784ba0e32aca13e96ba8a9fddf56500ff2de0036e7904af5dbb89",
+    "sub-019/eeg/sub-019_task-alicelistening_eeg.vhdr": "9fe4a97ad2412a7a41473a9074d968f5074c4c074af6c7d596b5074976594b43",
+    "sub-019/eeg/sub-019_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-019/eeg/sub-019_task-alicelistening_events.tsv": "d02f81a261f0fa8f526b52422705c325f9dbb7137f3936e050daa5696a09537a",
+    "sub-020/eeg/sub-020_task-alicelistening_eeg.vhdr": "e16cafcf04ba169ae97102e33915d539096d4232e5cb6c1e8e5df4a8daaae0ea",
+    "sub-020/eeg/sub-020_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-020/eeg/sub-020_task-alicelistening_events.tsv": "67cd116a548148ff087ae0b779de5942efbe84bab58d24550265d001673bbadf",
+    "sub-021/eeg/sub-021_task-alicelistening_eeg.vhdr": "eea88812aeb370926803359f163088c02c5636041fbe6841dddc67eb0030af87",
+    "sub-021/eeg/sub-021_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-021/eeg/sub-021_task-alicelistening_events.tsv": "b2b4ce7d32a795592c620f6ffe4718f0b05f2bed808701184ec0450e583435f0",
+    "sub-022/eeg/sub-022_task-alicelistening_eeg.vhdr": "006068ff029e79456d20dc06cfc8a7311e0cda08e45e8df7915e5435f35127ab",
+    "sub-022/eeg/sub-022_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-022/eeg/sub-022_task-alicelistening_events.tsv": "883da9bc55729dffb9a88826650ecf464524bf7d36d00450adf621c6ccd1fa0b",
+    "sub-025/eeg/sub-025_task-alicelistening_eeg.vhdr": "49f76829bb716a4708170e8f1bf10387b7f0d508f46acf5905e444b51138681b",
+    "sub-025/eeg/sub-025_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-025/eeg/sub-025_task-alicelistening_events.tsv": "4e9908c64f7ffb5a05d24e64421f912160b553d924e4002bd413eef43a06760d",
+    "sub-037/eeg/sub-037_task-alicelistening_eeg.vhdr": "00b4bab3ceddff5f030813e1e6e40bf11a4374eb12721bfd77aea0af106e7faf",
+    "sub-037/eeg/sub-037_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-037/eeg/sub-037_task-alicelistening_events.tsv": "a1b9aab22982c83c91fcd29a5d693a2f0ae9d60965a97f988330862ba722cef2",
+    "sub-038/eeg/sub-038_task-alicelistening_eeg.vhdr": "60ed010aee8aac5b8936fbb71e46a6d473b362eaa13c1fa08b069253ff79ee1f",
+    "sub-038/eeg/sub-038_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-038/eeg/sub-038_task-alicelistening_events.tsv": "ca93cc031eac7034dd4a4afc92e1e7d325070fb486b7cd7d6d183a886cdca2d4",
+    "sub-039/eeg/sub-039_task-alicelistening_eeg.vhdr": "a0da3887b58513920d5bbc7dc480dd33004670df654133fb0cab1fe0c492667c",
+    "sub-039/eeg/sub-039_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-039/eeg/sub-039_task-alicelistening_events.tsv": "9fb016891142be41da79d23fda2a47139dae5a6919205d02cbdd958f50870372",
+    "sub-040/eeg/sub-040_task-alicelistening_eeg.vhdr": "4dedd1d61d7be16885f6023b4ada20bbe390387e2b59800d8b390b82f8c3b751",
+    "sub-040/eeg/sub-040_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-040/eeg/sub-040_task-alicelistening_events.tsv": "c7e0adfd8d7365885ad029ab895bd1aa19dd3ddc191c5b9492a24ca3c1aa9bf2",
+    "sub-041/eeg/sub-041_task-alicelistening_eeg.vhdr": "1ac7b0ef3b651d9e6542be4ae6a353fcbcfdb9bc434f895476ac112b7a4eca38",
+    "sub-041/eeg/sub-041_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-041/eeg/sub-041_task-alicelistening_events.tsv": "75173073dd2867f2c21378589d52206597ef017378ba5e7757e7e6ecea02e8e3",
+    "sub-042/eeg/sub-042_task-alicelistening_eeg.vhdr": "7670c19fa1b10ef9a1de766422301256e97cd1d1b5af218b8151427ed89e9e85",
+    "sub-042/eeg/sub-042_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-042/eeg/sub-042_task-alicelistening_events.tsv": "f644025e326179f06e142d7e28448b5402c86d03042f60b48bfc4cbccb20536f",
+    "sub-044/eeg/sub-044_task-alicelistening_eeg.vhdr": "d87f0e5779a5b7bd04f768cb7376e4dfd0fc9298c8b4f8ec60564e3d580403eb",
+    "sub-044/eeg/sub-044_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-044/eeg/sub-044_task-alicelistening_events.tsv": "65f43554999fd42f6eee0bd54abc6807f9c7b6ed4a8e72f3a8dfc424003e156f",
+    "sub-045/eeg/sub-045_task-alicelistening_eeg.vhdr": "df07b8e743a38480b3a05c6fe69142608975d215a83c935a5e02c4b53ef9c5c0",
+    "sub-045/eeg/sub-045_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-045/eeg/sub-045_task-alicelistening_events.tsv": "81ebe06e68eb4bda9ca42a24fd3faff87ecd37efc8176ebb4f6dc4aac511d42b",
+    "sub-048/eeg/sub-048_task-alicelistening_eeg.vhdr": "3370a7650d137c3cf3e21fe5d66b5fed68281f23aa6e46040ed642d92d36e167",
+    "sub-048/eeg/sub-048_task-alicelistening_channels.tsv": "923bf1f2a59334658b2ff119f779dce094ad73c9947d88a4bc640bff4e71aa03",
+    "sub-048/eeg/sub-048_task-alicelistening_events.tsv": "490401e4ab03c75a8a9c7ab3b87dbe7efe95179909ba31ec57d8020b8f0d52bf"
+  },
+  "counts_previstos": {
+    "train": 5022,
+    "val": 1188,
+    "test": 918
+  },
+  "canales_orden_comun": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "30",
+    "31",
+    "32",
+    "33",
+    "34",
+    "35",
+    "36",
+    "37",
+    "38",
+    "39",
+    "40",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50",
+    "51",
+    "52",
+    "53",
+    "54",
+    "55",
+    "56",
+    "57",
+    "58",
+    "59",
+    "60",
+    "61"
+  ],
+  "texto_anotado_disjunto_entre_splits": true,
+  "por_participante": {
+    "sub-001": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.0019953200000486504,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "Aux5"
+      ]
+    },
+    "sub-003": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-005": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-006": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-008": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-010": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-011": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-012": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-013": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-014": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-015": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-017": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-018": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-019": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-020": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-021": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-022": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-025": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-037": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-038": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-039": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-040": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-041": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.0019953200000486504,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-042": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-044": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-045": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    },
+    "sub-048": {
+      "counts_previstos_sin_leer_EEG": {
+        "train": 186,
+        "val": 44,
+        "test": 34
+      },
+      "fragmentos_descartados_por_margen": 38,
+      "max_rango_desfase_s": 0.001995319999991807,
+      "min_holgura_ctc_pasos": 18,
+      "segmentos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "canales_excluidos": [
+        "VEOG",
+        "AUD"
+      ]
+    }
+  },
+  "excluidos": {
+    "sub-026": {
+      "segmentos_ausentes": [
+        12
+      ],
+      "pares_no_estrictamente_crecientes": [
+        {
+          "onset_a": "315.636",
+          "onset_b": "315.636",
+          "segment_a": "4",
+          "segment_b": "5",
+          "word_index_a": "752",
+          "word_index_b": "764"
+        },
+        {
+          "onset_a": "677.712",
+          "onset_b": "677.712",
+          "segment_a": "10",
+          "segment_b": "11",
+          "word_index_a": "1848",
+          "word_index_b": "1862"
+        }
+      ]
+    },
+    "sub-034": {
+      "segmentos_ausentes": [
+        12
+      ],
+      "pares_no_estrictamente_crecientes": [
+        {
+          "onset_a": "318.402",
+          "onset_b": "318.402",
+          "segment_a": "4",
+          "segment_b": "5",
+          "word_index_a": "752",
+          "word_index_b": "764"
+        },
+        {
+          "onset_a": "677.892",
+          "onset_b": "677.892",
+          "segment_a": "10",
+          "segment_b": "11",
+          "word_index_a": "1840",
+          "word_index_b": "1855"
+        }
+      ]
+    },
+    "sub-035": {
+      "segmentos_ausentes": [
+        12
+      ],
+      "pares_no_estrictamente_crecientes": [
+        {
+          "onset_a": "317.53",
+          "onset_b": "317.53",
+          "segment_a": "4",
+          "segment_b": "5",
+          "word_index_a": "752",
+          "word_index_b": "764"
+        },
+        {
+          "onset_a": "677.018",
+          "onset_b": "677.018",
+          "segment_a": "10",
+          "segment_b": "11",
+          "word_index_a": "1840",
+          "word_index_b": "1855"
+        }
+      ]
+    },
+    "sub-036": {
+      "segmentos_ausentes": [
+        12
+      ],
+      "pares_no_estrictamente_crecientes": [
+        {
+          "onset_a": "318.026",
+          "onset_b": "318.026",
+          "segment_a": "4",
+          "segment_b": "5",
+          "word_index_a": "752",
+          "word_index_b": "764"
+        },
+        {
+          "onset_a": "680.118",
+          "onset_b": "680.118",
+          "segment_a": "10",
+          "segment_b": "11",
+          "word_index_a": "1848",
+          "word_index_b": "1862"
+        }
+      ]
+    }
+  },
+  "limitacion": "Solo se han leído las señales EEG de sub-001 y sub-003 localmente. El resto se descargará, verificará y preparará en Colab."
+}

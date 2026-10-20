@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Descarga solo el subconjunto fijado de Alice: un participante, unos 91 MB."""
+"""Descarga y verifica el subconjunto de Alice fijado por el catálogo elegido."""
 
 from __future__ import annotations
 
@@ -20,10 +20,17 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dest", type=Path, default=Path("data/alice_eeg"))
     parser.add_argument("--catalogo", type=Path, default=Path("docs/datasets/alice_eeg/catalogo.json"))
+    parser.add_argument("--sujetos", nargs="+", help="limita la descarga a sujetos del catálogo y fuentes compartidas")
     parser.add_argument("--verify-only", action="store_true")
     parser.add_argument("--list", action="store_true")
     args = parser.parse_args()
     catalog = load_catalog(ROOT / args.catalogo)
+    if args.sujetos:
+        allowed = catalog.get("subjects") or [catalog.get("subject")]
+        if not set(args.sujetos).issubset(allowed):
+            parser.error("hay sujetos fuera del catálogo")
+        catalog["files"] = [e for e in catalog["files"] if not e["path"].startswith("sub-")
+                            or e["path"].split("/")[0] in args.sujetos]
     if args.list:
         for item in catalog["files"]:
             print(f"{item['size']:>10}  {item['path']}")

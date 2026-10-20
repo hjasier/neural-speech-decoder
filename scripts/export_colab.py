@@ -41,7 +41,9 @@ def build_source_bundle(perfil: str = "speech") -> tuple[bytes, dict[str, Any]]:
     if perfil == "alice":
         paths = [Path("run.py"), Path("requirements-alice.txt"),
                  Path("configs/alice_ctc.yaml"), Path("configs/alice_ctc_cpu.yaml"),
+                 Path("configs/alice_ctc_t4.yaml"),
                  Path("docs/datasets/alice_eeg/catalogo_ctc.json"),
+                 Path("docs/datasets/alice_eeg/catalogo_ctc_t4.json"),
                  *(Path("scripts") / name for name in ("get_alice.py", "get_phoneme_resources.py", "prepare_alice_ctc.py", "report_alice_ctc.py")),
                  *(path.relative_to(ROOT) for path in sorted((ROOT / "src").rglob("*.py")))]
     files = {path.as_posix(): (ROOT / path).read_bytes() for path in sorted(paths)}
@@ -113,7 +115,8 @@ def main() -> int:
     parser.add_argument("--notebook", type=Path)
     parser.add_argument("--perfil", choices=("speech", "alice"), default="speech")
     args = parser.parse_args()
-    relative = args.notebook or (NOTEBOOK if args.perfil == "speech" else Path("notebooks/05_alice_colab.ipynb"))
+    notebooks = {"speech": NOTEBOOK, "alice": Path("notebooks/05_alice_colab.ipynb")}
+    relative = args.notebook or notebooks[args.perfil]
     path = relative if relative.is_absolute() else ROOT / relative
     print(json.dumps({"notebook": str(relative), **export_notebook(path, args.perfil)}, indent=2))
     return 0

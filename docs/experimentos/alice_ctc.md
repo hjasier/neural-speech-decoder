@@ -94,13 +94,21 @@ esa métrica no se utiliza para elegir pesos.
 
 ## Colab
 
-Abrir `notebooks/05_alice_colab.ipynb` y ejecutar en orden. Reutiliza el
-entorno T12 si sus versiones son compatibles; en otro caso crea uno aislado
-con Python 3.12.11 y Torch CPU. Guarda snapshot de fuentes, YAML, logs,
-checkpoint y resultados en un directorio nuevo de Drive. Usa W&B online y
-comprueba la recarga con un segundo run de evaluación, sin entrenar otra vez.
-La estructura, sintaxis y snapshot se verifican localmente; falta ejecutar
-este lanzador nuevo en una VM de Colab.
+El autor pidió ampliar el experimento a CUDA/T4. Abrir la versión actualizada
+de `notebooks/05_alice_colab.ipynb`, seleccionar T4 y ejecutar en orden.
+Ahora utiliza `configs/alice_ctc_t4.yaml`: **27 participantes, cinco GRU de
+512 unidades y lote 64**, hasta 10.001 actualizaciones con límite suave de una
+hora. El perfil CPU y sus resultados anteriores se conservan. El protocolo
+multi-participante, selección de datos y comprobaciones están en
+[alice_ctc_t4.md](alice_ctc_t4.md).
+
+Reutiliza el entorno T12 si sus versiones y CUDA son compatibles; en otro caso
+crea uno aislado con Python 3.12.11 y Torch CUDA 12.4. Comprueba CUDA antes de
+descargar/preparar y no cambia automáticamente a CPU. Guarda snapshot,
+YAML, entorno CUDA, logs, checkpoint y resultados en un directorio nuevo de
+Drive. Usa W&B online y comprueba la recarga con un segundo proceso de
+evaluación, sin entrenar otra vez. Falta ejecutar este lanzador en Colab y
+medir velocidad, memoria y calidad del perfil ampliado.
 
 ```bash
 python scripts/export_colab.py --perfil alice
