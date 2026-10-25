@@ -50,6 +50,7 @@ def construir_modelo(cfg: dict) -> nn.Module:
             stride=mcfg["stride"],
             input_dropout=mcfg["dropout_entrada"],
             gru_dropout=mcfg["dropout_gru"],
+            intermediate_layers=mcfg.get("salidas_intermedias", ()),
         )
     if nombre == "mi_modelo":
         return ModeloPlaceholder()

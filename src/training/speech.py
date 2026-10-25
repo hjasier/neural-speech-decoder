@@ -246,6 +246,8 @@ def ejecutar_habla(
     """Construye el pipeline real y entrena o evalúa los pesos de un checkpoint."""
     if run is None:
         raise ValueError("El pipeline de habla requiere W&B: usa modo offline u online.")
+    if cfg["modelo"].get("salidas_intermedias") and not solo_evaluar:
+        raise ValueError("Las salidas intermedias necesitan entrenamiento CTC conjunto, todavía no conectado.")
     training = cfg["entrenamiento"]
     if cfg.get("protocolo") and cfg["evaluacion"]["max_lotes"] is not None:
         raise ValueError("El protocolo de comparación requiere validación/test completos: max_lotes=null.")

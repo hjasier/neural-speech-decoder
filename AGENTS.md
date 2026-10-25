@@ -88,4 +88,7 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
 - Hecho: baseline GRU + CTC, pipeline y W&B; protocolo T12 de 19 sesiones,
   con 5.180 frases train, 1.460 val y 680 test, selección de pesos por val
   y lanzador Colab propio.
-- Pendiente: salidas intermedias 2/3/5.
+- Hecho: salidas opcionales tras las GRU 2 y 3; cada perfil ejecuta solo
+  el prefijo elegido y se conserva la salida final del baseline.
+- Pendiente: conectar la CTC conjunta y las métricas de las tres salidas.
+  El pipeline rechaza entrenar este perfil hasta incorporar esa supervisión.

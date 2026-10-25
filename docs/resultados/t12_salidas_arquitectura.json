@@ -1,0 +1,113 @@
+{
+  "fecha": "2026-10-25",
+  "config": "configs/speech_salidas_t4.yaml",
+  "scope": "ejecucion de la arquitectura sobre dos frases reales de val; cabezas sin entrenar",
+  "training_updates": 0,
+  "new_heads_trained": false,
+  "test_evaluated": false,
+  "hardware": "NVIDIA GeForce RTX 2060",
+  "torch": "2.5.1+cu124",
+  "cpu_threads": 2,
+  "available_exits": [
+    2,
+    3,
+    5
+  ],
+  "shared_forward_recurrent_layers": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "single_profile_recurrent_layers": {
+    "2": [
+      1,
+      2
+    ],
+    "3": [
+      1,
+      2,
+      3
+    ],
+    "5": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "outputs": {
+    "2": {
+      "shape": [
+        2,
+        129,
+        41
+      ],
+      "finite": true,
+      "max_difference_from_shared_forward": 0.0
+    },
+    "3": {
+      "shape": [
+        2,
+        129,
+        41
+      ],
+      "finite": true,
+      "max_difference_from_shared_forward": 0.0
+    },
+    "5": {
+      "shape": [
+        2,
+        129,
+        41
+      ],
+      "finite": true,
+      "max_difference_from_shared_forward": 0.0
+    }
+  },
+  "input_lengths": [
+    495,
+    547
+  ],
+  "valid_output_lengths": [
+    116,
+    129
+  ],
+  "source_trial_indices": [
+    220,
+    221
+  ],
+  "source_blocks": [
+    14,
+    14
+  ],
+  "total_parameters": 54885243,
+  "intermediate_head_parameters": 84050,
+  "interpretation": "No mide PER ni velocidad de un modelo aprendido; las capas posteriores no se ejecutan en cada perfil.",
+  "legacy_regression": {
+    "checkpoint": "checkpoints/speech_original/unjiabqs/ultimo.pt",
+    "metrics": {
+      "ctc_loss": 31.681986449746525,
+      "per": 0.32217199327165685,
+      "errores": 6129,
+      "fonemas": 19024,
+      "frases": 680,
+      "completo": 1,
+      "segundos": 6.628251583999372
+    },
+    "training_updates": 0,
+    "wandb_mode": "offline",
+    "run_id": "ppv1uws8",
+    "historical_counts_match": true
+  },
+  "unconnected_training_rejected": true,
+  "automated_tests_passed": 21,
+  "source_sha256": {
+    "src/models/speech_gru.py": "b63d5294c4c1f78f9f55e0e6b216ff7bff8b36f8a073916f8d56f2b876d6079e",
+    "src/models/factory.py": "bec3a0489f5560793546f6b1da1163d2e1e4373ab6b1dc751aafdb22d0987f7a"
+  },
+  "baseline_notebook_unchanged": true,
+  "baseline_notebook_sha256": "ab2db68739b5ef1b85801b548d1f31d591d0892789e2a133f4dfafa0624d563a"
+}
