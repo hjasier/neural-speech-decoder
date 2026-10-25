@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-25",
+  "task": 6,
+  "status": "launcher_and_reload_verifier_prepared; actual_T12_execution_pending",
+  "branch": "RAMA_LOCAL",
+  "source_base_commit": "ae8bd5d9c7b05116f7645734689a5afc06e28d8a",
+  "notebook": "notebooks/08_salidas_t12_colab.ipynb",
+  "notebook_sha256": "04694f4db73f15d96dec61f62852504155195ac5ac0f72675ee29d51b00ec635",
+  "source_archive_sha256": "cdd4129ec29714db909875c4a466b740fbc9ae6d8714c66e561bfe37fb9b368d",
+  "source_files": 44,
+  "demo_config": "configs/speech_salidas_e1.yaml",
+  "optimizer_steps_planned": 200,
+  "model": {
+    "gru_layers": 5,
+    "hidden_size": 1024,
+    "exits": [
+      2,
+      3,
+      5
+    ]
+  },
+  "dataset": {
+    "participant": "T12",
+    "train": 5180,
+    "val": 1460,
+    "test": 680,
+    "normalization_fit": "train_only",
+    "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb"
+  },
+  "wandb_planned": {
+    "project": "tiiac-2026",
+    "mode": "online"
+  },
+  "reload_contract": {
+    "split": "val",
+    "optimizer_steps": 0,
+    "test_evaluated": false,
+    "exact_counts_and_PER": true,
+    "ctc_atol": 1e-05,
+    "ctc_rtol": 1e-06,
+    "independent_exit_predictions": true,
+    "executed_layers_checked_with_hooks": true
+  },
+  "local_verification": {
+    "pytest": {
+      "passed": 32,
+      "seconds": 17.02
+    },
+    "integration_fixture": "synthetic_file_backed; not_T12; hidden_size_8; input_4",
+    "training_updates_in_fixture": 3,
+    "processes": [
+      "run.py_training",
+      "verify_speech_checkpoint.py",
+      "run.py_eval_val"
+    ],
+    "device": "cpu",
+    "cpu_threads": 2,
+    "wandb_mode": "offline",
+    "test_feature_and_label_files_absent": true
+  },
+  "preserved_historical_notebooks": {
+    "notebooks/04_entrenamiento_colab.ipynb": "14a4ed670521de505a57a30025e139a685d3ee109057d074c702bd89b7a77519",
+    "notebooks/05_alice_colab.ipynb": "eb4ef9f00cef5fa8ea919c7f7f26d118c7c1d6fc4ade17da6ad9fa56f4dc992b",
+    "notebooks/06_demo_ahpsn.ipynb": "ab894ab0604940515804ae92bf19abadd8a90300305f8a249bfa014b0b5e69b2",
+    "notebooks/07_baseline_t12_colab.ipynb": "ab2db68739b5ef1b85801b548d1f31d591d0892789e2a133f4dfafa0624d563a"
+  },
+  "actual_T12_training_executed": false,
+  "actual_T12_reload_verified": false,
+  "colab_execution_pending": true,
+  "main_unchanged": "aa16257da06f9bedeb7aaa533c04f02b05a19517"
+}

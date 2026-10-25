@@ -38,7 +38,8 @@ bloques y mostrará la decodificación. Alice es una exploración anterior.
 ## Cómo se ejecuta
 
 Desde la raíz, con el entorno activado. El entrenamiento T12 se ejecuta en Colab
-mediante `notebooks/07_baseline_t12_colab.ipynb`.
+con `notebooks/07_baseline_t12_colab.ipynb` para el baseline y
+`notebooks/08_salidas_t12_colab.ipynb` para la variante con tres salidas.
 
 ```bash
 python run.py --smoke                          # plantilla sintética, no T12
@@ -96,5 +97,7 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
 - Hecho: verificador de recarga por perfil sobre val y selección explícita
   con `run.py --solo-evaluar --split val`. Perfil de 200 pasos disponible
   en `configs/speech_salidas_e1.yaml`.
-- Pendiente: lanzador Colab propio para la variante. El notebook 07
-  conserva el baseline anterior.
+- Hecho: notebook 08 con perfiles de 200 y 10.001 pasos, guardado en Drive
+  y recarga independiente en val. El notebook 07 conserva el baseline anterior.
+- Pendiente: controles independientes de dos y tres capas y medidas de calidad
+  y coste con los modelos entrenados.
