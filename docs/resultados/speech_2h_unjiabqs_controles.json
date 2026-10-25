@@ -1,0 +1,656 @@
+{
+  "date": "2026-10-25",
+  "scope": "historical_reference_2001_steps; not_new_validation_protocol",
+  "new_baseline_training_complete": false,
+  "new_variant_evaluated": false,
+  "wandb_mode": "offline",
+  "source_snapshot_sha256": "016204ab4287260928f3ab258ad7bcedba894da39556713dad0bd940aeba7027",
+  "source_manifest": {
+    "sha256": "016204ab4287260928f3ab258ad7bcedba894da39556713dad0bd940aeba7027",
+    "format_version": 1,
+    "git_commit_base": "5cfab40232c6717a425fe853f989afd4d34b1f72",
+    "files": {
+      "configs/speech_comparacion.yaml": "8cae9b45bbcf4e0f9ce813a5b9c33f08dabe7fab6d95e9c5edb9c55e67a2b33b",
+      "configs/speech_comparacion_t4.yaml": "3636c80ea3b12d3bbb5484afa7d2c38dd9ef09c06e8d807123a6ec02c91f34be",
+      "configs/speech_comparativa.yaml": "a8976055d54aeef0fa7ba937b983f16e72b07cf27bbbfe15d2dc46a2c2e9cba6",
+      "configs/speech_control_2_t4.yaml": "3fbc000aca2e0b4b3038da785a3ad4a7777ecfe656a2ce895067f5a5d82267ae",
+      "configs/speech_control_3_t4.yaml": "5d15ab8acc2b65935a04cfd9de83ce10c4ca13b60effe62c9ce92514d68d4072",
+      "configs/speech_evaluacion.yaml": "e678541068a6bad033e3d15f207beb82fd9eb0ccc16c6a2cf1cd1f6e8f7d7924",
+      "configs/speech_salidas_e1.yaml": "204df88fb7ba9fd8c43de7d3c2389cc5c0f1d8379e92bc65878d907d606c0973",
+      "configs/speech_salidas_t4.yaml": "3a91ecc2c53e750c739ff2e04e85a23d98a386f57c6d079fa251529a93844095",
+      "configs/verificacion_checkpoint.yaml": "eabca3eba2a7965c0ae4d1e6d17d01ad0e19f03f8a56227ea81e8878c81ae80d",
+      "docs/datasets/speech_2023/manifest.json": "2382e5818eca12176c00b26ea742267e0c3fd280df38d990b464ca3eab9f1cb3",
+      "docs/datasets/speech_2023/particion_t12_v1.json": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb",
+      "requirements.txt": "3ed62ad7ad55ddf60d672296dc3de230f968687d00093e6ddd2ca0a617c55a5d",
+      "run.py": "6bb3164f53d6ae025897cc3db245c69ec6c356289c0cf96fb98febada85c7f75",
+      "scripts/configure_speech_comparison.py": "26062cb04d24aedf77d5b65c361c5e392ffb7a1dba5bd83b1ccef0b7f3937de7",
+      "scripts/evaluate_speech.py": "5b09e07d2c5ee1232ef59f8b453d24c268dbdd87604882a34c764a48efc034bf",
+      "scripts/get_data.py": "acfbb172a25bdcd740459cb0df5c68fbc8f25d9341fe2d7a0cdf2c06ec5943dd",
+      "scripts/get_phoneme_resources.py": "ae5b7bcf6b6ba948016207914709bd17df1a351facec5e9b9c70300930445f6a",
+      "scripts/prepare_phoneme_labels.py": "2b516943a2c90cbab675c2f3467565b9380322746c970bbb321baf34275c47bf",
+      "scripts/prepare_speech_data.py": "8a41c5b645afbdab6b935fd7cc24127dd6bd65f4788b36350ce2795919c32c12",
+      "scripts/report_speech_training.py": "c214ec982a09085660c577778f1896f138710a24fb86d9c1c229ce6cb00f4ec6",
+      "scripts/verify_speech_checkpoint.py": "1606f39def292535937416cf03d4d8de508012acb551abe306e58acecc24598c",
+      "src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/app/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/app/serve.py": "2231eaab409f06f8d775fbc69ee4793ababc445218eabc956feb7a2041ce5aaa",
+      "src/data/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/data/alice.py": "a0eba5edd5c130790c4cd2add8b6e4fd2453244e79dd3cd4352da3b66f6eb97f",
+      "src/data/alice_catalog.py": "6b4aeeaa1c8875a560d1cabf0a76e3b219a057c79eaa6b43119b3a01b0a6675b",
+      "src/data/alice_ctc.py": "8a71d5718aedb2fcffae2a87989e930dcb9f957788f713fa86118e88cefb76e8",
+      "src/data/loaders.py": "0fb61274068463664fcfa512ffd3dc2fdf22acea29aa23711546c149958c1d44",
+      "src/data/phonemes.py": "457d6340375b7cd909eda4e24b90c30fa8bc4b843118360666f92828766aa5a0",
+      "src/data/preprocessing.py": "7d04d718e67c2fc501d411a6e1053a82cb84a5bdc24fa411d3870f98a7dd9337",
+      "src/data/speech.py": "e82fa4625fb7c1ff32031e9f3bfeb00d4050171dcefdc4a2543aeb2d5728b432",
+      "src/data/speech_dataset.py": "06b1d7cbdcc4ff91ffe4351c7f25eb43df9ad7cb3b9e5702cc4647710af666fb",
+      "src/data/speech_protocol.py": "1eaeb8aa6299be0ed07d3a43c3bede62ff9111c4d332d6ca9b5ff03177c578d3",
+      "src/models/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/models/alice_gru.py": "a312e4f7df34cb7d6e6598912f6b8465baf298727e967debd509f0f767b955b2",
+      "src/models/factory.py": "bec3a0489f5560793546f6b1da1163d2e1e4373ab6b1dc751aafdb22d0987f7a",
+      "src/models/speech_gru.py": "b63d5294c4c1f78f9f55e0e6b216ff7bff8b36f8a073916f8d56f2b876d6079e",
+      "src/training/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/training/alice.py": "df36e5f5f1598f664549b50d02ca8a982bbfd480ce9a25edb8f248003bc528ed",
+      "src/training/alice_ctc.py": "8a54cd828f9a1ec57a4f687783e70106a7cd475768adc80a405508b61579d62d",
+      "src/training/checkpoints.py": "2605d6391a6fe3b26d0f3c21829c30b33c03d3737bc69e651393ae535bf633b3",
+      "src/training/loop.py": "88408bc498be5bd0946794e6f0f7ddbac5c4d60cd8f17e69244212d0029efb02",
+      "src/training/metrics.py": "eac1ade9b4f26adcbd5bb6015a1fd867bde514af4e96c7dabe6a6569f13affd9",
+      "src/training/optim.py": "db12c15f8620fe2ebedacff3cd592a9fe062637e308e466d7ed09b82a0e551da",
+      "src/training/speech.py": "43c94fbc517d9c6400567bd659b593d2f4781ad71528e6f287fd652ed13ccad8",
+      "src/training/speech_evaluation.py": "eb9aa87f5d28dc5b25f2ce329ced1bb3681b13cc92c65eabf85489780c41aadc",
+      "src/training/verification.py": "631ab749848c1eaf4fdd0abb5a74ce4ee7673e598c884a6da822912f8933c8f1",
+      "src/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/utils/seed.py": "ac7587fdf1eeb16e8ec010034daaa8f04ef8b9e3236d32c4f7f5ae6890b7ffe9",
+      "src/utils/tracking.py": "f6c196b1f7337dc3aead2aeb225622899bf2ac1494e7a38d9f1bd10da5542b08"
+    }
+  },
+  "evaluation": {
+    "split": "test",
+    "controls": [
+      "original",
+      "cero",
+      "permutada"
+    ],
+    "control_seed": 314159,
+    "available_exits": [
+      5
+    ],
+    "evaluated_exits": [
+      5
+    ],
+    "global": {
+      "original": {
+        "5": {
+          "ctc_loss": 31.68198649743024,
+          "per": 0.32217199327165685,
+          "errores": 6129,
+          "fonemas": 19024,
+          "frases": 680,
+          "completo": 1
+        }
+      },
+      "cero": {
+        "5": {
+          "ctc_loss": 192.1876165782704,
+          "per": 0.9188919259882254,
+          "errores": 17481,
+          "fonemas": 19024,
+          "frases": 680,
+          "completo": 1
+        }
+      },
+      "permutada": {
+        "5": {
+          "ctc_loss": 122.13494515699499,
+          "per": 0.7727607232968882,
+          "errores": 14701,
+          "fonemas": 19024,
+          "frases": 680,
+          "completo": 1
+        }
+      }
+    },
+    "by_session": {
+      "original": {
+        "5": {
+          "t12.2022.04.28": {
+            "ctc_loss": 76.30165815353394,
+            "per": 0.4552572706935123,
+            "errores": 407,
+            "fonemas": 894,
+            "frases": 20,
+            "completo": 1
+          },
+          "t12.2022.05.05": {
+            "ctc_loss": 60.70544672012329,
+            "per": 0.4160919540229885,
+            "errores": 362,
+            "fonemas": 870,
+            "frases": 20,
+            "completo": 1
+          },
+          "t12.2022.05.17": {
+            "ctc_loss": 35.295533895492554,
+            "per": 0.3450479233226837,
+            "errores": 216,
+            "fonemas": 626,
+            "frases": 20,
+            "completo": 1
+          },
+          "t12.2022.05.19": {
+            "ctc_loss": 43.790578842163086,
+            "per": 0.38461538461538464,
+            "errores": 245,
+            "fonemas": 637,
+            "frases": 20,
+            "completo": 1
+          },
+          "t12.2022.05.24": {
+            "ctc_loss": 23.785910630226134,
+            "per": 0.2502242152466368,
+            "errores": 279,
+            "fonemas": 1115,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.05.26": {
+            "ctc_loss": 23.678966963291167,
+            "per": 0.2598870056497175,
+            "errores": 276,
+            "fonemas": 1062,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.02": {
+            "ctc_loss": 24.062135845422745,
+            "per": 0.26773888363292336,
+            "errores": 283,
+            "fonemas": 1057,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.07": {
+            "ctc_loss": 29.620960927009584,
+            "per": 0.3163992869875223,
+            "errores": 355,
+            "fonemas": 1122,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.14": {
+            "ctc_loss": 31.418216535449027,
+            "per": 0.2788844621513944,
+            "errores": 350,
+            "fonemas": 1255,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.16": {
+            "ctc_loss": 43.76839127540588,
+            "per": 0.35333333333333333,
+            "errores": 424,
+            "fonemas": 1200,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.21": {
+            "ctc_loss": 30.22488923072815,
+            "per": 0.3132108486439195,
+            "errores": 358,
+            "fonemas": 1143,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.28": {
+            "ctc_loss": 30.622821640968322,
+            "per": 0.32342007434944237,
+            "errores": 348,
+            "fonemas": 1076,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.07.05": {
+            "ctc_loss": 21.23659906089306,
+            "per": 0.2842582106455266,
+            "errores": 251,
+            "fonemas": 883,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.07.14": {
+            "ctc_loss": 26.697043359279633,
+            "per": 0.26851025869759143,
+            "errores": 301,
+            "fonemas": 1121,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.07.21": {
+            "ctc_loss": 37.421295654773715,
+            "per": 0.37364620938628157,
+            "errores": 414,
+            "fonemas": 1108,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.07.27": {
+            "ctc_loss": 25.959262549877167,
+            "per": 0.32063492063492066,
+            "errores": 303,
+            "fonemas": 945,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.08.02": {
+            "ctc_loss": 31.98047342300415,
+            "per": 0.38802660753880264,
+            "errores": 350,
+            "fonemas": 902,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.08.11": {
+            "ctc_loss": 25.307705318927766,
+            "per": 0.2981243830207305,
+            "errores": 302,
+            "fonemas": 1013,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.08.13": {
+            "ctc_loss": 24.762489235401155,
+            "per": 0.3065326633165829,
+            "errores": 305,
+            "fonemas": 995,
+            "frases": 40,
+            "completo": 1
+          }
+        }
+      },
+      "cero": {
+        "5": {
+          "t12.2022.04.28": {
+            "ctc_loss": 312.40565338134763,
+            "per": 1.0,
+            "errores": 894,
+            "fonemas": 894,
+            "frases": 20,
+            "completo": 1
+          },
+          "t12.2022.05.05": {
+            "ctc_loss": 227.73022918701173,
+            "per": 1.0,
+            "errores": 870,
+            "fonemas": 870,
+            "frases": 20,
+            "completo": 1
+          },
+          "t12.2022.05.17": {
+            "ctc_loss": 248.39346008300782,
+            "per": 1.0,
+            "errores": 626,
+            "fonemas": 626,
+            "frases": 20,
+            "completo": 1
+          },
+          "t12.2022.05.19": {
+            "ctc_loss": 226.69132347106932,
+            "per": 1.0,
+            "errores": 637,
+            "fonemas": 637,
+            "frases": 20,
+            "completo": 1
+          },
+          "t12.2022.05.24": {
+            "ctc_loss": 276.119075012207,
+            "per": 1.0,
+            "errores": 1115,
+            "fonemas": 1115,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.05.26": {
+            "ctc_loss": 312.12330360412597,
+            "per": 1.0,
+            "errores": 1062,
+            "fonemas": 1062,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.02": {
+            "ctc_loss": 157.34474782943727,
+            "per": 0.9072847682119205,
+            "errores": 959,
+            "fonemas": 1057,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.07": {
+            "ctc_loss": 150.34137954711915,
+            "per": 0.8155080213903744,
+            "errores": 915,
+            "fonemas": 1122,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.14": {
+            "ctc_loss": 213.67959032058715,
+            "per": 0.9227091633466136,
+            "errores": 1158,
+            "fonemas": 1255,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.16": {
+            "ctc_loss": 186.10597381591796,
+            "per": 0.9016666666666666,
+            "errores": 1082,
+            "fonemas": 1200,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.21": {
+            "ctc_loss": 144.92525787353514,
+            "per": 0.8363954505686789,
+            "errores": 956,
+            "fonemas": 1143,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.28": {
+            "ctc_loss": 140.441628074646,
+            "per": 0.8327137546468402,
+            "errores": 896,
+            "fonemas": 1076,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.07.05": {
+            "ctc_loss": 144.52110376358033,
+            "per": 0.9320498301245753,
+            "errores": 823,
+            "fonemas": 883,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.07.14": {
+            "ctc_loss": 130.45274257659912,
+            "per": 0.7618198037466548,
+            "errores": 854,
+            "fonemas": 1121,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.07.21": {
+            "ctc_loss": 162.77226448059082,
+            "per": 0.9034296028880866,
+            "errores": 1001,
+            "fonemas": 1108,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.07.27": {
+            "ctc_loss": 173.27180309295653,
+            "per": 0.9153439153439153,
+            "errores": 865,
+            "fonemas": 945,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.08.02": {
+            "ctc_loss": 214.83837089538574,
+            "per": 1.0,
+            "errores": 902,
+            "fonemas": 902,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.08.11": {
+            "ctc_loss": 184.7992862701416,
+            "per": 0.9703849950641659,
+            "errores": 983,
+            "fonemas": 1013,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.08.13": {
+            "ctc_loss": 167.84262161254884,
+            "per": 0.8874371859296483,
+            "errores": 883,
+            "fonemas": 995,
+            "frases": 40,
+            "completo": 1
+          }
+        }
+      },
+      "permutada": {
+        "5": {
+          "t12.2022.04.28": {
+            "ctc_loss": 187.30547218322755,
+            "per": 0.7941834451901566,
+            "errores": 710,
+            "fonemas": 894,
+            "frases": 20,
+            "completo": 1
+          },
+          "t12.2022.05.05": {
+            "ctc_loss": 185.41408309936523,
+            "per": 0.7563218390804598,
+            "errores": 658,
+            "fonemas": 870,
+            "frases": 20,
+            "completo": 1
+          },
+          "t12.2022.05.17": {
+            "ctc_loss": 138.5181827545166,
+            "per": 0.7859424920127795,
+            "errores": 492,
+            "fonemas": 626,
+            "frases": 20,
+            "completo": 1
+          },
+          "t12.2022.05.19": {
+            "ctc_loss": 140.98707084655763,
+            "per": 0.7676609105180534,
+            "errores": 489,
+            "fonemas": 637,
+            "frases": 20,
+            "completo": 1
+          },
+          "t12.2022.05.24": {
+            "ctc_loss": 124.81184244155884,
+            "per": 0.747085201793722,
+            "errores": 833,
+            "fonemas": 1115,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.05.26": {
+            "ctc_loss": 109.29562263488769,
+            "per": 0.7467043314500942,
+            "errores": 793,
+            "fonemas": 1062,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.02": {
+            "ctc_loss": 116.17594623565674,
+            "per": 0.7880794701986755,
+            "errores": 833,
+            "fonemas": 1057,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.07": {
+            "ctc_loss": 118.96338491439819,
+            "per": 0.7388591800356507,
+            "errores": 829,
+            "fonemas": 1122,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.14": {
+            "ctc_loss": 136.82812595367432,
+            "per": 0.7458167330677291,
+            "errores": 936,
+            "fonemas": 1255,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.16": {
+            "ctc_loss": 140.47650232315064,
+            "per": 0.7616666666666667,
+            "errores": 914,
+            "fonemas": 1200,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.21": {
+            "ctc_loss": 125.34698181152343,
+            "per": 0.7559055118110236,
+            "errores": 864,
+            "fonemas": 1143,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.06.28": {
+            "ctc_loss": 110.22105751037597,
+            "per": 0.775092936802974,
+            "errores": 834,
+            "fonemas": 1076,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.07.05": {
+            "ctc_loss": 92.20701789855957,
+            "per": 0.8040770101925255,
+            "errores": 710,
+            "fonemas": 883,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.07.14": {
+            "ctc_loss": 121.89450073242188,
+            "per": 0.7725245316681534,
+            "errores": 866,
+            "fonemas": 1121,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.07.21": {
+            "ctc_loss": 122.59120826721191,
+            "per": 0.8203971119133574,
+            "errores": 909,
+            "fonemas": 1108,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.07.27": {
+            "ctc_loss": 98.8710069656372,
+            "per": 0.7841269841269841,
+            "errores": 741,
+            "fonemas": 945,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.08.02": {
+            "ctc_loss": 114.67634229660034,
+            "per": 0.7583148558758315,
+            "errores": 684,
+            "fonemas": 902,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.08.11": {
+            "ctc_loss": 110.83331651687622,
+            "per": 0.7956564659427443,
+            "errores": 806,
+            "fonemas": 1013,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.08.13": {
+            "ctc_loss": 106.98880672454834,
+            "per": 0.8040201005025126,
+            "errores": 800,
+            "fonemas": 995,
+            "frases": 40,
+            "completo": 1
+          }
+        }
+      }
+    },
+    "diagnostic_wall_seconds": 19.15370255599919,
+    "timing_scope": "controles, salidas compartidas, CTC, greedy, agregación y escritura; no latencia de perfil",
+    "optimizer_steps": 0,
+    "test_evaluated": true,
+    "checkpoint": "checkpoints/speech_original/unjiabqs/ultimo.pt",
+    "checkpoint_sha256": "3eb0bf3db2b69858a3676b82e953002d91f3f022e0ba23b3a207ac937cee8744",
+    "checkpoint_step": 2001,
+    "protocol_sha256": null,
+    "comparison": null,
+    "training_seed": 0,
+    "evaluation_config": {
+      "split": "test",
+      "salidas": null,
+      "controles": [
+        "original",
+        "cero",
+        "permutada"
+      ],
+      "semilla_control": 314159
+    },
+    "data_signature": "116c10e4b83c2729c22c0e1cc47ab7a2dc55cc9b35b8a5e1a5f35a60bd9fd611",
+    "phones": [
+      "AA",
+      "AE",
+      "AH",
+      "AO",
+      "AW",
+      "AY",
+      "B",
+      "CH",
+      "D",
+      "DH",
+      "EH",
+      "ER",
+      "EY",
+      "F",
+      "G",
+      "HH",
+      "IH",
+      "IY",
+      "JH",
+      "K",
+      "L",
+      "M",
+      "N",
+      "NG",
+      "OW",
+      "OY",
+      "P",
+      "R",
+      "S",
+      "SH",
+      "T",
+      "TH",
+      "UH",
+      "UW",
+      "V",
+      "W",
+      "Y",
+      "Z",
+      "ZH",
+      "SIL"
+    ],
+    "blank_id": 40,
+    "hardware": "NVIDIA GeForce RTX 2060",
+    "torch_version": "2.5.1+cu124",
+    "wandb_run_id": "sjfo3rk8"
+  },
+  "prediction_file": "runs/evaluacion/speech_referencia_controles_7b5a6804/predicciones.jsonl",
+  "prediction_file_sha256": "93b2f82370df1b60312e1c484a94bafbbfeea3e1d990b7569a7dffb4572013b3",
+  "predictions_count": 680,
+  "all_session_totals_match": true,
+  "source_archive": "runs/evaluacion/speech_referencia_controles_7b5a6804/fuentes_evaluador.zip",
+  "scope_note": "Test historico ya consultado; no usado para seleccionar las nuevas variantes. Interpretacion pendiente del autor."
+}

@@ -128,5 +128,25 @@ def test_training_reload_and_val_cli_in_separate_processes(tmp_path, monkeypatch
     assert summary["available_exits"] == list(expected_exits)
     assert summary["model_layers"] == (5 if depth is None else depth)
     assert summary["seed"] == cfg["experimento"]["seed"]
+    if depth is None:
+        evaluation_cfg = {**cfg, "experimento": {**cfg["experimento"], "seed": 1}}
+        Path("config_eval.yaml").write_text(yaml.safe_dump(evaluation_cfg))
+        execute("scripts/evaluate_speech.py", "--config", "config_eval.yaml", "--checkpoint", str(checkpoint),
+                "--evaluation-config", str(ROOT / "configs/speech_evaluacion.yaml"), "--output", "diagnostic")
+        diagnostic = json.loads(Path("diagnostic/metricas.json").read_text())
+        rows = [json.loads(line) for line in Path("diagnostic/predicciones.jsonl").read_text().splitlines()]
+        assert len(rows) == 3 and diagnostic["test_evaluated"] is False
+        assert diagnostic["optimizer_steps"] == 0 and diagnostic["checkpoint_sha256"] == digest
+        assert diagnostic["training_seed"] == cfg["experimento"]["seed"]
+        table_path, = Path("tracking").rglob("*.table.json")
+        table = json.loads(table_path.read_text())
+        assert table["columns"] == ["control", "salida", "sesion", "ctc_loss", "per", "errores", "fonemas", "frases", "completo"]
+        assert len(table["data"]) == len(expected_exits) * 3
+        for exit_depth in expected_exits:
+            measured = diagnostic["global"]["original"][str(exit_depth)]
+            previous = evidence["metrics_by_exit"][str(exit_depth)]
+            assert measured["per"] == previous["per"] and measured["errores"] == previous["errores"]
+            assert measured["ctc_loss"] == pytest.approx(previous["ctc_loss"], rel=1e-6)
+            assert diagnostic["by_session"]["original"][str(exit_depth)]["fixture"] == measured
     # No se han creado señales ni etiquetas de test: cualquier acceso fallaría.
     assert not Path("prepared/test").exists() and not Path("labels/test").exists()

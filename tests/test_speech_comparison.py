@@ -78,7 +78,10 @@ def test_comparison_notebook_extracts_all_configs_and_preserves_old_ones(tmp_pat
     bundle = next(cell for cell in notebook.cells if "source_bundle" in cell.metadata.get("tags", []))
     namespace = {"PROJECT": tmp_path / "project"}
     exec(compile(bundle.source, "source_bundle", "exec"), namespace)
-    assert len(namespace["SOURCE_MANIFEST"]["files"]) == 48
+    assert len(namespace["SOURCE_MANIFEST"]["files"]) == 51
+    assert Path(namespace["PROJECT"] / "scripts/evaluate_speech.py").is_file()
+    diagnostic_cell = next(cell for cell in notebook.cells if "#@title 12." in cell.source)
+    assert '"--split", "val"' in diagnostic_cell.source
     monkeypatch.chdir(namespace["PROJECT"])
     for variant in ("baseline_5", "conjunta_235", "control_2", "control_3"):
         cfg = comparison_config(PLAN, variant, 1)

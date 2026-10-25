@@ -105,4 +105,7 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
   `configs/speech_comparativa.yaml` y exige datos y presupuesto comunes.
 - Hecho: notebook 09 para ejecutar una combinación de variante y semilla,
   con W&B, guardado en Drive y recarga independiente sobre val.
-- Pendiente: controles de señal por sesión y medidas de latencia y memoria.
+- Hecho: `scripts/evaluate_speech.py` y celda 12 del notebook 09, con PER
+  global y por sesión, predicciones y controles de señal original/cero/permutada.
+  El diagnóstico usa val por defecto; los controles se aplican en inferencia.
+- Pendiente: medidas de latencia y memoria.

@@ -63,7 +63,8 @@ def build_source_bundle(perfil: str = "speech") -> tuple[bytes, dict[str, Any]]:
                       Path("configs/verificacion_checkpoint.yaml"), Path("scripts/verify_speech_checkpoint.py")]
         if perfil == "speech_comparativa":
             paths += [Path("configs/speech_control_2_t4.yaml"), Path("configs/speech_control_3_t4.yaml"),
-                      Path("configs/speech_comparativa.yaml"), Path("scripts/configure_speech_comparison.py")]
+                      Path("configs/speech_comparativa.yaml"), Path("scripts/configure_speech_comparison.py"),
+                      Path("configs/speech_evaluacion.yaml"), Path("scripts/evaluate_speech.py")]
     files = {path.as_posix(): (ROOT / path).read_bytes() for path in sorted(paths)}
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     manifest = {
