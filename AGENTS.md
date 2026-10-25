@@ -37,7 +37,8 @@ bloques y mostrará la decodificación. Alice es una exploración anterior.
 
 ## Cómo se ejecuta
 
-Desde la raíz, con el entorno activado. El entrenamiento T12 se ejecuta en Colab:
+Desde la raíz, con el entorno activado. El entrenamiento T12 se ejecuta en Colab
+mediante `notebooks/07_baseline_t12_colab.ipynb`.
 
 ```bash
 python run.py --smoke                          # plantilla sintética, no T12
@@ -68,9 +69,10 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
   ajenos. No publicar ramas, abrir PRs ni hacer merges sin indicación explícita.
 - La rama de integración es `ml-train`. Cada feature parte de ella después
   de integrar la anterior; conservar los commits individuales al hacer merge.
-- Cada commit incluye una nueva entrada en `AI_USAGE.md`, en primera persona,
-  con el contexto de la tarea y la ayuda recibida, para revisión antes de comitear.
-  Conservar las entradas ya revisadas; no inventar decisiones ni análisis de resultados.
+- Registrar las intervenciones relevantes en `AI_USAGE.md`, en primera persona,
+  con el contexto y la ayuda recibida, para revisión antes de comitear.
+  No forzar entradas por ajustes menores ni restaurar las descartadas en revisión.
+  Conservar las entradas revisadas; no inventar decisiones ni análisis de resultados.
 - Mantener este archivo breve: actualizar lo vigente y quitar lo obsoleto.
   Historiales, resultados y explicaciones extensas van en `docs/`.
 
@@ -84,5 +86,6 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
 ## Estado actual
 
 - Hecho: baseline GRU + CTC, pipeline y W&B; protocolo T12 de 19 sesiones,
-  con 5.180 frases train, 1.460 val y 680 test, y selección de pesos por val.
-- Pendiente: lanzador Colab del protocolo y salidas intermedias 2/3/5.
+  con 5.180 frases train, 1.460 val y 680 test, selección de pesos por val
+  y lanzador Colab propio.
+- Pendiente: salidas intermedias 2/3/5.
