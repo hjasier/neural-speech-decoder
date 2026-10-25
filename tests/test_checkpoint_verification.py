@@ -9,6 +9,7 @@ import subprocess
 import sys
 
 import numpy as np
+import pytest
 import yaml
 
 from src.data.speech_dataset import file_sha256, preparation_signature
@@ -83,8 +84,15 @@ def _prepared_fixture(tmp_path, monkeypatch):
     return cfg
 
 
-def test_training_reload_and_val_cli_in_separate_processes(tmp_path, monkeypatch):
-    _prepared_fixture(tmp_path, monkeypatch)
+@pytest.mark.parametrize("depth", [None, 2, 3])
+def test_training_reload_and_val_cli_in_separate_processes(tmp_path, monkeypatch, depth):
+    cfg = _prepared_fixture(tmp_path, monkeypatch)
+    if depth is not None:
+        cfg["modelo"]["capas"] = depth
+        cfg["modelo"].pop("salidas_intermedias")
+        cfg["entrenamiento"].pop("ctc_pesos")
+        Path("config.yaml").write_text(yaml.safe_dump(cfg))
+    expected_exits = (2, 3, 5) if depth is None else (depth,)
     env = {**os.environ, "OMP_NUM_THREADS": "2", "MKL_NUM_THREADS": "2", "OPENBLAS_NUM_THREADS": "2"}
 
     def execute(script, *args):
@@ -101,17 +109,24 @@ def test_training_reload_and_val_cli_in_separate_processes(tmp_path, monkeypatch
     evidence = json.loads((checkpoint.parent / "verificacion_recarga.json").read_text())
     assert evidence["verified"] is True and evidence["optimizer_steps"] == 0
     assert evidence["split"] == "val" and evidence["test_evaluated"] is False
-    for depth in (2, 3, 5):
-        assert evidence["comparisons"][str(depth)]["counts_equal"] is True
-        assert evidence["comparisons"][str(depth)]["per_equal"] is True
-        assert evidence["comparisons"][str(depth)]["ctc_close"] is True
-        assert evidence["example"]["profiles"][str(depth)]["executed_layers"] == list(range(1, depth + 1))
-        assert evidence["metrics_by_exit"][str(depth)]["frases"] == 3
+    assert set(evidence["metrics_by_exit"]) == {str(value) for value in expected_exits}
+    for exit_depth in expected_exits:
+        assert evidence["comparisons"][str(exit_depth)]["counts_equal"] is True
+        assert evidence["comparisons"][str(exit_depth)]["per_equal"] is True
+        assert evidence["comparisons"][str(exit_depth)]["ctc_close"] is True
+        assert evidence["example"]["profiles"][str(exit_depth)]["executed_layers"] == list(range(1, exit_depth + 1))
+        assert evidence["metrics_by_exit"][str(exit_depth)]["frases"] == 3
     predictions = json.loads((checkpoint.parent / "predicciones_val_ejemplo.json").read_text())
     assert predictions == evidence["example"]
     evaluation = execute("run.py", "--config", "config.yaml", "--solo-evaluar", "--split", "val",
                          "--checkpoint", str(checkpoint))
     assert "=== metricas (validacion) ===" in evaluation.stdout
     assert file_sha256(checkpoint) == digest
+    execute("scripts/report_speech_training.py", "--run-dir", str(checkpoint.parent))
+    summary_name = "resumen_salidas.json" if depth is None else "resumen_baseline.json"
+    summary = json.loads((checkpoint.parent / summary_name).read_text())
+    assert summary["available_exits"] == list(expected_exits)
+    assert summary["model_layers"] == (5 if depth is None else depth)
+    assert summary["seed"] == cfg["experimento"]["seed"]
     # No se han creado señales ni etiquetas de test: cualquier acceso fallaría.
     assert not Path("prepared/test").exists() and not Path("labels/test").exists()

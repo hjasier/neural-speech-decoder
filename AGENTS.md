@@ -99,5 +99,7 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
   en `configs/speech_salidas_e1.yaml`.
 - Hecho: notebook 08 con perfiles de 200 y 10.001 pasos, guardado en Drive
   y recarga independiente en val. El notebook 07 conserva el baseline anterior.
-- Pendiente: controles independientes de dos y tres capas y medidas de calidad
-  y coste con los modelos entrenados.
+- Hecho: controles independientes de dos y tres capas y selector de variante
+  y semilla en `scripts/configure_speech_comparison.py`. El plan vive en
+  `configs/speech_comparativa.yaml` y exige datos y presupuesto comunes.
+- Pendiente: lanzador de la comparación y medidas de calidad y coste.

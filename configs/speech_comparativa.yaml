@@ -1,0 +1,9 @@
+# Comparacion por igual numero de actualizaciones, no por igual tiempo de pared.
+# Las semillas se aplican a todas las variantes, sin cambiar la particion.
+referencia: baseline_5
+semillas: [0, 1, 2]
+variantes:
+  baseline_5: configs/speech_comparacion_t4.yaml
+  conjunta_235: configs/speech_salidas_t4.yaml
+  control_2: configs/speech_control_2_t4.yaml
+  control_3: configs/speech_control_3_t4.yaml
