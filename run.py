@@ -88,7 +88,8 @@ def main() -> int:
             modelo = construir_modelo(cfg)
             entrenar(modelo, train_loader, val_loader, cfg, run)
             metricas = evaluar(modelo, val_loader, cfg)
-        print("\n=== metricas (test publicado) ===" if speech else "\n=== metricas ===")
+        label = "validacion; checkpoint seleccionado" if cfg.get("protocolo") and not args.solo_evaluar else "test publicado"
+        print(f"\n=== metricas ({label}) ===" if speech else "\n=== metricas ===")
         for key, value in metricas.items():
             print(f"{key}: {value:.4f}")
     except BaseException:

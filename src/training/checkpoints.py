@@ -15,11 +15,16 @@ from src.models.speech_gru import SpeechGRU
 def save_checkpoint(
     path: Path, model: SpeechGRU, cfg: dict[str, Any], dataset: SpeechDataset,
     step: int, metrics: dict[str, float | int],
+    *, split: str = "test",
 ) -> None:
     """Guarda pesos CPU, configuración, normalización de train y procedencia."""
+    if split not in ("val", "test"):
+        raise ValueError("Las métricas del checkpoint deben ser de val o test.")
+    if cfg.get("protocolo") and (split != "val" or metrics.get("completo") != 1):
+        raise ValueError("El protocolo requiere guardar métricas de validación completa.")
     path.parent.mkdir(parents=True, exist_ok=True)
     state = {
-        "format_version": 1,
+        "format_version": 2 if cfg.get("protocolo") else 1,
         "model_state": {name: value.detach().cpu() for name, value in model.state_dict().items()},
         "config": cfg,
         "normalization": dataset.normalization_states,
@@ -28,14 +33,14 @@ def save_checkpoint(
         "phones": list(cfg["datos"]["fonemas"]),
         "blank_id": len(cfg["datos"]["fonemas"]),
         "step": step,
-        "test_metrics": metrics,
+        f"{split}_metrics": metrics,
         "torch_version": str(torch.__version__),
     }
     temporary = path.with_suffix(".tmp")
     torch.save(state, temporary)
     temporary.replace(path)
     path.with_suffix(".json").write_text(
-        json.dumps({"step": step, "split": "test", **metrics}, indent=2, allow_nan=False) + "\n",
+        json.dumps({"step": step, "split": split, **metrics}, indent=2, allow_nan=False) + "\n",
         encoding="utf-8",
     )
 
@@ -47,7 +52,8 @@ def load_checkpoint(
     state = torch.load(path, map_location="cpu", weights_only=True)
     original = state["config"]
     if (
-        state["format_version"] != 1
+        state["format_version"] != (2 if cfg.get("protocolo") else 1)
+        or (cfg.get("protocolo") and state.get("val_metrics", {}).get("completo") != 1)
         or original["modelo"] != cfg["modelo"]
         or original["preprocesamiento"] != cfg["preprocesamiento"]
         or state["sessions"] != list(dataset.sessions)

@@ -23,6 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.data.preprocessing import fit_train_normalization
 from src.data.speech import load_session
 from src.data.speech_dataset import file_sha256, preparation_signature, read_label_manifest
+from src.data.speech_protocol import read_speech_protocol
 
 
 def prepare_signals(cfg: dict[str, Any]) -> dict[str, int]:
@@ -31,15 +32,30 @@ def prepare_signals(cfg: dict[str, Any]) -> dict[str, int]:
     label_root = Path(cfg["etiquetas"]["salida"])
     source_root = Path(cfg["datos"]["raiz"])
     output_root = Path(cfg["datos"]["preparados"])
+    protocol = read_speech_protocol(cfg)
+    partitions = {entry["session"]: entry for entry in protocol["sessions"]} if protocol else {}
+    # Impedir que un perfil nuevo sobrescriba preparaciones de otra firma.
+    existing = output_root / "manifest.json"
+    if existing.is_file() and json.loads(existing.read_text())["signature"] != preparation_signature(cfg):
+        raise ValueError("La carpeta preparada contiene otra firma; utiliza una carpeta distinta.")
     label_files = {entry["path"]: entry for entry in labels["files"]}
     files = []
     normalizations = {}
     totals = {"train": 0, "test": 0}
     for name in cfg["datos"]["sesiones"]:
+        part = partitions.get(name)
+        if part:
+            for split, source in part["sources"].items():
+                if file_sha256(source_root / source["path"]) != source["sha256"]:
+                    raise ValueError(f"El archivo original {split}/{name} ha cambiado.")
         stats = fit_train_normalization(
             source_root, name, cfg["preprocesamiento"]["normalizacion_epsilon"],
+            trial_indices=part["train"] if part else None,
         )
         normalizations[name] = stats.to_dict()
+        if part:
+            normalizations[name].update({"fit_trial_indices": part["train"],
+                                         "fit_protocol_sha256": cfg["protocolo"]["sha256"]})
         for split in totals:
             relative = f"{split}/{name}.json"
             label_path = label_root / relative
@@ -48,6 +64,11 @@ def prepare_signals(cfg: dict[str, Any]) -> dict[str, int]:
             targets = json.loads(label_path.read_text(encoding="utf-8"))
             source = source_root / split / f"{name}.mat"
             session = load_session(source)
+            if part and split == "train":
+                for logical in ("train", "val"):
+                    actual = [trial.index for trial in session.trials if trial.block in part[f"{logical}_blocks"]]
+                    if actual != part[logical]:
+                        raise ValueError("Los bloques reales no corresponden a la partición fijada.")
             if targets["session"] != name or targets["split"] != split or len(targets["targets"]) != len(session.trials):
                 raise ValueError(f"Señales y etiquetas no corresponden: {source}")
             offsets = [0]
@@ -79,13 +100,16 @@ def prepare_signals(cfg: dict[str, Any]) -> dict[str, int]:
     if totals != labels["totals"]:
         raise ValueError("El número de señales no coincide con las etiquetas.")
     manifest = {
-        "format_version": 1, "signature": preparation_signature(cfg),
-        "normalizations": normalizations, "totals": totals, "files": files,
+        "format_version": 2 if protocol else 1, "signature": preparation_signature(cfg),
+        "normalizations": normalizations, "totals": protocol["totals"] if protocol else totals, "files": files,
     }
+    if protocol:
+        manifest["protocol_sha256"] = cfg["protocolo"]["sha256"]
+        manifest["source_totals"] = totals
     partial_manifest = output_root / "manifest.json.part"
     partial_manifest.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     partial_manifest.replace(output_root / "manifest.json")
-    return totals
+    return manifest["totals"]
 
 
 def main() -> int:
