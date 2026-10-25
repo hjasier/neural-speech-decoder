@@ -37,9 +37,10 @@ bloques y mostrará la decodificación. Alice es una exploración anterior.
 
 ## Cómo se ejecuta
 
-Desde la raíz, con el entorno activado. El entrenamiento T12 se ejecuta en Colab
-con `notebooks/07_baseline_t12_colab.ipynb` para el baseline y
-`notebooks/08_salidas_t12_colab.ipynb` para la variante con tres salidas.
+Desde la raíz, con el entorno activado. En Colab,
+`notebooks/09_comparativa_t12_colab.ipynb` permite elegir variante y semilla.
+Se conservan `notebooks/07_baseline_t12_colab.ipynb` para el baseline y
+`notebooks/08_salidas_t12_colab.ipynb` para la prueba de 200 pasos.
 
 ```bash
 python run.py --smoke                          # plantilla sintética, no T12
@@ -102,4 +103,6 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
 - Hecho: controles independientes de dos y tres capas y selector de variante
   y semilla en `scripts/configure_speech_comparison.py`. El plan vive en
   `configs/speech_comparativa.yaml` y exige datos y presupuesto comunes.
-- Pendiente: lanzador de la comparación y medidas de calidad y coste.
+- Hecho: notebook 09 para ejecutar una combinación de variante y semilla,
+  con W&B, guardado en Drive y recarga independiente sobre val.
+- Pendiente: controles de señal por sesión y medidas de latencia y memoria.
