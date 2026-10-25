@@ -93,5 +93,8 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
 - Hecho: CTC conjunta con pesos 0,25/0,25/0,50 en configuración y métricas
   por salida en W&B. Se selecciona un mismo checkpoint por PER de val de
   la salida final; los pesos guardan también las cabezas intermedias.
-- Pendiente: verificación de recarga por perfil y lanzador Colab propio
-  para la variante. El notebook 07 conserva el baseline anterior.
+- Hecho: verificador de recarga por perfil sobre val y selección explícita
+  con `run.py --solo-evaluar --split val`. Perfil de 200 pasos disponible
+  en `configs/speech_salidas_e1.yaml`.
+- Pendiente: lanzador Colab propio para la variante. El notebook 07
+  conserva el baseline anterior.

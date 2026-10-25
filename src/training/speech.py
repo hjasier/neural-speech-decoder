@@ -348,10 +348,15 @@ def entrenar_habla(
 
 def ejecutar_habla(
     cfg: dict[str, Any], run: Any, *, checkpoint: Path | None, solo_evaluar: bool,
+    split_evaluacion: str | None = None,
 ) -> dict[str, float | int]:
     """Construye el pipeline real y entrena o evalúa los pesos de un checkpoint."""
     if run is None:
         raise ValueError("El pipeline de habla requiere W&B: usa modo offline u online.")
+    if split_evaluacion is not None and (not solo_evaluar or split_evaluacion not in ("val", "test")):
+        raise ValueError("La partición de evaluación solo puede elegirse en modo solo_evaluar.")
+    if split_evaluacion == "val" and not cfg.get("protocolo"):
+        raise ValueError("Evaluar val requiere el protocolo T12 con validación independiente.")
     weights = _ctc_weights(cfg)
     training = cfg["entrenamiento"]
     if cfg.get("protocolo") and cfg["evaluacion"]["max_lotes"] is not None:
@@ -379,7 +384,8 @@ def ejecutar_habla(
     if device.type == "cuda" and not torch.cuda.is_available():
         raise RuntimeError("Se pidió CUDA, pero no está disponible en este entorno.")
     torch.set_num_threads(cfg["ejecucion"]["hilos_cpu"])
-    train_loader, evaluation_loader = construir_loaders(cfg, split_evaluacion="test" if solo_evaluar else None)
+    selected_split = (split_evaluacion or "test") if solo_evaluar else None
+    train_loader, evaluation_loader = construir_loaders(cfg, split_evaluacion=selected_split)
     split = evaluation_loader.dataset.split
     model = construir_modelo(cfg)
     if not isinstance(model, SpeechGRU):
@@ -407,12 +413,12 @@ def ejecutar_habla(
         else:
             exit_metrics, seconds = evaluar_salidas(model, evaluation_loader, cfg, smoother, device)
             metrics = {**exit_metrics[cfg["modelo"]["capas"]], "segundos": seconds}
-            per_exit_logged = {f"test/capa_{depth}/{key}": value
+            per_exit_logged = {f"{split}/capa_{depth}/{key}": value
                                for depth, values in exit_metrics.items() for key, value in values.items()}
-            per_exit_logged["test/segundos_todas_salidas"] = seconds
-        registrar(run, {**{f"test/{key}": value for key, value in metrics.items()}, **per_exit_logged}, state["step"])
+            per_exit_logged[f"{split}/segundos_todas_salidas"] = seconds
+        registrar(run, {**{f"{split}/{key}": value for key, value in metrics.items()}, **per_exit_logged}, state["step"])
         run.summary.update({"checkpoint": str(checkpoint), "checkpoint/paso": state["step"],
-                            **{f"test_final/{key}": value for key, value in metrics.items()}})
+                            **{f"{split}_final/{key}": value for key, value in metrics.items()}})
         return metrics
     output = Path(cfg["salida"]["directorio"]) / run.id
     output.mkdir(parents=True, exist_ok=False)
