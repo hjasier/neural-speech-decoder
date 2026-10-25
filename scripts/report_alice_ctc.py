@@ -5,10 +5,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 from collections import Counter
 import sys
 
+# El kernel puede heredar un backend inline ausente en el Python aislado.
+# Se fija antes del import: matplotlib.use() llegaría después del fallo.
+os.environ["MPLBACKEND"] = "Agg"
 import matplotlib
 matplotlib.use("Agg")
 from matplotlib import pyplot as plt
