@@ -90,5 +90,8 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
   y lanzador Colab propio.
 - Hecho: salidas opcionales tras las GRU 2 y 3; cada perfil ejecuta solo
   el prefijo elegido y se conserva la salida final del baseline.
-- Pendiente: conectar la CTC conjunta y las métricas de las tres salidas.
-  El pipeline rechaza entrenar este perfil hasta incorporar esa supervisión.
+- Hecho: CTC conjunta con pesos 0,25/0,25/0,50 en configuración y métricas
+  por salida en W&B. Se selecciona un mismo checkpoint por PER de val de
+  la salida final; los pesos guardan también las cabezas intermedias.
+- Pendiente: verificación de recarga por perfil y lanzador Colab propio
+  para la variante. El notebook 07 conserva el baseline anterior.

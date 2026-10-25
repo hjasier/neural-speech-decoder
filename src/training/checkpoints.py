@@ -15,13 +15,20 @@ from src.models.speech_gru import SpeechGRU
 def save_checkpoint(
     path: Path, model: SpeechGRU, cfg: dict[str, Any], dataset: SpeechDataset,
     step: int, metrics: dict[str, float | int],
-    *, split: str = "test",
+    *, split: str = "test", exit_metrics: dict[int, dict[str, float | int]] | None = None,
 ) -> None:
     """Guarda pesos CPU, configuración, normalización de train y procedencia."""
     if split not in ("val", "test"):
         raise ValueError("Las métricas del checkpoint deben ser de val o test.")
     if cfg.get("protocolo") and (split != "val" or metrics.get("completo") != 1):
         raise ValueError("El protocolo requiere guardar métricas de validación completa.")
+    exits = cfg["modelo"].get("salidas_intermedias", [])
+    if exits:
+        final = cfg["modelo"]["capas"]
+        if (exit_metrics is None or set(exit_metrics) != set(exits) | {final}
+                or any(value.get("completo") != 1 for value in exit_metrics.values())
+                or any(metrics[key] != value for key, value in exit_metrics[final].items())):
+            raise ValueError("El checkpoint debe conservar todas las salidas y seleccionar por la final.")
     path.parent.mkdir(parents=True, exist_ok=True)
     state = {
         "format_version": 2 if cfg.get("protocolo") else 1,
@@ -36,11 +43,15 @@ def save_checkpoint(
         f"{split}_metrics": metrics,
         "torch_version": str(torch.__version__),
     }
+    if exit_metrics is not None:
+        state.update(exit_metrics=exit_metrics, selection_exit=cfg["modelo"]["capas"],
+                     ctc_weights=cfg["entrenamiento"]["ctc_pesos"])
     temporary = path.with_suffix(".tmp")
     torch.save(state, temporary)
     temporary.replace(path)
     path.with_suffix(".json").write_text(
-        json.dumps({"step": step, "split": split, **metrics}, indent=2, allow_nan=False) + "\n",
+        json.dumps({"step": step, "split": split, **metrics,
+                    **({"salidas": exit_metrics} if exit_metrics is not None else {})}, indent=2, allow_nan=False) + "\n",
         encoding="utf-8",
     )
 
@@ -54,6 +65,9 @@ def load_checkpoint(
     if (
         state["format_version"] != (2 if cfg.get("protocolo") else 1)
         or (cfg.get("protocolo") and state.get("val_metrics", {}).get("completo") != 1)
+        or (cfg["modelo"].get("salidas_intermedias")
+            and (state.get("selection_exit") != cfg["modelo"]["capas"]
+                 or set(state.get("exit_metrics", {})) != set(cfg["modelo"]["salidas_intermedias"]) | {cfg["modelo"]["capas"]}))
         or original["modelo"] != cfg["modelo"]
         or original["preprocesamiento"] != cfg["preprocesamiento"]
         or state["sessions"] != list(dataset.sessions)

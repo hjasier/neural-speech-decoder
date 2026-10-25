@@ -1,5 +1,5 @@
-# Arquitectura con salidas 2/3/5. La CTC conjunta se conecta en la tarea 5.
-# El pipeline rechaza entrenarla hasta conectar esa supervision.
+# Entrenamiento conjunto: CTC 2/3/5 con pesos 0.25/0.25/0.50.
+# Mismo protocolo T12; seleccion por PER de la salida final en validacion.
 experimento:
   nombre: speech_salidas_t4
   seed: 0
@@ -126,6 +126,10 @@ entrenamiento:
     blanco_sd: 1.0
     offset_sd: 0.2
   imprimir_cada: 10
+  ctc_pesos:
+    '2': 0.25
+    '3': 0.25
+    '5': 0.5
 evaluacion:
   micro_batch_size: 16
   cada_pasos: 50

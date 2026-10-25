@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from math import isfinite
+from math import isclose, isfinite
 from pathlib import Path
 from time import perf_counter
 from typing import Any
@@ -65,19 +65,56 @@ def _learning_rate(cfg: dict[str, Any], completed_steps: int) -> float:
     return (schedule["inicio"] - schedule["final"]) * (1 - fraction) ** schedule["potencia"] + schedule["final"]
 
 
+def _ctc_weights(cfg: dict[str, Any]) -> dict[int, float] | None:
+    """Valida pesos explícitos normalizados; None conserva el objetivo original."""
+    layers = cfg["modelo"].get("salidas_intermedias", [])
+    supplied = cfg["entrenamiento"].get("ctc_pesos")
+    if not layers:
+        if supplied is not None:
+            raise ValueError("ctc_pesos requiere configurar salidas_intermedias.")
+        return None
+    if not cfg.get("protocolo") or not isinstance(supplied, dict):
+        raise ValueError("La CTC conjunta requiere el protocolo de validación y ctc_pesos explícitos.")
+    weights = {}
+    for key, value in supplied.items():
+        if (type(key) not in (str, int) or not str(key).isdigit()
+                or str(int(key)) != str(key)
+                or type(value) not in (float, int) or not isfinite(value) or value <= 0):
+            raise ValueError("Cada peso CTC debe identificar una capa y ser positivo y finito.")
+        weights[int(key)] = float(value)
+    expected = set(layers) | {cfg["modelo"]["capas"]}
+    if len(weights) != len(supplied) or set(weights) != expected or not isclose(sum(weights.values()), 1.0, abs_tol=1e-9):
+        raise ValueError("ctc_pesos debe cubrir todas las salidas y sumar uno.")
+    return weights
+
+
 def _backward_microbatch(
     model: SpeechGRU, batch: SpeechBatch, cfg: dict[str, Any],
     smoother: GaussianSmoothing, criterion: nn.CTCLoss,
     device: torch.device, effective_batch_size: int,
+    *, component_losses: dict[int, float] | None = None,
 ) -> float:
     # El grafo de cada grupo se libera antes de procesar el siguiente.
+    weights = _ctc_weights(cfg)
     batch = batch.to(device, non_blocking=cfg["datos"]["pin_memory"])
-    logits = model(smoother(_training_features(batch, cfg)), batch.session_ids)
-    losses = _ctc_losses(criterion, logits, model.output_lengths(batch.input_lengths), batch)
+    features = smoother(_training_features(batch, cfg))
+    if weights is None:
+        logits = model(features, batch.session_ids)
+        losses = _ctc_losses(criterion, logits, model.output_lengths(batch.input_lengths), batch)
+        loss = losses.sum() / effective_batch_size
+    else:
+        outputs = model.forward_exits(features, batch.session_ids)
+        lengths = model.output_lengths(batch.input_lengths)
+        components = {depth: _ctc_losses(criterion, logits, lengths, batch)
+                      for depth, logits in outputs.items()}
+        loss = sum(weights[depth] * values.sum() / effective_batch_size
+                   for depth, values in components.items())
     # Ponderar por frases del lote completo también trata bien el último
     # grupo cuando batch_size no es divisible por micro_batch_size.
-    loss = losses.sum() / effective_batch_size
     loss.backward()
+    if weights is not None and component_losses is not None:
+        for depth, values in components.items():
+            component_losses[depth] = component_losses.get(depth, 0.0) + values.detach().sum().item() / effective_batch_size
     return loss.item()
 
 
@@ -125,6 +162,48 @@ def evaluar_habla(
     }
 
 
+@torch.no_grad()
+def evaluar_salidas(
+    model: SpeechGRU, loader: DataLoader, cfg: dict[str, Any],
+    smoother: GaussianSmoothing, device: torch.device,
+) -> tuple[dict[int, dict[str, float | int]], float]:
+    """Evalúa todas las salidas en una pasada; devuelve métricas y tiempo conjunto.
+
+    El tiempo corresponde a la evaluación de todas las cabezas, no a la
+    latencia individual de un perfil. No hay ruido ni dropout.
+    """
+    start = perf_counter()
+    model.eval()
+    criterion = _criterion(cfg)
+    totals = {depth: {"ctc_loss": 0.0, "errores": 0, "fonemas": 0, "frases": 0}
+              for depth in model.available_exits}
+    limit = cfg["evaluacion"]["max_lotes"]
+    for index, batch in enumerate(loader):
+        if limit is not None and index >= limit:
+            break
+        for small in batch.microbatches(cfg["evaluacion"]["micro_batch_size"], trim_padding=True):
+            small = small.to(device, non_blocking=cfg["datos"]["pin_memory"])
+            lengths = model.output_lengths(small.input_lengths)
+            outputs = model.forward_exits(smoother(small.features), small.session_ids)
+            for depth, logits in outputs.items():
+                losses = _ctc_losses(criterion, logits, lengths, small)
+                hypotheses = decode_ctc(logits, lengths, criterion.blank)
+                errors, phones = phoneme_errors(hypotheses, small.targets, small.target_lengths)
+                total = totals[depth]
+                total["ctc_loss"] += losses.sum().item()
+                total["errores"] += errors
+                total["fonemas"] += phones
+                total["frases"] += len(small.references)
+    results = {}
+    for depth, total in totals.items():
+        if not total["frases"] or not total["fonemas"]:
+            raise ValueError("La evaluación no contiene frases o fonemas.")
+        results[depth] = {**total, "ctc_loss": total["ctc_loss"] / total["frases"],
+                          "per": total["errores"] / total["fonemas"],
+                          "completo": int(total["frases"] == len(loader.dataset))}
+    return results, perf_counter() - start
+
+
 def entrenar_habla(
     model: SpeechGRU, train_loader: DataLoader, evaluation_loader: DataLoader,
     cfg: dict[str, Any], run: Any, smoother: GaussianSmoothing,
@@ -132,6 +211,11 @@ def entrenar_habla(
 ) -> dict[str, float | int]:
     """Entrena; el protocolo nuevo selecciona por PER de val sin evaluar test."""
     training = cfg["entrenamiento"]
+    weights = _ctc_weights(cfg)
+    best_exit_metrics, exit_history = None, []
+    if weights is not None:
+        run.summary.update({"seleccion/capa": cfg["modelo"]["capas"],
+                            **{f"ctc/peso_capa_{depth}": value for depth, value in weights.items()}})
     split = "val" if cfg.get("protocolo") else "test"
     best_metrics, best_step = None, 0
     history = []
@@ -154,8 +238,10 @@ def entrenar_habla(
         for group in optimizer.param_groups:
             group["lr"] = learning_rate
         optimizer.zero_grad(set_to_none=True)
+        components: dict[int, float] = {}
+        backward_options = {"component_losses": components} if weights is not None else {}
         ctc_loss = sum(
-            _backward_microbatch(model, microbatch, cfg, smoother, criterion, device, len(batch.references))
+            _backward_microbatch(model, microbatch, cfg, smoother, criterion, device, len(batch.references), **backward_options)
             for microbatch in batch.microbatches(training["micro_batch_size"])
         )
         regularization = _regularization(model, batch.session_ids, training["l2"])
@@ -173,6 +259,7 @@ def entrenar_habla(
             "train/loss": ctc_loss + regularization.item(), "train/grad_norm": gradient_norm.item(),
             "train/learning_rate": learning_rate,
             **_memory_metrics(device),
+            **{f"train/capa_{depth}/ctc_loss": value for depth, value in components.items()},
         }
         training_seconds += perf_counter() - step_start
         logged["train/segundos_acumulados"] = training_seconds
@@ -188,18 +275,31 @@ def entrenar_habla(
         time_reached = time_limit is not None and perf_counter() - start >= time_limit
         evaluation_due = (step - 1) % cfg["evaluacion"]["cada_pasos"] == 0 or step == training["pasos"] or time_reached
         if evaluation_due:
-            metrics = evaluar_habla(model, evaluation_loader, cfg, smoother, device)
+            exit_metrics = None
+            per_exit_logged = {}
+            if weights is None:
+                metrics = evaluar_habla(model, evaluation_loader, cfg, smoother, device)
+            else:
+                exit_metrics, seconds = evaluar_salidas(model, evaluation_loader, cfg, smoother, device)
+                metrics = {**exit_metrics[cfg["modelo"]["capas"]], "segundos": seconds}
+                per_exit_logged = {f"{split}/capa_{depth}/{key}": value
+                                   for depth, values in exit_metrics.items() for key, value in values.items()}
+                per_exit_logged[f"{split}/segundos_todas_salidas"] = seconds
+                exit_history.append({"step": step, "metrics": exit_metrics, "segundos_conjuntos": seconds})
+                print("salidas: " + "  ".join(f"{depth}: PER={values['per']:.2%}" for depth, values in exit_metrics.items()), flush=True)
             if split == "val" and not metrics["completo"]:
                 raise ValueError("La selección de checkpoint requiere toda la validación.")
-            registrar(run, {f"{split}/{key}": value for key, value in metrics.items()}, step)
+            registrar(run, {**{f"{split}/{key}": value for key, value in metrics.items()}, **per_exit_logged}, step)
             print(f"{split}: PER={metrics['per']:.2%}  CTC={metrics['ctc_loss']:.4f}  "
                   f"frases={metrics['frases']}  completo={bool(metrics['completo'])}", flush=True)
-            save_checkpoint(output / "ultimo.pt", model, cfg, train_loader.dataset, step, metrics, split=split)
+            checkpoint_options = {"exit_metrics": exit_metrics} if weights is not None else {}
+            save_checkpoint(output / "ultimo.pt", model, cfg, train_loader.dataset, step, metrics, split=split, **checkpoint_options)
             if split == "val":
                 history.append({"step": step, **metrics})
                 if best_metrics is None or metrics["per"] < best_metrics["per"]:
                     best_metrics, best_step = dict(metrics), step
-                    save_checkpoint(output / "mejor_val.pt", model, cfg, train_loader.dataset, step, metrics, split="val")
+                    best_exit_metrics = exit_metrics
+                    save_checkpoint(output / "mejor_val.pt", model, cfg, train_loader.dataset, step, metrics, split="val", **checkpoint_options)
         if evaluation_due and step < training["pasos"] and time_limit is not None and perf_counter() - start >= time_limit:
             stopped_for_time = True
             print(f"Límite de {time_limit:g} s alcanzado; parada tras el paso {step}, "
@@ -218,6 +318,9 @@ def entrenar_habla(
     })
     if split == "val":
         elapsed = perf_counter() - start
+        if best_exit_metrics is not None:
+            run.summary.update({f"val_mejor/capa_{depth}/{key}": value
+                                for depth, values in best_exit_metrics.items() for key, value in values.items()})
         run.summary.update({"seleccion/metrica": "val/per", "seleccion/paso": best_step,
                             "seleccion/empates": "primer checkpoint",
                             "protocolo/sha256": cfg["protocolo"]["sha256"],
@@ -233,6 +336,9 @@ def entrenar_habla(
             "cuda_memory": _memory_metrics(device),
             "model_parameters": sum(parameter.numel() for parameter in model.parameters()),
             "run_id": run.id,
+            **({"ctc_weights": weights, "selection_exit": cfg["modelo"]["capas"],
+                "best_val_by_exit": best_exit_metrics, "validation_history_by_exit": exit_history}
+               if weights is not None else {}),
         }, indent=2, ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")
         print(f"checkpoint seleccionado: {output / 'mejor_val.pt'} (val PER; paso {best_step})", flush=True)
         return best_metrics
@@ -246,8 +352,7 @@ def ejecutar_habla(
     """Construye el pipeline real y entrena o evalúa los pesos de un checkpoint."""
     if run is None:
         raise ValueError("El pipeline de habla requiere W&B: usa modo offline u online.")
-    if cfg["modelo"].get("salidas_intermedias") and not solo_evaluar:
-        raise ValueError("Las salidas intermedias necesitan entrenamiento CTC conjunto, todavía no conectado.")
+    weights = _ctc_weights(cfg)
     training = cfg["entrenamiento"]
     if cfg.get("protocolo") and cfg["evaluacion"]["max_lotes"] is not None:
         raise ValueError("El protocolo de comparación requiere validación/test completos: max_lotes=null.")
@@ -296,8 +401,16 @@ def ejecutar_habla(
           f"microlote train: {training['micro_batch_size']}  "
           f"microlote {split}: {cfg['evaluacion']['micro_batch_size']}", flush=True)
     if solo_evaluar:
-        metrics = evaluar_habla(model, evaluation_loader, cfg, smoother, device)
-        registrar(run, {f"test/{key}": value for key, value in metrics.items()}, state["step"])
+        per_exit_logged = {}
+        if weights is None:
+            metrics = evaluar_habla(model, evaluation_loader, cfg, smoother, device)
+        else:
+            exit_metrics, seconds = evaluar_salidas(model, evaluation_loader, cfg, smoother, device)
+            metrics = {**exit_metrics[cfg["modelo"]["capas"]], "segundos": seconds}
+            per_exit_logged = {f"test/capa_{depth}/{key}": value
+                               for depth, values in exit_metrics.items() for key, value in values.items()}
+            per_exit_logged["test/segundos_todas_salidas"] = seconds
+        registrar(run, {**{f"test/{key}": value for key, value in metrics.items()}, **per_exit_logged}, state["step"])
         run.summary.update({"checkpoint": str(checkpoint), "checkpoint/paso": state["step"],
                             **{f"test_final/{key}": value for key, value in metrics.items()}})
         return metrics
