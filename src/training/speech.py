@@ -217,6 +217,7 @@ def entrenar_habla(
         **{f"{split}_final/{key}": value for key, value in metrics.items()},
     })
     if split == "val":
+        elapsed = perf_counter() - start
         run.summary.update({"seleccion/metrica": "val/per", "seleccion/paso": best_step,
                             "seleccion/empates": "primer checkpoint",
                             "protocolo/sha256": cfg["protocolo"]["sha256"],
@@ -226,6 +227,12 @@ def entrenar_habla(
             "best_val": best_metrics, "last_val": metrics, "validation_history": history,
             "checkpoint": str(output / "mejor_val.pt"), "test_evaluated": False,
             "stopped_for_time": stopped_for_time,
+            "hardware": torch.cuda.get_device_name(device) if device.type == "cuda" else "CPU",
+            "torch_version": str(torch.__version__), "cuda_version": torch.version.cuda,
+            "training_seconds": training_seconds, "loop_seconds": elapsed,
+            "cuda_memory": _memory_metrics(device),
+            "model_parameters": sum(parameter.numel() for parameter in model.parameters()),
+            "run_id": run.id,
         }, indent=2, ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")
         print(f"checkpoint seleccionado: {output / 'mejor_val.pt'} (val PER; paso {best_step})", flush=True)
         return best_metrics

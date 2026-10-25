@@ -4,7 +4,10 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 from pathlib import Path
+import subprocess
+import sys
 from types import SimpleNamespace
 
 import numpy as np
@@ -81,7 +84,7 @@ def test_best_validation_checkpoint_survives_regression_and_tie(tmp_path, monkey
         def __iter__(self):
             return iter([batch, batch, batch])
 
-    run = SimpleNamespace(summary={}, log=lambda *_args, **_kwargs: None)
+    run = SimpleNamespace(id="contract_test", summary={}, log=lambda *_args, **_kwargs: None)
 
     def backward(*_args):
         loss = model.weight.square().sum()
@@ -115,3 +118,9 @@ def test_best_validation_checkpoint_survives_regression_and_tie(tmp_path, monkey
     loaded = load_checkpoint(tmp_path / "mejor_val.pt", restored, cfg, Loader.dataset)
     assert loaded["step"] == 1
     assert all(torch.equal(restored.state_dict()[name], value) for name, value in best["model_state"].items())
+    environment = {**os.environ, "MPLBACKEND": "module://backend_ausente_en_python_aislado"}
+    subprocess.run([sys.executable, "scripts/report_speech_training.py", "--run-dir", str(tmp_path)],
+                   env=environment, check=True, capture_output=True, text=True)
+    summary = json.loads((tmp_path / "resumen_baseline.json").read_text())
+    assert summary["best_val_step"] == 1 and summary["test_evaluated"] is False
+    assert (tmp_path / "curvas_validacion.png").stat().st_size > 0
