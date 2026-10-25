@@ -38,7 +38,8 @@ bloques y mostrará la decodificación. Alice es una exploración anterior.
 ## Cómo se ejecuta
 
 Desde la raíz, con el entorno activado. El entrenamiento T12 se ejecuta en Colab
-mediante `notebooks/07_baseline_t12_colab.ipynb`.
+con `notebooks/07_baseline_t12_colab.ipynb` para el baseline y
+`notebooks/08_salidas_t12_colab.ipynb` para la variante con tres salidas.
 
 ```bash
 python run.py --smoke                          # plantilla sintética, no T12
@@ -88,4 +89,15 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
 - Hecho: baseline GRU + CTC, pipeline y W&B; protocolo T12 de 19 sesiones,
   con 5.180 frases train, 1.460 val y 680 test, selección de pesos por val
   y lanzador Colab propio.
-- Pendiente: salidas intermedias 2/3/5.
+- Hecho: salidas opcionales tras las GRU 2 y 3; cada perfil ejecuta solo
+  el prefijo elegido y se conserva la salida final del baseline.
+- Hecho: CTC conjunta con pesos 0,25/0,25/0,50 en configuración y métricas
+  por salida en W&B. Se selecciona un mismo checkpoint por PER de val de
+  la salida final; los pesos guardan también las cabezas intermedias.
+- Hecho: verificador de recarga por perfil sobre val y selección explícita
+  con `run.py --solo-evaluar --split val`. Perfil de 200 pasos disponible
+  en `configs/speech_salidas_e1.yaml`.
+- Hecho: notebook 08 con perfiles de 200 y 10.001 pasos, guardado en Drive
+  y recarga independiente en val. El notebook 07 conserva el baseline anterior.
+- Pendiente: controles independientes de dos y tres capas y medidas de calidad
+  y coste con los modelos entrenados.

@@ -26,6 +26,12 @@ def main() -> int:
     checkpoint = args.run_dir / "mejor_val.pt"
     sidecar = json.loads(checkpoint.with_suffix(".json").read_text(encoding="utf-8"))
     selected = min(history, key=lambda point: point["per"])
+    per_exit = report.get("best_val_by_exit")
+    if cfg["modelo"].get("salidas_intermedias"):
+        selected_heads = next(point["metrics"] for point in report["validation_history_by_exit"]
+                              if point["step"] == report["best_val_step"])
+        if not per_exit or selected_heads != per_exit or sidecar.get("salidas") != per_exit:
+            raise ValueError("Las métricas por salida no corresponden al checkpoint seleccionado.")
     if (report["test_evaluated"] is not False or sidecar["split"] != "val"
             or report["best_val_step"] != selected["step"]
             or sidecar["step"] != selected["step"]
@@ -47,15 +53,26 @@ def main() -> int:
         "protocol_sha256": cfg["protocolo"]["sha256"],
         "checkpoint": str(checkpoint), "checkpoint_sha256": digest,
         "scope": "presupuesto y métricas observadas; la convergencia requiere revisión del autor",
+        **({"best_val_by_exit": per_exit, "selection_exit": report["selection_exit"],
+            "ctc_weights": report["ctc_weights"]} if per_exit else {}),
     }
-    (args.run_dir / "resumen_baseline.json").write_text(
+    name = "resumen_salidas.json" if per_exit else "resumen_baseline.json"
+    (args.run_dir / name).write_text(
         json.dumps(summary, indent=2, ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")
     fig, axes = plt.subplots(1, 2, figsize=(10, 4), layout="constrained")
     fig.suptitle(f"T12 · validación · {report['run_id']}")
-    steps = [point["step"] for point in history]
-    axes[0].plot(steps, [100 * point["per"] for point in history])
-    axes[0].set(ylabel="PER (%)", title="Selección por PER de validación")
-    axes[1].plot(steps, [point["ctc_loss"] for point in history])
+    if per_exit:
+        head_history = report["validation_history_by_exit"]
+        steps = [point["step"] for point in head_history]
+        for depth in sorted(per_exit, key=int):
+            axes[0].plot(steps, [100 * point["metrics"][depth]["per"] for point in head_history], label=f"Capa {depth}")
+            axes[1].plot(steps, [point["metrics"][depth]["ctc_loss"] for point in head_history], label=f"Capa {depth}")
+        axes[1].legend(fontsize=8)
+    else:
+        steps = [point["step"] for point in history]
+        axes[0].plot(steps, [100 * point["per"] for point in history])
+        axes[1].plot(steps, [point["ctc_loss"] for point in history])
+    axes[0].set(ylabel="PER (%)", title="PER de validación; selección por salida final")
     axes[1].set(ylabel="CTC media por frase", title="Pérdida de validación")
     for axis in axes:
         axis.axvline(report["best_val_step"], color="#b44026", linestyle="--", label="Checkpoint elegido")

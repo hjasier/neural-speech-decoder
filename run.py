@@ -46,11 +46,15 @@ def main() -> int:
                     help="carga el checkpoint y evalua, sin entrenar")
     ap.add_argument("--checkpoint", type=Path,
                     help="checkpoint de habla para --solo-evaluar")
+    ap.add_argument("--split", choices=("val", "test"),
+                    help="partición T12 en --solo-evaluar; por defecto test")
     args = ap.parse_args()
     if args.solo_evaluar and args.checkpoint is None:
         ap.error("--solo-evaluar requiere --checkpoint")
     if args.checkpoint is not None and not args.solo_evaluar:
         ap.error("--checkpoint requiere --solo-evaluar; no se admite reanudar entrenamiento todavía")
+    if args.split is not None and not args.solo_evaluar:
+        ap.error("--split requiere --solo-evaluar")
     if args.checkpoint is not None and not args.checkpoint.is_file():
         ap.error(f"no existe el checkpoint {args.checkpoint}")
 
@@ -64,6 +68,8 @@ def main() -> int:
     alice = cfg.get("tarea") == "alice_power"
     if args.solo_evaluar and not (speech or alice_ctc):
         ap.error("la evaluación desde checkpoint está implementada para habla y Alice CTC")
+    if args.split is not None and not speech:
+        ap.error("--split está disponible únicamente para habla T12")
 
     # 1 · reproducibilidad, antes que nada
     fijar_seed(cfg["experimento"]["seed"])
@@ -82,13 +88,15 @@ def main() -> int:
         elif speech:
             from src.training.speech import ejecutar_habla
 
-            metricas = ejecutar_habla(cfg, run, checkpoint=args.checkpoint, solo_evaluar=args.solo_evaluar)
+            metricas = ejecutar_habla(cfg, run, checkpoint=args.checkpoint, solo_evaluar=args.solo_evaluar,
+                                      split_evaluacion=args.split)
         else:
             train_loader, val_loader = construir_loaders(cfg)
             modelo = construir_modelo(cfg)
             entrenar(modelo, train_loader, val_loader, cfg, run)
             metricas = evaluar(modelo, val_loader, cfg)
-        label = "validacion; checkpoint seleccionado" if cfg.get("protocolo") and not args.solo_evaluar else "test publicado"
+        label = "validacion" if args.split == "val" else (
+            "validacion; checkpoint seleccionado" if cfg.get("protocolo") and not args.solo_evaluar else "test publicado")
         print(f"\n=== metricas ({label}) ===" if speech else "\n=== metricas ===")
         for key, value in metricas.items():
             print(f"{key}: {value:.4f}")

@@ -1,0 +1,6 @@
+# Tolerancias de recarga; no son hiperparametros del entrenamiento.
+ctc_atol: 1.0e-5
+ctc_rtol: 1.0e-6
+logits_atol: 1.0e-6
+logits_rtol: 1.0e-5
+ejemplo_validacion: 0

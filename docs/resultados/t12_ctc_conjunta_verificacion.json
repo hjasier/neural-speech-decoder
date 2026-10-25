@@ -1,0 +1,86 @@
+{
+  "fecha": "2026-10-25",
+  "config": "configs/speech_salidas_t4.yaml",
+  "scope": "perdida y registro conjunto; dos frases reales de val con pesos iniciales",
+  "ctc_weights": {
+    "2": 0.25,
+    "3": 0.25,
+    "5": 0.5
+  },
+  "selection_exit": 5,
+  "all_ctc_losses_finite": true,
+  "per_exit": {
+    "2": {
+      "ctc_loss": 341.60614013671875,
+      "errores": 85,
+      "fonemas": 86,
+      "frases": 2,
+      "per": 0.9883720930232558,
+      "completo": 1
+    },
+    "3": {
+      "ctc_loss": 344.1435546875,
+      "errores": 82,
+      "fonemas": 86,
+      "frases": 2,
+      "per": 0.9534883720930233,
+      "completo": 1
+    },
+    "5": {
+      "ctc_loss": 342.6011657714844,
+      "errores": 79,
+      "fonemas": 86,
+      "frases": 2,
+      "per": 0.9186046511627907,
+      "completo": 1
+    }
+  },
+  "weighted_ctc_diagnostic": 342.7380065917969,
+  "shared_evaluation_seconds": 0.21407513200028916,
+  "hardware": "NVIDIA GeForce RTX 2060",
+  "cpu_threads": 2,
+  "full_model_optimizer_steps": 0,
+  "new_heads_trained": false,
+  "test_evaluated": false,
+  "wandb_mode": "offline",
+  "wandb_run_id": "i97gvb2c",
+  "logged_keys": [
+    "comprobacion_ctc/capa_2/completo",
+    "comprobacion_ctc/capa_2/ctc_loss",
+    "comprobacion_ctc/capa_2/errores",
+    "comprobacion_ctc/capa_2/fonemas",
+    "comprobacion_ctc/capa_2/frases",
+    "comprobacion_ctc/capa_2/per",
+    "comprobacion_ctc/capa_3/completo",
+    "comprobacion_ctc/capa_3/ctc_loss",
+    "comprobacion_ctc/capa_3/errores",
+    "comprobacion_ctc/capa_3/fonemas",
+    "comprobacion_ctc/capa_3/frases",
+    "comprobacion_ctc/capa_3/per",
+    "comprobacion_ctc/capa_5/completo",
+    "comprobacion_ctc/capa_5/ctc_loss",
+    "comprobacion_ctc/capa_5/errores",
+    "comprobacion_ctc/capa_5/fonemas",
+    "comprobacion_ctc/capa_5/frases",
+    "comprobacion_ctc/capa_5/per"
+  ],
+  "quality_result": false,
+  "full_validation_evaluated": false,
+  "source_dataset_validation_size": 1460,
+  "evaluation_subset_size": 2,
+  "automated_tests_passed": 29,
+  "numerical_checks": [
+    "CTC y gradientes contra suma explicita",
+    "microlotes desiguales 2+1",
+    "evaluacion compartida frente a perfiles individuales",
+    "seleccion por salida final aunque otras mejoren en otro paso",
+    "metricas por cabeza, guardado y recarga estricta"
+  ],
+  "source_sha256": {
+    "src/training/speech.py": "ceb8d06bb68796e076fb2476da3757f249e12ca9a490fa736dd8ca76080cc259",
+    "src/training/checkpoints.py": "2605d6391a6fe3b26d0f3c21829c30b33c03d3737bc69e651393ae535bf633b3",
+    "scripts/report_speech_training.py": "66c4a05357a136e74d07aa78b53cd15bdd14228416f5cb8387c7175da867ed99",
+    "configs/speech_salidas_t4.yaml": "3a91ecc2c53e750c739ff2e04e85a23d98a386f57c6d079fa251529a93844095"
+  },
+  "notebooks_04_to_07_unchanged": true
+}
