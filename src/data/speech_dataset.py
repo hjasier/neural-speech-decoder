@@ -14,6 +14,8 @@ from torch import Tensor
 from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import Dataset, Sampler
 
+from src.data.speech_protocol import read_speech_protocol
+
 
 def file_sha256(path: Path) -> str:
     """Calcula un SHA-256 sin cargar todo el archivo en memoria."""
@@ -51,6 +53,8 @@ def preparation_signature(cfg: dict[str, Any]) -> str:
         "epsilon": cfg["preprocesamiento"]["normalizacion_epsilon"],
         "labels_sha256": file_sha256(Path(cfg["etiquetas"]["salida"]) / "manifest.json"),
     }
+    if read_speech_protocol(cfg) is not None:
+        state["protocol_sha256"] = cfg["protocolo"]["sha256"]
     return hashlib.sha256(json.dumps(state, sort_keys=True).encode("utf-8")).hexdigest()
 
 
@@ -130,16 +134,24 @@ class SpeechDataset(Dataset[SpeechSample]):
 
     def __init__(self, cfg: dict[str, Any], split: str) -> None:
         """Abre metadatos y comprueba integridad, vocabulario y longitudes CTC."""
-        if split not in ("train", "test"):
-            raise ValueError("El Dataset etiquetado admite únicamente train o test.")
+        protocol = read_speech_protocol(cfg)
+        allowed = ("train", "val", "test") if protocol else ("train", "test")
+        if split not in allowed:
+            raise ValueError(f"La configuración admite las particiones {allowed}.")
+        self.split = split
+        source_split = "train" if split == "val" else split
+        partitions = {entry["session"]: entry for entry in protocol["sessions"]} if protocol else {}
         labels = read_label_manifest(cfg)
         self.root = Path(cfg["datos"]["preparados"])
         path = self.root / "manifest.json"
         if not path.is_file():
             raise FileNotFoundError("Faltan señales preparadas: ejecuta scripts/prepare_speech_data.py.")
         manifest = json.loads(path.read_text(encoding="utf-8"))
-        if manifest["format_version"] != 1 or manifest["signature"] != preparation_signature(cfg):
+        if manifest["format_version"] != (2 if protocol else 1) or manifest["signature"] != preparation_signature(cfg):
             raise ValueError("Las señales preparadas no corresponden a esta configuración.")
+        if protocol and (manifest["protocol_sha256"] != cfg["protocolo"]["sha256"]
+                         or manifest["totals"] != protocol["totals"]):
+            raise ValueError("El manifiesto preparado no corresponde a la partición T12.")
         self.normalization_states = manifest["normalizations"]
         self.sessions = tuple(cfg["datos"]["sesiones"])
         self._rows: list[dict[str, Any]] = []
@@ -150,14 +162,14 @@ class SpeechDataset(Dataset[SpeechSample]):
         blank_id = len(cfg["datos"]["fonemas"])
         for session_id, session in enumerate(self.sessions):
             start = len(self._rows)
-            entry = feature_files[(split, session)]
-            label_name = f"{split}/{session}.json"
+            entry = feature_files[(source_split, session)]
+            label_name = f"{source_split}/{session}.json"
             label_path = Path(cfg["etiquetas"]["salida"]) / label_name
             if file_sha256(label_path) != label_files[label_name]["sha256"]:
                 raise ValueError(f"Las etiquetas han cambiado: {label_name}")
             targets = json.loads(label_path.read_text(encoding="utf-8"))
             if (
-                targets["session"] != session or targets["split"] != split
+                targets["session"] != session or targets["split"] != source_split
                 or targets["transcriptions_sha256"] != entry["transcriptions_sha256"]
             ):
                 raise ValueError(f"Las señales y etiquetas no corresponden: {label_name}")
@@ -167,6 +179,23 @@ class SpeechDataset(Dataset[SpeechSample]):
             array = np.load(feature_path, mmap_mode="r", allow_pickle=False)
             offsets = entry["offsets"]
             records = targets["targets"]
+            selected = None
+            if protocol:
+                part = partitions[session]
+                norm = self.normalization_states[session]
+                if (entry["source_sha256"] != part["sources"][source_split]["sha256"]
+                        or len(records) != part["sources"][source_split]["trials"]
+                        or norm["fit_trial_indices"] != part["train"]
+                        or norm["fit_protocol_sha256"] != cfg["protocolo"]["sha256"]):
+                    raise ValueError("Las señales o la normalización no corresponden al protocolo T12.")
+                if source_split == "train":
+                    if norm["frames"] != sum(offsets[i + 1] - offsets[i] for i in part["train"]):
+                        raise ValueError("La normalización no cuenta exclusivamente los bins de train.")
+                    for logical in ("train", "val"):
+                        actual = [i for i, block in enumerate(entry["blocks"]) if block in part[f"{logical}_blocks"]]
+                        if actual != part[logical]:
+                            raise ValueError("Los índices no corresponden a los bloques reservados.")
+                selected = set(part[split])
             if (
                 array.ndim != 2 or array.shape[1] != cfg["modelo"]["entrada"]
                 or array.dtype != np.float32 or len(offsets) != len(records) + 1
@@ -175,6 +204,8 @@ class SpeechDataset(Dataset[SpeechSample]):
             ):
                 raise ValueError(f"Metadatos de señales no válidos: {feature_path}")
             for index, target in enumerate(records):
+                if selected is not None and index not in selected:
+                    continue
                 length = offsets[index + 1] - offsets[index]
                 ids = tuple(target["ids"])
                 steps = (length - cfg["modelo"]["kernel"]) // cfg["modelo"]["stride"] + 1
@@ -192,7 +223,8 @@ class SpeechDataset(Dataset[SpeechSample]):
                 })
             self.session_indices.append(range(start, len(self._rows)))
             del array
-        if len(self) != labels["totals"][split]:
+        expected = protocol["totals"][split] if protocol else labels["totals"][split]
+        if len(self) != expected:
             raise ValueError("El número de ensayos no coincide con el manifiesto de etiquetas.")
 
     def __len__(self) -> int:

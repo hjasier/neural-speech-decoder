@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
 import numpy as np
 from numpy.typing import NDArray
@@ -86,21 +86,28 @@ class TrainingNormalization:
 
 def fit_train_normalization(
     corpus_root: Path, session_name: str, epsilon: float,
+    trial_indices: Sequence[int] | None = None,
 ) -> TrainingNormalization:
     """Lee solo train/<sesión>.mat y ajusta media y desviación por canal.
 
     Combina medias y varianzas por ensayo sin concatenar una segunda
-    copia de la sesión. Usa varianza poblacional (ddof=0), sin usar texto.
+    copia de la sesión. Si se indican índices, solo ajusta con esos ensayos,
+    excluyendo la validación antes del ajuste. Usa varianza poblacional.
     """
     if Path(session_name).name != session_name or not session_name:
         raise ValueError("Se necesita un nombre de sesión, sin directorios.")
     if not np.isfinite(epsilon) or epsilon <= 0:
         raise ValueError("epsilon debe ser positivo y finito.")
     session = load_session(corpus_root / "train" / f"{session_name}.mat")
+    selected = list(range(len(session.trials))) if trial_indices is None else list(trial_indices)
+    if (not selected or len(set(selected)) != len(selected)
+            or any(type(i) is not int or not 0 <= i < len(session.trials) for i in selected)):
+        raise ValueError("Los índices para ajustar normalización deben ser únicos y válidos.")
     count = 0
     mean = np.zeros(2 * AREA_6V_CHANNELS, dtype=np.float64)
     squared_deviations = np.zeros_like(mean)
-    for trial in session.trials:
+    for index in selected:
+        trial = session.trials[index]
         features = extract_model_features(trial).astype(np.float64)
         trial_count = len(features)
         trial_mean = features.mean(axis=0)

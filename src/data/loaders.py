@@ -33,8 +33,8 @@ class DatasetPlaceholder(Dataset):
         return self.x[i], self.y[i]
 
 
-def construir_loaders(cfg: dict) -> tuple[DataLoader, DataLoader]:
-    """Devuelve train/evaluación; para habla, evaluación es el test publicado."""
+def construir_loaders(cfg: dict, *, split_evaluacion: str | None = None) -> tuple[DataLoader, DataLoader]:
+    """Devuelve train/evaluación; T12 con protocolo usa val y reserva test."""
     dcfg = cfg["datos"]
 
     if cfg["modelo"]["nombre"] == "speech_gru":
@@ -42,7 +42,8 @@ def construir_loaders(cfg: dict) -> tuple[DataLoader, DataLoader]:
         from src.utils.seed import crear_generador
 
         train_ds = SpeechDataset(cfg, "train")
-        test_ds = SpeechDataset(cfg, "test")
+        evaluation = split_evaluacion or ("val" if cfg.get("protocolo") else "test")
+        evaluation_ds = SpeechDataset(cfg, evaluation)
         sampler = SessionBatchSampler(
             train_ds.session_indices, dcfg["batch_size"], cfg["entrenamiento"]["pasos"],
             crear_generador(cfg["experimento"]["seed"]),
@@ -56,7 +57,7 @@ def construir_loaders(cfg: dict) -> tuple[DataLoader, DataLoader]:
                 generator=crear_generador(cfg["experimento"]["seed"]), **common,
             ),
             DataLoader(
-                test_ds, batch_size=dcfg["batch_size"], shuffle=False,
+                evaluation_ds, batch_size=dcfg["batch_size"], shuffle=False,
                 generator=crear_generador(cfg["experimento"]["seed"]), **common,
             ),
         )
