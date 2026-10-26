@@ -1,0 +1,11 @@
+# Muestras elegidas sin usar predicciones; mismo YAML para todas las variantes.
+split: val
+sesiones: null
+ensayos_por_sesion: 2
+semilla_muestras: 271828
+batch_size: 1
+calentamiento: 2
+repeticiones: 5
+salidas: null
+dispositivo: cuda
+hilos_cpu: 2

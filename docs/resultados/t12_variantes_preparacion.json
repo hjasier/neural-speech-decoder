@@ -1,0 +1,177 @@
+{
+  "date": "2026-10-25",
+  "task": 7,
+  "status": "configurations_and_launcher_prepared; real_training_pending",
+  "branch": "RAMA_LOCAL",
+  "notebook": "notebooks/09_comparativa_t12_colab.ipynb",
+  "source_base_commit": "08d590bf8e2537ef982f14fad8efa0764f532882",
+  "notebook_sha256": "f8554488dc41903bde602e0523061f1b4188718c33fe83ab893efd73966c1153",
+  "source_archive_sha256": "83f170ad80699f505820ae2a2f90b090631c0e6ddca880c3283f8466530113c8",
+  "source_files": 48,
+  "combinations": [
+    {
+      "variant": "baseline_5",
+      "seed": 0,
+      "layers": 5,
+      "exits": [
+        5
+      ],
+      "steps": 10001,
+      "config": "configs/speech_comparacion_t4.yaml"
+    },
+    {
+      "variant": "baseline_5",
+      "seed": 1,
+      "layers": 5,
+      "exits": [
+        5
+      ],
+      "steps": 10001,
+      "config": "configs/speech_comparacion_t4.yaml"
+    },
+    {
+      "variant": "baseline_5",
+      "seed": 2,
+      "layers": 5,
+      "exits": [
+        5
+      ],
+      "steps": 10001,
+      "config": "configs/speech_comparacion_t4.yaml"
+    },
+    {
+      "variant": "conjunta_235",
+      "seed": 0,
+      "layers": 5,
+      "exits": [
+        2,
+        3,
+        5
+      ],
+      "steps": 10001,
+      "config": "configs/speech_salidas_t4.yaml"
+    },
+    {
+      "variant": "conjunta_235",
+      "seed": 1,
+      "layers": 5,
+      "exits": [
+        2,
+        3,
+        5
+      ],
+      "steps": 10001,
+      "config": "configs/speech_salidas_t4.yaml"
+    },
+    {
+      "variant": "conjunta_235",
+      "seed": 2,
+      "layers": 5,
+      "exits": [
+        2,
+        3,
+        5
+      ],
+      "steps": 10001,
+      "config": "configs/speech_salidas_t4.yaml"
+    },
+    {
+      "variant": "control_2",
+      "seed": 0,
+      "layers": 2,
+      "exits": [
+        2
+      ],
+      "steps": 10001,
+      "config": "configs/speech_control_2_t4.yaml"
+    },
+    {
+      "variant": "control_2",
+      "seed": 1,
+      "layers": 2,
+      "exits": [
+        2
+      ],
+      "steps": 10001,
+      "config": "configs/speech_control_2_t4.yaml"
+    },
+    {
+      "variant": "control_2",
+      "seed": 2,
+      "layers": 2,
+      "exits": [
+        2
+      ],
+      "steps": 10001,
+      "config": "configs/speech_control_2_t4.yaml"
+    },
+    {
+      "variant": "control_3",
+      "seed": 0,
+      "layers": 3,
+      "exits": [
+        3
+      ],
+      "steps": 10001,
+      "config": "configs/speech_control_3_t4.yaml"
+    },
+    {
+      "variant": "control_3",
+      "seed": 1,
+      "layers": 3,
+      "exits": [
+        3
+      ],
+      "steps": 10001,
+      "config": "configs/speech_control_3_t4.yaml"
+    },
+    {
+      "variant": "control_3",
+      "seed": 2,
+      "layers": 3,
+      "exits": [
+        3
+      ],
+      "steps": 10001,
+      "config": "configs/speech_control_3_t4.yaml"
+    }
+  ],
+  "training_jobs_launched_automatically": 0,
+  "test_evaluated": false,
+  "actual_T12_training_executed": false,
+  "colab_execution_pending": true,
+  "baseline_task_3_complete": false,
+  "task_6_complete": false,
+  "comparison_contract": {
+    "train": 5180,
+    "val": 1460,
+    "test": 680,
+    "same_effective_batch": 64,
+    "micro_batch": 16,
+    "equal_update_budget": 10001,
+    "equal_wall_time_budget": false,
+    "normalization_fit": "train_only",
+    "checkpoint_selection": "minimum validation PER; first checkpoint wins ties",
+    "joint_selected_by_exit": 5,
+    "independent_controls_selected_by_own_final_exit": true,
+    "initialization": "from_scratch_for_each_run",
+    "all_seed_results_must_be_retained": true
+  },
+  "verification_scope": "CPU file-backed synthetic fixtures; not T12 training or quality evidence",
+  "preserved_notebooks": {
+    "notebooks/04_entrenamiento_colab.ipynb": "14a4ed670521de505a57a30025e139a685d3ee109057d074c702bd89b7a77519",
+    "notebooks/05_alice_colab.ipynb": "eb4ef9f00cef5fa8ea919c7f7f26d118c7c1d6fc4ade17da6ad9fa56f4dc992b",
+    "notebooks/06_demo_ahpsn.ipynb": "ab894ab0604940515804ae92bf19abadd8a90300305f8a249bfa014b0b5e69b2",
+    "notebooks/07_baseline_t12_colab.ipynb": "ab2db68739b5ef1b85801b548d1f31d591d0892789e2a133f4dfafa0624d563a",
+    "notebooks/08_salidas_t12_colab.ipynb": "04694f4db73f15d96dec61f62852504155195ac5ac0f72675ee29d51b00ec635"
+  },
+  "local_checks": {
+    "command": "OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python -m pytest tests/ -q",
+    "passed": 42,
+    "seconds": 45.56,
+    "parallel_heavy_jobs": false,
+    "independent_control_reload_and_report": "verified_in_separate_CPU_processes_on_synthetic_files",
+    "changed_budget_normalization_and_time_limit": "rejected_before_training",
+    "colab_installation_and_remote_execution": "not_executed"
+  }
+}

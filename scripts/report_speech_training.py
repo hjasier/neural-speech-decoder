@@ -43,6 +43,10 @@ def main() -> int:
         digest = hashlib.file_digest(stream, "sha256").hexdigest()
     summary = {
         "run_id": report["run_id"], "completed_steps": report["completed_steps"],
+        "experiment_name": cfg["experimento"]["nombre"], "seed": cfg["experimento"]["seed"],
+        "model_layers": cfg["modelo"]["capas"],
+        "available_exits": [*cfg["modelo"].get("salidas_intermedias", []), cfg["modelo"]["capas"]],
+        "comparison": cfg.get("comparacion"),
         "planned_steps": cfg["entrenamiento"]["pasos"],
         "completed_budget": report["completed_steps"] == cfg["entrenamiento"]["pasos"],
         "best_val_step": report["best_val_step"], "best_val": report["best_val"],

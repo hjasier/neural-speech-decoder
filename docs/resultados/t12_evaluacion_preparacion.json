@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-25",
+  "task": 8,
+  "status": "evaluator_implemented; new_model_results_pending",
+  "source_base_commit": "5cfab40232c6717a425fe853f989afd4d34b1f72",
+  "notebook": "notebooks/09_comparativa_t12_colab.ipynb",
+  "notebook_sha256": "5c35acf09f6c69a35eca02b3eec446e78cb726bdd09d6b6ce5b3af298018734b",
+  "source_archive_sha256": "642b91348be0f93d8a8fa1da2a6144e918a59fea8ef29e3ea0cadc69d24ba4de",
+  "source_files": 51,
+  "default_split": "val",
+  "notebook_forced_split": "val",
+  "controls": [
+    "original",
+    "cero",
+    "permutada"
+  ],
+  "control_seed": 314159,
+  "zero_scope": "normalized_features_before_smoothing; train_channel_mean",
+  "permutation_scope": "valid_time_bins_within_each_trial; channels_together; padding_untouched",
+  "permutation_identity": [
+    "control_seed",
+    "split",
+    "session_index",
+    "source_trial_index"
+  ],
+  "global_PER": "sum_errors / sum_reference_phones",
+  "outputs": [
+    "metricas.json",
+    "por_sesion.csv",
+    "predicciones.jsonl"
+  ],
+  "wandb": {
+    "global": "scalar_metrics",
+    "by_session": "table",
+    "colab_mode": "online"
+  },
+  "new_protocol": {
+    "actual_model_training_executed": false,
+    "actual_model_evaluation_executed": false,
+    "test_evaluated": false,
+    "tasks_3_6_7_pending": true
+  },
+  "historical_reference": {
+    "record": "docs/resultados/speech_2h_unjiabqs_controles.json",
+    "training_steps": 2001,
+    "test_evaluated": true,
+    "test_trials": 680,
+    "sessions": 19,
+    "optimizer_steps": 0,
+    "wandb_mode": "offline",
+    "wandb_run_id": "sjfo3rk8",
+    "device": "NVIDIA GeForce RTX 2060",
+    "micro_batch": 4,
+    "cpu_threads": 2,
+    "original_counts_and_PER_reproduced": true,
+    "all_session_totals_match": true
+  },
+  "preserved_historical_notebooks": {
+    "notebooks/04_entrenamiento_colab.ipynb": "14a4ed670521de505a57a30025e139a685d3ee109057d074c702bd89b7a77519",
+    "notebooks/05_alice_colab.ipynb": "eb4ef9f00cef5fa8ea919c7f7f26d118c7c1d6fc4ade17da6ad9fa56f4dc992b",
+    "notebooks/06_demo_ahpsn.ipynb": "ab894ab0604940515804ae92bf19abadd8a90300305f8a249bfa014b0b5e69b2",
+    "notebooks/07_baseline_t12_colab.ipynb": "ab2db68739b5ef1b85801b548d1f31d591d0892789e2a133f4dfafa0624d563a",
+    "notebooks/08_salidas_t12_colab.ipynb": "04694f4db73f15d96dec61f62852504155195ac5ac0f72675ee29d51b00ec635"
+  },
+  "interpretation": "pending_author_review",
+  "local_checks": {
+    "pytest_passed": 48,
+    "pytest_seconds": 47.29,
+    "weighted_PER_and_CTCAggregation": true,
+    "padding_channels_and_per_trial_permutation_invariants": true,
+    "independent_of_batch_and_visit_order": true,
+    "wrong_split_and_incomplete_evaluation_rejected": true,
+    "file_backed_three_head_fixture_in_separate_process": true,
+    "actual_training_seed_read_from_checkpoint": true,
+    "wandb_by_session_table_file_verified": true
+  }
+}

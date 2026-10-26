@@ -1,0 +1,5 @@
+# Diagnostico de calidad: val por defecto; test solo tras cerrar la seleccion.
+split: val
+salidas: null  # null usa las salidas disponibles del checkpoint
+controles: [original, cero, permutada]
+semilla_control: 314159

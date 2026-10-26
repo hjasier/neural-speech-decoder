@@ -37,9 +37,10 @@ bloques y mostrará la decodificación. Alice es una exploración anterior.
 
 ## Cómo se ejecuta
 
-Desde la raíz, con el entorno activado. El entrenamiento T12 se ejecuta en Colab
-con `notebooks/07_baseline_t12_colab.ipynb` para el baseline y
-`notebooks/08_salidas_t12_colab.ipynb` para la variante con tres salidas.
+Desde la raíz, con el entorno activado. En Colab,
+`notebooks/09_comparativa_t12_colab.ipynb` permite elegir variante y semilla.
+Se conservan `notebooks/07_baseline_t12_colab.ipynb` para el baseline y
+`notebooks/08_salidas_t12_colab.ipynb` para la prueba de 200 pasos.
 
 ```bash
 python run.py --smoke                          # plantilla sintética, no T12
@@ -99,5 +100,15 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
   en `configs/speech_salidas_e1.yaml`.
 - Hecho: notebook 08 con perfiles de 200 y 10.001 pasos, guardado en Drive
   y recarga independiente en val. El notebook 07 conserva el baseline anterior.
-- Pendiente: controles independientes de dos y tres capas y medidas de calidad
-  y coste con los modelos entrenados.
+- Hecho: controles independientes de dos y tres capas y selector de variante
+  y semilla en `scripts/configure_speech_comparison.py`. El plan vive en
+  `configs/speech_comparativa.yaml` y exige datos y presupuesto comunes.
+- Hecho: notebook 09 para ejecutar una combinación de variante y semilla,
+  con W&B, guardado en Drive y recarga independiente sobre val.
+- Hecho: `scripts/evaluate_speech.py` y celda 12 del notebook 09, con PER
+  global y por sesión, predicciones y controles de señal original/cero/permutada.
+  El diagnóstico usa val por defecto; los controles se aplican en inferencia.
+- Hecho: `scripts/benchmark_speech.py` y celda 13 del notebook 09, con carga,
+  forward y señal cruda a fonemas medidos por separado sobre muestras comunes.
+  En la red conjunta todos los pesos siguen residentes al elegir una salida.
+- Pendiente: demo de inferencia y registros de las ejecuciones reales.
