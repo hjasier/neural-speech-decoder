@@ -117,6 +117,10 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
 - Hecho: `scripts/plot_speech_results.py` genera figuras y tablas desde
   registros compatibles, con hashes de procedencia. Las figuras de referencia
   están en `docs/figuras/t12_referencia/`; no interpretan los resultados.
-- Hecho: entorno local fijado y guía de ejecución. El registro original de
+- Hecho: entorno local fijado. El registro original de
   reproducibilidad conserva las comprobaciones y hashes de aquel contexto.
-- Pendiente: incorporar los registros de ejecuciones reales.
+- Hecho: notebook 08 ejecutado en T4, run `xz71t4vd`, 200 actualizaciones
+  y recarga independiente de las salidas 2/3/5, sin actualizar pesos ni usar test.
+  Registro y curva originales en `docs/resultados/speech_salidas_e1_xz71t4vd.*`
+  y `docs/figuras/t12_e1_xz71t4vd/`.
+- Pendiente: conectar esos pesos a la demo e incorporar las ejecuciones posteriores.

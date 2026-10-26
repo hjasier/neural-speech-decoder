@@ -1,0 +1,553 @@
+{
+  "date": "2026-10-26",
+  "scope": "real short joint T12 run; not full baseline/controlled comparison",
+  "task_6_complete": true,
+  "training_run": {
+    "id": "xz71t4vd",
+    "url": "https://wandb.ai/aaurre-deusto/tiiac-2026/runs/xz71t4vd",
+    "state": "finished",
+    "created_at": "2026-10-26T21:02:45Z"
+  },
+  "reload_run": {
+    "id": "exsg8x76",
+    "url": "https://wandb.ai/aaurre-deusto/tiiac-2026/runs/exsg8x76",
+    "state": "finished",
+    "created_at": "2026-10-26T21:15:34Z",
+    "verified": true,
+    "optimizer_steps": 0,
+    "test_evaluated": false
+  },
+  "summary": {
+    "run_id": "xz71t4vd",
+    "completed_steps": 200,
+    "planned_steps": 200,
+    "completed_budget": true,
+    "best_val_step": 200,
+    "best_val": {
+      "ctc_loss": 71.68817239003639,
+      "errores": 27463,
+      "fonemas": 41571,
+      "frases": 1460,
+      "per": 0.6606288037333718,
+      "completo": 1,
+      "segundos": 12.67910803399991
+    },
+    "last_val": {
+      "ctc_loss": 71.68817239003639,
+      "errores": 27463,
+      "fonemas": 41571,
+      "frases": 1460,
+      "per": 0.6606288037333718,
+      "completo": 1,
+      "segundos": 12.67910803399991
+    },
+    "test_evaluated": false,
+    "hardware": "Tesla T4",
+    "model_parameters": 54885243,
+    "training_seconds": 256.10502107499997,
+    "loop_seconds": 332.2036755510003,
+    "cuda_memory": {
+      "cuda/pico_asignado_mib": 1997.9072265625,
+      "cuda/pico_reservado_mib": 3636.0
+    },
+    "torch_version": "2.5.1+cu124",
+    "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb",
+    "checkpoint": "/content/drive/MyDrive/speech_bci/checkpoints/speech_salidas_e1/xz71t4vd/mejor_val.pt",
+    "checkpoint_sha256": "5275edd8dadf029ef39dee7a4af171ed92e63f8baf624e3b3d0d66647b212297",
+    "scope": "presupuesto y métricas observadas; la convergencia requiere revisión del autor",
+    "best_val_by_exit": {
+      "2": {
+        "ctc_loss": 67.94444410768274,
+        "errores": 27006,
+        "fonemas": 41571,
+        "frases": 1460,
+        "per": 0.6496355632532295,
+        "completo": 1
+      },
+      "3": {
+        "ctc_loss": 69.18936882541604,
+        "errores": 27160,
+        "fonemas": 41571,
+        "frases": 1460,
+        "per": 0.6533400687979601,
+        "completo": 1
+      },
+      "5": {
+        "ctc_loss": 71.68817239003639,
+        "errores": 27463,
+        "fonemas": 41571,
+        "frases": 1460,
+        "per": 0.6606288037333718,
+        "completo": 1
+      }
+    },
+    "selection_exit": 5,
+    "ctc_weights": {
+      "2": 0.25,
+      "3": 0.25,
+      "5": 0.5
+    }
+  },
+  "environment": {
+    "python": "3.12.11 (main, Oct  7 2025, 15:34:39) [Clang 20.1.4 ]",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "torch": "2.5.1+cu124",
+    "numpy": "2.1.3",
+    "wandb": "0.18.7",
+    "cuda": "12.4",
+    "gpu": "Tesla T4",
+    "capability": [
+      7,
+      5
+    ],
+    "gpu_total_mib": 14912.6875
+  },
+  "validation_history_by_exit": [
+    {
+      "step": 1,
+      "metrics": {
+        "2": {
+          "ctc_loss": 200.01086241839684,
+          "errores": 39197,
+          "fonemas": 41571,
+          "frases": 1460,
+          "per": 0.9428928820572033,
+          "completo": 1
+        },
+        "3": {
+          "ctc_loss": 200.15108843241651,
+          "errores": 37994,
+          "fonemas": 41571,
+          "frases": 1460,
+          "per": 0.9139544393928459,
+          "completo": 1
+        },
+        "5": {
+          "ctc_loss": 199.81100171232876,
+          "errores": 37511,
+          "fonemas": 41571,
+          "frases": 1460,
+          "per": 0.9023357629116452,
+          "completo": 1
+        }
+      }
+    },
+    {
+      "step": 51,
+      "metrics": {
+        "2": {
+          "ctc_loss": 100.77312433948255,
+          "errores": 38187,
+          "fonemas": 41571,
+          "frases": 1460,
+          "per": 0.9185970989391643,
+          "completo": 1
+        },
+        "3": {
+          "ctc_loss": 96.49042220442263,
+          "errores": 39413,
+          "fonemas": 41571,
+          "frases": 1460,
+          "per": 0.9480888119121503,
+          "completo": 1
+        },
+        "5": {
+          "ctc_loss": 95.51867650698308,
+          "errores": 40943,
+          "fonemas": 41571,
+          "frases": 1460,
+          "per": 0.9848933150513579,
+          "completo": 1
+        }
+      }
+    },
+    {
+      "step": 101,
+      "metrics": {
+        "2": {
+          "ctc_loss": 83.72007600967198,
+          "errores": 33640,
+          "fonemas": 41571,
+          "frases": 1460,
+          "per": 0.8092179644463688,
+          "completo": 1
+        },
+        "3": {
+          "ctc_loss": 84.2175520596439,
+          "errores": 34977,
+          "fonemas": 41571,
+          "frases": 1460,
+          "per": 0.8413798080392582,
+          "completo": 1
+        },
+        "5": {
+          "ctc_loss": 87.45397965940711,
+          "errores": 38374,
+          "fonemas": 41571,
+          "frases": 1460,
+          "per": 0.923095427100623,
+          "completo": 1
+        }
+      }
+    },
+    {
+      "step": 151,
+      "metrics": {
+        "2": {
+          "ctc_loss": 75.38455201240436,
+          "errores": 29795,
+          "fonemas": 41571,
+          "frases": 1460,
+          "per": 0.7167256019821511,
+          "completo": 1
+        },
+        "3": {
+          "ctc_loss": 76.72661074285638,
+          "errores": 30302,
+          "fonemas": 41571,
+          "frases": 1460,
+          "per": 0.7289216040027904,
+          "completo": 1
+        },
+        "5": {
+          "ctc_loss": 79.65788177072186,
+          "errores": 31527,
+          "fonemas": 41571,
+          "frases": 1460,
+          "per": 0.7583892617449665,
+          "completo": 1
+        }
+      }
+    },
+    {
+      "step": 200,
+      "metrics": {
+        "2": {
+          "ctc_loss": 67.94444410768274,
+          "errores": 27006,
+          "fonemas": 41571,
+          "frases": 1460,
+          "per": 0.6496355632532295,
+          "completo": 1
+        },
+        "3": {
+          "ctc_loss": 69.18936882541604,
+          "errores": 27160,
+          "fonemas": 41571,
+          "frases": 1460,
+          "per": 0.6533400687979601,
+          "completo": 1
+        },
+        "5": {
+          "ctc_loss": 71.68817239003639,
+          "errores": 27463,
+          "fonemas": 41571,
+          "frases": 1460,
+          "per": 0.6606288037333718,
+          "completo": 1
+        }
+      }
+    }
+  ],
+  "example": {
+    "reference_text": "The giant redwoods shimmered in the glistening sun.",
+    "hypothesis_phones": {
+      "2": [
+        "SIL",
+        "N",
+        "SIL",
+        "SIL",
+        "V",
+        "N",
+        "SIL",
+        "N",
+        "SIL",
+        "AH",
+        "SIL",
+        "DH",
+        "N",
+        "SIL",
+        "N",
+        "SIL"
+      ],
+      "3": [
+        "SIL",
+        "N",
+        "SIL",
+        "SIL",
+        "N",
+        "SIL",
+        "N",
+        "SIL",
+        "SIL",
+        "N",
+        "SIL",
+        "N",
+        "SIL"
+      ],
+      "5": [
+        "SIL",
+        "N",
+        "SIL",
+        "AH",
+        "SIL",
+        "M",
+        "N",
+        "SIL",
+        "N",
+        "SIL",
+        "AH",
+        "SIL",
+        "N",
+        "SIL",
+        "N",
+        "SIL"
+      ]
+    },
+    "executed_layers": {
+      "2": [
+        1,
+        2
+      ],
+      "3": [
+        1,
+        2,
+        3
+      ],
+      "5": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "scope": "first validation example printed by independent verifier"
+  },
+  "configuration": {
+    "datos": {
+      "raiz": "data/speech_2023/competitionData",
+      "fonemas": [
+        "AA",
+        "AE",
+        "AH",
+        "AO",
+        "AW",
+        "AY",
+        "B",
+        "CH",
+        "D",
+        "DH",
+        "EH",
+        "ER",
+        "EY",
+        "F",
+        "G",
+        "HH",
+        "IH",
+        "IY",
+        "JH",
+        "K",
+        "L",
+        "M",
+        "N",
+        "NG",
+        "OW",
+        "OY",
+        "P",
+        "R",
+        "S",
+        "SH",
+        "T",
+        "TH",
+        "UH",
+        "UW",
+        "V",
+        "W",
+        "Y",
+        "Z",
+        "ZH",
+        "SIL"
+      ],
+      "sesiones": [
+        "t12.2022.04.28",
+        "t12.2022.05.05",
+        "t12.2022.05.17",
+        "t12.2022.05.19",
+        "t12.2022.05.24",
+        "t12.2022.05.26",
+        "t12.2022.06.02",
+        "t12.2022.06.07",
+        "t12.2022.06.14",
+        "t12.2022.06.16",
+        "t12.2022.06.21",
+        "t12.2022.06.28",
+        "t12.2022.07.05",
+        "t12.2022.07.14",
+        "t12.2022.07.21",
+        "t12.2022.07.27",
+        "t12.2022.08.02",
+        "t12.2022.08.11",
+        "t12.2022.08.13"
+      ],
+      "batch_size": 64,
+      "pin_memory": false,
+      "preparados": "data/speech_2023/preparados_comparacion_v1",
+      "num_workers": 0
+    },
+    "wandb": {
+      "modo": "online",
+      "entidad": null,
+      "proyecto": "tiiac-2026",
+      "directorio": "runs/tracking"
+    },
+    "modelo": {
+      "capas": 5,
+      "kernel": 32,
+      "nombre": "speech_gru",
+      "stride": 4,
+      "entrada": 256,
+      "capa_dia": 256,
+      "unidades": 1024,
+      "dropout_gru": 0.4,
+      "bidireccional": false,
+      "dropout_entrada": 0.2,
+      "salidas_intermedias": [
+        2,
+        3
+      ]
+    },
+    "salida": {
+      "directorio": "checkpoints/speech_salidas_e1"
+    },
+    "ejecucion": {
+      "hilos_cpu": 2,
+      "dispositivo": "cuda"
+    },
+    "etiquetas": {
+      "salida": "data/speech_2023/fonemas_original",
+      "recursos": "data/speech_2023/recursos_g2p",
+      "silencio": "SIL",
+      "max_fonemas": 500,
+      "recursos_nltk": [
+        {
+          "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.zip",
+          "sha256": "d07cca47fd72ad32ea9d8ad1219f85301eeaf4568f8b6b73747506a71fb5afd6",
+          "archivo": "corpora/cmudict.zip"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger.zip",
+          "sha256": "e1f13cf2532daadfd6f3bc481a49859f0b8ea6432ccdcd83e6a49a5f19008de9",
+          "archivo": "taggers/averaged_perceptron_tagger.zip"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger_eng.zip",
+          "sha256": "6025f530624335c67d6547d44757b357b4e79bae030a0383e9887a92c1718f0b",
+          "archivo": "taggers/averaged_perceptron_tagger_eng.zip"
+        }
+      ],
+      "timeout_descarga": 30
+    },
+    "protocolo": {
+      "metodo": "ultimos_bloques_por_sesion",
+      "nombre": "t12_bloques_v1",
+      "sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb",
+      "manifiesto": "docs/datasets/speech_2023/particion_t12_v1.json",
+      "fraccion_validacion": 0.2,
+      "seleccion_checkpoint": "per"
+    },
+    "evaluacion": {
+      "max_lotes": null,
+      "cada_pasos": 50,
+      "micro_batch_size": 16
+    },
+    "experimento": {
+      "seed": 0,
+      "nombre": "speech_salidas_e1_colab"
+    },
+    "entrenamiento": {
+      "l2": 1e-05,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "pasos": 200,
+      "ruido": {
+        "blanco_sd": 1,
+        "offset_sd": 0.2
+      },
+      "epsilon": 0.1,
+      "ctc_pesos": {
+        "2": 0.25,
+        "3": 0.25,
+        "5": 0.5
+      },
+      "optimizador": "adam_tensorflow",
+      "imprimir_cada": 10,
+      "learning_rate": {
+        "final": 0,
+        "inicio": 0.02,
+        "potencia": 1,
+        "decay_pasos": 10000
+      },
+      "clip_grad_norm": 10,
+      "micro_batch_size": 16
+    },
+    "preprocesamiento": {
+      "suavizado": {
+        "sigma": 2,
+        "umbral": 0.01,
+        "truncate": 4,
+        "longitud_impulso": 100
+      },
+      "normalizacion_epsilon": 1e-08
+    }
+  },
+  "evidence": {
+    "notebook": "notebooks/08_salidas_t12_colab.ipynb",
+    "notebook_sha256": "2190afe9b4373972926d80350a800ed27031474dd7917f223022c5160ffca99d",
+    "cell_sources_unchanged_from_commit": "47abe41a7e1d39cf729c130ac3eff53df8d2d33f",
+    "snapshot_sha256": "cdd4129ec29714db909875c4a466b740fbc9ae6d8714c66e561bfe37fb9b368d",
+    "snapshot_git_base": "ae8bd5d9c7b05116f7645734689a5afc06e28d8a",
+    "snapshot_file_count": 44,
+    "snapshot_all_file_hashes_verified": true,
+    "wandb_training_summary_and_reload_exactly_match_notebook": true,
+    "selected_step_matches_minimum_final_head_validation_per": true,
+    "training_history_wandb_rows": 200,
+    "validation_evaluations": 5,
+    "all_code_cells_executed_without_error": true,
+    "figure": "docs/figuras/t12_e1_xz71t4vd/curvas_validacion.png",
+    "figure_sha256": "ec71ec18f59edeacbc0f1d9e3cf33851b5d727397b2978246aa9694d1dae0d39",
+    "figure_visually_reviewed": true,
+    "credential_cell_has_no_api_key_output": true
+  },
+  "checkpoints": {
+    "drive_relative": "speech_bci/checkpoints/speech_salidas_e1/xz71t4vd",
+    "expected_local": "checkpoints/speech_salidas_e1/xz71t4vd/mejor_val.pt",
+    "local_file_available": false,
+    "checkpoint_sha256": "5275edd8dadf029ef39dee7a4af171ed92e63f8baf624e3b3d0d66647b212297",
+    "local_reload_verified": false,
+    "user_confirmed_only_in_drive": true
+  },
+  "unchanged_notebooks": {
+    "notebooks/04_entrenamiento_colab.ipynb": "14a4ed670521de505a57a30025e139a685d3ee109057d074c702bd89b7a77519",
+    "notebooks/05_alice_colab.ipynb": "eb4ef9f00cef5fa8ea919c7f7f26d118c7c1d6fc4ade17da6ad9fa56f4dc992b",
+    "notebooks/06_demo_ahpsn.ipynb": "ab894ab0604940515804ae92bf19abadd8a90300305f8a249bfa014b0b5e69b2",
+    "notebooks/07_baseline_t12_colab.ipynb": "ab2db68739b5ef1b85801b548d1f31d591d0892789e2a133f4dfafa0624d563a",
+    "notebooks/09_comparativa_t12_colab.ipynb": "4fa56bcaf46cd49ce9b5b457eb48faffbb9214255eb17a3d1483ab61833cbe21",
+    "notebooks/10_demo_salidas_local.ipynb": "86e2599f8496c57d13858266da7bb75d68baf53d4aec4d97e77ee87f7f597ef5"
+  },
+  "raw_ignored_artifacts": {
+    "source_snapshot.json": "77e550b23ed73ce0519787c1a13597d1b59bc2e4656ab44b4c6fcb15b099adca",
+    "consulta.json": "fb32245ad68ea96dc02095752a9c0851b46254efc0a4587da39747bfe6d75982",
+    "wandb_xz71t4vd.json": "fe9c3d55eec79e6c12d0d63ed5bcaeaf91ee37e4db3571b0151e8ee7f2f5cdae",
+    "fuentes_notebook.zip": "cdd4129ec29714db909875c4a466b740fbc9ae6d8714c66e561bfe37fb9b368d",
+    "wandb_exsg8x76.json": "1e96f0b19a7665ac9eef3240644a7ea405851b09fa8311318624700251b59d94"
+  },
+  "remaining": [
+    "Copy actual checkpoint and run files from Drive; verify local hash and demo 2/3/5",
+    "Run complete new-protocol baseline and planned joint/independent controls",
+    "Evaluate signal controls, benchmark, final comparison and author review"
+  ],
+  "full_experimental_goal_complete": false
+}
