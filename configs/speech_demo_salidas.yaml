@@ -1,6 +1,6 @@
-# Checkpoint real disponible: referencia de 2.001 pasos, solo salida 5.
-# Cambiar por mejor_val.pt de la conjunta entrenada habilita salidas 2/3/5.
-checkpoint: checkpoints/speech_original/unjiabqs/ultimo.pt
+# Conjunta T12 real de 200 pasos; pesos y recarga verificados, salidas 2/3/5.
+# Usa la validacion del protocolo nuevo y conserva la referencia historica aparte.
+checkpoint: checkpoints/speech_salidas_e1/xz71t4vd/mejor_val.pt
 datos:
   split: auto  # val con protocolo v2; test en la referencia v1
   sesion: t12.2022.04.28

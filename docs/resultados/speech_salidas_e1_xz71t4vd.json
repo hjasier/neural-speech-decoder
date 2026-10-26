@@ -527,7 +527,8 @@
     "local_file_available": false,
     "checkpoint_sha256": "5275edd8dadf029ef39dee7a4af171ed92e63f8baf624e3b3d0d66647b212297",
     "local_reload_verified": false,
-    "user_confirmed_only_in_drive": true
+    "user_confirmed_only_in_drive": true,
+    "observation_scope": "Availability recorded before local copy; see subsequent_local_demo_audit for verified current availability."
   },
   "unchanged_notebooks": {
     "notebooks/04_entrenamiento_colab.ipynb": "14a4ed670521de505a57a30025e139a685d3ee109057d074c702bd89b7a77519",
@@ -549,5 +550,6 @@
     "Run complete new-protocol baseline and planned joint/independent controls",
     "Evaluate signal controls, benchmark, final comparison and author review"
   ],
-  "full_experimental_goal_complete": false
+  "full_experimental_goal_complete": false,
+  "subsequent_local_demo_audit": "docs/resultados/speech_salidas_e1_xz71t4vd_demo_local.json"
 }
