@@ -209,3 +209,49 @@ def test_raw_benchmark_cli_uses_same_checkpoint_and_only_validation(tmp_path, mo
         assert result["profiles"][str(depth)]["executed_layers"] == list(range(1, depth + 1))
     assert Path("benchmark/mediciones.csv").is_file()
     assert not Path("raw/test").exists() and not Path("prepared/test").exists()
+
+
+def test_local_demo_reloads_v2_and_widget_executes_only_existing_profiles(tmp_path, monkeypatch):
+    from scripts.demo_speech_profiles import load_demo, create_controls
+
+    cfg = _prepared_fixture(tmp_path, monkeypatch, width=256)
+    env = {**os.environ, "OMP_NUM_THREADS": "2", "MKL_NUM_THREADS": "2", "OPENBLAS_NUM_THREADS": "2"}
+    result = subprocess.run([sys.executable, str(ROOT / "run.py"), "--config", "config.yaml"],
+                            cwd=tmp_path, env=env, capture_output=True, text=True, timeout=90)
+    assert result.returncode == 0, result.stdout + result.stderr
+    checkpoint, = Path("checkpoints/fixture").glob("*/mejor_val.pt")
+    digest = file_sha256(checkpoint)
+    demo_cfg = yaml.safe_load((ROOT / "configs/speech_demo_salidas.yaml").read_text())
+    demo_cfg["checkpoint"] = str(checkpoint)
+    demo_cfg["datos"].update(sesion="fixture", frase=0)
+    demo_cfg["ejecucion"]["dispositivo"] = "cpu"
+    demo_cfg["medicion"].update(calentamiento=1, repeticiones=2)
+    demo_cfg["salida"]["directorio"] = "demo"
+    demo = load_demo(demo_cfg)
+    assert demo.available_exits == (2, 3, 5)
+    assert demo.metadata["split"] == "val" and demo.metadata["source_trial_index"] == 3
+    assert demo.metadata["training_updates"] == 0 and demo.metadata["tracking_run_opened"] is False
+    assert demo.draw_activity().stat().st_size > 0
+    panel = create_controls(demo)
+    assert "application/vnd.jupyter.widget-view+json" in panel._repr_mimebundle_()
+    selector, button = panel.children[0].children
+    for depth in (2, 3, 5):
+        selector.value = depth
+        button.click()
+        predicted = demo.last_prediction
+        assert predicted is not None and predicted["exit"] == depth
+        assert predicted["executed_layers"] == list(range(1, depth + 1))
+        assert predicted["forward_ms_p50"] > 0 and len(predicted["forward_ms_samples"]) == 2
+        saved = json.loads((demo.output / f"prediccion_capa_{depth}.json").read_text())
+        assert saved == predicted
+    assert file_sha256(checkpoint) == digest
+    with pytest.raises(ValueError, match="dispone"):
+        demo.predict(4)
+    with (demo.output / "entrada_modelo.npy").open("ab") as stream:
+        stream.write(b"changed")
+    with pytest.raises(ValueError, match="Cambió"):
+        demo.predict(5)
+    demo.close()
+    with pytest.raises(RuntimeError, match="cerrada"):
+        demo.predict(5)
+    assert not Path("prepared/test").exists() and not Path("labels/test").exists()

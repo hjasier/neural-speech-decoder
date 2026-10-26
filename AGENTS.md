@@ -111,4 +111,7 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
 - Hecho: `scripts/benchmark_speech.py` y celda 13 del notebook 09, con carga,
   forward y señal cruda a fonemas medidos por separado sobre muestras comunes.
   En la red conjunta todos los pesos siguen residentes al elegir una salida.
-- Pendiente: demo de inferencia y registros de las ejecuciones reales.
+- Hecho: notebook 10 con actividad neuronal y selector de salidas desde
+  checkpoints compatibles. La configuración local usa CPU y el notebook
+  oculta CUDA; mantenerlo así al incorporar versiones históricas posteriores.
+- Pendiente: figuras reproducibles, entorno fijado y registros de ejecuciones.
