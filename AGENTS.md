@@ -108,4 +108,7 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
 - Hecho: `scripts/evaluate_speech.py` y celda 12 del notebook 09, con PER
   global y por sesión, predicciones y controles de señal original/cero/permutada.
   El diagnóstico usa val por defecto; los controles se aplican en inferencia.
-- Pendiente: medidas de latencia y memoria.
+- Hecho: `scripts/benchmark_speech.py` y celda 13 del notebook 09, con carga,
+  forward y señal cruda a fonemas medidos por separado sobre muestras comunes.
+  En la red conjunta todos los pesos siguen residentes al elegir una salida.
+- Pendiente: demo de inferencia y registros de las ejecuciones reales.

@@ -23,12 +23,12 @@ def _write_json(path, value):
     path.write_text(json.dumps(value, indent=2) + "\n")
 
 
-def _prepared_fixture(tmp_path, monkeypatch):
+def _prepared_fixture(tmp_path, monkeypatch, width=4):
     cfg = yaml.safe_load((ROOT / "configs/speech_salidas_e1.yaml").read_text())
     cfg["experimento"]["nombre"] = "unit_fixture_not_t12"
     cfg["datos"].update(raiz="raw", preparados="prepared", sesiones=["fixture"], batch_size=3)
     cfg["etiquetas"]["salida"] = "labels"
-    cfg["modelo"].update(entrada=4, capa_dia=4, unidades=8, kernel=2, stride=2,
+    cfg["modelo"].update(entrada=width, capa_dia=4, unidades=8, kernel=2, stride=2,
                          dropout_entrada=0.0, dropout_gru=0.0)
     cfg["entrenamiento"].update(pasos=3, micro_batch_size=2, imprimir_cada=1)
     cfg["entrenamiento"]["ruido"] = {"blanco_sd": 0.0, "offset_sd": 0.0}
@@ -62,7 +62,7 @@ def _prepared_fixture(tmp_path, monkeypatch):
         "files": [{"path": "train/fixture.json", "sha256": file_sha256(Path("labels/train/fixture.json"))}],
     })
     lengths = [14, 12, 10] * 2
-    values = np.concatenate([np.linspace(-1 + i, 1 + i, length * 4).reshape(length, 4)
+    values = np.concatenate([np.linspace(-1 + i, 1 + i, length * width).reshape(length, width)
                              for i, length in enumerate(lengths)])
     mean, std = values[:36].mean(0), values[:36].std(0)
     epsilon = cfg["preprocesamiento"]["normalizacion_epsilon"]
@@ -150,3 +150,62 @@ def test_training_reload_and_val_cli_in_separate_processes(tmp_path, monkeypatch
             assert diagnostic["by_session"]["original"][str(exit_depth)]["fixture"] == measured
     # No se han creado señales ni etiquetas de test: cualquier acceso fallaría.
     assert not Path("prepared/test").exists() and not Path("labels/test").exists()
+
+
+def test_raw_benchmark_cli_uses_same_checkpoint_and_only_validation(tmp_path, monkeypatch):
+    from scipy.io import savemat
+
+    cfg = _prepared_fixture(tmp_path, monkeypatch, width=256)
+    lengths = [14, 12, 10] * 2
+    features = [np.linspace(2 + i, 3 + i, length * 256).reshape(length, 256).astype(np.float32)
+                for i, length in enumerate(lengths)]
+    spikes, crossings = np.empty((6, 1), dtype=object), np.empty((6, 1), dtype=object)
+    for i, values in enumerate(features):
+        spikes[i, 0] = np.concatenate([values[:, 128:], np.ones_like(values[:, 128:])], axis=1)
+        crossings[i, 0] = np.concatenate([values[:, :128], np.ones_like(values[:, :128])], axis=1)
+    Path("raw/train").mkdir(parents=True)
+    savemat("raw/train/fixture.mat", {"spikePow": spikes, "tx1": crossings,
+                                    "sentenceText": np.array(["fixture"] * 6, dtype=object).reshape(6, 1),
+                                    "blockIdx": np.array([[1], [1], [1], [2], [2], [2]])})
+    protocol = json.loads(Path("split.json").read_text())
+    protocol["sessions"][0]["sources"]["train"]["sha256"] = file_sha256(Path("raw/train/fixture.mat"))
+    _write_json(Path("split.json"), protocol)
+    cfg["protocolo"]["sha256"] = file_sha256(Path("split.json"))
+    values = np.concatenate(features).astype(np.float64)
+    mean, std = values[:36].mean(0), values[:36].std(0)
+    np.save("prepared/train/fixture.npy", ((values - mean) / (std + cfg["preprocesamiento"]["normalizacion_epsilon"])).astype(np.float32))
+    manifest = json.loads(Path("prepared/manifest.json").read_text())
+    manifest.update(signature=preparation_signature(cfg), protocol_sha256=cfg["protocolo"]["sha256"])
+    manifest["normalizations"]["fixture"].update(mean=mean.tolist(), std=std.tolist(), fit_protocol_sha256=cfg["protocolo"]["sha256"])
+    manifest["files"][0].update(source_sha256=protocol["sessions"][0]["sources"]["train"]["sha256"],
+                                 sha256=file_sha256(Path("prepared/train/fixture.npy")))
+    _write_json(Path("prepared/manifest.json"), manifest)
+    Path("config.yaml").write_text(yaml.safe_dump(cfg))
+    spec = yaml.safe_load((ROOT / "configs/speech_benchmark.yaml").read_text())
+    spec.update(dispositivo="cpu", calentamiento=1, repeticiones=2)
+    Path("benchmark_spec.yaml").write_text(yaml.safe_dump(spec))
+    env = {**os.environ, "OMP_NUM_THREADS": "2", "MKL_NUM_THREADS": "2", "OPENBLAS_NUM_THREADS": "2"}
+
+    def execute(script, *args):
+        result = subprocess.run([sys.executable, str(ROOT / script), *args], cwd=tmp_path,
+                                env=env, capture_output=True, text=True, timeout=90)
+        assert result.returncode == 0, result.stdout + result.stderr
+
+    execute("run.py", "--config", "config.yaml")
+    checkpoint, = Path("checkpoints/fixture").glob("*/mejor_val.pt")
+    digest = file_sha256(checkpoint)
+    execute("scripts/benchmark_speech.py", "--config", "config.yaml", "--checkpoint", str(checkpoint),
+            "--benchmark-config", "benchmark_spec.yaml", "--split", "val", "--output", "benchmark")
+    result = json.loads(Path("benchmark/benchmark.json").read_text())
+    assert result["checkpoint_sha256"] == digest == file_sha256(checkpoint)
+    assert result["decoded_profiles_match"] is True and result["optimizer_steps"] == 0
+    assert result["test_evaluated"] is False and result["training_seed"] == 0
+    assert len(result["inputs"]["samples"]) == 2
+    assert len(result["measurements"]) == 24
+    assert result["model_load_seconds"] > 0
+    assert result["inputs"]["raw_data_preparation_seconds"] > 0
+    assert all(3 <= row["source_trial_index"] <= 5 for row in result["inputs"]["samples"])
+    for depth in (2, 3, 5):
+        assert result["profiles"][str(depth)]["executed_layers"] == list(range(1, depth + 1))
+    assert Path("benchmark/mediciones.csv").is_file()
+    assert not Path("raw/test").exists() and not Path("prepared/test").exists()

@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-26",
+  "task": 9,
+  "status": "measurement_pipeline_implemented; new_model_comparison_pending",
+  "source_base_commit": "33ddbe7be7448b013bbca155a346c404bba86422",
+  "notebook": "notebooks/09_comparativa_t12_colab.ipynb",
+  "notebook_sha256": "4fa56bcaf46cd49ce9b5b457eb48faffbb9214255eb17a3d1483ab61833cbe21",
+  "source_archive_sha256": "451ca97239eccc7323daeef28b8bf58855f271dd5681bb18940dd1840f922d32",
+  "source_files": 54,
+  "protocol": {
+    "default_split": "val",
+    "samples_per_session": 2,
+    "sampling_seed": 271828,
+    "batch_size": 1,
+    "warmup_per_batch_shape": 2,
+    "measured_repetitions": 5,
+    "stages": [
+      "model_load",
+      "forward",
+      "raw_in_RAM_to_phones"
+    ],
+    "separate_data_loading": true,
+    "synchronized_CUDA": true,
+    "same_raw_and_prepared_phones_required": true,
+    "all_model_weights_remain_resident_for_every_exit": true
+  },
+  "historical_reference": {
+    "record": "docs/resultados/speech_2h_unjiabqs_benchmark.json",
+    "checkpoint_steps": 2001,
+    "test_samples": 38,
+    "sessions": 19,
+    "measurements": 380,
+    "optimizer_steps": 0,
+    "wandb_run_id": "f3whvnpu",
+    "wandb_mode": "offline",
+    "hardware": "NVIDIA GeForce RTX 2060",
+    "test_previously_consulted": true
+  },
+  "new_protocol": {
+    "actual_training_executed": false,
+    "actual_model_comparison_completed": false,
+    "actual_multi_training_seed_comparison_completed": false,
+    "tasks_3_6_7_pending": true
+  },
+  "preserved_notebooks": {
+    "notebooks/04_entrenamiento_colab.ipynb": "14a4ed670521de505a57a30025e139a685d3ee109057d074c702bd89b7a77519",
+    "notebooks/05_alice_colab.ipynb": "eb4ef9f00cef5fa8ea919c7f7f26d118c7c1d6fc4ade17da6ad9fa56f4dc992b",
+    "notebooks/06_demo_ahpsn.ipynb": "ab894ab0604940515804ae92bf19abadd8a90300305f8a249bfa014b0b5e69b2",
+    "notebooks/07_baseline_t12_colab.ipynb": "ab2db68739b5ef1b85801b548d1f31d591d0892789e2a133f4dfafa0624d563a",
+    "notebooks/08_salidas_t12_colab.ipynb": "04694f4db73f15d96dec61f62852504155195ac5ac0f72675ee29d51b00ec635"
+  },
+  "environment_recovery": {
+    "volume_label": "neural_data",
+    "initial_state": "unmounted",
+    "inspected_read_only_before_normal_mount": true,
+    "filesystem_repair_performed": false
+  },
+  "interpretation": "pending_author_review",
+  "local_checks": {
+    "pytest_passed": 52,
+    "pytest_seconds": 65.26,
+    "real_prefixes_and_raw_pipeline_equivalence": true,
+    "timer_device_synchronization_contract": true,
+    "reproducible_input_sampling_and_changed_recording_rejection": true,
+    "file_backed_MATLAB_training_and_benchmark_in_separate_CPU_processes": true,
+    "full_historical_reference_GPU_benchmark": true,
+    "GPU_and_heavy_CPU_checks_run_sequentially": true
+  }
+}
