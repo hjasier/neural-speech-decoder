@@ -114,4 +114,7 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
 - Hecho: notebook 10 con actividad neuronal y selector de salidas desde
   checkpoints compatibles. La configuración local usa CPU y el notebook
   oculta CUDA; mantenerlo así al incorporar versiones históricas posteriores.
-- Pendiente: figuras reproducibles, entorno fijado y registros de ejecuciones.
+- Hecho: `scripts/plot_speech_results.py` genera figuras y tablas desde
+  registros compatibles, con hashes de procedencia. Las figuras de referencia
+  están en `docs/figuras/t12_referencia/`; no interpretan los resultados.
+- Pendiente: entorno fijado y registros de ejecuciones.

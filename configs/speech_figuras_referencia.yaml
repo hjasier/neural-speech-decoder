@@ -1,0 +1,11 @@
+# Figuras descriptivas de mediciones reales; referencia acortada, no propuesta nueva.
+titulo: "T12 · referencia histórica de 2.001 pasos"
+alcance: "Test publicado ya monitorizado · GRU original · semilla 0"
+etapa_latencia: raw_to_phones
+dpi: 160
+formatos: [png, pdf]
+registros:
+  - etiqueta: GRU original
+    evaluacion: docs/resultados/speech_2h_unjiabqs_controles.json
+    benchmark: docs/resultados/speech_2h_unjiabqs_benchmark.json
+    historia: docs/resultados/speech_2h_unjiabqs.json

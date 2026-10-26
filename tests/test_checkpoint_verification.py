@@ -208,6 +208,20 @@ def test_raw_benchmark_cli_uses_same_checkpoint_and_only_validation(tmp_path, mo
     for depth in (2, 3, 5):
         assert result["profiles"][str(depth)]["executed_layers"] == list(range(1, depth + 1))
     assert Path("benchmark/mediciones.csv").is_file()
+    execute("scripts/evaluate_speech.py", "--config", "config.yaml", "--checkpoint", str(checkpoint),
+            "--evaluation-config", str(ROOT / "configs/speech_evaluacion.yaml"), "--output", "quality")
+    plot_cfg = yaml.safe_load((ROOT / "configs/speech_figuras_referencia.yaml").read_text())
+    plot_cfg["titulo"] = "Synthetic fixture; not T12 results"
+    plot_cfg["alcance"] = "Unit integration fixture"
+    plot_cfg["formatos"] = ["png"]
+    plot_cfg["registros"] = [{"etiqueta": "fixture", "evaluacion": "quality/metricas.json",
+                              "benchmark": "benchmark/benchmark.json", "historia": str(checkpoint.parent / "resultado.json")}]
+    Path("plot_spec.yaml").write_text(yaml.safe_dump(plot_cfg))
+    execute("scripts/plot_speech_results.py", "--config", "plot_spec.yaml", "--output", "figures")
+    plotted = json.loads(Path("figures/datos_figuras.json").read_text())
+    assert {point["exit"] for point in plotted["points"]} == {2, 3, 5}
+    assert len(plotted["histories"]) == 3
+    assert all(history["split"] == "val" for history in plotted["histories"])
     assert not Path("raw/test").exists() and not Path("prepared/test").exists()
 
 
