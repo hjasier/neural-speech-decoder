@@ -1,0 +1,993 @@
+{
+  "points": [
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "checkpoint_sha256": "3eb0bf3db2b69858a3676b82e953002d91f3f022e0ba23b3a207ac937cee8744",
+      "checkpoint_step": 2001,
+      "split": "test",
+      "latency_ms_p50": 28.250568499061046,
+      "latency_ms_p95": 52.98508459909482,
+      "benchmark_observations": 190,
+      "per_by_control": {
+        "original": 0.32217199327165685,
+        "cero": 0.9188919259882254,
+        "permutada": 0.7727607232968882
+      }
+    }
+  ],
+  "sessions": [
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.04.28",
+      "ctc_loss": 76.30165815353394,
+      "per": 0.4552572706935123,
+      "errores": 407,
+      "fonemas": 894,
+      "frases": 20,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.05.05",
+      "ctc_loss": 60.70544672012329,
+      "per": 0.4160919540229885,
+      "errores": 362,
+      "fonemas": 870,
+      "frases": 20,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.05.17",
+      "ctc_loss": 35.295533895492554,
+      "per": 0.3450479233226837,
+      "errores": 216,
+      "fonemas": 626,
+      "frases": 20,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.05.19",
+      "ctc_loss": 43.790578842163086,
+      "per": 0.38461538461538464,
+      "errores": 245,
+      "fonemas": 637,
+      "frases": 20,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.05.24",
+      "ctc_loss": 23.785910630226134,
+      "per": 0.2502242152466368,
+      "errores": 279,
+      "fonemas": 1115,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.05.26",
+      "ctc_loss": 23.678966963291167,
+      "per": 0.2598870056497175,
+      "errores": 276,
+      "fonemas": 1062,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.06.02",
+      "ctc_loss": 24.062135845422745,
+      "per": 0.26773888363292336,
+      "errores": 283,
+      "fonemas": 1057,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.06.07",
+      "ctc_loss": 29.620960927009584,
+      "per": 0.3163992869875223,
+      "errores": 355,
+      "fonemas": 1122,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.06.14",
+      "ctc_loss": 31.418216535449027,
+      "per": 0.2788844621513944,
+      "errores": 350,
+      "fonemas": 1255,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.06.16",
+      "ctc_loss": 43.76839127540588,
+      "per": 0.35333333333333333,
+      "errores": 424,
+      "fonemas": 1200,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.06.21",
+      "ctc_loss": 30.22488923072815,
+      "per": 0.3132108486439195,
+      "errores": 358,
+      "fonemas": 1143,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.06.28",
+      "ctc_loss": 30.622821640968322,
+      "per": 0.32342007434944237,
+      "errores": 348,
+      "fonemas": 1076,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.07.05",
+      "ctc_loss": 21.23659906089306,
+      "per": 0.2842582106455266,
+      "errores": 251,
+      "fonemas": 883,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.07.14",
+      "ctc_loss": 26.697043359279633,
+      "per": 0.26851025869759143,
+      "errores": 301,
+      "fonemas": 1121,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.07.21",
+      "ctc_loss": 37.421295654773715,
+      "per": 0.37364620938628157,
+      "errores": 414,
+      "fonemas": 1108,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.07.27",
+      "ctc_loss": 25.959262549877167,
+      "per": 0.32063492063492066,
+      "errores": 303,
+      "fonemas": 945,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.08.02",
+      "ctc_loss": 31.98047342300415,
+      "per": 0.38802660753880264,
+      "errores": 350,
+      "fonemas": 902,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.08.11",
+      "ctc_loss": 25.307705318927766,
+      "per": 0.2981243830207305,
+      "errores": 302,
+      "fonemas": 1013,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "original",
+      "session": "t12.2022.08.13",
+      "ctc_loss": 24.762489235401155,
+      "per": 0.3065326633165829,
+      "errores": 305,
+      "fonemas": 995,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.04.28",
+      "ctc_loss": 312.40565338134763,
+      "per": 1.0,
+      "errores": 894,
+      "fonemas": 894,
+      "frases": 20,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.05.05",
+      "ctc_loss": 227.73022918701173,
+      "per": 1.0,
+      "errores": 870,
+      "fonemas": 870,
+      "frases": 20,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.05.17",
+      "ctc_loss": 248.39346008300782,
+      "per": 1.0,
+      "errores": 626,
+      "fonemas": 626,
+      "frases": 20,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.05.19",
+      "ctc_loss": 226.69132347106932,
+      "per": 1.0,
+      "errores": 637,
+      "fonemas": 637,
+      "frases": 20,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.05.24",
+      "ctc_loss": 276.119075012207,
+      "per": 1.0,
+      "errores": 1115,
+      "fonemas": 1115,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.05.26",
+      "ctc_loss": 312.12330360412597,
+      "per": 1.0,
+      "errores": 1062,
+      "fonemas": 1062,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.06.02",
+      "ctc_loss": 157.34474782943727,
+      "per": 0.9072847682119205,
+      "errores": 959,
+      "fonemas": 1057,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.06.07",
+      "ctc_loss": 150.34137954711915,
+      "per": 0.8155080213903744,
+      "errores": 915,
+      "fonemas": 1122,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.06.14",
+      "ctc_loss": 213.67959032058715,
+      "per": 0.9227091633466136,
+      "errores": 1158,
+      "fonemas": 1255,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.06.16",
+      "ctc_loss": 186.10597381591796,
+      "per": 0.9016666666666666,
+      "errores": 1082,
+      "fonemas": 1200,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.06.21",
+      "ctc_loss": 144.92525787353514,
+      "per": 0.8363954505686789,
+      "errores": 956,
+      "fonemas": 1143,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.06.28",
+      "ctc_loss": 140.441628074646,
+      "per": 0.8327137546468402,
+      "errores": 896,
+      "fonemas": 1076,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.07.05",
+      "ctc_loss": 144.52110376358033,
+      "per": 0.9320498301245753,
+      "errores": 823,
+      "fonemas": 883,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.07.14",
+      "ctc_loss": 130.45274257659912,
+      "per": 0.7618198037466548,
+      "errores": 854,
+      "fonemas": 1121,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.07.21",
+      "ctc_loss": 162.77226448059082,
+      "per": 0.9034296028880866,
+      "errores": 1001,
+      "fonemas": 1108,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.07.27",
+      "ctc_loss": 173.27180309295653,
+      "per": 0.9153439153439153,
+      "errores": 865,
+      "fonemas": 945,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.08.02",
+      "ctc_loss": 214.83837089538574,
+      "per": 1.0,
+      "errores": 902,
+      "fonemas": 902,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.08.11",
+      "ctc_loss": 184.7992862701416,
+      "per": 0.9703849950641659,
+      "errores": 983,
+      "fonemas": 1013,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "cero",
+      "session": "t12.2022.08.13",
+      "ctc_loss": 167.84262161254884,
+      "per": 0.8874371859296483,
+      "errores": 883,
+      "fonemas": 995,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.04.28",
+      "ctc_loss": 187.30547218322755,
+      "per": 0.7941834451901566,
+      "errores": 710,
+      "fonemas": 894,
+      "frases": 20,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.05.05",
+      "ctc_loss": 185.41408309936523,
+      "per": 0.7563218390804598,
+      "errores": 658,
+      "fonemas": 870,
+      "frases": 20,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.05.17",
+      "ctc_loss": 138.5181827545166,
+      "per": 0.7859424920127795,
+      "errores": 492,
+      "fonemas": 626,
+      "frases": 20,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.05.19",
+      "ctc_loss": 140.98707084655763,
+      "per": 0.7676609105180534,
+      "errores": 489,
+      "fonemas": 637,
+      "frases": 20,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.05.24",
+      "ctc_loss": 124.81184244155884,
+      "per": 0.747085201793722,
+      "errores": 833,
+      "fonemas": 1115,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.05.26",
+      "ctc_loss": 109.29562263488769,
+      "per": 0.7467043314500942,
+      "errores": 793,
+      "fonemas": 1062,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.06.02",
+      "ctc_loss": 116.17594623565674,
+      "per": 0.7880794701986755,
+      "errores": 833,
+      "fonemas": 1057,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.06.07",
+      "ctc_loss": 118.96338491439819,
+      "per": 0.7388591800356507,
+      "errores": 829,
+      "fonemas": 1122,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.06.14",
+      "ctc_loss": 136.82812595367432,
+      "per": 0.7458167330677291,
+      "errores": 936,
+      "fonemas": 1255,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.06.16",
+      "ctc_loss": 140.47650232315064,
+      "per": 0.7616666666666667,
+      "errores": 914,
+      "fonemas": 1200,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.06.21",
+      "ctc_loss": 125.34698181152343,
+      "per": 0.7559055118110236,
+      "errores": 864,
+      "fonemas": 1143,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.06.28",
+      "ctc_loss": 110.22105751037597,
+      "per": 0.775092936802974,
+      "errores": 834,
+      "fonemas": 1076,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.07.05",
+      "ctc_loss": 92.20701789855957,
+      "per": 0.8040770101925255,
+      "errores": 710,
+      "fonemas": 883,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.07.14",
+      "ctc_loss": 121.89450073242188,
+      "per": 0.7725245316681534,
+      "errores": 866,
+      "fonemas": 1121,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.07.21",
+      "ctc_loss": 122.59120826721191,
+      "per": 0.8203971119133574,
+      "errores": 909,
+      "fonemas": 1108,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.07.27",
+      "ctc_loss": 98.8710069656372,
+      "per": 0.7841269841269841,
+      "errores": 741,
+      "fonemas": 945,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.08.02",
+      "ctc_loss": 114.67634229660034,
+      "per": 0.7583148558758315,
+      "errores": 684,
+      "fonemas": 902,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.08.11",
+      "ctc_loss": 110.83331651687622,
+      "per": 0.7956564659427443,
+      "errores": 806,
+      "fonemas": 1013,
+      "frases": 40,
+      "completo": 1
+    },
+    {
+      "label": "GRU original",
+      "exit": 5,
+      "seed": 0,
+      "control": "permutada",
+      "session": "t12.2022.08.13",
+      "ctc_loss": 106.98880672454834,
+      "per": 0.8040201005025126,
+      "errores": 800,
+      "fonemas": 995,
+      "frases": 40,
+      "completo": 1
+    }
+  ],
+  "histories": [
+    {
+      "label": "GRU original",
+      "split": "test monitorizado (consola redondeada)",
+      "exit": 5,
+      "rows": [
+        {
+          "step": 1,
+          "per": 0.9011,
+          "ctc_loss": 192.7532
+        },
+        {
+          "step": 251,
+          "per": 0.6539,
+          "ctc_loss": 67.8787
+        },
+        {
+          "step": 501,
+          "per": 0.493,
+          "ctc_loss": 51.566
+        },
+        {
+          "step": 751,
+          "per": 0.4244,
+          "ctc_loss": 43.193
+        },
+        {
+          "step": 1001,
+          "per": 0.38780000000000003,
+          "ctc_loss": 38.5757
+        },
+        {
+          "step": 1251,
+          "per": 0.3628,
+          "ctc_loss": 36.2293
+        },
+        {
+          "step": 1501,
+          "per": 0.33990000000000004,
+          "ctc_loss": 33.4561
+        },
+        {
+          "step": 1751,
+          "per": 0.3262,
+          "ctc_loss": 32.1373
+        },
+        {
+          "step": 2001,
+          "per": 0.3222,
+          "ctc_loss": 31.682
+        }
+      ]
+    }
+  ],
+  "conditions": {
+    "input_signature": "0d5d5694e7f822ee4d7c051d8bba1fcd50f05b793325404f1c0b2e61791d41ef",
+    "data_signature": "116c10e4b83c2729c22c0e1cc47ab7a2dc55cc9b35b8a5e1a5f35a60bd9fd611",
+    "split": "test",
+    "protocol_sha256": null,
+    "cohort": {
+      "t12.2022.04.28": [
+        20,
+        894
+      ],
+      "t12.2022.05.05": [
+        20,
+        870
+      ],
+      "t12.2022.05.17": [
+        20,
+        626
+      ],
+      "t12.2022.05.19": [
+        20,
+        637
+      ],
+      "t12.2022.05.24": [
+        40,
+        1115
+      ],
+      "t12.2022.05.26": [
+        40,
+        1062
+      ],
+      "t12.2022.06.02": [
+        40,
+        1057
+      ],
+      "t12.2022.06.07": [
+        40,
+        1122
+      ],
+      "t12.2022.06.14": [
+        40,
+        1255
+      ],
+      "t12.2022.06.16": [
+        40,
+        1200
+      ],
+      "t12.2022.06.21": [
+        40,
+        1143
+      ],
+      "t12.2022.06.28": [
+        40,
+        1076
+      ],
+      "t12.2022.07.05": [
+        40,
+        883
+      ],
+      "t12.2022.07.14": [
+        40,
+        1121
+      ],
+      "t12.2022.07.21": [
+        40,
+        1108
+      ],
+      "t12.2022.07.27": [
+        40,
+        945
+      ],
+      "t12.2022.08.02": [
+        40,
+        902
+      ],
+      "t12.2022.08.11": [
+        40,
+        1013
+      ],
+      "t12.2022.08.13": [
+        40,
+        995
+      ]
+    },
+    "runtime": {
+      "device": "cuda",
+      "hardware": "NVIDIA GeForce RTX 2060",
+      "gpu_uuid": "26599c58-9ccf-f97c-fa3a-a34915d3cc00",
+      "gpu_total_bytes": 6014369792,
+      "torch": "2.5.1+cu124",
+      "cuda": "12.4",
+      "cudnn": 90100,
+      "cpu_threads": 2,
+      "cudnn_deterministic": true,
+      "cudnn_benchmark": false,
+      "matmul_allow_tf32": false,
+      "cudnn_allow_tf32": true,
+      "tensor_dtype": "float32; no AMP"
+    },
+    "spec": {
+      "split": "test",
+      "sesiones": null,
+      "ensayos_por_sesion": 2,
+      "semilla_muestras": 271828,
+      "batch_size": 1,
+      "calentamiento": 2,
+      "repeticiones": 5,
+      "salidas": null,
+      "dispositivo": "cuda",
+      "hilos_cpu": 2
+    },
+    "phones": [
+      "AA",
+      "AE",
+      "AH",
+      "AO",
+      "AW",
+      "AY",
+      "B",
+      "CH",
+      "D",
+      "DH",
+      "EH",
+      "ER",
+      "EY",
+      "F",
+      "G",
+      "HH",
+      "IH",
+      "IY",
+      "JH",
+      "K",
+      "L",
+      "M",
+      "N",
+      "NG",
+      "OW",
+      "OY",
+      "P",
+      "R",
+      "S",
+      "SH",
+      "T",
+      "TH",
+      "UH",
+      "UW",
+      "V",
+      "W",
+      "Y",
+      "Z",
+      "ZH",
+      "SIL"
+    ],
+    "blank_id": 40,
+    "control_seed": 314159,
+    "controls": [
+      "original",
+      "cero",
+      "permutada"
+    ],
+    "comparison_plan_sha256": null
+  },
+  "sources": [
+    {
+      "path": "docs/resultados/speech_2h_unjiabqs_controles.json",
+      "sha256": "b6026f5182b759ecf4151dbf4d376e2659737ab431de3c71ec2d8e1e78ea8347"
+    },
+    {
+      "path": "docs/resultados/speech_2h_unjiabqs_benchmark.json",
+      "sha256": "6e272a9a85a28899d58cfd0bebe3d5c6c4c48c3630bb095e5e2ed61cd5577fde"
+    },
+    {
+      "path": "docs/resultados/speech_2h_unjiabqs.json",
+      "sha256": "8410c70bde3e7709e7fd00efc8ee6f6544fd8f8d74c53468f3678c7c30fddf0b"
+    }
+  ],
+  "interpretation": "pending_author_review"
+}

@@ -1,0 +1,2 @@
+label,exit,seed,checkpoint_sha256,checkpoint_step,split,latency_ms_p50,latency_ms_p95,per_original,per_cero,per_permutada
+GRU original,5,0,3eb0bf3db2b69858a3676b82e953002d91f3f022e0ba23b3a207ac937cee8744,2001,test,28.250568499061046,52.98508459909482,0.32217199327165685,0.9188919259882254,0.7727607232968882

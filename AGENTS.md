@@ -111,4 +111,20 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
 - Hecho: `scripts/benchmark_speech.py` y celda 13 del notebook 09, con carga,
   forward y señal cruda a fonemas medidos por separado sobre muestras comunes.
   En la red conjunta todos los pesos siguen residentes al elegir una salida.
-- Pendiente: demo de inferencia y registros de las ejecuciones reales.
+- Hecho: notebook 10 con actividad neuronal y selector de salidas desde
+  checkpoints compatibles. La configuración local usa CPU y el notebook
+  oculta CUDA; mantenerlo así al incorporar versiones históricas posteriores.
+- Hecho: `scripts/plot_speech_results.py` genera figuras y tablas desde
+  registros compatibles, con hashes de procedencia. Las figuras de referencia
+  están en `docs/figuras/t12_referencia/`; no interpretan los resultados.
+- Hecho: entorno local fijado. El registro original de
+  reproducibilidad conserva las comprobaciones y hashes de aquel contexto.
+- Hecho: notebook 08 ejecutado en T4, run `xz71t4vd`, 200 actualizaciones
+  y recarga independiente de las salidas 2/3/5, sin actualizar pesos ni usar test.
+  Registro y curva originales en `docs/resultados/speech_salidas_e1_xz71t4vd.json`
+  y `docs/figuras/t12_e1_xz71t4vd/`.
+- Hecho: demo CPU conectada a esos pesos; controles y medidas históricas en
+  `docs/resultados/*_xz71t4vd_mediciones.json`, figuras en `docs/figuras/t12_e1_mediciones/`.
+  Se generan desde `configs/speech_figuras_e1.yaml` sin cargar el modelo.
+  La demo ejecutada original se conserva aparte en `docs/resultados/*_demo_ejecutada.ipynb`.
+- Pendiente: incorporar la reanudación y los registros de entrenamientos posteriores.

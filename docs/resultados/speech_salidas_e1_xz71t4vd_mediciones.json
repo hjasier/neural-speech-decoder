@@ -1,0 +1,2548 @@
+{
+  "scope": "real joint model with 200 updates; single training seed; validation only; complete experiment pending",
+  "source_base_commit": "994d8e738045585bbe13426076bd73e821135b6a",
+  "evaluation": {
+    "split": "val",
+    "controls": [
+      "original",
+      "cero",
+      "permutada"
+    ],
+    "control_seed": 314159,
+    "available_exits": [
+      2,
+      3,
+      5
+    ],
+    "evaluated_exits": [
+      2,
+      3,
+      5
+    ],
+    "global": {
+      "original": {
+        "2": {
+          "ctc_loss": 67.94444382680605,
+          "per": 0.6496355632532295,
+          "errores": 27006,
+          "fonemas": 41571,
+          "frases": 1460,
+          "completo": 1
+        },
+        "3": {
+          "ctc_loss": 69.18936947992403,
+          "per": 0.6533400687979601,
+          "errores": 27160,
+          "fonemas": 41571,
+          "frases": 1460,
+          "completo": 1
+        },
+        "5": {
+          "ctc_loss": 71.6881727662805,
+          "per": 0.6606288037333718,
+          "errores": 27463,
+          "fonemas": 41571,
+          "frases": 1460,
+          "completo": 1
+        }
+      },
+      "cero": {
+        "2": {
+          "ctc_loss": 98.08681829008337,
+          "per": 1.0,
+          "errores": 41571,
+          "fonemas": 41571,
+          "frases": 1460,
+          "completo": 1
+        },
+        "3": {
+          "ctc_loss": 99.12925205753274,
+          "per": 1.0,
+          "errores": 41571,
+          "fonemas": 41571,
+          "frases": 1460,
+          "completo": 1
+        },
+        "5": {
+          "ctc_loss": 98.01131757187517,
+          "per": 1.0,
+          "errores": 41571,
+          "fonemas": 41571,
+          "frases": 1460,
+          "completo": 1
+        }
+      },
+      "permutada": {
+        "2": {
+          "ctc_loss": 101.0865942497776,
+          "per": 0.7842486348656516,
+          "errores": 32602,
+          "fonemas": 41571,
+          "frases": 1460,
+          "completo": 1
+        },
+        "3": {
+          "ctc_loss": 101.25978063295965,
+          "per": 0.7755406413124534,
+          "errores": 32240,
+          "fonemas": 41571,
+          "frases": 1460,
+          "completo": 1
+        },
+        "5": {
+          "ctc_loss": 100.86048623568391,
+          "per": 0.7688292319164802,
+          "errores": 31961,
+          "fonemas": 41571,
+          "frases": 1460,
+          "completo": 1
+        }
+      }
+    },
+    "by_session": {
+      "original": {
+        "2": {
+          "t12.2022.04.28": {
+            "ctc_loss": 124.22705637613932,
+            "per": 0.7374906646751307,
+            "errores": 1975,
+            "fonemas": 2678,
+            "frases": 60,
+            "completo": 1
+          },
+          "t12.2022.05.05": {
+            "ctc_loss": 129.0190653324127,
+            "per": 0.7948645598194131,
+            "errores": 2817,
+            "fonemas": 3544,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.17": {
+            "ctc_loss": 74.44240274429322,
+            "per": 0.6762346981848881,
+            "errores": 1602,
+            "fonemas": 2369,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.19": {
+            "ctc_loss": 74.4209321975708,
+            "per": 0.6503164556962026,
+            "errores": 822,
+            "fonemas": 1264,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.05.24": {
+            "ctc_loss": 58.65660133361816,
+            "per": 0.602181128496918,
+            "errores": 1270,
+            "fonemas": 2109,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.26": {
+            "ctc_loss": 57.3012499332428,
+            "per": 0.6145783706526917,
+            "errores": 1290,
+            "fonemas": 2099,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.02": {
+            "ctc_loss": 60.965850472450256,
+            "per": 0.6000897666068222,
+            "errores": 1337,
+            "fonemas": 2228,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.07": {
+            "ctc_loss": 59.08763461112976,
+            "per": 0.6011262318160489,
+            "errores": 1281,
+            "fonemas": 2131,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.14": {
+            "ctc_loss": 67.00615906715393,
+            "per": 0.6136455389584174,
+            "errores": 1520,
+            "fonemas": 2477,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.16": {
+            "ctc_loss": 79.06576714515685,
+            "per": 0.6868562010712814,
+            "errores": 1667,
+            "fonemas": 2427,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.21": {
+            "ctc_loss": 54.375521183013916,
+            "per": 0.5850642927794263,
+            "errores": 1183,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.28": {
+            "ctc_loss": 59.43358434438706,
+            "per": 0.6071094480823199,
+            "errores": 1298,
+            "fonemas": 2138,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.05": {
+            "ctc_loss": 56.45561578273773,
+            "per": 0.6207430340557275,
+            "errores": 1203,
+            "fonemas": 1938,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.14": {
+            "ctc_loss": 59.621457886695865,
+            "per": 0.6032818532818532,
+            "errores": 1250,
+            "fonemas": 2072,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.21": {
+            "ctc_loss": 57.65762095451355,
+            "per": 0.6468842729970327,
+            "errores": 1308,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.27": {
+            "ctc_loss": 66.44232511520386,
+            "per": 0.6819672131147541,
+            "errores": 1456,
+            "fonemas": 2135,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.02": {
+            "ctc_loss": 54.88461331129074,
+            "per": 0.6272819472616633,
+            "errores": 1237,
+            "fonemas": 1972,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.11": {
+            "ctc_loss": 58.350075769424436,
+            "per": 0.6441717791411042,
+            "errores": 1260,
+            "fonemas": 1956,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.13": {
+            "ctc_loss": 56.83979647159576,
+            "per": 0.6180904522613065,
+            "errores": 1230,
+            "fonemas": 1990,
+            "frases": 80,
+            "completo": 1
+          }
+        },
+        "3": {
+          "t12.2022.04.28": {
+            "ctc_loss": 124.09259401957193,
+            "per": 0.7154592979835698,
+            "errores": 1916,
+            "fonemas": 2678,
+            "frases": 60,
+            "completo": 1
+          },
+          "t12.2022.05.05": {
+            "ctc_loss": 130.5060878276825,
+            "per": 0.7821670428893905,
+            "errores": 2772,
+            "fonemas": 3544,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.17": {
+            "ctc_loss": 75.0145711183548,
+            "per": 0.6766568172224567,
+            "errores": 1603,
+            "fonemas": 2369,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.19": {
+            "ctc_loss": 75.48139991760254,
+            "per": 0.6455696202531646,
+            "errores": 816,
+            "fonemas": 1264,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.05.24": {
+            "ctc_loss": 59.830806374549866,
+            "per": 0.6154575628259839,
+            "errores": 1298,
+            "fonemas": 2109,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.26": {
+            "ctc_loss": 58.781593036651614,
+            "per": 0.6193425440686041,
+            "errores": 1300,
+            "fonemas": 2099,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.02": {
+            "ctc_loss": 62.1459380865097,
+            "per": 0.6072710951526032,
+            "errores": 1353,
+            "fonemas": 2228,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.07": {
+            "ctc_loss": 60.94716124534607,
+            "per": 0.6166119192867199,
+            "errores": 1314,
+            "fonemas": 2131,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.14": {
+            "ctc_loss": 68.80236914157868,
+            "per": 0.626968106580541,
+            "errores": 1553,
+            "fonemas": 2477,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.16": {
+            "ctc_loss": 79.7410432100296,
+            "per": 0.6918005768438401,
+            "errores": 1679,
+            "fonemas": 2427,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.21": {
+            "ctc_loss": 55.84381127357483,
+            "per": 0.595944609297725,
+            "errores": 1205,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.28": {
+            "ctc_loss": 61.03309433460235,
+            "per": 0.6197380729653882,
+            "errores": 1325,
+            "fonemas": 2138,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.05": {
+            "ctc_loss": 57.69195604324341,
+            "per": 0.6279669762641898,
+            "errores": 1217,
+            "fonemas": 1938,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.14": {
+            "ctc_loss": 61.213887739181516,
+            "per": 0.6158301158301158,
+            "errores": 1276,
+            "fonemas": 2072,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.21": {
+            "ctc_loss": 59.047490572929384,
+            "per": 0.6508407517309595,
+            "errores": 1316,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.27": {
+            "ctc_loss": 67.41809587478637,
+            "per": 0.6843091334894613,
+            "errores": 1461,
+            "fonemas": 2135,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.02": {
+            "ctc_loss": 56.38987555503845,
+            "per": 0.6348884381338742,
+            "errores": 1252,
+            "fonemas": 1972,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.11": {
+            "ctc_loss": 59.64472424983978,
+            "per": 0.6441717791411042,
+            "errores": 1260,
+            "fonemas": 1956,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.13": {
+            "ctc_loss": 57.843341851234435,
+            "per": 0.6251256281407035,
+            "errores": 1244,
+            "fonemas": 1990,
+            "frases": 80,
+            "completo": 1
+          }
+        },
+        "5": {
+          "t12.2022.04.28": {
+            "ctc_loss": 126.53670132954916,
+            "per": 0.7012696041822255,
+            "errores": 1878,
+            "fonemas": 2678,
+            "frases": 60,
+            "completo": 1
+          },
+          "t12.2022.05.05": {
+            "ctc_loss": 129.90133056640624,
+            "per": 0.7638261851015802,
+            "errores": 2707,
+            "fonemas": 3544,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.17": {
+            "ctc_loss": 76.6094274520874,
+            "per": 0.6783452933727311,
+            "errores": 1607,
+            "fonemas": 2369,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.19": {
+            "ctc_loss": 79.20818424224854,
+            "per": 0.6416139240506329,
+            "errores": 811,
+            "fonemas": 1264,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.05.24": {
+            "ctc_loss": 62.33636047840118,
+            "per": 0.6306306306306306,
+            "errores": 1330,
+            "fonemas": 2109,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.26": {
+            "ctc_loss": 61.42983574867249,
+            "per": 0.6288708909004288,
+            "errores": 1320,
+            "fonemas": 2099,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.02": {
+            "ctc_loss": 64.77301540374756,
+            "per": 0.618491921005386,
+            "errores": 1378,
+            "fonemas": 2228,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.07": {
+            "ctc_loss": 63.866441464424135,
+            "per": 0.6339746597841389,
+            "errores": 1351,
+            "fonemas": 2131,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.14": {
+            "ctc_loss": 71.51759467124938,
+            "per": 0.6188938231731934,
+            "errores": 1533,
+            "fonemas": 2477,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.16": {
+            "ctc_loss": 81.29371597766877,
+            "per": 0.7062216728471363,
+            "errores": 1714,
+            "fonemas": 2427,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.21": {
+            "ctc_loss": 58.769473505020144,
+            "per": 0.615727002967359,
+            "errores": 1245,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.28": {
+            "ctc_loss": 64.19646780490875,
+            "per": 0.6435921421889617,
+            "errores": 1376,
+            "fonemas": 2138,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.05": {
+            "ctc_loss": 59.969444441795346,
+            "per": 0.6501547987616099,
+            "errores": 1260,
+            "fonemas": 1938,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.14": {
+            "ctc_loss": 64.6260932445526,
+            "per": 0.6336872586872587,
+            "errores": 1313,
+            "fonemas": 2072,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.21": {
+            "ctc_loss": 61.62178583145142,
+            "per": 0.6607319485657764,
+            "errores": 1336,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.27": {
+            "ctc_loss": 69.51928305625916,
+            "per": 0.6894613583138174,
+            "errores": 1472,
+            "fonemas": 2135,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.02": {
+            "ctc_loss": 59.08768756389618,
+            "per": 0.6419878296146044,
+            "errores": 1266,
+            "fonemas": 1972,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.11": {
+            "ctc_loss": 62.505970215797426,
+            "per": 0.6641104294478528,
+            "errores": 1299,
+            "fonemas": 1956,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.13": {
+            "ctc_loss": 61.778607439994815,
+            "per": 0.6366834170854271,
+            "errores": 1267,
+            "fonemas": 1990,
+            "frases": 80,
+            "completo": 1
+          }
+        }
+      },
+      "cero": {
+        "2": {
+          "t12.2022.04.28": {
+            "ctc_loss": 155.7270336151123,
+            "per": 1.0,
+            "errores": 2678,
+            "fonemas": 2678,
+            "frases": 60,
+            "completo": 1
+          },
+          "t12.2022.05.05": {
+            "ctc_loss": 153.94010019302368,
+            "per": 1.0,
+            "errores": 3544,
+            "fonemas": 3544,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.17": {
+            "ctc_loss": 100.67947158813476,
+            "per": 1.0,
+            "errores": 2369,
+            "fonemas": 2369,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.19": {
+            "ctc_loss": 109.36214065551758,
+            "per": 1.0,
+            "errores": 1264,
+            "fonemas": 1264,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.05.24": {
+            "ctc_loss": 89.77091221809387,
+            "per": 1.0,
+            "errores": 2109,
+            "fonemas": 2109,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.26": {
+            "ctc_loss": 88.22336292266846,
+            "per": 1.0,
+            "errores": 2099,
+            "fonemas": 2099,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.02": {
+            "ctc_loss": 96.5467622756958,
+            "per": 1.0,
+            "errores": 2228,
+            "fonemas": 2228,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.07": {
+            "ctc_loss": 92.1372790813446,
+            "per": 1.0,
+            "errores": 2131,
+            "fonemas": 2131,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.14": {
+            "ctc_loss": 107.26550154685974,
+            "per": 1.0,
+            "errores": 2477,
+            "fonemas": 2477,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.16": {
+            "ctc_loss": 102.80029282569885,
+            "per": 1.0,
+            "errores": 2427,
+            "fonemas": 2427,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.21": {
+            "ctc_loss": 87.05868730545043,
+            "per": 1.0,
+            "errores": 2022,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.28": {
+            "ctc_loss": 91.56994354724884,
+            "per": 1.0,
+            "errores": 2138,
+            "fonemas": 2138,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.05": {
+            "ctc_loss": 83.23042314052582,
+            "per": 1.0,
+            "errores": 1938,
+            "fonemas": 1938,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.14": {
+            "ctc_loss": 86.90030028820038,
+            "per": 1.0,
+            "errores": 2072,
+            "fonemas": 2072,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.21": {
+            "ctc_loss": 86.4977352142334,
+            "per": 1.0,
+            "errores": 2022,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.27": {
+            "ctc_loss": 95.70428252220154,
+            "per": 1.0,
+            "errores": 2135,
+            "fonemas": 2135,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.02": {
+            "ctc_loss": 84.46605412960052,
+            "per": 1.0,
+            "errores": 1972,
+            "fonemas": 1972,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.11": {
+            "ctc_loss": 83.71852207183838,
+            "per": 1.0,
+            "errores": 1956,
+            "fonemas": 1956,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.13": {
+            "ctc_loss": 88.0984573841095,
+            "per": 1.0,
+            "errores": 1990,
+            "fonemas": 1990,
+            "frases": 80,
+            "completo": 1
+          }
+        },
+        "3": {
+          "t12.2022.04.28": {
+            "ctc_loss": 158.93157513936362,
+            "per": 1.0,
+            "errores": 2678,
+            "fonemas": 2678,
+            "frases": 60,
+            "completo": 1
+          },
+          "t12.2022.05.05": {
+            "ctc_loss": 156.54103164672853,
+            "per": 1.0,
+            "errores": 3544,
+            "fonemas": 3544,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.17": {
+            "ctc_loss": 102.24987535476684,
+            "per": 1.0,
+            "errores": 2369,
+            "fonemas": 2369,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.19": {
+            "ctc_loss": 111.4428924560547,
+            "per": 1.0,
+            "errores": 1264,
+            "fonemas": 1264,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.05.24": {
+            "ctc_loss": 90.59228205680847,
+            "per": 1.0,
+            "errores": 2109,
+            "fonemas": 2109,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.26": {
+            "ctc_loss": 89.76054139137268,
+            "per": 1.0,
+            "errores": 2099,
+            "fonemas": 2099,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.02": {
+            "ctc_loss": 97.32128229141236,
+            "per": 1.0,
+            "errores": 2228,
+            "fonemas": 2228,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.07": {
+            "ctc_loss": 92.92629175186157,
+            "per": 1.0,
+            "errores": 2131,
+            "fonemas": 2131,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.14": {
+            "ctc_loss": 108.2377151966095,
+            "per": 1.0,
+            "errores": 2477,
+            "fonemas": 2477,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.16": {
+            "ctc_loss": 104.1254596233368,
+            "per": 1.0,
+            "errores": 2427,
+            "fonemas": 2427,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.21": {
+            "ctc_loss": 87.71732215881347,
+            "per": 1.0,
+            "errores": 2022,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.28": {
+            "ctc_loss": 92.4436460018158,
+            "per": 1.0,
+            "errores": 2138,
+            "fonemas": 2138,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.05": {
+            "ctc_loss": 83.62377843856811,
+            "per": 1.0,
+            "errores": 1938,
+            "fonemas": 1938,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.14": {
+            "ctc_loss": 87.90608854293824,
+            "per": 1.0,
+            "errores": 2072,
+            "fonemas": 2072,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.21": {
+            "ctc_loss": 86.63560719490052,
+            "per": 1.0,
+            "errores": 2022,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.27": {
+            "ctc_loss": 96.15568923950195,
+            "per": 1.0,
+            "errores": 2135,
+            "fonemas": 2135,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.02": {
+            "ctc_loss": 84.93497953414916,
+            "per": 1.0,
+            "errores": 1972,
+            "fonemas": 1972,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.11": {
+            "ctc_loss": 84.52938470840454,
+            "per": 1.0,
+            "errores": 1956,
+            "fonemas": 1956,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.13": {
+            "ctc_loss": 88.48774733543397,
+            "per": 1.0,
+            "errores": 1990,
+            "fonemas": 1990,
+            "frases": 80,
+            "completo": 1
+          }
+        },
+        "5": {
+          "t12.2022.04.28": {
+            "ctc_loss": 155.23707110087076,
+            "per": 1.0,
+            "errores": 2678,
+            "fonemas": 2678,
+            "frases": 60,
+            "completo": 1
+          },
+          "t12.2022.05.05": {
+            "ctc_loss": 152.57328310012818,
+            "per": 1.0,
+            "errores": 3544,
+            "fonemas": 3544,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.17": {
+            "ctc_loss": 101.01151733398437,
+            "per": 1.0,
+            "errores": 2369,
+            "fonemas": 2369,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.19": {
+            "ctc_loss": 108.34753952026367,
+            "per": 1.0,
+            "errores": 1264,
+            "fonemas": 1264,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.05.24": {
+            "ctc_loss": 89.43028984069824,
+            "per": 1.0,
+            "errores": 2109,
+            "fonemas": 2109,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.26": {
+            "ctc_loss": 87.96380596160888,
+            "per": 1.0,
+            "errores": 2099,
+            "fonemas": 2099,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.02": {
+            "ctc_loss": 97.10113892555236,
+            "per": 1.0,
+            "errores": 2228,
+            "fonemas": 2228,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.07": {
+            "ctc_loss": 91.96061573028564,
+            "per": 1.0,
+            "errores": 2131,
+            "fonemas": 2131,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.14": {
+            "ctc_loss": 107.44304738044738,
+            "per": 1.0,
+            "errores": 2477,
+            "fonemas": 2477,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.16": {
+            "ctc_loss": 103.20846309661866,
+            "per": 1.0,
+            "errores": 2427,
+            "fonemas": 2427,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.21": {
+            "ctc_loss": 86.9662474155426,
+            "per": 1.0,
+            "errores": 2022,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.28": {
+            "ctc_loss": 93.0560245513916,
+            "per": 1.0,
+            "errores": 2138,
+            "fonemas": 2138,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.05": {
+            "ctc_loss": 82.7149952173233,
+            "per": 1.0,
+            "errores": 1938,
+            "fonemas": 1938,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.14": {
+            "ctc_loss": 86.96013145446777,
+            "per": 1.0,
+            "errores": 2072,
+            "fonemas": 2072,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.21": {
+            "ctc_loss": 85.62141017913818,
+            "per": 1.0,
+            "errores": 2022,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.27": {
+            "ctc_loss": 94.94264669418335,
+            "per": 1.0,
+            "errores": 2135,
+            "fonemas": 2135,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.02": {
+            "ctc_loss": 84.50079233646393,
+            "per": 1.0,
+            "errores": 1972,
+            "fonemas": 1972,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.11": {
+            "ctc_loss": 84.74193511009216,
+            "per": 1.0,
+            "errores": 1956,
+            "fonemas": 1956,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.13": {
+            "ctc_loss": 87.90862827301025,
+            "per": 1.0,
+            "errores": 1990,
+            "fonemas": 1990,
+            "frases": 80,
+            "completo": 1
+          }
+        }
+      },
+      "permutada": {
+        "2": {
+          "t12.2022.04.28": {
+            "ctc_loss": 166.58358319600424,
+            "per": 0.7998506348020911,
+            "errores": 2142,
+            "fonemas": 2678,
+            "frases": 60,
+            "completo": 1
+          },
+          "t12.2022.05.05": {
+            "ctc_loss": 164.64860315322875,
+            "per": 0.8733069977426636,
+            "errores": 3095,
+            "fonemas": 3544,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.17": {
+            "ctc_loss": 110.75867681503296,
+            "per": 0.7834529337273111,
+            "errores": 1856,
+            "fonemas": 2369,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.19": {
+            "ctc_loss": 107.90695962905883,
+            "per": 0.8061708860759493,
+            "errores": 1019,
+            "fonemas": 1264,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.05.24": {
+            "ctc_loss": 95.34549822807313,
+            "per": 0.7581792318634424,
+            "errores": 1599,
+            "fonemas": 2109,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.26": {
+            "ctc_loss": 91.88018898963928,
+            "per": 0.7665555026202954,
+            "errores": 1609,
+            "fonemas": 2099,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.02": {
+            "ctc_loss": 97.43442034721375,
+            "per": 0.7607719928186715,
+            "errores": 1695,
+            "fonemas": 2228,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.07": {
+            "ctc_loss": 91.0585813999176,
+            "per": 0.7648991083998123,
+            "errores": 1630,
+            "fonemas": 2131,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.14": {
+            "ctc_loss": 107.11713161468506,
+            "per": 0.783205490512717,
+            "errores": 1940,
+            "fonemas": 2477,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.16": {
+            "ctc_loss": 115.79588966369629,
+            "per": 0.8405438813349815,
+            "errores": 2040,
+            "fonemas": 2427,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.21": {
+            "ctc_loss": 85.01472487449647,
+            "per": 0.7546983184965381,
+            "errores": 1526,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.28": {
+            "ctc_loss": 92.99594140052795,
+            "per": 0.745088868101029,
+            "errores": 1593,
+            "fonemas": 2138,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.05": {
+            "ctc_loss": 84.30074052810669,
+            "per": 0.7683178534571723,
+            "errores": 1489,
+            "fonemas": 1938,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.14": {
+            "ctc_loss": 89.91250627040863,
+            "per": 0.7567567567567568,
+            "errores": 1568,
+            "fonemas": 2072,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.21": {
+            "ctc_loss": 83.49205410480499,
+            "per": 0.7799208704253214,
+            "errores": 1577,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.27": {
+            "ctc_loss": 100.39823536872863,
+            "per": 0.7793911007025761,
+            "errores": 1664,
+            "fonemas": 2135,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.02": {
+            "ctc_loss": 80.89022288322448,
+            "per": 0.7799188640973631,
+            "errores": 1538,
+            "fonemas": 1972,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.11": {
+            "ctc_loss": 87.28950729370118,
+            "per": 0.7617586912065439,
+            "errores": 1490,
+            "fonemas": 1956,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.13": {
+            "ctc_loss": 87.60625491142272,
+            "per": 0.7698492462311558,
+            "errores": 1532,
+            "fonemas": 1990,
+            "frases": 80,
+            "completo": 1
+          }
+        },
+        "3": {
+          "t12.2022.04.28": {
+            "ctc_loss": 167.4739579518636,
+            "per": 0.7830470500373413,
+            "errores": 2097,
+            "fonemas": 2678,
+            "frases": 60,
+            "completo": 1
+          },
+          "t12.2022.05.05": {
+            "ctc_loss": 169.32551259994506,
+            "per": 0.8741534988713319,
+            "errores": 3098,
+            "fonemas": 3544,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.17": {
+            "ctc_loss": 110.44380888938903,
+            "per": 0.7737441958632334,
+            "errores": 1833,
+            "fonemas": 2369,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.19": {
+            "ctc_loss": 107.92187643051147,
+            "per": 0.7824367088607594,
+            "errores": 989,
+            "fonemas": 1264,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.05.24": {
+            "ctc_loss": 95.53696908950806,
+            "per": 0.7472735893788526,
+            "errores": 1576,
+            "fonemas": 2109,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.26": {
+            "ctc_loss": 92.07486534118652,
+            "per": 0.7541686517389233,
+            "errores": 1583,
+            "fonemas": 2099,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.02": {
+            "ctc_loss": 97.20889947414398,
+            "per": 0.7495511669658886,
+            "errores": 1670,
+            "fonemas": 2228,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.07": {
+            "ctc_loss": 91.28793377876282,
+            "per": 0.7517597372125763,
+            "errores": 1602,
+            "fonemas": 2131,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.14": {
+            "ctc_loss": 107.38426580429078,
+            "per": 0.7743237787646347,
+            "errores": 1918,
+            "fonemas": 2477,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.16": {
+            "ctc_loss": 116.83738055229188,
+            "per": 0.842192006592501,
+            "errores": 2044,
+            "fonemas": 2427,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.21": {
+            "ctc_loss": 84.4886459350586,
+            "per": 0.7453016815034619,
+            "errores": 1507,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.28": {
+            "ctc_loss": 93.08240926265717,
+            "per": 0.7408793264733395,
+            "errores": 1584,
+            "fonemas": 2138,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.05": {
+            "ctc_loss": 83.87918829917908,
+            "per": 0.7543859649122807,
+            "errores": 1462,
+            "fonemas": 1938,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.14": {
+            "ctc_loss": 89.5636575460434,
+            "per": 0.7548262548262549,
+            "errores": 1564,
+            "fonemas": 2072,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.21": {
+            "ctc_loss": 83.49749200344085,
+            "per": 0.768051434223541,
+            "errores": 1553,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.27": {
+            "ctc_loss": 99.60165252685547,
+            "per": 0.7756440281030444,
+            "errores": 1656,
+            "fonemas": 2135,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.02": {
+            "ctc_loss": 81.16997256278992,
+            "per": 0.7738336713995944,
+            "errores": 1526,
+            "fonemas": 1972,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.11": {
+            "ctc_loss": 86.43957986831666,
+            "per": 0.7540899795501023,
+            "errores": 1475,
+            "fonemas": 1956,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.13": {
+            "ctc_loss": 86.60235633850098,
+            "per": 0.7552763819095477,
+            "errores": 1503,
+            "fonemas": 1990,
+            "frases": 80,
+            "completo": 1
+          }
+        },
+        "5": {
+          "t12.2022.04.28": {
+            "ctc_loss": 166.08183161417642,
+            "per": 0.7595220313666916,
+            "errores": 2034,
+            "fonemas": 2678,
+            "frases": 60,
+            "completo": 1
+          },
+          "t12.2022.05.05": {
+            "ctc_loss": 169.1421703338623,
+            "per": 0.8707674943566591,
+            "errores": 3086,
+            "fonemas": 3544,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.17": {
+            "ctc_loss": 108.50262851715088,
+            "per": 0.7644575770367243,
+            "errores": 1811,
+            "fonemas": 2369,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.19": {
+            "ctc_loss": 111.26575832366943,
+            "per": 0.7618670886075949,
+            "errores": 963,
+            "fonemas": 1264,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.05.24": {
+            "ctc_loss": 94.79367198944092,
+            "per": 0.7311522048364154,
+            "errores": 1542,
+            "fonemas": 2109,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.26": {
+            "ctc_loss": 91.16778073310851,
+            "per": 0.7479752262982372,
+            "errores": 1570,
+            "fonemas": 2099,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.02": {
+            "ctc_loss": 96.88799176216125,
+            "per": 0.7351885098743267,
+            "errores": 1638,
+            "fonemas": 2228,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.07": {
+            "ctc_loss": 90.68865542411804,
+            "per": 0.7508212106992023,
+            "errores": 1600,
+            "fonemas": 2131,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.14": {
+            "ctc_loss": 105.60562748908997,
+            "per": 0.7654420670165523,
+            "errores": 1896,
+            "fonemas": 2477,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.16": {
+            "ctc_loss": 115.99588603973389,
+            "per": 0.8467243510506799,
+            "errores": 2055,
+            "fonemas": 2427,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.21": {
+            "ctc_loss": 84.21586246490479,
+            "per": 0.7354104846686449,
+            "errores": 1487,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.28": {
+            "ctc_loss": 92.77100043296814,
+            "per": 0.7432179607109448,
+            "errores": 1589,
+            "fonemas": 2138,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.05": {
+            "ctc_loss": 82.23069067001343,
+            "per": 0.7543859649122807,
+            "errores": 1462,
+            "fonemas": 1938,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.14": {
+            "ctc_loss": 92.24830570220948,
+            "per": 0.7495173745173745,
+            "errores": 1553,
+            "fonemas": 2072,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.21": {
+            "ctc_loss": 83.24881584644318,
+            "per": 0.7660731948565777,
+            "errores": 1549,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.27": {
+            "ctc_loss": 98.31446199417114,
+            "per": 0.7775175644028103,
+            "errores": 1660,
+            "fonemas": 2135,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.02": {
+            "ctc_loss": 81.60820202827453,
+            "per": 0.7647058823529411,
+            "errores": 1508,
+            "fonemas": 1972,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.11": {
+            "ctc_loss": 85.20138053894043,
+            "per": 0.7581799591002045,
+            "errores": 1483,
+            "fonemas": 1956,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.13": {
+            "ctc_loss": 87.88648896217346,
+            "per": 0.7412060301507538,
+            "errores": 1475,
+            "fonemas": 1990,
+            "frases": 80,
+            "completo": 1
+          }
+        }
+      }
+    },
+    "diagnostic_wall_seconds": 41.767135073001555,
+    "timing_scope": "controles, salidas compartidas, CTC, greedy, agregación y escritura; no latencia de perfil",
+    "optimizer_steps": 0,
+    "test_evaluated": false,
+    "checkpoint": "checkpoints/speech_salidas_e1/xz71t4vd/mejor_val.pt",
+    "checkpoint_sha256": "5275edd8dadf029ef39dee7a4af171ed92e63f8baf624e3b3d0d66647b212297",
+    "checkpoint_step": 200,
+    "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb",
+    "comparison": null,
+    "training_seed": 0,
+    "evaluation_config": {
+      "split": "val",
+      "salidas": null,
+      "controles": [
+        "original",
+        "cero",
+        "permutada"
+      ],
+      "semilla_control": 314159
+    },
+    "data_signature": "b06b33d0b4a2da4e4405d69cdedbcb5f853fd611fde3dda4e0896e45b87c630c",
+    "phones": [
+      "AA",
+      "AE",
+      "AH",
+      "AO",
+      "AW",
+      "AY",
+      "B",
+      "CH",
+      "D",
+      "DH",
+      "EH",
+      "ER",
+      "EY",
+      "F",
+      "G",
+      "HH",
+      "IH",
+      "IY",
+      "JH",
+      "K",
+      "L",
+      "M",
+      "N",
+      "NG",
+      "OW",
+      "OY",
+      "P",
+      "R",
+      "S",
+      "SH",
+      "T",
+      "TH",
+      "UH",
+      "UW",
+      "V",
+      "W",
+      "Y",
+      "Z",
+      "ZH",
+      "SIL"
+    ],
+    "blank_id": 40,
+    "hardware": "NVIDIA GeForce RTX 2060",
+    "torch_version": "2.5.1+cu124",
+    "wandb_run_id": "dkw1erwc"
+  },
+  "benchmark": {
+    "profiles": {
+      "2": {
+        "executed_layers": [
+          1,
+          2
+        ],
+        "forward": {
+          "observations": 190,
+          "mean_ms": 10.606271331576671,
+          "p50_ms": 10.608800499539939,
+          "p95_ms": 17.256023250001807,
+          "phrases_per_second": 94.28384101610055,
+          "gpu_peak_allocated_bytes": 388772352,
+          "gpu_peak_reserved_bytes": 545259520,
+          "gpu_extra_allocated_bytes": 135028224
+        },
+        "raw_to_phones": {
+          "observations": 190,
+          "mean_ms": 11.846369005271347,
+          "p50_ms": 11.727617500127963,
+          "p95_ms": 18.159731349760474,
+          "phrases_per_second": 84.4140512215198,
+          "gpu_peak_allocated_bytes": 389411328,
+          "gpu_peak_reserved_bytes": 545259520,
+          "gpu_extra_allocated_bytes": 136305664
+        }
+      },
+      "3": {
+        "executed_layers": [
+          1,
+          2,
+          3
+        ],
+        "forward": {
+          "observations": 190,
+          "mean_ms": 14.800204731579326,
+          "p50_ms": 15.162171499923716,
+          "p95_ms": 23.44845255020118,
+          "phrases_per_second": 67.56663290382,
+          "gpu_peak_allocated_bytes": 388772352,
+          "gpu_peak_reserved_bytes": 545259520,
+          "gpu_extra_allocated_bytes": 135028224
+        },
+        "raw_to_phones": {
+          "observations": 190,
+          "mean_ms": 16.001668705288658,
+          "p50_ms": 16.528327999822068,
+          "p95_ms": 24.865713400095043,
+          "phrases_per_second": 62.49348229972374,
+          "gpu_peak_allocated_bytes": 389411328,
+          "gpu_peak_reserved_bytes": 545259520,
+          "gpu_extra_allocated_bytes": 136305664
+        }
+      },
+      "5": {
+        "executed_layers": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "forward": {
+          "observations": 190,
+          "mean_ms": 23.35769257898918,
+          "p50_ms": 22.97025149982801,
+          "p95_ms": 37.37240104992451,
+          "phrases_per_second": 42.81244804546852,
+          "gpu_peak_allocated_bytes": 388772352,
+          "gpu_peak_reserved_bytes": 545259520,
+          "gpu_extra_allocated_bytes": 135028224
+        },
+        "raw_to_phones": {
+          "observations": 190,
+          "mean_ms": 24.73395248947973,
+          "p50_ms": 24.867991999599326,
+          "p95_ms": 39.07629339996674,
+          "phrases_per_second": 40.43025474498413,
+          "gpu_peak_allocated_bytes": 389411328,
+          "gpu_peak_reserved_bytes": 545259520,
+          "gpu_extra_allocated_bytes": 136305664
+        }
+      }
+    },
+    "optimizer_steps": 0,
+    "decoded_profiles_match": true,
+    "batch_size": 1,
+    "timing_unit": "milliseconds per batch; warm synchronized wall time",
+    "resident_model_parameters": 54885243,
+    "weight_memory_scope": "all model layers and heads remain resident for every exit",
+    "checkpoint": "checkpoints/speech_salidas_e1/xz71t4vd/mejor_val.pt",
+    "checkpoint_sha256": "5275edd8dadf029ef39dee7a4af171ed92e63f8baf624e3b3d0d66647b212297",
+    "checkpoint_step": 200,
+    "training_seed": 0,
+    "comparison": null,
+    "split": "val",
+    "test_evaluated": false,
+    "spec": {
+      "split": "val",
+      "sesiones": null,
+      "ensayos_por_sesion": 2,
+      "semilla_muestras": 271828,
+      "batch_size": 1,
+      "calentamiento": 2,
+      "repeticiones": 5,
+      "salidas": null,
+      "dispositivo": "cuda",
+      "hilos_cpu": 2
+    },
+    "runtime": {
+      "device": "cuda",
+      "hardware": "NVIDIA GeForce RTX 2060",
+      "gpu_uuid": "26599c58-9ccf-f97c-fa3a-a34915d3cc00",
+      "gpu_total_bytes": 6014369792,
+      "torch": "2.5.1+cu124",
+      "cuda": "12.4",
+      "cudnn": 90100,
+      "cpu_threads": 2,
+      "cudnn_deterministic": true,
+      "cudnn_benchmark": false,
+      "matmul_allow_tf32": false,
+      "cudnn_allow_tf32": true,
+      "tensor_dtype": "float32; no AMP"
+    },
+    "inputs": {
+      "input_signature": "50c808dfb33bdf5e0dd64a1092c8e009d7e5f38b0ba7a09fab773364604b1006",
+      "samples": [
+        {
+          "dataset_index": 40,
+          "session": "t12.2022.04.28",
+          "source_trial_index": 260,
+          "block": 16,
+          "input_bins": 477,
+          "source_sha256": "de60ec06f673c7666acb3a17d38e0fb5a48ef4b2897331aecaf76b68426b02a1",
+          "raw_features_sha256": "a05ca871727597e6b18394ea4279f942c62048bf9accc705a69d9172b723fbae"
+        },
+        {
+          "dataset_index": 54,
+          "session": "t12.2022.04.28",
+          "source_trial_index": 274,
+          "block": 16,
+          "input_bins": 325,
+          "source_sha256": "de60ec06f673c7666acb3a17d38e0fb5a48ef4b2897331aecaf76b68426b02a1",
+          "raw_features_sha256": "4c07d2c24fe6070d43415c458bc8d6780757cc03911c863da8f1602b554c4f68"
+        },
+        {
+          "dataset_index": 94,
+          "session": "t12.2022.05.05",
+          "source_trial_index": 314,
+          "block": 16,
+          "input_bins": 484,
+          "source_sha256": "b76967b2be93a00c60d34bd2bb2588037d545b46c1fe113385e5126d65d69f0d",
+          "raw_features_sha256": "bcf305f298ec4f000e0f4720c057fda3c334be135cab0290761f4aad36c28d16"
+        },
+        {
+          "dataset_index": 122,
+          "session": "t12.2022.05.05",
+          "source_trial_index": 342,
+          "block": 18,
+          "input_bins": 623,
+          "source_sha256": "b76967b2be93a00c60d34bd2bb2588037d545b46c1fe113385e5126d65d69f0d",
+          "raw_features_sha256": "ebcbdf885a3253f9955f4a97a45022e5952c470510ab448ca320d0dd8410b11e"
+        },
+        {
+          "dataset_index": 211,
+          "session": "t12.2022.05.17",
+          "source_trial_index": 411,
+          "block": 24,
+          "input_bins": 373,
+          "source_sha256": "8d69d7988705225cfa958393ba2026b7164426eb30e901c50a7455d49022114a",
+          "raw_features_sha256": "c3f9d68f2d11166b105ed439065d50f9e254b7c9788984c1b78c977db0610fa2"
+        },
+        {
+          "dataset_index": 217,
+          "session": "t12.2022.05.17",
+          "source_trial_index": 417,
+          "block": 24,
+          "input_bins": 421,
+          "source_sha256": "8d69d7988705225cfa958393ba2026b7164426eb30e901c50a7455d49022114a",
+          "raw_features_sha256": "47e6d4c6e81886b262a41c3fb3084948256ab0a5be7350db7521505fa9de8ee3"
+        },
+        {
+          "dataset_index": 233,
+          "session": "t12.2022.05.19",
+          "source_trial_index": 153,
+          "block": 14,
+          "input_bins": 280,
+          "source_sha256": "fe0ff9eb12bf66c46b3a2044de0036161d6608f219afda8953aaac1f80377c98",
+          "raw_features_sha256": "bdd3aa5084264769e59c3315f3891ae3a1c76c6b017af5d95a7d79e99a35a143"
+        },
+        {
+          "dataset_index": 246,
+          "session": "t12.2022.05.19",
+          "source_trial_index": 166,
+          "block": 15,
+          "input_bins": 365,
+          "source_sha256": "fe0ff9eb12bf66c46b3a2044de0036161d6608f219afda8953aaac1f80377c98",
+          "raw_features_sha256": "7e5b4058a17f0615aa4589d51dd03cf1db7f6cbdb7534193efa71e2699e34617"
+        },
+        {
+          "dataset_index": 284,
+          "session": "t12.2022.05.24",
+          "source_trial_index": 304,
+          "block": 12,
+          "input_bins": 393,
+          "source_sha256": "73ce7f5c647436fb44c5494be5dc2e2c287f68e074d24a9dc59b8a32047b127e",
+          "raw_features_sha256": "9409ef7e1872fba29310062478b6db2fc9ca1068893c0f82a4121b988c8384c2"
+        },
+        {
+          "dataset_index": 304,
+          "session": "t12.2022.05.24",
+          "source_trial_index": 324,
+          "block": 13,
+          "input_bins": 439,
+          "source_sha256": "73ce7f5c647436fb44c5494be5dc2e2c287f68e074d24a9dc59b8a32047b127e",
+          "raw_features_sha256": "c58c761218566cc5e1e9f3120c44e72596338163fc17a2dfce4511c0e9c1f34e"
+        },
+        {
+          "dataset_index": 347,
+          "session": "t12.2022.05.26",
+          "source_trial_index": 287,
+          "block": 12,
+          "input_bins": 433,
+          "source_sha256": "b4049a45f7a6803ed206f0f46929e51fdb90b7ce68b46efdf86f237cbaaeaf72",
+          "raw_features_sha256": "a56de5eda258376d5e63ddc5f4185cfc9db677d09e4fd0a0b2f3898facdf4747"
+        },
+        {
+          "dataset_index": 360,
+          "session": "t12.2022.05.26",
+          "source_trial_index": 300,
+          "block": 12,
+          "input_bins": 216,
+          "source_sha256": "b4049a45f7a6803ed206f0f46929e51fdb90b7ce68b46efdf86f237cbaaeaf72",
+          "raw_features_sha256": "c7385a252452ffab7279c3f7c98b093a9b299808340d593b50300a2ce7acb58a"
+        },
+        {
+          "dataset_index": 477,
+          "session": "t12.2022.06.02",
+          "source_trial_index": 377,
+          "block": 14,
+          "input_bins": 362,
+          "source_sha256": "5b5e98808657b3945c16ed5d74a2e058852990cba567fc913242b1422c9cc18a",
+          "raw_features_sha256": "c7dc893c3f4664649e82d563cd6e9ea05ebbdce8fa64f0e5de9906fc70d096fa"
+        },
+        {
+          "dataset_index": 485,
+          "session": "t12.2022.06.02",
+          "source_trial_index": 385,
+          "block": 14,
+          "input_bins": 223,
+          "source_sha256": "5b5e98808657b3945c16ed5d74a2e058852990cba567fc913242b1422c9cc18a",
+          "raw_features_sha256": "edd2c4510381beb0c174bbe30dd50c1ffd47b7bc95d41f49943f252ee95798df"
+        },
+        {
+          "dataset_index": 508,
+          "session": "t12.2022.06.07",
+          "source_trial_index": 288,
+          "block": 11,
+          "input_bins": 366,
+          "source_sha256": "5fb9887860ed357f8bff2897f0a97b844779e7b14d1a99d70dddb45147c8e034",
+          "raw_features_sha256": "4dbe0def0c2d6dfa66fb62fa34b6d2400257ee872e5abf9f67e72a80798b7e3f"
+        },
+        {
+          "dataset_index": 555,
+          "session": "t12.2022.06.07",
+          "source_trial_index": 335,
+          "block": 12,
+          "input_bins": 133,
+          "source_sha256": "5fb9887860ed357f8bff2897f0a97b844779e7b14d1a99d70dddb45147c8e034",
+          "raw_features_sha256": "aebe574de9b229af0148b8239a7024b6535ab063124d47ec471eeda509a2cc7d"
+        },
+        {
+          "dataset_index": 608,
+          "session": "t12.2022.06.14",
+          "source_trial_index": 268,
+          "block": 11,
+          "input_bins": 201,
+          "source_sha256": "7c0ddee4658e2cc49803d45e38295b1f03e895152404986b477e53723400ce5a",
+          "raw_features_sha256": "1743aa649cde2742d89c10ece8dd6be821363e6d3c06ba6b3f6af860ca53ad53"
+        },
+        {
+          "dataset_index": 610,
+          "session": "t12.2022.06.14",
+          "source_trial_index": 270,
+          "block": 11,
+          "input_bins": 177,
+          "source_sha256": "7c0ddee4658e2cc49803d45e38295b1f03e895152404986b477e53723400ce5a",
+          "raw_features_sha256": "68c28db14323b5aa181fc17c96a13c30a46e8bb8f420a23d9926ae59c19e7bc1"
+        },
+        {
+          "dataset_index": 720,
+          "session": "t12.2022.06.16",
+          "source_trial_index": 300,
+          "block": 15,
+          "input_bins": 222,
+          "source_sha256": "e7e2b5ddca7953bf8e2525e33a78885f14fee19031dbbfd16e8be7bbd89d9a53",
+          "raw_features_sha256": "d510e32fd113430a7b60f4c4b334f8e94b9dd946a785599b4705944365ecb32b"
+        },
+        {
+          "dataset_index": 722,
+          "session": "t12.2022.06.16",
+          "source_trial_index": 302,
+          "block": 15,
+          "input_bins": 157,
+          "source_sha256": "e7e2b5ddca7953bf8e2525e33a78885f14fee19031dbbfd16e8be7bbd89d9a53",
+          "raw_features_sha256": "35b06dfd94e7d5db4ba47fed8f4969ff2d7d390142984241fc64e1bd514f044d"
+        },
+        {
+          "dataset_index": 777,
+          "session": "t12.2022.06.21",
+          "source_trial_index": 277,
+          "block": 9,
+          "input_bins": 377,
+          "source_sha256": "912b18f3d144e620f1d8e72c456947eccef1a01c69e228addc738d10c556a9dc",
+          "raw_features_sha256": "140afa5850a30af169d5cc8454b2a2afbf6d33e8dcf5bcfa9a2080fd543c9e26"
+        },
+        {
+          "dataset_index": 797,
+          "session": "t12.2022.06.21",
+          "source_trial_index": 297,
+          "block": 10,
+          "input_bins": 291,
+          "source_sha256": "912b18f3d144e620f1d8e72c456947eccef1a01c69e228addc738d10c556a9dc",
+          "raw_features_sha256": "87d4acd18d17e3332c45dd3b4e044a312df970fcb90fe42476c9343546e27d90"
+        },
+        {
+          "dataset_index": 867,
+          "session": "t12.2022.06.28",
+          "source_trial_index": 327,
+          "block": 12,
+          "input_bins": 185,
+          "source_sha256": "30c072d7427a58349b2f862a2ff86d646be40e76887298e7c98920f05cefa890",
+          "raw_features_sha256": "3681b7de14769345ae1953d20f463082f8efaae563c012c7b99b2a017da42f0f"
+        },
+        {
+          "dataset_index": 898,
+          "session": "t12.2022.06.28",
+          "source_trial_index": 358,
+          "block": 12,
+          "input_bins": 200,
+          "source_sha256": "30c072d7427a58349b2f862a2ff86d646be40e76887298e7c98920f05cefa890",
+          "raw_features_sha256": "ecb603f89137a5eb8bf96cddd7594d25f673809cc952d716e855b1bf60f106f7"
+        },
+        {
+          "dataset_index": 958,
+          "session": "t12.2022.07.05",
+          "source_trial_index": 338,
+          "block": 16,
+          "input_bins": 277,
+          "source_sha256": "64026338cb45b26530b28203ad9d088a7adff63e6e880a070802289c7946c7b6",
+          "raw_features_sha256": "fdbc828c5ba780b2310b55e1d5be263595aec3282a3aa90bb5a319e780843b0b"
+        },
+        {
+          "dataset_index": 970,
+          "session": "t12.2022.07.05",
+          "source_trial_index": 350,
+          "block": 16,
+          "input_bins": 251,
+          "source_sha256": "64026338cb45b26530b28203ad9d088a7adff63e6e880a070802289c7946c7b6",
+          "raw_features_sha256": "0b806ab0396361ae7517391429fd49da08212c856c23d7d3ab8564dee4d87fe4"
+        },
+        {
+          "dataset_index": 999,
+          "session": "t12.2022.07.14",
+          "source_trial_index": 339,
+          "block": 12,
+          "input_bins": 351,
+          "source_sha256": "0145030713ae1331a78ec3eed3d246ac0fdb46a36dd03f1dad7d422f8211bca8",
+          "raw_features_sha256": "1f62efc98f53d4e383dc0d25a0e22e0fad79b319bbbe8072bed6d0932d18c814"
+        },
+        {
+          "dataset_index": 1044,
+          "session": "t12.2022.07.14",
+          "source_trial_index": 384,
+          "block": 13,
+          "input_bins": 181,
+          "source_sha256": "0145030713ae1331a78ec3eed3d246ac0fdb46a36dd03f1dad7d422f8211bca8",
+          "raw_features_sha256": "07148c6a76a4c7d82d3ba7074558e5fd4b2dc7ff02c5a581b82d769968515774"
+        },
+        {
+          "dataset_index": 1075,
+          "session": "t12.2022.07.21",
+          "source_trial_index": 335,
+          "block": 14,
+          "input_bins": 213,
+          "source_sha256": "04ea2993bef1d5c1dcba6994e35d978580fbd8bfb6c3b179e92b56afb243c16f",
+          "raw_features_sha256": "119cd2a3b84211ebeb32a636e125d91d88d511da5123aa120a4191afbfab9d4a"
+        },
+        {
+          "dataset_index": 1077,
+          "session": "t12.2022.07.21",
+          "source_trial_index": 337,
+          "block": 14,
+          "input_bins": 349,
+          "source_sha256": "04ea2993bef1d5c1dcba6994e35d978580fbd8bfb6c3b179e92b56afb243c16f",
+          "raw_features_sha256": "575ac34fdde1243911c2f49108cf217b91702372f719b14dcb93b2306b2cfddd"
+        },
+        {
+          "dataset_index": 1154,
+          "session": "t12.2022.07.27",
+          "source_trial_index": 334,
+          "block": 12,
+          "input_bins": 232,
+          "source_sha256": "4d532bb1d4cd9738a243fc114d179ab2a699c073096a4b79a8cfbecfacd52b99",
+          "raw_features_sha256": "a88edad96af188fad21bd470270207c9f5038e53ba0d0c2775f33ad68de24d61"
+        },
+        {
+          "dataset_index": 1204,
+          "session": "t12.2022.07.27",
+          "source_trial_index": 384,
+          "block": 15,
+          "input_bins": 175,
+          "source_sha256": "4d532bb1d4cd9738a243fc114d179ab2a699c073096a4b79a8cfbecfacd52b99",
+          "raw_features_sha256": "7e739e52feb590d4f448ecf0b91d97985ff609bbfa9a7ed9974aee19b50cc16e"
+        },
+        {
+          "dataset_index": 1227,
+          "session": "t12.2022.08.02",
+          "source_trial_index": 327,
+          "block": 13,
+          "input_bins": 366,
+          "source_sha256": "9260246788bf2f5ab0032394333c61c432b40dc8f8d82113e91115e66ca32246",
+          "raw_features_sha256": "142aa952ae704ec1408e4b8477e2216827751929517f4a7fd22511af4b2f71fe"
+        },
+        {
+          "dataset_index": 1286,
+          "session": "t12.2022.08.02",
+          "source_trial_index": 386,
+          "block": 15,
+          "input_bins": 128,
+          "source_sha256": "9260246788bf2f5ab0032394333c61c432b40dc8f8d82113e91115e66ca32246",
+          "raw_features_sha256": "0006fe2648c1602993f46efb4de77a405a9066366075c67db7e0d2f93c0e9538"
+        },
+        {
+          "dataset_index": 1303,
+          "session": "t12.2022.08.11",
+          "source_trial_index": 243,
+          "block": 15,
+          "input_bins": 232,
+          "source_sha256": "989998a485a7b52fbf1d6e8f6c6447a7c546b9de5206fc20e58c2d54ac5b2bf1",
+          "raw_features_sha256": "2f14d56b798374db1ba582230dd7fc55921fa7a2f74a04748afd4b35052b7829"
+        },
+        {
+          "dataset_index": 1347,
+          "session": "t12.2022.08.11",
+          "source_trial_index": 287,
+          "block": 17,
+          "input_bins": 325,
+          "source_sha256": "989998a485a7b52fbf1d6e8f6c6447a7c546b9de5206fc20e58c2d54ac5b2bf1",
+          "raw_features_sha256": "38a8f45ff07c3967bc559fbb3fe84ffccc1c45f93785ab121e7ecc82a848e0a1"
+        },
+        {
+          "dataset_index": 1395,
+          "session": "t12.2022.08.13",
+          "source_trial_index": 255,
+          "block": 10,
+          "input_bins": 335,
+          "source_sha256": "a3f784ee4e756abb0910760f9ffb5c3f2c839834724369ce6d5782fb136affa2",
+          "raw_features_sha256": "a1c873ad992a20d7aff4b785bf22675a0fe984107e54e6c2beea39593b4a630c"
+        },
+        {
+          "dataset_index": 1456,
+          "session": "t12.2022.08.13",
+          "source_trial_index": 316,
+          "block": 12,
+          "input_bins": 305,
+          "source_sha256": "a3f784ee4e756abb0910760f9ffb5c3f2c839834724369ce6d5782fb136affa2",
+          "raw_features_sha256": "137ff1bf6c7244194cbac7471c81a77468945fc49069532d0dcf1e110cc70a2f"
+        }
+      ],
+      "raw_data_preparation_seconds": 9.493007094999484,
+      "data_signature": "b06b33d0b4a2da4e4405d69cdedbcb5f853fd611fde3dda4e0896e45b87c630c"
+    },
+    "model_load_seconds": 2.033127894000245,
+    "load_gpu_peak_allocated_bytes": 244222976,
+    "dataset_open_seconds": 4.072867339000368,
+    "cuda_initialization_seconds": 0.21231910599999537,
+    "load_scope": "one observed load: construction, disk weights, compatibility checks, copy to device, smoother; filesystem cache uncontrolled",
+    "wandb_run_id": "25u9xy7c"
+  },
+  "history": {
+    "config": {
+      "experimento": {
+        "nombre": "speech_salidas_e1_colab",
+        "seed": 0
+      },
+      "datos": {
+        "raiz": "data/speech_2023/competitionData",
+        "preparados": "data/speech_2023/preparados_comparacion_v1",
+        "batch_size": 64,
+        "num_workers": 0,
+        "pin_memory": false,
+        "sesiones": [
+          "t12.2022.04.28",
+          "t12.2022.05.05",
+          "t12.2022.05.17",
+          "t12.2022.05.19",
+          "t12.2022.05.24",
+          "t12.2022.05.26",
+          "t12.2022.06.02",
+          "t12.2022.06.07",
+          "t12.2022.06.14",
+          "t12.2022.06.16",
+          "t12.2022.06.21",
+          "t12.2022.06.28",
+          "t12.2022.07.05",
+          "t12.2022.07.14",
+          "t12.2022.07.21",
+          "t12.2022.07.27",
+          "t12.2022.08.02",
+          "t12.2022.08.11",
+          "t12.2022.08.13"
+        ],
+        "fonemas": [
+          "AA",
+          "AE",
+          "AH",
+          "AO",
+          "AW",
+          "AY",
+          "B",
+          "CH",
+          "D",
+          "DH",
+          "EH",
+          "ER",
+          "EY",
+          "F",
+          "G",
+          "HH",
+          "IH",
+          "IY",
+          "JH",
+          "K",
+          "L",
+          "M",
+          "N",
+          "NG",
+          "OW",
+          "OY",
+          "P",
+          "R",
+          "S",
+          "SH",
+          "T",
+          "TH",
+          "UH",
+          "UW",
+          "V",
+          "W",
+          "Y",
+          "Z",
+          "ZH",
+          "SIL"
+        ]
+      },
+      "etiquetas": {
+        "silencio": "SIL",
+        "max_fonemas": 500,
+        "recursos": "data/speech_2023/recursos_g2p",
+        "salida": "data/speech_2023/fonemas_original",
+        "timeout_descarga": 30,
+        "recursos_nltk": [
+          {
+            "archivo": "corpora/cmudict.zip",
+            "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.zip",
+            "sha256": "d07cca47fd72ad32ea9d8ad1219f85301eeaf4568f8b6b73747506a71fb5afd6"
+          },
+          {
+            "archivo": "taggers/averaged_perceptron_tagger.zip",
+            "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger.zip",
+            "sha256": "e1f13cf2532daadfd6f3bc481a49859f0b8ea6432ccdcd83e6a49a5f19008de9"
+          },
+          {
+            "archivo": "taggers/averaged_perceptron_tagger_eng.zip",
+            "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger_eng.zip",
+            "sha256": "6025f530624335c67d6547d44757b357b4e79bae030a0383e9887a92c1718f0b"
+          }
+        ]
+      },
+      "preprocesamiento": {
+        "normalizacion_epsilon": 1e-08,
+        "suavizado": {
+          "sigma": 2.0,
+          "umbral": 0.01,
+          "longitud_impulso": 100,
+          "truncate": 4.0
+        }
+      },
+      "modelo": {
+        "nombre": "speech_gru",
+        "entrada": 256,
+        "capa_dia": 256,
+        "capas": 5,
+        "unidades": 1024,
+        "bidireccional": false,
+        "kernel": 32,
+        "stride": 4,
+        "dropout_entrada": 0.2,
+        "dropout_gru": 0.4,
+        "salidas_intermedias": [
+          2,
+          3
+        ]
+      },
+      "entrenamiento": {
+        "pasos": 200,
+        "micro_batch_size": 16,
+        "optimizador": "adam_tensorflow",
+        "betas": [
+          0.9,
+          0.999
+        ],
+        "epsilon": 0.1,
+        "learning_rate": {
+          "inicio": 0.02,
+          "final": 0.0,
+          "decay_pasos": 10000,
+          "potencia": 1.0
+        },
+        "clip_grad_norm": 10.0,
+        "l2": 1e-05,
+        "ruido": {
+          "blanco_sd": 1.0,
+          "offset_sd": 0.2
+        },
+        "imprimir_cada": 10,
+        "ctc_pesos": {
+          "2": 0.25,
+          "3": 0.25,
+          "5": 0.5
+        }
+      },
+      "evaluacion": {
+        "micro_batch_size": 16,
+        "cada_pasos": 50,
+        "max_lotes": null
+      },
+      "ejecucion": {
+        "dispositivo": "cuda",
+        "hilos_cpu": 2
+      },
+      "salida": {
+        "directorio": "checkpoints/speech_salidas_e1"
+      },
+      "wandb": {
+        "proyecto": "tiiac-2026",
+        "entidad": null,
+        "modo": "online",
+        "directorio": "runs/tracking"
+      },
+      "protocolo": {
+        "nombre": "t12_bloques_v1",
+        "metodo": "ultimos_bloques_por_sesion",
+        "fraccion_validacion": 0.2,
+        "manifiesto": "docs/datasets/speech_2023/particion_t12_v1.json",
+        "sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb",
+        "seleccion_checkpoint": "per"
+      }
+    },
+    "completed_steps": 200,
+    "best_val_step": 200,
+    "best_val": {
+      "ctc_loss": 71.68817239003639,
+      "errores": 27463,
+      "fonemas": 41571,
+      "frases": 1460,
+      "per": 0.6606288037333718,
+      "completo": 1,
+      "segundos": 12.67910803399991
+    },
+    "last_val": {
+      "ctc_loss": 71.68817239003639,
+      "errores": 27463,
+      "fonemas": 41571,
+      "frases": 1460,
+      "per": 0.6606288037333718,
+      "completo": 1,
+      "segundos": 12.67910803399991
+    },
+    "validation_history": [
+      {
+        "step": 1,
+        "ctc_loss": 199.81100171232876,
+        "errores": 37511,
+        "fonemas": 41571,
+        "frases": 1460,
+        "per": 0.9023357629116452,
+        "completo": 1,
+        "segundos": 10.96589969500019
+      },
+      {
+        "step": 51,
+        "ctc_loss": 95.51867650698308,
+        "errores": 40943,
+        "fonemas": 41571,
+        "frases": 1460,
+        "per": 0.9848933150513579,
+        "completo": 1,
+        "segundos": 12.118263136000223
+      },
+      {
+        "step": 101,
+        "ctc_loss": 87.45397965940711,
+        "errores": 38374,
+        "fonemas": 41571,
+        "frases": 1460,
+        "per": 0.923095427100623,
+        "completo": 1,
+        "segundos": 12.341709535000064
+      },
+      {
+        "step": 151,
+        "ctc_loss": 79.65788177072186,
+        "errores": 31527,
+        "fonemas": 41571,
+        "frases": 1460,
+        "per": 0.7583892617449665,
+        "completo": 1,
+        "segundos": 12.587607063000178
+      },
+      {
+        "step": 200,
+        "ctc_loss": 71.68817239003639,
+        "errores": 27463,
+        "fonemas": 41571,
+        "frases": 1460,
+        "per": 0.6606288037333718,
+        "completo": 1,
+        "segundos": 12.67910803399991
+      }
+    ],
+    "checkpoint": "checkpoints/speech_salidas_e1/xz71t4vd/mejor_val.pt",
+    "test_evaluated": false,
+    "stopped_for_time": false,
+    "hardware": "Tesla T4",
+    "torch_version": "2.5.1+cu124",
+    "cuda_version": "12.4",
+    "training_seconds": 256.10502107499997,
+    "loop_seconds": 332.2036755510003,
+    "cuda_memory": {
+      "cuda/pico_asignado_mib": 1997.9072265625,
+      "cuda/pico_reservado_mib": 3636.0
+    },
+    "model_parameters": 54885243,
+    "run_id": "xz71t4vd",
+    "ctc_weights": {
+      "2": 0.25,
+      "3": 0.25,
+      "5": 0.5
+    },
+    "selection_exit": 5,
+    "best_val_by_exit": {
+      "2": {
+        "ctc_loss": 67.94444410768274,
+        "errores": 27006,
+        "fonemas": 41571,
+        "frases": 1460,
+        "per": 0.6496355632532295,
+        "completo": 1
+      },
+      "3": {
+        "ctc_loss": 69.18936882541604,
+        "errores": 27160,
+        "fonemas": 41571,
+        "frases": 1460,
+        "per": 0.6533400687979601,
+        "completo": 1
+      },
+      "5": {
+        "ctc_loss": 71.68817239003639,
+        "errores": 27463,
+        "fonemas": 41571,
+        "frases": 1460,
+        "per": 0.6606288037333718,
+        "completo": 1
+      }
+    },
+    "validation_history_by_exit": [
+      {
+        "step": 1,
+        "metrics": {
+          "2": {
+            "ctc_loss": 200.01086241839684,
+            "errores": 39197,
+            "fonemas": 41571,
+            "frases": 1460,
+            "per": 0.9428928820572033,
+            "completo": 1
+          },
+          "3": {
+            "ctc_loss": 200.15108843241651,
+            "errores": 37994,
+            "fonemas": 41571,
+            "frases": 1460,
+            "per": 0.9139544393928459,
+            "completo": 1
+          },
+          "5": {
+            "ctc_loss": 199.81100171232876,
+            "errores": 37511,
+            "fonemas": 41571,
+            "frases": 1460,
+            "per": 0.9023357629116452,
+            "completo": 1
+          }
+        },
+        "segundos_conjuntos": 10.96589969500019
+      },
+      {
+        "step": 51,
+        "metrics": {
+          "2": {
+            "ctc_loss": 100.77312433948255,
+            "errores": 38187,
+            "fonemas": 41571,
+            "frases": 1460,
+            "per": 0.9185970989391643,
+            "completo": 1
+          },
+          "3": {
+            "ctc_loss": 96.49042220442263,
+            "errores": 39413,
+            "fonemas": 41571,
+            "frases": 1460,
+            "per": 0.9480888119121503,
+            "completo": 1
+          },
+          "5": {
+            "ctc_loss": 95.51867650698308,
+            "errores": 40943,
+            "fonemas": 41571,
+            "frases": 1460,
+            "per": 0.9848933150513579,
+            "completo": 1
+          }
+        },
+        "segundos_conjuntos": 12.118263136000223
+      },
+      {
+        "step": 101,
+        "metrics": {
+          "2": {
+            "ctc_loss": 83.72007600967198,
+            "errores": 33640,
+            "fonemas": 41571,
+            "frases": 1460,
+            "per": 0.8092179644463688,
+            "completo": 1
+          },
+          "3": {
+            "ctc_loss": 84.2175520596439,
+            "errores": 34977,
+            "fonemas": 41571,
+            "frases": 1460,
+            "per": 0.8413798080392582,
+            "completo": 1
+          },
+          "5": {
+            "ctc_loss": 87.45397965940711,
+            "errores": 38374,
+            "fonemas": 41571,
+            "frases": 1460,
+            "per": 0.923095427100623,
+            "completo": 1
+          }
+        },
+        "segundos_conjuntos": 12.341709535000064
+      },
+      {
+        "step": 151,
+        "metrics": {
+          "2": {
+            "ctc_loss": 75.38455201240436,
+            "errores": 29795,
+            "fonemas": 41571,
+            "frases": 1460,
+            "per": 0.7167256019821511,
+            "completo": 1
+          },
+          "3": {
+            "ctc_loss": 76.72661074285638,
+            "errores": 30302,
+            "fonemas": 41571,
+            "frases": 1460,
+            "per": 0.7289216040027904,
+            "completo": 1
+          },
+          "5": {
+            "ctc_loss": 79.65788177072186,
+            "errores": 31527,
+            "fonemas": 41571,
+            "frases": 1460,
+            "per": 0.7583892617449665,
+            "completo": 1
+          }
+        },
+        "segundos_conjuntos": 12.587607063000178
+      },
+      {
+        "step": 200,
+        "metrics": {
+          "2": {
+            "ctc_loss": 67.94444410768274,
+            "errores": 27006,
+            "fonemas": 41571,
+            "frases": 1460,
+            "per": 0.6496355632532295,
+            "completo": 1
+          },
+          "3": {
+            "ctc_loss": 69.18936882541604,
+            "errores": 27160,
+            "fonemas": 41571,
+            "frases": 1460,
+            "per": 0.6533400687979601,
+            "completo": 1
+          },
+          "5": {
+            "ctc_loss": 71.68817239003639,
+            "errores": 27463,
+            "fonemas": 41571,
+            "frases": 1460,
+            "per": 0.6606288037333718,
+            "completo": 1
+          }
+        },
+        "segundos_conjuntos": 12.67910803399991
+      }
+    ]
+  },
+  "raw_artifacts_sha256": {
+    "runs/evaluacion/speech_salidas_e1_xz71t4vd_val_20261026/metricas.json": "8131b0087a4903ea9ed96167441ee78d5c928022b7aa21bceeb6473ee0a04d01",
+    "runs/evaluacion/speech_salidas_e1_xz71t4vd_val_20261026/por_sesion.csv": "0f6e3dbb9f7a86ad09970d8a148c374cc587785845baa0411e513a12d16084f2",
+    "runs/evaluacion/speech_salidas_e1_xz71t4vd_val_20261026/predicciones.jsonl": "70f939eff3c156df6a278abbae827725b07b7036bbc9e538353fa509cabf029c",
+    "runs/benchmark/speech_salidas_e1_xz71t4vd_val_medicion01/benchmark.json": "5dc83b059e874513f7e05bff244b44132d577969fffb4a4d47a6d0106751da31",
+    "runs/benchmark/speech_salidas_e1_xz71t4vd_val_medicion01/mediciones.csv": "426b1af0406fc7e6954a673b574a2715d827ffcaf5e481e4c5900a6d83874b5d",
+    "checkpoints/speech_salidas_e1/xz71t4vd/resultado.json": "dfab165d248bb3c40f0067bf17d0e53f5eaddb90d27a798c484fcbb2b7cd9058"
+  },
+  "source_sha256": {
+    "src/models/speech_gru.py": "b63d5294c4c1f78f9f55e0e6b216ff7bff8b36f8a073916f8d56f2b876d6079e",
+    "src/training/speech_evaluation.py": "eb9aa87f5d28dc5b25f2ce329ced1bb3681b13cc92c65eabf85489780c41aadc",
+    "src/training/speech_benchmark.py": "6ecaeea97f6dae0f4ba120a93a9df53b777dec8f2f162ed7630699d42d8dcd64",
+    "scripts/evaluate_speech.py": "34668ff9db2783cd06d93d74a3b8388b89de40849234b430511fd4e225090f72",
+    "scripts/benchmark_speech.py": "3d406f8aea806d5c05202e69f48da67b7ee4cc2ebb1965cf9443b52fdb506742",
+    "scripts/plot_speech_results.py": "2ddff5914cd0a3d9b0401e291075b745a0f322a7bf37aaace4468ebfd775e10b",
+    "configs/speech_salidas_medicion_local.yaml": "d56e02c7c5f40b6536ea29471aeffc2c46b479d2ee5285bb46867eebf3280bae",
+    "configs/speech_evaluacion.yaml": "e678541068a6bad033e3d15f207beb82fd9eb0ccc16c6a2cf1cd1f6e8f7d7924",
+    "configs/speech_benchmark.yaml": "b7cc2530a4d5e2841e2ba0dad25b0105a3557fe48332a3eb5157107fb8a46891",
+    "configs/speech_figuras_e1.yaml": "1adc5038789d719afe1d88e573002341ac173f4a8568e5850fff038b573e3511"
+  },
+  "real_benchmark_observations": 1140,
+  "quality_prediction_rows": 1460,
+  "quality_session_condition_exit_rows": 171,
+  "author_notebook_execution": {
+    "path": "runs/demo_salidas/author_notebook_snapshot_25bf76996609/10_demo_salidas_local.ipynb",
+    "sha256": "25bf7699660922681fccabd12bf95eba161752f5e6fa88449830123617f113fa",
+    "cell_sources_unchanged": true,
+    "all_four_code_cells_executed": true,
+    "cell_errors": 0,
+    "checkpoint_reported": "checkpoints/speech_salidas_e1/xz71t4vd/mejor_val.pt",
+    "frontend_visual_review_confirmed": false,
+    "working_notebook_path": "notebooks/10_demo_salidas_local.ipynb",
+    "execution_counts": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "snapshot_preserves_observed_outputs_and_metadata": true
+  },
+  "checkpoint_unchanged": true,
+  "historical_2001_step_reference_mixed_into_comparison": false,
+  "all_training_seeds_and_variants_complete": false,
+  "author_interpretation_review_complete": false,
+  "environment_recovery": {
+    "previous_process_handle_missing": 13562,
+    "evaluation_completed_report_found": true,
+    "neural_data_mounted_read_only_for_inspection_then_normally": true,
+    "repeated_evaluation": false,
+    "filesystem_repair_or_fstab_changes": false
+  },
+  "full_goal_complete": false
+}

@@ -1,0 +1,19 @@
+# Conjunta T12 real de 200 pasos; pesos y recarga verificados, salidas 2/3/5.
+# Usa la validacion del protocolo nuevo y conserva la referencia historica aparte.
+checkpoint: checkpoints/speech_salidas_e1/xz71t4vd/mejor_val.pt
+datos:
+  split: auto  # val con protocolo v2; test en la referencia v1
+  sesion: t12.2022.04.28
+  frase: 0  # posicion dentro de esa sesion y split, sin escoger por resultado
+ejecucion:
+  dispositivo: cpu
+  hilos_cpu: 2
+medicion:
+  calentamiento: 2
+  repeticiones: 5
+figura:
+  limite_z: 3.0
+  cmap: RdBu_r
+  dpi: 140
+salida:
+  directorio: runs/demo_salidas

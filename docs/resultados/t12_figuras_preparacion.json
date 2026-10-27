@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-26",
+  "task": 11,
+  "status": "generator_and_historical_figures_ready; new_model_comparison_pending",
+  "source_base_commit": "03ac639aab0b2709348fca24fbb320e958b4aecd",
+  "sources": {
+    "scripts/plot_speech_results.py": "d999be76e3f17f95b7d6fd453eb63a9aa0a01bf045db3df73d47ad6efc03706f",
+    "configs/speech_figuras_referencia.yaml": "a521665dcf872b6ce12216c230b0be7fb3344faeac762db22ca808faf4842649"
+  },
+  "output_files": {
+    "docs/figuras/t12_referencia/comparacion.csv": "d093a877ad972c08d4b3b5be93496ea6c9bcfbfb12383ac4abfa4102b70ede29",
+    "docs/figuras/t12_referencia/curvas_evaluacion.pdf": "1abe4b70700a9ca5a7a9ac50200abb11de3b4f4cd15ed99eec6268a1fd831c02",
+    "docs/figuras/t12_referencia/curvas_evaluacion.png": "f4f8fb989c76cb4ccdad6337046b6eca7e6a4a36a4ab90b3b4d533f8db4effb6",
+    "docs/figuras/t12_referencia/datos_figuras.json": "064cb841f0fcf60f3b3ea67b03fb402c068bd009f85a98442b9afedb7490e8f9",
+    "docs/figuras/t12_referencia/per_controles.pdf": "32b5b12e73d0d044693160332e553f6a7be1c9b1693506ce217850ee1e078413",
+    "docs/figuras/t12_referencia/per_controles.png": "2b9c981bd2155cbcb838ac5cd32c6931a9d094cd85467dfb12c6e5b4db8b3cb8",
+    "docs/figuras/t12_referencia/per_latencia.pdf": "166bd6efc9f0e5d749165346e8226f7a2f534701caa3287e0c82c401c1000d0c",
+    "docs/figuras/t12_referencia/per_latencia.png": "1a0e6a82cd4fddaa2f850f9d8b9858525c59991ef3dc2669d2fa6c76b06d6884",
+    "docs/figuras/t12_referencia/per_sesion.pdf": "a54bc8f33e4920cdde64abdc5a8fc064fb1aff2a546b9b8dca648af2e86ed577",
+    "docs/figuras/t12_referencia/per_sesion.png": "77f0708a0721d2870dda61c438781ceadec96c9f735434389ad08dcbd5a3769a"
+  },
+  "checkpoint_sha256": "3eb0bf3db2b69858a3676b82e953002d91f3f022e0ba23b3a207ac937cee8744",
+  "reference_training_steps": 2001,
+  "plot_points": 1,
+  "evaluation_history_points": 9,
+  "history_precision": "rounded console PER and CTC",
+  "session_condition_rows": 57,
+  "quality_split": "test already monitored historically",
+  "latency_stage": "raw_to_phones",
+  "new_trained_model_comparison_complete": false,
+  "author_interpretation_review_complete": false,
+  "pdf_review": {
+    "skill": "pdf:pdf",
+    "outputs": 4,
+    "pages_per_output": 1,
+    "all_pages_rendered_with_poppler": true,
+    "all_four_final_page_previews_visually_reviewed": true,
+    "footer_overlap_fixed": true,
+    "latency_hardware_printed": true,
+    "last_revision_other_three_pages_pixel_identical_to_reviewed_pages": true
+  },
+  "preserved_notebooks": {
+    "notebooks/04_entrenamiento_colab.ipynb": "14a4ed670521de505a57a30025e139a685d3ee109057d074c702bd89b7a77519",
+    "notebooks/05_alice_colab.ipynb": "eb4ef9f00cef5fa8ea919c7f7f26d118c7c1d6fc4ade17da6ad9fa56f4dc992b",
+    "notebooks/06_demo_ahpsn.ipynb": "ab894ab0604940515804ae92bf19abadd8a90300305f8a249bfa014b0b5e69b2",
+    "notebooks/07_baseline_t12_colab.ipynb": "ab2db68739b5ef1b85801b548d1f31d591d0892789e2a133f4dfafa0624d563a",
+    "notebooks/08_salidas_t12_colab.ipynb": "04694f4db73f15d96dec61f62852504155195ac5ac0f72675ee29d51b00ec635",
+    "notebooks/09_comparativa_t12_colab.ipynb": "4fa56bcaf46cd49ce9b5b457eb48faffbb9214255eb17a3d1483ab61833cbe21",
+    "notebooks/10_demo_salidas_local.ipynb": "86e2599f8496c57d13858266da7bb75d68baf53d4aec4d97e77ee87f7f597ef5"
+  },
+  "local_checks": {
+    "pytest_passed": 70,
+    "pytest_seconds": 90.24,
+    "dependency_deprecation_warnings": 14,
+    "checkpoint_split_seed_and_data_mismatch_rejected": true,
+    "different_hardware_input_or_measurement_conditions_rejected": true,
+    "duplicate_or_inconsistent_records_rejected": true,
+    "multiple_training_seeds_kept_separate": true,
+    "v2_three_head_training_evaluation_benchmark_plot_integration_on_synthetic_files": true,
+    "all_final_PDF_pages_rendered_and_visually_reviewed": true,
+    "post_caption_and_CSV_figure_checks_passed": 16
+  }
+}
