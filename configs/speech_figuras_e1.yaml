@@ -1,0 +1,11 @@
+# Resultados reales del run breve; una semilla y un checkpoint conjunto.
+titulo: "T12 · conjunta de 200 pasos · salidas 2/3/5"
+alcance: "Validación completa · semilla 0 · entrenamiento breve; comparación completa pendiente"
+etapa_latencia: raw_to_phones
+dpi: 160
+formatos: [png]
+registros:
+  - etiqueta: Conjunta 200
+    evaluacion: docs/resultados/speech_salidas_e1_xz71t4vd_mediciones.json
+    benchmark: docs/resultados/speech_salidas_e1_xz71t4vd_mediciones.json
+    historia: docs/resultados/speech_salidas_e1_xz71t4vd_mediciones.json

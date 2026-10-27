@@ -196,7 +196,7 @@ def render_figures(cfg: dict[str, Any], data: dict[str, Any], output: Path) -> l
     ax.set(ylabel="PER (%) · errores / fonemas", ylim=(0, ymax), title="Calidad y controles de señal")
     ax.grid(axis="y", alpha=0.2)
     ax.set_axisbelow(True)
-    ax.legend(fontsize=8)
+    ax.legend(fontsize=8, loc="upper center", ncol=min(len(controls), 3))
     save(fig, "per_controles")
 
     names = list(data["conditions"]["cohort"])

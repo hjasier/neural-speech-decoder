@@ -121,6 +121,10 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
   reproducibilidad conserva las comprobaciones y hashes de aquel contexto.
 - Hecho: notebook 08 ejecutado en T4, run `xz71t4vd`, 200 actualizaciones
   y recarga independiente de las salidas 2/3/5, sin actualizar pesos ni usar test.
-  Registro y curva originales en `docs/resultados/speech_salidas_e1_xz71t4vd.*`
+  Registro y curva originales en `docs/resultados/speech_salidas_e1_xz71t4vd.json`
   y `docs/figuras/t12_e1_xz71t4vd/`.
-- Pendiente: conectar esos pesos a la demo e incorporar las ejecuciones posteriores.
+- Hecho: demo CPU conectada a esos pesos; controles y medidas históricas en
+  `docs/resultados/*_xz71t4vd_mediciones.json`, figuras en `docs/figuras/t12_e1_mediciones/`.
+  Se generan desde `configs/speech_figuras_e1.yaml` sin cargar el modelo.
+  La demo ejecutada original se conserva aparte en `docs/resultados/*_demo_ejecutada.ipynb`.
+- Pendiente: incorporar la reanudación y los registros de entrenamientos posteriores.

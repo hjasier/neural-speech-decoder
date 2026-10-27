@@ -1,0 +1,51 @@
+{
+  "scope": "descriptive figures from real 200-step joint checkpoint; seed 0; validation only",
+  "source_base_commit": "994d8e738045585bbe13426076bd73e821135b6a",
+  "config_path": "configs/speech_figuras_e1.yaml",
+  "config_sha256": "1adc5038789d719afe1d88e573002341ac173f4a8568e5850fff038b573e3511",
+  "generator_path": "scripts/plot_speech_results.py",
+  "generator_sha256": "2ddff5914cd0a3d9b0401e291075b745a0f322a7bf37aaace4468ebfd775e10b",
+  "input_report_path": "docs/resultados/speech_salidas_e1_xz71t4vd_mediciones.json",
+  "input_report_sha256": "8a5f4f3a3b6930b4ad32f3cc2c9dfe7acaf939e4c0107771e63afa4436916cc2",
+  "outputs_sha256": {
+    "docs/figuras/t12_e1_mediciones/comparacion.csv": "c2930fcb282911bee7441dd5891f99af5489c65f65385a4be017abce8a3c7924",
+    "docs/figuras/t12_e1_mediciones/curvas_evaluacion.png": "6d4bc536c292696201ef7cd79ac4cfd1b0c54a4b8d4845ae18a285032f8923f3",
+    "docs/figuras/t12_e1_mediciones/datos_figuras.json": "18d321b527e164bb84c1debf0c3a1b1cd57999d482cc82f4b25cc31486451f07",
+    "docs/figuras/t12_e1_mediciones/per_controles.png": "6f11973c3bb36110d61c04d75fbe39102de614115262a715795dda4ccd9bfa49",
+    "docs/figuras/t12_e1_mediciones/per_latencia.png": "c29893596117942575ee72d1ffcfe74144da000d0ebd4b09dd2622deea4377a7",
+    "docs/figuras/t12_e1_mediciones/per_sesion.png": "fbf831f18526c58d5448fd86d9c48715065afc3b93907180f32ca4e2382a8291"
+  },
+  "points": 3,
+  "session_condition_exit_rows": 171,
+  "exits": [
+    2,
+    3,
+    5
+  ],
+  "checkpoint_step": 200,
+  "training_seed": 0,
+  "split": "val",
+  "figures_visually_reviewed": [
+    "per_controles.png",
+    "per_sesion.png",
+    "per_latencia.png",
+    "curvas_evaluacion.png"
+  ],
+  "regenerated_pngs_identical_to_visually_reviewed_pngs": true,
+  "notebook_observation_saved_as_stable_snapshot": true,
+  "validation": {
+    "command": "python -m pytest tests/test_speech_figures.py tests/test_demo_profiles.py tests/test_speech_evaluation.py tests/test_speech_benchmark.py -q",
+    "passed": 26,
+    "warnings": 14,
+    "seconds": 4.81,
+    "warning_category": "Matplotlib / pyparsing deprecations",
+    "test_source_sha256": {
+      "tests/test_speech_figures.py": "904c0fc898b8a0d5a7b1b9e24c8d59642a2f12857eebb2fab664e4c1184ac4f5",
+      "tests/test_demo_profiles.py": "09c670e8b8b34273105ab49e52ccfe246b9998596083f3cc238d5d30a8a41cc4",
+      "tests/test_speech_evaluation.py": "b042f6bf4fbb01e150579690d60b8bb3f1b9eb20e9a7884fc5eda92c24df626f",
+      "tests/test_speech_benchmark.py": "cbb08ca61a8c84800550ef3413d0c43efaf29f8366d1dda717b3d93036e8c8f8"
+    }
+  },
+  "complete_training_comparison_available": false,
+  "author_scientific_interpretation_reviewed": false
+}
