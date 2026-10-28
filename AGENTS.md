@@ -127,4 +127,9 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
   `docs/resultados/*_xz71t4vd_mediciones.json`, figuras en `docs/figuras/t12_e1_mediciones/`.
   Se generan desde `configs/speech_figuras_e1.yaml` sin cargar el modelo.
   La demo ejecutada original se conserva aparte en `docs/resultados/*_demo_ejecutada.ipynb`.
-- Pendiente: incorporar la reanudación y los registros de entrenamientos posteriores.
+- Hecho: notebook 09 conserva el baseline interrumpido `m6sn4um1`, con
+  5.801 pasos sincronizados de 10.001 y 117 evaluaciones completas de val.
+  Su registro y curva están en `docs/resultados/speech_baseline_m6sn4um1.json`
+  y `docs/figuras/t12_baseline_m6sn4um1/`; no hay cierre normal del entrenamiento.
+- Pendiente: incorporar la verificación de esos pesos y la reanudación completa.
+  El formato actual aún no guarda el estado del optimizador y del muestreo.
