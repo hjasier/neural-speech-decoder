@@ -272,6 +272,7 @@ class SessionBatchSampler(Sampler[list[int]]):
     def __init__(
         self, session_indices: Sequence[range], batch_size: int,
         num_batches: int, generator: torch.Generator,
+        *, resumable: bool = False,
     ) -> None:
         """Fija tamaño, número de lotes y un RNG creado en src/utils/seed.py."""
         self.sessions = tuple(indices for indices in session_indices if len(indices))
@@ -280,16 +281,21 @@ class SessionBatchSampler(Sampler[list[int]]):
         self.batch_size = batch_size
         self.num_batches = num_batches
         self.generator = generator
+        self.resumable = resumable
+        self.permutations: dict[int, list[int]] = {}
+        self.cursors: dict[int, int] = {}
+        self.completed_batches = 0
 
     def __len__(self) -> int:
         """Devuelve el número de actualizaciones configuradas."""
-        return self.num_batches
+        return self.num_batches - self.completed_batches if self.resumable else self.num_batches
 
     def __iter__(self) -> Iterator[list[int]]:
         """Reinicia una permutación de cada día cuando se agotan sus ensayos."""
-        permutations: dict[int, list[int]] = {}
-        cursors: dict[int, int] = {}
-        for _ in range(self.num_batches):
+        if not self.resumable:
+            self.permutations, self.cursors, self.completed_batches = {}, {}, 0
+        permutations, cursors = self.permutations, self.cursors
+        while self.completed_batches < self.num_batches:
             day = int(torch.randint(len(self.sessions), (), generator=self.generator).item())
             indices = self.sessions[day]
             batch: list[int] = []
@@ -301,4 +307,34 @@ class SessionBatchSampler(Sampler[list[int]]):
                 selected = permutations[day][cursors[day]:cursors[day] + count]
                 batch.extend(indices[position] for position in selected)
                 cursors[day] += count
+            # Debe reflejar el lote entregado antes de guardar tras optimizer.step.
+            self.completed_batches += 1
             yield batch
+
+    def state_dict(self) -> dict[str, Any]:
+        """Conserva el próximo lote, incluidas permutaciones parcialmente usadas."""
+        return {"sessions": [list(indices) for indices in self.sessions],
+                "batch_size": self.batch_size, "num_batches": self.num_batches,
+                "completed_batches": self.completed_batches,
+                "permutations": {day: list(order) for day, order in self.permutations.items()},
+                "cursors": dict(self.cursors), "generator": self.generator.get_state()}
+
+    def load_state_dict(self, state: dict[str, Any]) -> None:
+        """Rechaza cambios de datos, presupuesto o un cursor/permutación inválido."""
+        if (not self.resumable or state["sessions"] != [list(indices) for indices in self.sessions]
+                or state["batch_size"] != self.batch_size or state["num_batches"] != self.num_batches
+                or type(state["completed_batches"]) is not int
+                or not 0 <= state["completed_batches"] <= self.num_batches
+                or set(state["permutations"]) != set(state["cursors"])):
+            raise ValueError("Estado del muestreador incompatible con datos o presupuesto.")
+        for day, order in state["permutations"].items():
+            if (type(day) is not int or not 0 <= day < len(self.sessions)
+                    or any(type(index) is not int for index in order)
+                    or sorted(order) != list(range(len(self.sessions[day])))
+                    or type(state["cursors"][day]) is not int
+                    or not 0 <= state["cursors"][day] <= len(order)):
+                raise ValueError("Permutación o cursor del muestreador inválido.")
+        self.generator.set_state(state["generator"])
+        self.permutations = {day: list(order) for day, order in state["permutations"].items()}
+        self.cursors = dict(state["cursors"])
+        self.completed_batches = state["completed_batches"]

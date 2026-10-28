@@ -46,13 +46,19 @@ def main() -> int:
                     help="carga el checkpoint y evalua, sin entrenar")
     ap.add_argument("--checkpoint", type=Path,
                     help="checkpoint de habla para --solo-evaluar")
+    ap.add_argument("--reanudar", type=Path,
+                    help="entrenamiento.pt completo de T12; conserva el presupuesto original")
     ap.add_argument("--split", choices=("val", "test"),
                     help="partición T12 en --solo-evaluar; por defecto test")
     args = ap.parse_args()
     if args.solo_evaluar and args.checkpoint is None:
         ap.error("--solo-evaluar requiere --checkpoint")
     if args.checkpoint is not None and not args.solo_evaluar:
-        ap.error("--checkpoint requiere --solo-evaluar; no se admite reanudar entrenamiento todavía")
+        ap.error("--checkpoint requiere --solo-evaluar; para entrenamiento usa --reanudar")
+    if args.reanudar is not None and (args.solo_evaluar or args.checkpoint is not None or args.split is not None):
+        ap.error("--reanudar no se combina con evaluación ni --checkpoint/--split")
+    if args.reanudar is not None and not args.reanudar.is_file():
+        ap.error(f"no existe el estado de entrenamiento {args.reanudar}")
     if args.split is not None and not args.solo_evaluar:
         ap.error("--split requiere --solo-evaluar")
     if args.checkpoint is not None and not args.checkpoint.is_file():
@@ -70,12 +76,23 @@ def main() -> int:
         ap.error("la evaluación desde checkpoint está implementada para habla y Alice CTC")
     if args.split is not None and not speech:
         ap.error("--split está disponible únicamente para habla T12")
+    resume_state = None
+    if args.reanudar is not None or cfg.get("reanudacion"):
+        if not speech:
+            ap.error("La reanudación está implementada únicamente para habla T12")
+        from src.training.speech_resume import read_training_checkpoint, validate_resume_config
+
+        validate_resume_config(cfg)
+        if args.reanudar is not None:
+            resume_state = read_training_checkpoint(args.reanudar, cfg)
+            if args.reanudar.parent.name != resume_state["tracking"]["logical_id"]:
+                ap.error("Conserva el nombre de la carpeta del run al copiar el estado completo")
 
     # 1 · reproducibilidad, antes que nada
     fijar_seed(cfg["experimento"]["seed"])
 
     # 2 · seguimiento del experimento
-    run = abrir_run(cfg)
+    run = abrir_run(cfg, resume=resume_state["tracking"]) if resume_state is not None else abrir_run(cfg)
     try:
         if alice_ctc:
             from src.training.alice_ctc import ejecutar_alice_ctc
@@ -89,7 +106,8 @@ def main() -> int:
             from src.training.speech import ejecutar_habla
 
             metricas = ejecutar_habla(cfg, run, checkpoint=args.checkpoint, solo_evaluar=args.solo_evaluar,
-                                      split_evaluacion=args.split)
+                                      split_evaluacion=args.split, resume_state=resume_state,
+                                      resume_path=args.reanudar)
         else:
             train_loader, val_loader = construir_loaders(cfg)
             modelo = construir_modelo(cfg)

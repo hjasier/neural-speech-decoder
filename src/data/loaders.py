@@ -47,6 +47,7 @@ def construir_loaders(cfg: dict, *, split_evaluacion: str | None = None) -> tupl
         sampler = SessionBatchSampler(
             train_ds.session_indices, dcfg["batch_size"], cfg["entrenamiento"]["pasos"],
             crear_generador(cfg["experimento"]["seed"]),
+            resumable=bool(cfg.get("reanudacion")),
         )
         common = dict(
             num_workers=dcfg["num_workers"], pin_memory=dcfg["pin_memory"], collate_fn=collate_speech,

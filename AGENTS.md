@@ -134,5 +134,8 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
 - Hecho: el pipeline local lee `WANDB_API_KEY` desde `.env` si no está
   definida en el entorno. Solo carga esa variable, sin imprimirla ni añadirla
   a la configuración. La lectura desde Drive se incorporará con el notebook 11.
-- Pendiente: incorporar la reanudación completa y su lanzador de Colab.
-  El formato actual aún no guarda el estado del optimizador y del muestreo.
+- Hecho: `entrenamiento.pt` guarda modelo, Adam, paso, estado aleatorio,
+  muestreo, historial y selección. `run.py --reanudar RUTA` exige datos,
+  fuentes y configuración compatibles. Los pesos antiguos son de inferencia.
+  Online conserva el run de W&B; offline usa segmentos con un ID lógico común.
+- Pendiente: incorporar el perfil y el lanzador reanudable de Colab.

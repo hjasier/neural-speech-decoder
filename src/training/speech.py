@@ -208,6 +208,7 @@ def entrenar_habla(
     model: SpeechGRU, train_loader: DataLoader, evaluation_loader: DataLoader,
     cfg: dict[str, Any], run: Any, smoother: GaussianSmoothing,
     device: torch.device, output: Path,
+    *, resume_state: dict[str, Any] | None = None,
 ) -> dict[str, float | int]:
     """Entrena; el protocolo nuevo selecciona por PER de val sin evaluar test."""
     training = cfg["entrenamiento"]
@@ -224,14 +225,74 @@ def entrenar_habla(
         model.parameters(), lr=_learning_rate(cfg, 0),
         betas=tuple(training["betas"]), eps=training["epsilon"],
     )
+    resumable = bool(cfg.get("reanudacion"))
+    initial_step, previous_seconds = 0, 0.0
+    metric_history: list[dict[str, Any]] = []
+    logical_id = resume_state["tracking"]["logical_id"] if resume_state is not None else run.id
+    progress = None
+    segments: list[dict[str, Any]] = []
+    if resumable:
+        from src.training.speech_resume import (
+            flush_metrics, restore_training, runtime_state, save_training, validate_resume_config,
+        )
+        from src.utils.seed import restaurar_azar
+
+        validate_resume_config(cfg)
+        if resume_state is not None:
+            if int(getattr(run, "step", 0)) > resume_state["step"] + 1:
+                raise ValueError("W&B está adelantado al checkpoint; utiliza el estado más reciente.")
+            progress = restore_training(resume_state, model, optimizer, train_loader,
+                                        evaluation_loader, device, output)
+            initial_step = resume_state["step"]
+            best_metrics, best_step = progress["best_metrics"], progress["best_step"]
+            best_exit_metrics, exit_history = progress["best_exit_metrics"], progress["exit_history"]
+            history, metric_history = progress["history"], progress["metric_history"]
+            previous_seconds = progress["loop_seconds"]
+            segments = progress["segments"]
+            try:
+                flush_metrics(run, metric_history, initial_step)
+            finally:
+                restaurar_azar(resume_state["rng"], device)
+        segments.append({"from_step": initial_step, "tracking_id": run.id,
+                         "runtime": runtime_state(device)})
+
+    def emit(values: dict[str, Any], step: int) -> None:
+        if not resumable:
+            registrar(run, values, step)
+        elif metric_history and metric_history[-1]["step"] == step:
+            metric_history[-1]["values"].update(values)
+        else:
+            metric_history.append({"step": step, "values": dict(values)})
+
     start = perf_counter()
-    training_seconds = 0.0
+    training_seconds = progress["training_seconds"] if progress is not None else 0.0
     time_limit = training.get("max_segundos")
     stopped_for_time = False
     if device.type == "cuda":
         torch.cuda.reset_peak_memory_stats(device)
-    metrics: dict[str, float | int] = {}
-    for step, batch in enumerate(train_loader, start=1):
+    stopped_for_session = False
+    metrics: dict[str, float | int] = progress["metrics"] if progress is not None else {}
+
+    def persist() -> None:
+        save_training(output / "entrenamiento.pt", model, optimizer, cfg, train_loader,
+                      evaluation_loader, device,
+                      {"best_metrics": best_metrics, "best_step": best_step,
+                       "best_exit_metrics": best_exit_metrics, "exit_history": exit_history,
+                       "history": history, "metric_history": metric_history, "metrics": metrics,
+                       "training_seconds": training_seconds,
+                       "loop_seconds": previous_seconds + perf_counter() - start,
+                       "segments": segments}, run, logical_id)
+
+    if resumable and resume_state is None:
+        persist()  # También se puede recuperar un corte antes de la primera actualización.
+    iterator = iter(train_loader) if initial_step < training["pasos"] else iter(())
+    if resumable and resume_state is not None and initial_step:
+        # DataLoader consume una semilla al crear el iterador, incluso con workers=0.
+        # Ese consumo ya ocurrió en el proceso original; no debe repetirse.
+        train_loader.generator.set_state(resume_state["loaders"]["train"])
+        restaurar_azar(resume_state["rng"], device)
+    step = initial_step
+    for step, batch in enumerate(iterator, start=initial_step + 1):
         step_start = perf_counter()
         model.train()
         learning_rate = _learning_rate(cfg, step - 1)
@@ -263,7 +324,7 @@ def entrenar_habla(
         }
         training_seconds += perf_counter() - step_start
         logged["train/segundos_acumulados"] = training_seconds
-        registrar(run, logged, step)
+        emit(logged, step)
         if step == 1 or step % training["imprimir_cada"] == 0 or step == training["pasos"]:
             memory = (
                 f"  pico CUDA asignado={logged['cuda/pico_asignado_mib']:.0f} MiB"
@@ -289,7 +350,7 @@ def entrenar_habla(
                 print("salidas: " + "  ".join(f"{depth}: PER={values['per']:.2%}" for depth, values in exit_metrics.items()), flush=True)
             if split == "val" and not metrics["completo"]:
                 raise ValueError("La selección de checkpoint requiere toda la validación.")
-            registrar(run, {**{f"{split}/{key}": value for key, value in metrics.items()}, **per_exit_logged}, step)
+            emit({**{f"{split}/{key}": value for key, value in metrics.items()}, **per_exit_logged}, step)
             print(f"{split}: PER={metrics['per']:.2%}  CTC={metrics['ctc_loss']:.4f}  "
                   f"frases={metrics['frases']}  completo={bool(metrics['completo'])}", flush=True)
             checkpoint_options = {"exit_metrics": exit_metrics} if weights is not None else {}
@@ -300,10 +361,22 @@ def entrenar_habla(
                     best_metrics, best_step = dict(metrics), step
                     best_exit_metrics = exit_metrics
                     save_checkpoint(output / "mejor_val.pt", model, cfg, train_loader.dataset, step, metrics, split="val", **checkpoint_options)
-        if evaluation_due and step < training["pasos"] and time_limit is not None and perf_counter() - start >= time_limit:
+        stopped_for_time = (evaluation_due and step < training["pasos"]
+                            and time_limit is not None and perf_counter() - start >= time_limit)
+        if resumable:
+            session_limit = cfg["reanudacion"].get("max_pasos_sesion")
+            stopped_for_session = (step < training["pasos"] and session_limit is not None
+                                   and step - initial_step >= session_limit)
+            if ((step - 1) % cfg["reanudacion"]["cada_pasos"] == 0
+                    or step == training["pasos"] or stopped_for_time or stopped_for_session):
+                persist()
+        if stopped_for_time:
             stopped_for_time = True
             print(f"Límite de {time_limit:g} s alcanzado; parada tras el paso {step}, "
                   "con evaluación y checkpoint guardados.", flush=True)
+            break
+        if stopped_for_session:
+            print(f"Pausa de sesión tras el paso {step}; estado completo en {output / 'entrenamiento.pt'}.", flush=True)
             break
     if not metrics:
         raise ValueError("No se completó ningún paso con evaluación.")
@@ -311,13 +384,13 @@ def entrenar_habla(
         "entrenamiento/pasos": step, "entrenamiento/segundos": training_seconds,
         "entrenamiento/pasos_previstos": training["pasos"],
         "entrenamiento/parada_por_tiempo": stopped_for_time,
-        "ejecucion/segundos": perf_counter() - start,
+        "ejecucion/segundos": previous_seconds + perf_counter() - start,
         "checkpoint": str(output / ("mejor_val.pt" if split == "val" else "ultimo.pt")),
         **_memory_metrics(device),
         **{f"{split}_final/{key}": value for key, value in metrics.items()},
     })
     if split == "val":
-        elapsed = perf_counter() - start
+        elapsed = previous_seconds + perf_counter() - start
         if best_exit_metrics is not None:
             run.summary.update({f"val_mejor/capa_{depth}/{key}": value
                                 for depth, values in best_exit_metrics.items() for key, value in values.items()})
@@ -335,7 +408,11 @@ def entrenar_habla(
             "training_seconds": training_seconds, "loop_seconds": elapsed,
             "cuda_memory": _memory_metrics(device),
             "model_parameters": sum(parameter.numel() for parameter in model.parameters()),
-            "run_id": run.id,
+            "run_id": logical_id,
+            **({"resumable": True, "resume_checkpoint": str(output / "entrenamiento.pt"),
+                "resumed_from_step": initial_step, "stopped_for_session_steps": stopped_for_session,
+                "training_complete": step == training["pasos"], "tracking_segment_id": run.id,
+                "last_val_step": history[-1]["step"], "segments": segments} if resumable else {}),
             **({"ctc_weights": weights, "selection_exit": cfg["modelo"]["capas"],
                 "best_val_by_exit": best_exit_metrics, "validation_history_by_exit": exit_history}
                if weights is not None else {}),
@@ -349,6 +426,7 @@ def entrenar_habla(
 def ejecutar_habla(
     cfg: dict[str, Any], run: Any, *, checkpoint: Path | None, solo_evaluar: bool,
     split_evaluacion: str | None = None,
+    resume_state: dict[str, Any] | None = None, resume_path: Path | None = None,
 ) -> dict[str, float | int]:
     """Construye el pipeline real y entrena o evalúa los pesos de un checkpoint."""
     if run is None:
@@ -421,5 +499,13 @@ def ejecutar_habla(
                             **{f"{split}_final/{key}": value for key, value in metrics.items()}})
         return metrics
     output = Path(cfg["salida"]["directorio"]) / run.id
-    output.mkdir(parents=True, exist_ok=False)
-    return entrenar_habla(model, train_loader, evaluation_loader, cfg, run, smoother, device, output)
+    if resume_state is not None:
+        if solo_evaluar or resume_path is None:
+            raise ValueError("La reanudación requiere un estado de entrenamiento, sin solo_evaluar.")
+        output = resume_path.parent
+        if output.name != resume_state["tracking"]["logical_id"]:
+            raise ValueError("Conserva el nombre de la carpeta del run al copiar el estado completo.")
+    else:
+        output.mkdir(parents=True, exist_ok=False)
+    return entrenar_habla(model, train_loader, evaluation_loader, cfg, run, smoother, device, output,
+                         resume_state=resume_state)
