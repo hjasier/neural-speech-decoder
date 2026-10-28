@@ -80,3 +80,36 @@ def test_tracking_loads_dotenv_before_init_without_adding_key_to_config(tmp_path
     monkeypatch.setitem(sys.modules, "wandb", SimpleNamespace(init=init))
     assert abrir_run(cfg).id == "fixture"
     assert cfg == original
+
+
+@pytest.mark.parametrize("source", ["environment", "project", "drive", "secrets", "prompt"])
+def test_colab_auth_reuses_private_key_without_echo(tmp_path, monkeypatch, capsys, source):
+    monkeypatch.delenv("WANDB_API_KEY", raising=False)
+    project, drive = tmp_path / "project", tmp_path / "drive"
+    project.mkdir(); drive.mkdir()
+    private = "fixture-credential-not-real"
+    if source == "environment":
+        monkeypatch.setenv("WANDB_API_KEY", private)
+    elif source in {"project", "drive"}:
+        (project if source == "project" else drive).joinpath(".env").write_text("WANDB_API_KEY=" + private)
+    calls = []
+    def get_secret(_):
+        calls.append("secrets")
+        if source == "secrets":
+            return private
+        raise LookupError("fixture missing")
+    def prompt(_):
+        calls.append("prompt")
+        return private
+    userdata = SimpleNamespace(get=get_secret, SecretNotFoundError=LookupError,
+                               NotebookAccessError=PermissionError, TimeoutException=TimeoutError)
+    monkeypatch.setitem(sys.modules, "google.colab", SimpleNamespace(userdata=userdata))
+    monkeypatch.setattr("getpass.getpass", prompt)
+    monkeypatch.syspath_prepend(str(Path.cwd()))  # Restaura sys.path al terminar.
+    nb = nbformat.read("notebooks/11_entrenamiento_reanudable_colab.ipynb", as_version=4)
+    cell = next(c for c in nb.cells if c.cell_type == "code" and c.source.startswith("#@title 8."))
+    exec(compile(cell.source, "notebook:auth", "exec"),
+         {"PROJECT": project, "DRIVE_ROOT": drive, "os": os, "sys": sys})
+    assert os.environ["WANDB_API_KEY"] == private
+    assert calls == ({"secrets": ["secrets"], "prompt": ["secrets", "prompt"]}.get(source, []))
+    assert private not in "".join(capsys.readouterr())

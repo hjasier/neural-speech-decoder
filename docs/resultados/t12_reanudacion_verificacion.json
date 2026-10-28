@@ -1,0 +1,324 @@
+{
+  "date_utc": "2026-10-28T18:51:00.314443+00:00",
+  "objective": "complete T12 training resumption and separate Colab notebook, verified with short CPU executions",
+  "source_base_commit": "ed7a7827ccfb433f722baefc901fb1b603b2f349",
+  "implementation_sha256": {
+    "run.py": "3563f63a396958d48422d657c1b141ce6c9376eb316b4a973550fba506b8aea5",
+    "src/data/loaders.py": "03b9a65876471f4d40723e8e9341c83807b6e25503cc651a4126f1346a09d801",
+    "src/data/speech_dataset.py": "edace204bef8c4de5faa38f031748719239e205dc8c01ea128d3d018fd21febf",
+    "src/training/speech.py": "6e67a8a0d097a069d0277533b159f901272b3809a529cb14fea4e241304510a2",
+    "src/training/speech_resume.py": "c9d83a031e76ed020947cd1b237b34400b08ac45c6255ce4b191e4c890ca9f46",
+    "src/utils/seed.py": "638807f30fe0052af0227b15b560490dfb71cebf9dacb021d72dbc4df4c8a7d7",
+    "src/utils/tracking.py": "2e6932ee6540f24c6e315e5fd802c028094a0cd0b9422549df080229f33230b9",
+    "scripts/configure_speech_resume.py": "4b9c4e64982304ab1a5d739a29cedfb05b45f8b10ce8fcf102adfc7a61837d03",
+    "scripts/export_colab.py": "e36b50816bc7206d0789470875310bc08ce3ac1c61c4916a50d780e228d787a5",
+    "configs/speech_reanudacion.yaml": "a6ac2fa897764022970b7e98145dda2c815b7470a52dd1e14cde85add126d362",
+    "src/utils/env.py": "b88750dfd54b9ae726d29538efdae1bff7fa1a4c27651729bc98986ce8989282"
+  },
+  "tests": {
+    "command": "CUDA_VISIBLE_DEVICES='' OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 MKL_NUM_THREADS=2 python -m pytest tests/ -q",
+    "passed": 93,
+    "warnings": 14,
+    "seconds": 171.49,
+    "warnings_scope": "pre-existing Matplotlib/pyparsing deprecations",
+    "new_tests_sha256": {
+      "tests/test_speech_resume.py": "b7e81723e7695b7b0da67cbf934f8f5210340337fd949ee14ef8f51d1cfafe00",
+      "tests/test_colab_resume.py": "7d5bbdfdb1adb562705519bfb4d63b984f8ce4fbb0fb2c558697592fe567c7fb",
+      "tests/test_wandb_env.py": "9c46af3d119f6ea8c831733c068a037648d654b1ea3a5ee917bdfbf8c16630b5"
+    },
+    "variants_checked_in_fresh_processes": [
+      "baseline_5",
+      "conjunta_235",
+      "control_2",
+      "control_3"
+    ],
+    "continuous_steps": 8,
+    "cooperative_stops": [
+      2,
+      5
+    ],
+    "actual_abrupt_joint_exit_after_optimizer_step": 6,
+    "abrupt_last_committed_step": 4,
+    "abrupt_resumed_final_step": 8,
+    "model_and_optimizer_tensors_equal": true,
+    "sampler_and_loader_generators_equal": true,
+    "dropout_and_noise_enabled": true,
+    "evaluation_cadence_unchanged": true,
+    "lr_continuous": true,
+    "completed_checkpoint_resume_adds_no_updates": true,
+    "legacy_weights_rejected_for_resume": true
+  },
+  "online_wandb_cpu_verification": {
+    "scope": "synthetic tiny joint model; CPU only; verifies W&B continuity, not a T12 quality result",
+    "run_id": "0vuxjr6a",
+    "url": "https://wandb.ai/aaurre-deusto/tiiac-2026/runs/0vuxjr6a",
+    "state": "finished",
+    "hardware": "CPU",
+    "cuda_visible_devices": "",
+    "gpu_available_in_verification_process": false,
+    "first_segment_steps": 2,
+    "final_steps": 5,
+    "same_run_id": true,
+    "remote_history": [
+      {
+        "_step": 1,
+        "train/ctc_loss": 18.411603927612305,
+        "train/learning_rate": 0.02
+      },
+      {
+        "_step": 2,
+        "train/ctc_loss": 18.53864288330078,
+        "train/learning_rate": 0.019998000000000002
+      },
+      {
+        "_step": 3,
+        "train/ctc_loss": 18.546483993530273,
+        "train/learning_rate": 0.019996
+      },
+      {
+        "_step": 4,
+        "train/ctc_loss": 18.45512294769287,
+        "train/learning_rate": 0.019994
+      },
+      {
+        "_step": 5,
+        "train/ctc_loss": 18.34695816040039,
+        "train/learning_rate": 0.019992000000000003
+      }
+    ],
+    "remote_steps_unique_and_complete": true,
+    "remote_losses_match_committed_checkpoint_history": true,
+    "segments": [
+      {
+        "from_step": 0,
+        "tracking_id": "0vuxjr6a",
+        "runtime": {
+          "python": "3.12.14",
+          "torch": "2.5.1+cu124",
+          "numpy": "2.1.3",
+          "device_type": "cpu",
+          "hardware": "CPU",
+          "threads": 2,
+          "cudnn_deterministic": true,
+          "cudnn_benchmark": false,
+          "deterministic_algorithms": false,
+          "matmul_precision": "highest",
+          "matmul_tf32": false,
+          "cudnn_tf32": true
+        }
+      },
+      {
+        "from_step": 2,
+        "tracking_id": "0vuxjr6a",
+        "runtime": {
+          "python": "3.12.14",
+          "torch": "2.5.1+cu124",
+          "numpy": "2.1.3",
+          "device_type": "cpu",
+          "hardware": "CPU",
+          "threads": 2,
+          "cudnn_deterministic": true,
+          "cudnn_benchmark": false,
+          "deterministic_algorithms": false,
+          "matmul_precision": "highest",
+          "matmul_tf32": false,
+          "cudnn_tf32": true
+        }
+      }
+    ],
+    "optimizer_global_step": 5,
+    "test_evaluated": false,
+    "source_hashes": {
+      "run.py": "3563f63a396958d48422d657c1b141ce6c9376eb316b4a973550fba506b8aea5",
+      "src/data/loaders.py": "03b9a65876471f4d40723e8e9341c83807b6e25503cc651a4126f1346a09d801",
+      "src/data/speech_dataset.py": "edace204bef8c4de5faa38f031748719239e205dc8c01ea128d3d018fd21febf",
+      "src/models/speech_gru.py": "b63d5294c4c1f78f9f55e0e6b216ff7bff8b36f8a073916f8d56f2b876d6079e",
+      "src/models/factory.py": "bec3a0489f5560793546f6b1da1163d2e1e4373ab6b1dc751aafdb22d0987f7a",
+      "src/utils/seed.py": "638807f30fe0052af0227b15b560490dfb71cebf9dacb021d72dbc4df4c8a7d7",
+      "src/utils/tracking.py": "2e6932ee6540f24c6e315e5fd802c028094a0cd0b9422549df080229f33230b9",
+      "src/utils/env.py": "b88750dfd54b9ae726d29538efdae1bff7fa1a4c27651729bc98986ce8989282",
+      "src/training/speech.py": "6e67a8a0d097a069d0277533b159f901272b3809a529cb14fea4e241304510a2",
+      "src/training/speech_resume.py": "c9d83a031e76ed020947cd1b237b34400b08ac45c6255ce4b191e4c890ca9f46",
+      "src/training/checkpoints.py": "2605d6391a6fe3b26d0f3c21829c30b33c03d3737bc69e651393ae535bf633b3",
+      "src/training/optim.py": "db12c15f8620fe2ebedacff3cd592a9fe062637e308e466d7ed09b82a0e551da",
+      "src/training/metrics.py": "eac1ade9b4f26adcbd5bb6015a1fd867bde514af4e96c7dabe6a6569f13affd9",
+      "src/data/preprocessing.py": "7d04d718e67c2fc501d411a6e1053a82cb84a5bdc24fa411d3870f98a7dd9337",
+      "src/data/speech_protocol.py": "1eaeb8aa6299be0ed07d3a43c3bede62ff9111c4d332d6ca9b5ff03177c578d3"
+    },
+    "local_artifacts_directory": "runs/reanudacion/online_cpu_20261028_env"
+  },
+  "notebook": {
+    "path": "notebooks/11_entrenamiento_reanudable_colab.ipynb",
+    "sha256": "35f71cbe967bdd0c3f335d05dd65930f4a48d14bd5a2c1d95ac7191622b529ef",
+    "nbformat_valid": true,
+    "all_code_ast_valid": true,
+    "snapshot_sha256": "b5d466839c6370d81d6d17d4c77c11feda8bb5e195f340e7b66f2173f3d43397",
+    "source_file_count": 59,
+    "source_file_hashes_match_worktree": true,
+    "colab_gpu_training_executed": false,
+    "lock_sha256": "52c92a5520a2e50a9d7db6ee91310571608bfba9eca5f8d93a1c2a92074dd16f"
+  },
+  "all_comparison_combinations": [
+    {
+      "variant": "baseline_5",
+      "seed": 0,
+      "steps": 10001,
+      "training_unchanged": true,
+      "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb"
+    },
+    {
+      "variant": "baseline_5",
+      "seed": 1,
+      "steps": 10001,
+      "training_unchanged": true,
+      "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb"
+    },
+    {
+      "variant": "baseline_5",
+      "seed": 2,
+      "steps": 10001,
+      "training_unchanged": true,
+      "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb"
+    },
+    {
+      "variant": "conjunta_235",
+      "seed": 0,
+      "steps": 10001,
+      "training_unchanged": true,
+      "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb"
+    },
+    {
+      "variant": "conjunta_235",
+      "seed": 1,
+      "steps": 10001,
+      "training_unchanged": true,
+      "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb"
+    },
+    {
+      "variant": "conjunta_235",
+      "seed": 2,
+      "steps": 10001,
+      "training_unchanged": true,
+      "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb"
+    },
+    {
+      "variant": "control_2",
+      "seed": 0,
+      "steps": 10001,
+      "training_unchanged": true,
+      "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb"
+    },
+    {
+      "variant": "control_2",
+      "seed": 1,
+      "steps": 10001,
+      "training_unchanged": true,
+      "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb"
+    },
+    {
+      "variant": "control_2",
+      "seed": 2,
+      "steps": 10001,
+      "training_unchanged": true,
+      "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb"
+    },
+    {
+      "variant": "control_3",
+      "seed": 0,
+      "steps": 10001,
+      "training_unchanged": true,
+      "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb"
+    },
+    {
+      "variant": "control_3",
+      "seed": 1,
+      "steps": 10001,
+      "training_unchanged": true,
+      "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb"
+    },
+    {
+      "variant": "control_3",
+      "seed": 2,
+      "steps": 10001,
+      "training_unchanged": true,
+      "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb"
+    }
+  ],
+  "preservation": {
+    "notebooks_before_sha256": {
+      "notebooks/01_exploracion_t12.ipynb": "e943ce97a7af328a048d64180afff8d75a908fb15baca6a63d2d7080e6d6dace",
+      "notebooks/02_test_fonemas_t12.ipynb": "ef2075dbec14f699914189c1d03d8f39a7b50c9e94ee459c064c8819aeb30240",
+      "notebooks/03_pruebas_fonem_bueno_t12.ipynb": "0e8003209272b720d7b11366ef6d728ff347f080b7c9a0e466ee9b2e6fa1e6d6",
+      "notebooks/04_entrenamiento_colab.ipynb": "14a4ed670521de505a57a30025e139a685d3ee109057d074c702bd89b7a77519",
+      "notebooks/05_alice_colab.ipynb": "eb4ef9f00cef5fa8ea919c7f7f26d118c7c1d6fc4ade17da6ad9fa56f4dc992b",
+      "notebooks/06_demo_ahpsn.ipynb": "ab894ab0604940515804ae92bf19abadd8a90300305f8a249bfa014b0b5e69b2",
+      "notebooks/07_baseline_t12_colab.ipynb": "ab2db68739b5ef1b85801b548d1f31d591d0892789e2a133f4dfafa0624d563a",
+      "notebooks/08_salidas_t12_colab.ipynb": "2190afe9b4373972926d80350a800ed27031474dd7917f223022c5160ffca99d",
+      "notebooks/09_comparativa_t12_colab.ipynb": "2c52e1c442f372430f817e8fa854f2c49905fbac2c30d21334eb0068bdd9dcd1",
+      "notebooks/10_demo_salidas_local.ipynb": "25bf7699660922681fccabd12bf95eba161752f5e6fa88449830123617f113fa"
+    },
+    "notebooks_after_sha256": {
+      "notebooks/01_exploracion_t12.ipynb": "e943ce97a7af328a048d64180afff8d75a908fb15baca6a63d2d7080e6d6dace",
+      "notebooks/02_test_fonemas_t12.ipynb": "ef2075dbec14f699914189c1d03d8f39a7b50c9e94ee459c064c8819aeb30240",
+      "notebooks/03_pruebas_fonem_bueno_t12.ipynb": "0e8003209272b720d7b11366ef6d728ff347f080b7c9a0e466ee9b2e6fa1e6d6",
+      "notebooks/04_entrenamiento_colab.ipynb": "14a4ed670521de505a57a30025e139a685d3ee109057d074c702bd89b7a77519",
+      "notebooks/05_alice_colab.ipynb": "eb4ef9f00cef5fa8ea919c7f7f26d118c7c1d6fc4ade17da6ad9fa56f4dc992b",
+      "notebooks/06_demo_ahpsn.ipynb": "ab894ab0604940515804ae92bf19abadd8a90300305f8a249bfa014b0b5e69b2",
+      "notebooks/07_baseline_t12_colab.ipynb": "ab2db68739b5ef1b85801b548d1f31d591d0892789e2a133f4dfafa0624d563a",
+      "notebooks/08_salidas_t12_colab.ipynb": "2190afe9b4373972926d80350a800ed27031474dd7917f223022c5160ffca99d",
+      "notebooks/09_comparativa_t12_colab.ipynb": "2c52e1c442f372430f817e8fa854f2c49905fbac2c30d21334eb0068bdd9dcd1",
+      "notebooks/10_demo_salidas_local.ipynb": "25bf7699660922681fccabd12bf95eba161752f5e6fa88449830123617f113fa"
+    },
+    "all_notebook_bytes_preserved": true,
+    "known_legacy_checkpoint_sha256": {
+      "checkpoints/speech_original/unjiabqs/ultimo.pt": "3eb0bf3db2b69858a3676b82e953002d91f3f022e0ba23b3a207ac937cee8744",
+      "checkpoints/speech_salidas_e1/xz71t4vd/mejor_val.pt": "5275edd8dadf029ef39dee7a4af171ed92e63f8baf624e3b3d0d66647b212297",
+      "checkpoints/speech_comparacion_t4/m6sn4um1/mejor_val.pt": "63628d88c25e8c870f644a34fb0ba9326b8eb3b6d31edc24f61e723dc4b4b7ed",
+      "checkpoints/speech_comparacion_t4/m6sn4um1/ultimo.pt": "dbb6cf5cac9ebcb01c73a794d677d37d65d8f031b8cfd780389fda5e5bea6aba"
+    },
+    "known_legacy_weights_unchanged": true,
+    "preexisting_user_change_preserved_unstaged": "notebooks/09_comparativa_t12_colab.ipynb"
+  },
+  "requirements_audit": {
+    "weights_optimizer_step_restored": "real tiny CTC process equivalence and synthetic online 2-to-5 continuation",
+    "sampler_and_rng": "state round-trip, partly consumed sessions, real noise/dropout and new DataLoader iterators",
+    "validation_history_and_first_best": "continuous versus multiple resumes; best model tensors and metric history agree",
+    "learning_rate": "per-step metric history equals continuous run; online API confirms uninterrupted schedule",
+    "wandb_continuity": "online same ID; API steps 1–5 unique and equal to committed losses; offline explicitly segmented",
+    "all_variants_protocol_budget": "four process-equivalence cases and 12 configuration combinations, no scientific overrides",
+    "old_artifacts": "byte hashes preserved and legacy checkpoint kind rejected",
+    "notebook_and_instructions": "separate notebook11, 59 verified sources, lock, CLI, private .env loading and docs/experimentos/t12_reanudacion.md",
+    "git_and_compute": "RAMA_LOCAL only; no upstream, main unchanged; all local computation CUDA hidden; final commit checked separately"
+  },
+  "limits": {
+    "numeric_equivalence_verified_on_cpu_same_environment": true,
+    "local_gpu_computation_executed": false,
+    "cuda_resumption_executed": false,
+    "real_t12_training_executed_for_this_goal": false,
+    "colab_notebook_runtime_executed": false,
+    "full_experimental_plan_completed": false,
+    "no_bitwise_guarantee_across_different_gpu_models": true
+  },
+  "repository": {
+    "branch": "RAMA_LOCAL",
+    "main_sha256_unchanged": "aa16257da06f9bedeb7aaa533c04f02b05a19517",
+    "pushed_or_published": false,
+    "final_commit_is_a_separate_git_check": true
+  },
+  "private_wandb_credential": {
+    "variable": "WANDB_API_KEY",
+    "local_file": ".env",
+    "colab_default_drive_file": "Mi unidad/speech_bci/.env",
+    "priority": [
+      "environment",
+      "project .env",
+      "Drive .env (notebook11)",
+      "Colab Secrets",
+      "hidden prompt"
+    ],
+    "tracked_template": ".env.example",
+    "env_ignored_by_git": true,
+    "secret_in_config_logs_or_bundle": false,
+    "tests": "13 CPU cases: assignment/quotes/comments, priority, missing/empty, no execution or output, tracking init, five notebook authentication branches"
+  }
+}
