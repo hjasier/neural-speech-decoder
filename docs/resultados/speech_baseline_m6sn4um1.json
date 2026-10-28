@@ -1416,9 +1416,9 @@
   ],
   "snapshot_included_in_executed_notebook": true,
   "training_completed_to_planned_budget": false,
-  "weights_present_locally": false,
+  "weights_present_locally": true,
   "test_evaluated": false,
-  "scope": "real baseline training interrupted before 10001 planned updates; validation history verified; checkpoint recovery pending",
+  "scope": "real baseline training interrupted before 10001 planned updates; weights received and reload verified; local GPU workloads suspended after reported desktop freeze",
   "source_base_commit": "5ebd1364372ec0498e5686975b567810ca5f21d2",
   "last_synced_step": 5801,
   "planned_steps": 10001,
@@ -1441,11 +1441,11 @@
   "expected_drive_checkpoint_folder": "speech_bci/checkpoints/speech_comparacion_t4/m6sn4um1",
   "drive_experiment_folder": "speech_bci/experimentos/comparativa_t12_20261027_163056_42f094ec",
   "expected_best_checkpoint": "checkpoints/speech_comparacion_t4/m6sn4um1/mejor_val.pt",
-  "checkpoint_bytes_and_sha256_verified": false,
-  "independent_reload_verified": false,
+  "checkpoint_bytes_and_sha256_verified": true,
+  "independent_reload_verified": true,
   "colab_limit_reported_by_author": true,
   "failure_cause_independently_verified": false,
-  "final_result_json_present": null,
+  "final_result_json_present": false,
   "exact_training_resume_supported_by_existing_checkpoint_format": false,
   "full_training_budget_reached": false,
   "comparison_at_equal_budget_complete": false,
@@ -1468,5 +1468,8 @@
       "tests/test_speech_comparison.py": "eaaec78dcdaeb636fcca787ff902673b834af124cff518496b23b406d6dfac20",
       "tests/test_colab_baseline.py": "f3b61d97f5e48ced1fca007bd572ec1e52f748955184d722c37bc13badc2d33e"
     }
-  }
+  },
+  "last_persisted_checkpoint_step": 5751,
+  "local_recovery_record": "docs/resultados/speech_baseline_m6sn4um1_recarga_local.json",
+  "local_gpu_workloads_suspended_after_desktop_freeze": true
 }

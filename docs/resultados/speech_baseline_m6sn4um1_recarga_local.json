@@ -1,0 +1,924 @@
+{
+  "date_utc": "2026-10-28T17:41:46.062973+00:00",
+  "scope": "baseline checkpoint received; reload and signal controls completed before user-reported desktop freeze; no further local GPU computation",
+  "source_base_commit": "8404063c9200162182d450962ca9e91cda8e718a",
+  "receipt": {
+    "original_nested_folder": "checkpoints/speech_comparacion_t4/m6sn4um1/m6sn4um1",
+    "normalized_checkpoint_folder": "checkpoints/speech_comparacion_t4/m6sn4um1",
+    "normalized_without_overwriting_files": true,
+    "files": [
+      {
+        "path": "checkpoints/speech_comparacion_t4/m6sn4um1/mejor_val.pt",
+        "bytes": 219331425,
+        "sha256": "63628d88c25e8c870f644a34fb0ba9326b8eb3b6d31edc24f61e723dc4b4b7ed",
+        "step": 5601,
+        "stored_val_metrics": {
+          "ctc_loss": 36.01612100470556,
+          "per": 0.2960958360395468,
+          "errores": 12309,
+          "fonemas": 41571,
+          "frases": 1460,
+          "completo": 1,
+          "segundos": 12.753585714999645
+        },
+        "sidecar_sha256": "e82abc25c9e2f102f9720970caf010bae6fef879feabf561bf481b6c3357f175",
+        "config_matches_online_training": true,
+        "data_signature": "b06b33d0b4a2da4e4405d69cdedbcb5f853fd611fde3dda4e0896e45b87c630c"
+      },
+      {
+        "path": "checkpoints/speech_comparacion_t4/m6sn4um1/ultimo.pt",
+        "bytes": 219327390,
+        "sha256": "dbb6cf5cac9ebcb01c73a794d677d37d65d8f031b8cfd780389fda5e5bea6aba",
+        "step": 5751,
+        "stored_val_metrics": {
+          "ctc_loss": 36.886548692886144,
+          "per": 0.29898246373673953,
+          "errores": 12429,
+          "fonemas": 41571,
+          "frases": 1460,
+          "completo": 1,
+          "segundos": 12.735875761998614
+        },
+        "sidecar_sha256": "88ceed3ec5b5222bc3935527074260f1d965b75b6e0dd1170d95e423dfacc998",
+        "config_matches_online_training": true,
+        "data_signature": "b06b33d0b4a2da4e4405d69cdedbcb5f853fd611fde3dda4e0896e45b87c630c"
+      }
+    ],
+    "local_config": "configs/speech_baseline_medicion_local.yaml",
+    "training_parameters_changed": false,
+    "training_updates": 0,
+    "test_evaluated": false,
+    "resultado_json_present": false,
+    "last_persisted_checkpoint_step": 5751,
+    "last_synced_metrics_step": 5801,
+    "initial_receipt_check_assumed_last_synced_checkpoint_and_failed": true,
+    "corrected_check_matches_actual_checkpoint_to_its_own_history_step": true
+  },
+  "verification": {
+    "verified": true,
+    "checkpoint": "checkpoints/speech_comparacion_t4/m6sn4um1/mejor_val.pt",
+    "checkpoint_sha256": "63628d88c25e8c870f644a34fb0ba9326b8eb3b6d31edc24f61e723dc4b4b7ed",
+    "checkpoint_step": 5601,
+    "split": "val",
+    "optimizer_steps": 0,
+    "hardware": "NVIDIA GeForce RTX 2060",
+    "torch_version": "2.5.1+cu124",
+    "tolerances": {
+      "ctc_atol": 1e-05,
+      "ctc_rtol": 1e-06,
+      "logits_atol": 1e-06,
+      "logits_rtol": 1e-05,
+      "ejemplo_validacion": 0
+    },
+    "metrics_by_exit": {
+      "5": {
+        "ctc_loss": 36.0161208165835,
+        "errores": 12309,
+        "fonemas": 41571,
+        "frases": 1460,
+        "per": 0.2960958360395468,
+        "completo": 1
+      }
+    },
+    "comparisons": {
+      "5": {
+        "counts_equal": true,
+        "per_equal": true,
+        "ctc_close": true,
+        "ctc_abs_difference": 1.881220583754839e-07
+      }
+    },
+    "shared_validation_seconds": 15.710430170998734,
+    "test_evaluated": false,
+    "example": {
+      "validation_index": 0,
+      "session": "t12.2022.04.28",
+      "source_trial_index": 220,
+      "block": 14,
+      "reference_text": "The giant redwoods shimmered in the glistening sun.",
+      "reference_ids": [
+        9,
+        2,
+        39,
+        18,
+        5,
+        2,
+        22,
+        30,
+        39,
+        27,
+        10,
+        8,
+        35,
+        32,
+        8,
+        37,
+        39,
+        29,
+        16,
+        21,
+        11,
+        8,
+        39,
+        16,
+        22,
+        39,
+        9,
+        2,
+        39,
+        14,
+        20,
+        16,
+        28,
+        2,
+        22,
+        16,
+        23,
+        39,
+        28,
+        2,
+        22,
+        39
+      ],
+      "reference_phones": [
+        "DH",
+        "AH",
+        "SIL",
+        "JH",
+        "AY",
+        "AH",
+        "N",
+        "T",
+        "SIL",
+        "R",
+        "EH",
+        "D",
+        "W",
+        "UH",
+        "D",
+        "Z",
+        "SIL",
+        "SH",
+        "IH",
+        "M",
+        "ER",
+        "D",
+        "SIL",
+        "IH",
+        "N",
+        "SIL",
+        "DH",
+        "AH",
+        "SIL",
+        "G",
+        "L",
+        "IH",
+        "S",
+        "AH",
+        "N",
+        "IH",
+        "NG",
+        "SIL",
+        "S",
+        "AH",
+        "N",
+        "SIL"
+      ],
+      "profiles": {
+        "5": {
+          "executed_layers": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "hypothesis_ids": [
+            9,
+            2,
+            39,
+            8,
+            1,
+            2,
+            22,
+            30,
+            39,
+            27,
+            10,
+            8,
+            35,
+            32,
+            8,
+            28,
+            39,
+            28,
+            10,
+            21,
+            8,
+            6,
+            11,
+            8,
+            39,
+            16,
+            22,
+            39,
+            9,
+            2,
+            39,
+            31,
+            20,
+            1,
+            28,
+            2,
+            22,
+            16,
+            23,
+            39,
+            30,
+            2,
+            22,
+            39
+          ],
+          "hypothesis_phones": [
+            "DH",
+            "AH",
+            "SIL",
+            "D",
+            "AE",
+            "AH",
+            "N",
+            "T",
+            "SIL",
+            "R",
+            "EH",
+            "D",
+            "W",
+            "UH",
+            "D",
+            "S",
+            "SIL",
+            "S",
+            "EH",
+            "M",
+            "D",
+            "B",
+            "ER",
+            "D",
+            "SIL",
+            "IH",
+            "N",
+            "SIL",
+            "DH",
+            "AH",
+            "SIL",
+            "TH",
+            "L",
+            "AE",
+            "S",
+            "AH",
+            "N",
+            "IH",
+            "NG",
+            "SIL",
+            "T",
+            "AH",
+            "N",
+            "SIL"
+          ],
+          "errors": 10,
+          "reference_phones": 42,
+          "example_per": 0.23809523809523808
+        }
+      }
+    },
+    "wandb_run_id": "irgi4583"
+  },
+  "evaluation": {
+    "split": "val",
+    "controls": [
+      "original",
+      "cero",
+      "permutada"
+    ],
+    "control_seed": 314159,
+    "available_exits": [
+      5
+    ],
+    "evaluated_exits": [
+      5
+    ],
+    "global": {
+      "original": {
+        "5": {
+          "ctc_loss": 36.01612082876214,
+          "per": 0.2960958360395468,
+          "errores": 12309,
+          "fonemas": 41571,
+          "frases": 1460,
+          "completo": 1
+        }
+      },
+      "cero": {
+        "5": {
+          "ctc_loss": 196.08201851779467,
+          "per": 0.8576411440667773,
+          "errores": 35653,
+          "fonemas": 41571,
+          "frases": 1460,
+          "completo": 1
+        }
+      },
+      "permutada": {
+        "5": {
+          "ctc_loss": 164.9777862130779,
+          "per": 0.8026268312044454,
+          "errores": 33366,
+          "fonemas": 41571,
+          "frases": 1460,
+          "completo": 1
+        }
+      }
+    },
+    "by_session": {
+      "original": {
+        "5": {
+          "t12.2022.04.28": {
+            "ctc_loss": 70.54457963307699,
+            "per": 0.37565347274085137,
+            "errores": 1006,
+            "fonemas": 2678,
+            "frases": 60,
+            "completo": 1
+          },
+          "t12.2022.05.05": {
+            "ctc_loss": 65.43013879060746,
+            "per": 0.3775395033860045,
+            "errores": 1338,
+            "fonemas": 3544,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.17": {
+            "ctc_loss": 58.79607048034668,
+            "per": 0.42127479949345714,
+            "errores": 998,
+            "fonemas": 2369,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.19": {
+            "ctc_loss": 43.45688226222992,
+            "per": 0.34572784810126583,
+            "errores": 437,
+            "fonemas": 1264,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.05.24": {
+            "ctc_loss": 18.269167563039808,
+            "per": 0.1934566145092461,
+            "errores": 408,
+            "fonemas": 2109,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.26": {
+            "ctc_loss": 22.479625241085888,
+            "per": 0.19485469271081468,
+            "errores": 409,
+            "fonemas": 2099,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.02": {
+            "ctc_loss": 19.39607188180089,
+            "per": 0.1817773788150808,
+            "errores": 405,
+            "fonemas": 2228,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.07": {
+            "ctc_loss": 20.70986929317005,
+            "per": 0.1989676208352886,
+            "errores": 424,
+            "fonemas": 2131,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.14": {
+            "ctc_loss": 22.934002225100993,
+            "per": 0.1945902301170771,
+            "errores": 482,
+            "fonemas": 2477,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.16": {
+            "ctc_loss": 73.84440566897392,
+            "per": 0.4758961681087763,
+            "errores": 1155,
+            "fonemas": 2427,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.21": {
+            "ctc_loss": 20.562627348396926,
+            "per": 0.20771513353115728,
+            "errores": 420,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.28": {
+            "ctc_loss": 23.963620875775813,
+            "per": 0.24087932647333957,
+            "errores": 515,
+            "fonemas": 2138,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.05": {
+            "ctc_loss": 25.940730252116918,
+            "per": 0.26625386996904027,
+            "errores": 516,
+            "fonemas": 1938,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.14": {
+            "ctc_loss": 44.671871253848074,
+            "per": 0.3721042471042471,
+            "errores": 771,
+            "fonemas": 2072,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.21": {
+            "ctc_loss": 20.974501316435635,
+            "per": 0.22700296735905046,
+            "errores": 459,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.27": {
+            "ctc_loss": 71.71189800947904,
+            "per": 0.5269320843091335,
+            "errores": 1125,
+            "fonemas": 2135,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.02": {
+            "ctc_loss": 21.02485783677548,
+            "per": 0.20943204868154158,
+            "errores": 413,
+            "fonemas": 1972,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.11": {
+            "ctc_loss": 30.509174171835184,
+            "per": 0.2955010224948875,
+            "errores": 578,
+            "fonemas": 1956,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.13": {
+            "ctc_loss": 21.43869706019759,
+            "per": 0.22613065326633167,
+            "errores": 450,
+            "fonemas": 1990,
+            "frases": 80,
+            "completo": 1
+          }
+        }
+      },
+      "cero": {
+        "5": {
+          "t12.2022.04.28": {
+            "ctc_loss": 461.08289235432943,
+            "per": 1.0,
+            "errores": 2678,
+            "fonemas": 2678,
+            "frases": 60,
+            "completo": 1
+          },
+          "t12.2022.05.05": {
+            "ctc_loss": 373.6263172149658,
+            "per": 0.9571106094808126,
+            "errores": 3392,
+            "fonemas": 3544,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.17": {
+            "ctc_loss": 237.96168012619017,
+            "per": 0.9366821443647109,
+            "errores": 2219,
+            "fonemas": 2369,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.19": {
+            "ctc_loss": 214.8635934829712,
+            "per": 0.9137658227848101,
+            "errores": 1155,
+            "fonemas": 1264,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.05.24": {
+            "ctc_loss": 166.7197808265686,
+            "per": 0.80891417733523,
+            "errores": 1706,
+            "fonemas": 2109,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.26": {
+            "ctc_loss": 303.1545597076416,
+            "per": 1.0,
+            "errores": 2099,
+            "fonemas": 2099,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.02": {
+            "ctc_loss": 157.4496642112732,
+            "per": 0.8150807899461401,
+            "errores": 1816,
+            "fonemas": 2228,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.07": {
+            "ctc_loss": 137.08106923103333,
+            "per": 0.9028625058657908,
+            "errores": 1924,
+            "fonemas": 2131,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.14": {
+            "ctc_loss": 179.04682970046997,
+            "per": 0.8708114654824385,
+            "errores": 2157,
+            "fonemas": 2477,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.16": {
+            "ctc_loss": 167.78345756530763,
+            "per": 0.7688504326328801,
+            "errores": 1866,
+            "fonemas": 2427,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.21": {
+            "ctc_loss": 140.43072891235352,
+            "per": 0.7774480712166172,
+            "errores": 1572,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.28": {
+            "ctc_loss": 132.6333526134491,
+            "per": 0.8507951356407858,
+            "errores": 1819,
+            "fonemas": 2138,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.05": {
+            "ctc_loss": 135.71783542633057,
+            "per": 0.8214654282765738,
+            "errores": 1592,
+            "fonemas": 1938,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.14": {
+            "ctc_loss": 158.27708582878114,
+            "per": 0.8175675675675675,
+            "errores": 1694,
+            "fonemas": 2072,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.21": {
+            "ctc_loss": 170.14607772827148,
+            "per": 0.7898120672601385,
+            "errores": 1597,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.27": {
+            "ctc_loss": 173.7698938369751,
+            "per": 0.8154566744730679,
+            "errores": 1741,
+            "fonemas": 2135,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.02": {
+            "ctc_loss": 152.4569532394409,
+            "per": 0.757606490872211,
+            "errores": 1494,
+            "fonemas": 1972,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.11": {
+            "ctc_loss": 161.270987033844,
+            "per": 0.8041922290388548,
+            "errores": 1573,
+            "fonemas": 1956,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.13": {
+            "ctc_loss": 177.72659873962402,
+            "per": 0.7834170854271357,
+            "errores": 1559,
+            "fonemas": 1990,
+            "frases": 80,
+            "completo": 1
+          }
+        }
+      },
+      "permutada": {
+        "5": {
+          "t12.2022.04.28": {
+            "ctc_loss": 256.4374303181966,
+            "per": 0.79798356982823,
+            "errores": 2137,
+            "fonemas": 2678,
+            "frases": 60,
+            "completo": 1
+          },
+          "t12.2022.05.05": {
+            "ctc_loss": 241.84099283218384,
+            "per": 0.8126410835214447,
+            "errores": 2880,
+            "fonemas": 3544,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.17": {
+            "ctc_loss": 219.45102796554565,
+            "per": 0.8526804558885606,
+            "errores": 2020,
+            "fonemas": 2369,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.19": {
+            "ctc_loss": 182.34020137786865,
+            "per": 0.8544303797468354,
+            "errores": 1080,
+            "fonemas": 1264,
+            "frases": 40,
+            "completo": 1
+          },
+          "t12.2022.05.24": {
+            "ctc_loss": 160.7697265625,
+            "per": 0.8458985301090565,
+            "errores": 1784,
+            "fonemas": 2109,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.05.26": {
+            "ctc_loss": 148.3443474292755,
+            "per": 0.8108623153882801,
+            "errores": 1702,
+            "fonemas": 2099,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.02": {
+            "ctc_loss": 152.98251328468322,
+            "per": 0.8025134649910234,
+            "errores": 1788,
+            "fonemas": 2228,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.07": {
+            "ctc_loss": 154.91942925453185,
+            "per": 0.8385734396996715,
+            "errores": 1787,
+            "fonemas": 2131,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.14": {
+            "ctc_loss": 172.49877014160157,
+            "per": 0.783205490512717,
+            "errores": 1940,
+            "fonemas": 2477,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.16": {
+            "ctc_loss": 200.48295097351075,
+            "per": 0.7544293366295839,
+            "errores": 1831,
+            "fonemas": 2427,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.21": {
+            "ctc_loss": 136.13794736862184,
+            "per": 0.7893175074183977,
+            "errores": 1596,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.06.28": {
+            "ctc_loss": 147.25294742584228,
+            "per": 0.7577174929840973,
+            "errores": 1620,
+            "fonemas": 2138,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.05": {
+            "ctc_loss": 128.25943989753722,
+            "per": 0.7889576883384933,
+            "errores": 1529,
+            "fonemas": 1938,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.14": {
+            "ctc_loss": 150.66500425338745,
+            "per": 0.7673745173745173,
+            "errores": 1590,
+            "fonemas": 2072,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.21": {
+            "ctc_loss": 139.2186812877655,
+            "per": 0.7720079129574678,
+            "errores": 1561,
+            "fonemas": 2022,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.07.27": {
+            "ctc_loss": 148.82010164260865,
+            "per": 0.868384074941452,
+            "errores": 1854,
+            "fonemas": 2135,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.02": {
+            "ctc_loss": 141.77867698669434,
+            "per": 0.7535496957403651,
+            "errores": 1486,
+            "fonemas": 1972,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.11": {
+            "ctc_loss": 153.88841032981873,
+            "per": 0.8098159509202454,
+            "errores": 1584,
+            "fonemas": 1956,
+            "frases": 80,
+            "completo": 1
+          },
+          "t12.2022.08.13": {
+            "ctc_loss": 130.03545732498168,
+            "per": 0.8025125628140704,
+            "errores": 1597,
+            "fonemas": 1990,
+            "frases": 80,
+            "completo": 1
+          }
+        }
+      }
+    },
+    "diagnostic_wall_seconds": 45.27501153299818,
+    "timing_scope": "controles, salidas compartidas, CTC, greedy, agregación y escritura; no latencia de perfil",
+    "optimizer_steps": 0,
+    "test_evaluated": false,
+    "checkpoint": "checkpoints/speech_comparacion_t4/m6sn4um1/mejor_val.pt",
+    "checkpoint_sha256": "63628d88c25e8c870f644a34fb0ba9326b8eb3b6d31edc24f61e723dc4b4b7ed",
+    "checkpoint_step": 5601,
+    "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb",
+    "comparison": {
+      "variante": "baseline_5",
+      "plan": "configs/speech_comparativa.yaml",
+      "plan_sha256": "a8976055d54aeef0fa7ba937b983f16e72b07cf27bbbfe15d2dc46a2c2e9cba6",
+      "config_base": "configs/speech_comparacion_t4.yaml",
+      "config_base_sha256": "3636c80ea3b12d3bbb5484afa7d2c38dd9ef09c06e8d807123a6ec02c91f34be"
+    },
+    "training_seed": 0,
+    "evaluation_config": {
+      "split": "val",
+      "salidas": null,
+      "controles": [
+        "original",
+        "cero",
+        "permutada"
+      ],
+      "semilla_control": 314159
+    },
+    "data_signature": "b06b33d0b4a2da4e4405d69cdedbcb5f853fd611fde3dda4e0896e45b87c630c",
+    "phones": [
+      "AA",
+      "AE",
+      "AH",
+      "AO",
+      "AW",
+      "AY",
+      "B",
+      "CH",
+      "D",
+      "DH",
+      "EH",
+      "ER",
+      "EY",
+      "F",
+      "G",
+      "HH",
+      "IH",
+      "IY",
+      "JH",
+      "K",
+      "L",
+      "M",
+      "N",
+      "NG",
+      "OW",
+      "OY",
+      "P",
+      "R",
+      "S",
+      "SH",
+      "T",
+      "TH",
+      "UH",
+      "UW",
+      "V",
+      "W",
+      "Y",
+      "Z",
+      "ZH",
+      "SIL"
+    ],
+    "blank_id": 40,
+    "hardware": "NVIDIA GeForce RTX 2060",
+    "torch_version": "2.5.1+cu124",
+    "wandb_run_id": "u9n7by19"
+  },
+  "source_config_original_path": "configs/speech_baseline_medicion_local.yaml",
+  "source_config_archived_path": "runs/auditoria/baseline_m6sn4um1_config_local.yaml",
+  "source_config_text": "# Recarga y mediciones locales del baseline m6sn4um1, mejor val en paso 5601.\n# Configuracion real del run; solo nombre, microlote eval4 y W&B offline adaptados.\nexperimento:\n  nombre: speech_baseline_m6sn4um1_medicion_local\n  seed: 0\ndatos:\n  raiz: data/speech_2023/competitionData\n  preparados: data/speech_2023/preparados_comparacion_v1\n  batch_size: 64\n  num_workers: 0\n  pin_memory: false\n  sesiones:\n  - t12.2022.04.28\n  - t12.2022.05.05\n  - t12.2022.05.17\n  - t12.2022.05.19\n  - t12.2022.05.24\n  - t12.2022.05.26\n  - t12.2022.06.02\n  - t12.2022.06.07\n  - t12.2022.06.14\n  - t12.2022.06.16\n  - t12.2022.06.21\n  - t12.2022.06.28\n  - t12.2022.07.05\n  - t12.2022.07.14\n  - t12.2022.07.21\n  - t12.2022.07.27\n  - t12.2022.08.02\n  - t12.2022.08.11\n  - t12.2022.08.13\n  fonemas:\n  - AA\n  - AE\n  - AH\n  - AO\n  - AW\n  - AY\n  - B\n  - CH\n  - D\n  - DH\n  - EH\n  - ER\n  - EY\n  - F\n  - G\n  - HH\n  - IH\n  - IY\n  - JH\n  - K\n  - L\n  - M\n  - N\n  - NG\n  - OW\n  - OY\n  - P\n  - R\n  - S\n  - SH\n  - T\n  - TH\n  - UH\n  - UW\n  - V\n  - W\n  - Y\n  - Z\n  - ZH\n  - SIL\netiquetas:\n  silencio: SIL\n  max_fonemas: 500\n  recursos: data/speech_2023/recursos_g2p\n  salida: data/speech_2023/fonemas_original\n  timeout_descarga: 30\n  recursos_nltk:\n  - archivo: corpora/cmudict.zip\n    url: https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.zip\n    sha256: d07cca47fd72ad32ea9d8ad1219f85301eeaf4568f8b6b73747506a71fb5afd6\n  - archivo: taggers/averaged_perceptron_tagger.zip\n    url: https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger.zip\n    sha256: e1f13cf2532daadfd6f3bc481a49859f0b8ea6432ccdcd83e6a49a5f19008de9\n  - archivo: taggers/averaged_perceptron_tagger_eng.zip\n    url: https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger_eng.zip\n    sha256: 6025f530624335c67d6547d44757b357b4e79bae030a0383e9887a92c1718f0b\npreprocesamiento:\n  normalizacion_epsilon: 1.0e-08\n  suavizado:\n    sigma: 2.0\n    umbral: 0.01\n    longitud_impulso: 100\n    truncate: 4.0\nmodelo:\n  nombre: speech_gru\n  entrada: 256\n  capa_dia: 256\n  capas: 5\n  unidades: 1024\n  bidireccional: false\n  kernel: 32\n  stride: 4\n  dropout_entrada: 0.2\n  dropout_gru: 0.4\nentrenamiento:\n  pasos: 10001\n  micro_batch_size: 16\n  optimizador: adam_tensorflow\n  betas:\n  - 0.9\n  - 0.999\n  epsilon: 0.1\n  learning_rate:\n    inicio: 0.02\n    final: 0.0\n    decay_pasos: 10000\n    potencia: 1.0\n  clip_grad_norm: 10.0\n  l2: 1.0e-05\n  ruido:\n    blanco_sd: 1.0\n    offset_sd: 0.2\n  imprimir_cada: 10\nevaluacion:\n  micro_batch_size: 4\n  cada_pasos: 50\n  max_lotes: null\nejecucion:\n  dispositivo: cuda\n  hilos_cpu: 2\nsalida:\n  directorio: checkpoints/speech_comparacion_t4\nwandb:\n  proyecto: tiiac-2026\n  entidad: null\n  modo: offline\n  directorio: runs/tracking\nprotocolo:\n  nombre: t12_bloques_v1\n  metodo: ultimos_bloques_por_sesion\n  fraccion_validacion: 0.2\n  manifiesto: docs/datasets/speech_2023/particion_t12_v1.json\n  sha256: d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb\n  seleccion_checkpoint: per\ncomparacion:\n  variante: baseline_5\n  plan: configs/speech_comparativa.yaml\n  plan_sha256: a8976055d54aeef0fa7ba937b983f16e72b07cf27bbbfe15d2dc46a2c2e9cba6\n  config_base: configs/speech_comparacion_t4.yaml\n  config_base_sha256: 3636c80ea3b12d3bbb5484afa7d2c38dd9ef09c06e8d807123a6ec02c91f34be\n",
+  "raw_artifacts_sha256": {
+    "checkpoints/speech_comparacion_t4/m6sn4um1/verificacion_recarga.json": "c45e911afe4e23c80f7758b4d451f8ae20e5abd22aeaa11fba83320c4cc598cd",
+    "checkpoints/speech_comparacion_t4/m6sn4um1/predicciones_val_ejemplo.json": "10a3ef963acd4cdfeecb3325ba2b73f8550f0ed1f820f5de847c17cbd755d4af",
+    "runs/evaluacion/speech_baseline_m6sn4um1_val_20261028/metricas.json": "ff2d5bd54733c1aebf42d2019cecb63264167cd35d3a707fc17e1aa00b92e410",
+    "runs/evaluacion/speech_baseline_m6sn4um1_val_20261028/predicciones.jsonl": "33219872b7dbba1a6f21464d10a6692ae543634727837a567c876ef9773c359a",
+    "runs/evaluacion/speech_baseline_m6sn4um1_val_20261028/por_sesion.csv": "730b0a7b7a0a0e210713528511225745f26458d34ecc0f8b26d862e0c3163991",
+    "runs/auditoria/baseline_m6sn4um1_config_local.yaml": "eb786d13c7770114bb1704318f291501f0ff452e32d8b8fa2adc79d82de0c98d"
+  },
+  "quality_predictions": 1460,
+  "session_condition_exit_rows": 57,
+  "incident": {
+    "desktop_froze_and_user_rebooted": true,
+    "previous_boot_id": "59c017ed2bc145d986a0eba2dd47f397",
+    "current_boot_id": "896b7492e1fe429695bee7abe46ddff8",
+    "previous_boot_last_journal_entry_local": "2026-10-28 18:29:45 Europe/Madrid",
+    "new_boot_first_journal_entry_local": "2026-10-28 18:33:48 Europe/Madrid",
+    "additional_gpu_evaluation_launched_by_assistant": true,
+    "evaluation_report_found_complete_after_reboot": true,
+    "evaluation_process_handle_missing_after_reboot": 86592,
+    "remaining_evaluation_or_training_processes_found": false,
+    "specific_cause_proven": false,
+    "nvidia_xid_or_oom_event_found_in_inspected_interval": false,
+    "journal_inspected_interval_local": "2026-10-28 18:25–18:34 Europe/Madrid; kernel and system logs of previous boot",
+    "suspected_relationship": "local GPU workload may have contributed; lack of logged error does not establish coincidence or exclude GPU involvement",
+    "gpu_workload_repeated_after_reboot": false,
+    "benchmark_started": false,
+    "local_gpu_workloads_suspended": true,
+    "neural_data_was_unmounted_then_read_only_inspected_and_normally_mounted": true,
+    "filesystem_repair_or_fstab_changes": false,
+    "guarded_receipt_check_initially_assumed_last_checkpoint_5801": true,
+    "actual_last_checkpoint_5751_verified_against_its_own_history": true
+  },
+  "training_resumed": false,
+  "full_goal_complete": false,
+  "author_interpretation_reviewed": false
+}
