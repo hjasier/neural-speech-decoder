@@ -131,5 +131,8 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
   5.801 pasos sincronizados de 10.001 y 117 evaluaciones completas de val.
   Su registro y curva están en `docs/resultados/speech_baseline_m6sn4um1.json`
   y `docs/figuras/t12_baseline_m6sn4um1/`; no hay cierre normal del entrenamiento.
-- Pendiente: incorporar la verificación de esos pesos y la reanudación completa.
+- Hecho: el pipeline local lee `WANDB_API_KEY` desde `.env` si no está
+  definida en el entorno. Solo carga esa variable, sin imprimirla ni añadirla
+  a la configuración. La lectura desde Drive se incorporará con el notebook 11.
+- Pendiente: incorporar la reanudación completa y su lanzador de Colab.
   El formato actual aún no guarda el estado del optimizador y del muestreo.

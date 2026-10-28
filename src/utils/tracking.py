@@ -9,6 +9,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from src.utils.env import cargar_clave_wandb
+
 
 def abrir_run(cfg: dict) -> Any | None:
     """Abre un run de W&B, o devuelve None si esta desactivado."""
@@ -22,6 +24,7 @@ def abrir_run(cfg: dict) -> Any | None:
     except ImportError as error:
         raise RuntimeError("Falta W&B; instala requirements.txt antes de entrenar.") from error
 
+    cargar_clave_wandb()
     directory = wcfg.get("directorio")
     if directory is not None:
         Path(directory).mkdir(parents=True, exist_ok=True)
