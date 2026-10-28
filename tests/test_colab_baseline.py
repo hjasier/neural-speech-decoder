@@ -63,7 +63,7 @@ def test_exit_snapshot_contains_short_real_run_and_fresh_reload(tmp_path, monkey
         if cell.cell_type != "code":
             continue
         module = ast.parse(cell.source)
-        assert cell.execution_count is None and not cell.outputs
+        # Conservar las salidas de la ejecución real del autor del notebook 08.
         for node in ast.walk(module):
             if (isinstance(node, ast.Assign) and isinstance(node.value, ast.Constant)
                     and isinstance(node.value.value, str)) and any(

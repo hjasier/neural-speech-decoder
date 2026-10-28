@@ -1,0 +1,1475 @@
+{
+  "queried_at_utc": "2026-10-28T17:03:58.024140+00:00",
+  "id": "m6sn4um1",
+  "state": "failed",
+  "url": "https://wandb.ai/aaurre-deusto/tiiac-2026/runs/m6sn4um1",
+  "created_at": "2026-10-27T16:03:29Z",
+  "config": {
+    "datos": {
+      "raiz": "data/speech_2023/competitionData",
+      "fonemas": [
+        "AA",
+        "AE",
+        "AH",
+        "AO",
+        "AW",
+        "AY",
+        "B",
+        "CH",
+        "D",
+        "DH",
+        "EH",
+        "ER",
+        "EY",
+        "F",
+        "G",
+        "HH",
+        "IH",
+        "IY",
+        "JH",
+        "K",
+        "L",
+        "M",
+        "N",
+        "NG",
+        "OW",
+        "OY",
+        "P",
+        "R",
+        "S",
+        "SH",
+        "T",
+        "TH",
+        "UH",
+        "UW",
+        "V",
+        "W",
+        "Y",
+        "Z",
+        "ZH",
+        "SIL"
+      ],
+      "sesiones": [
+        "t12.2022.04.28",
+        "t12.2022.05.05",
+        "t12.2022.05.17",
+        "t12.2022.05.19",
+        "t12.2022.05.24",
+        "t12.2022.05.26",
+        "t12.2022.06.02",
+        "t12.2022.06.07",
+        "t12.2022.06.14",
+        "t12.2022.06.16",
+        "t12.2022.06.21",
+        "t12.2022.06.28",
+        "t12.2022.07.05",
+        "t12.2022.07.14",
+        "t12.2022.07.21",
+        "t12.2022.07.27",
+        "t12.2022.08.02",
+        "t12.2022.08.11",
+        "t12.2022.08.13"
+      ],
+      "batch_size": 64,
+      "pin_memory": false,
+      "preparados": "data/speech_2023/preparados_comparacion_v1",
+      "num_workers": 0
+    },
+    "wandb": {
+      "modo": "online",
+      "entidad": null,
+      "proyecto": "tiiac-2026",
+      "directorio": "runs/tracking"
+    },
+    "modelo": {
+      "capas": 5,
+      "kernel": 32,
+      "nombre": "speech_gru",
+      "stride": 4,
+      "entrada": 256,
+      "capa_dia": 256,
+      "unidades": 1024,
+      "dropout_gru": 0.4,
+      "bidireccional": false,
+      "dropout_entrada": 0.2
+    },
+    "salida": {
+      "directorio": "checkpoints/speech_comparacion_t4"
+    },
+    "ejecucion": {
+      "hilos_cpu": 2,
+      "dispositivo": "cuda"
+    },
+    "etiquetas": {
+      "salida": "data/speech_2023/fonemas_original",
+      "recursos": "data/speech_2023/recursos_g2p",
+      "silencio": "SIL",
+      "max_fonemas": 500,
+      "recursos_nltk": [
+        {
+          "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.zip",
+          "sha256": "d07cca47fd72ad32ea9d8ad1219f85301eeaf4568f8b6b73747506a71fb5afd6",
+          "archivo": "corpora/cmudict.zip"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger.zip",
+          "sha256": "e1f13cf2532daadfd6f3bc481a49859f0b8ea6432ccdcd83e6a49a5f19008de9",
+          "archivo": "taggers/averaged_perceptron_tagger.zip"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger_eng.zip",
+          "sha256": "6025f530624335c67d6547d44757b357b4e79bae030a0383e9887a92c1718f0b",
+          "archivo": "taggers/averaged_perceptron_tagger_eng.zip"
+        }
+      ],
+      "timeout_descarga": 30
+    },
+    "protocolo": {
+      "metodo": "ultimos_bloques_por_sesion",
+      "nombre": "t12_bloques_v1",
+      "sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb",
+      "manifiesto": "docs/datasets/speech_2023/particion_t12_v1.json",
+      "fraccion_validacion": 0.2,
+      "seleccion_checkpoint": "per"
+    },
+    "evaluacion": {
+      "max_lotes": null,
+      "cada_pasos": 50,
+      "micro_batch_size": 16
+    },
+    "comparacion": {
+      "plan": "configs/speech_comparativa.yaml",
+      "variante": "baseline_5",
+      "config_base": "configs/speech_comparacion_t4.yaml",
+      "plan_sha256": "a8976055d54aeef0fa7ba937b983f16e72b07cf27bbbfe15d2dc46a2c2e9cba6",
+      "config_base_sha256": "3636c80ea3b12d3bbb5484afa7d2c38dd9ef09c06e8d807123a6ec02c91f34be"
+    },
+    "experimento": {
+      "seed": 0,
+      "nombre": "speech_comparacion_baseline_t4_seed0_colab"
+    },
+    "entrenamiento": {
+      "l2": 1e-05,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "pasos": 10001,
+      "ruido": {
+        "blanco_sd": 1,
+        "offset_sd": 0.2
+      },
+      "epsilon": 0.1,
+      "optimizador": "adam_tensorflow",
+      "imprimir_cada": 10,
+      "learning_rate": {
+        "final": 0,
+        "inicio": 0.02,
+        "potencia": 1,
+        "decay_pasos": 10000
+      },
+      "clip_grad_norm": 10,
+      "micro_batch_size": 16
+    },
+    "preprocesamiento": {
+      "suavizado": {
+        "sigma": 2,
+        "umbral": 0.01,
+        "truncate": 4,
+        "longitud_impulso": 100
+      },
+      "normalizacion_epsilon": 1e-08
+    }
+  },
+  "summary": {
+    "_runtime": 9665.013891432,
+    "_step": 5801,
+    "_timestamp": 1793126674.017595,
+    "_wandb.runtime": 9665,
+    "cuda/pico_asignado_mib": 1994.5810546875,
+    "cuda/pico_reservado_mib": 3630,
+    "dispositivo": "cuda",
+    "hardware": "Tesla T4",
+    "train/ctc_loss": 9.603697538375854,
+    "train/frases_disponibles": 5180,
+    "train/grad_norm": 29.703020095825195,
+    "train/l2": 0.14846672117710114,
+    "train/learning_rate": 0.008400000000000001,
+    "train/loss": 9.752164259552956,
+    "train/segundos_acumulados": 7770.117688067041,
+    "val/completo": 1,
+    "val/ctc_loss": 37.85276055531959,
+    "val/errores": 12438,
+    "val/fonemas": 41571,
+    "val/frases": 1460,
+    "val/frases_disponibles": 1460,
+    "val/per": 0.299198960814029,
+    "val/segundos": 12.661010906998854
+  },
+  "validation_history": [
+    {
+      "_step": 1,
+      "val/per": 0.9006037862933295,
+      "val/errores": 37439,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 199.39815088559504,
+      "_timestamp": 1793117043.7499876
+    },
+    {
+      "_step": 51,
+      "val/per": 1,
+      "val/errores": 41571,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 91.46378518718562,
+      "_timestamp": 1793117119.6359556
+    },
+    {
+      "_step": 101,
+      "val/per": 0.972528926415049,
+      "val/errores": 40429,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 85.65626287590968,
+      "_timestamp": 1793117200.7730787
+    },
+    {
+      "_step": 151,
+      "val/per": 0.8998580741382214,
+      "val/errores": 37408,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 80.98260941178832,
+      "_timestamp": 1793117283.3899193
+    },
+    {
+      "_step": 201,
+      "val/per": 0.722691299223016,
+      "val/errores": 30043,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 75.77520370483398,
+      "_timestamp": 1793117364.0106058
+    },
+    {
+      "_step": 251,
+      "val/per": 0.6391474826200957,
+      "val/errores": 26570,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 68.99375054346372,
+      "_timestamp": 1793117447.0578613
+    },
+    {
+      "_step": 301,
+      "val/per": 0.5945490846984677,
+      "val/errores": 24716,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 65.20159460616438,
+      "_timestamp": 1793117529.6595385
+    },
+    {
+      "_step": 351,
+      "val/per": 0.5611363691034615,
+      "val/errores": 23327,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 61.42870997598727,
+      "_timestamp": 1793117612.746031
+    },
+    {
+      "_step": 401,
+      "val/per": 0.5266411681220081,
+      "val/errores": 21893,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 58.33015775288621,
+      "_timestamp": 1793117695.6883304
+    },
+    {
+      "_step": 451,
+      "val/per": 0.5155757619494359,
+      "val/errores": 21433,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 55.88055219258347,
+      "_timestamp": 1793117775.3866906
+    },
+    {
+      "_step": 501,
+      "val/per": 0.49409444083615983,
+      "val/errores": 20540,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 53.24810191115288,
+      "_timestamp": 1793117857.3607283
+    },
+    {
+      "_step": 551,
+      "val/per": 0.49763055976522097,
+      "val/errores": 20687,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 53.65255381963024,
+      "_timestamp": 1793117942.1909442
+    },
+    {
+      "_step": 601,
+      "val/per": 0.4801424069663948,
+      "val/errores": 19960,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 51.995478820800784,
+      "_timestamp": 1793118023.453655
+    },
+    {
+      "_step": 651,
+      "val/per": 0.4590459695460778,
+      "val/errores": 19083,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 49.512937671191075,
+      "_timestamp": 1793118105.7031682
+    },
+    {
+      "_step": 701,
+      "val/per": 0.4543551995381396,
+      "val/errores": 18888,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 48.10950325743793,
+      "_timestamp": 1793118189.1388748
+    },
+    {
+      "_step": 751,
+      "val/per": 0.4445406653676842,
+      "val/errores": 18480,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 47.5495591464108,
+      "_timestamp": 1793118270.577142
+    },
+    {
+      "_step": 801,
+      "val/per": 0.42344422794736714,
+      "val/errores": 17603,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 45.98777094801812,
+      "_timestamp": 1793118352.328602
+    },
+    {
+      "_step": 851,
+      "val/per": 0.42938586995742223,
+      "val/errores": 17850,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 46.22346379528307,
+      "_timestamp": 1793118434.8353527
+    },
+    {
+      "_step": 901,
+      "val/per": 0.4202929927112651,
+      "val/errores": 17472,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 44.27551509909434,
+      "_timestamp": 1793118512.4109964
+    },
+    {
+      "_step": 951,
+      "val/per": 0.41682903947463373,
+      "val/errores": 17328,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 44.827062758354295,
+      "_timestamp": 1793118598.930922
+    },
+    {
+      "_step": 1001,
+      "val/per": 0.40922758653869284,
+      "val/errores": 17012,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 42.916996765136716,
+      "_timestamp": 1793118687.5887983
+    },
+    {
+      "_step": 1051,
+      "val/per": 0.4012412499097929,
+      "val/errores": 16680,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 42.423668587044496,
+      "_timestamp": 1793118766.4066174
+    },
+    {
+      "_step": 1101,
+      "val/per": 0.39643020374780497,
+      "val/errores": 16480,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 42.20411497142217,
+      "_timestamp": 1793118848.9928508
+    },
+    {
+      "_step": 1151,
+      "val/per": 0.39746457867263235,
+      "val/errores": 16523,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 41.80652866624806,
+      "_timestamp": 1793118936.1858122
+    },
+    {
+      "_step": 1201,
+      "val/per": 0.39407279112843085,
+      "val/errores": 16382,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 41.99939184319483,
+      "_timestamp": 1793119017.4522154
+    },
+    {
+      "_step": 1251,
+      "val/per": 0.39027206466046044,
+      "val/errores": 16224,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 40.97930569060861,
+      "_timestamp": 1793119102.4486523
+    },
+    {
+      "_step": 1301,
+      "val/per": 0.3761756994058358,
+      "val/errores": 15638,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 39.80733762767217,
+      "_timestamp": 1793119186.2027237
+    },
+    {
+      "_step": 1351,
+      "val/per": 0.37923071371869815,
+      "val/errores": 15765,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 40.3806375059363,
+      "_timestamp": 1793119271.8262558
+    },
+    {
+      "_step": 1401,
+      "val/per": 0.3813716292607828,
+      "val/errores": 15854,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 40.41149504674624,
+      "_timestamp": 1793119353.3665452
+    },
+    {
+      "_step": 1451,
+      "val/per": 0.3735536792475524,
+      "val/errores": 15529,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 39.277599073436164,
+      "_timestamp": 1793119433.7239592
+    },
+    {
+      "_step": 1501,
+      "val/per": 0.36910346154771356,
+      "val/errores": 15344,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 38.73855322746381,
+      "_timestamp": 1793119516.4952748
+    },
+    {
+      "_step": 1551,
+      "val/per": 0.374106949556181,
+      "val/errores": 15552,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 39.63873974003204,
+      "_timestamp": 1793119599.099557
+    },
+    {
+      "_step": 1601,
+      "val/per": 0.36532679031055304,
+      "val/errores": 15187,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 38.82138784748234,
+      "_timestamp": 1793119680.022216
+    },
+    {
+      "_step": 1651,
+      "val/per": 0.35599336075629645,
+      "val/errores": 14799,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 38.02988599489813,
+      "_timestamp": 1793119763.700068
+    },
+    {
+      "_step": 1701,
+      "val/per": 0.3656876187727021,
+      "val/errores": 15202,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 38.94287474122766,
+      "_timestamp": 1793119844.5434787
+    },
+    {
+      "_step": 1751,
+      "val/per": 0.3616222847658223,
+      "val/errores": 15033,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 38.14156630006555,
+      "_timestamp": 1793119928.1662323
+    },
+    {
+      "_step": 1801,
+      "val/per": 0.3555844218325275,
+      "val/errores": 14782,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 38.0452304892344,
+      "_timestamp": 1793120012.11515
+    },
+    {
+      "_step": 1851,
+      "val/per": 0.36017897091722595,
+      "val/errores": 14973,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 38.378322810342866,
+      "_timestamp": 1793120096.5758889
+    },
+    {
+      "_step": 1901,
+      "val/per": 0.3529624016742441,
+      "val/errores": 14673,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.56125851983894,
+      "_timestamp": 1793120178.2939756
+    },
+    {
+      "_step": 1951,
+      "val/per": 0.35096581751701905,
+      "val/errores": 14590,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.67972495719178,
+      "_timestamp": 1793120265.6917927
+    },
+    {
+      "_step": 2001,
+      "val/per": 0.3474778090495778,
+      "val/errores": 14445,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.3293005381545,
+      "_timestamp": 1793120350.401978
+    },
+    {
+      "_step": 2051,
+      "val/per": 0.3469004835101393,
+      "val/errores": 14421,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 38.175706607348296,
+      "_timestamp": 1793120431.1867833
+    },
+    {
+      "_step": 2101,
+      "val/per": 0.3501238844386712,
+      "val/errores": 14555,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 38.0680466011779,
+      "_timestamp": 1793120516.263316
+    },
+    {
+      "_step": 2151,
+      "val/per": 0.3440138558129465,
+      "val/errores": 14301,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.89056277862967,
+      "_timestamp": 1793120598.9188833
+    },
+    {
+      "_step": 2201,
+      "val/per": 0.3500276635154314,
+      "val/errores": 14551,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 38.30168627386224,
+      "_timestamp": 1793120691.670816
+    },
+    {
+      "_step": 2251,
+      "val/per": 0.3409107310384643,
+      "val/errores": 14172,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.60154323839161,
+      "_timestamp": 1793120773.6819212
+    },
+    {
+      "_step": 2301,
+      "val/per": 0.3368453970315845,
+      "val/errores": 14003,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.74600866657414,
+      "_timestamp": 1793120859.6089196
+    },
+    {
+      "_step": 2351,
+      "val/per": 0.3388179259579996,
+      "val/errores": 14085,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.22275285067624,
+      "_timestamp": 1793120946.686868
+    },
+    {
+      "_step": 2401,
+      "val/per": 0.34134372519304323,
+      "val/errores": 14190,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 38.185102525475905,
+      "_timestamp": 1793121029.744299
+    },
+    {
+      "_step": 2451,
+      "val/per": 0.3309037550215294,
+      "val/errores": 13756,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.686131788279916,
+      "_timestamp": 1793121106.8222966
+    },
+    {
+      "_step": 2501,
+      "val/per": 0.3396839142671574,
+      "val/errores": 14121,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 39.43004793140986,
+      "_timestamp": 1793121194.662921
+    },
+    {
+      "_step": 2551,
+      "val/per": 0.33104808640638905,
+      "val/errores": 13762,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.42266292833302,
+      "_timestamp": 1793121275.9810529
+    },
+    {
+      "_step": 2601,
+      "val/per": 0.33468042625868993,
+      "val/errores": 13913,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.36655790773157,
+      "_timestamp": 1793121358.466175
+    },
+    {
+      "_step": 2651,
+      "val/per": 0.3337903827187222,
+      "val/errores": 13876,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.3264788013615,
+      "_timestamp": 1793121443.8837962
+    },
+    {
+      "_step": 2701,
+      "val/per": 0.33244328979336557,
+      "val/errores": 13820,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.48459989991907,
+      "_timestamp": 1793121526.1520083
+    },
+    {
+      "_step": 2751,
+      "val/per": 0.33443987395059055,
+      "val/errores": 13903,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.75847823260582,
+      "_timestamp": 1793121608.4698703
+    },
+    {
+      "_step": 2801,
+      "val/per": 0.3309037550215294,
+      "val/errores": 13756,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.94850959255271,
+      "_timestamp": 1793121690.0955045
+    },
+    {
+      "_step": 2851,
+      "val/per": 0.32731952563084843,
+      "val/errores": 13607,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.792749749797665,
+      "_timestamp": 1793121772.059905
+    },
+    {
+      "_step": 2901,
+      "val/per": 0.32859445286377525,
+      "val/errores": 13660,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.167013873792676,
+      "_timestamp": 1793121857.842654
+    },
+    {
+      "_step": 2951,
+      "val/per": 0.3241201799331265,
+      "val/errores": 13474,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.32567700947801,
+      "_timestamp": 1793121940.205569
+    },
+    {
+      "_step": 3001,
+      "val/per": 0.32397584854826683,
+      "val/errores": 13468,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.93545674363228,
+      "_timestamp": 1793122023.2081845
+    },
+    {
+      "_step": 3051,
+      "val/per": 0.3214741045440331,
+      "val/errores": 13364,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.7426424731947,
+      "_timestamp": 1793122109.3221245
+    },
+    {
+      "_step": 3101,
+      "val/per": 0.3240961247023165,
+      "val/errores": 13473,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.55999941891187,
+      "_timestamp": 1793122195.857242
+    },
+    {
+      "_step": 3151,
+      "val/per": 0.3233023020855885,
+      "val/errores": 13440,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.961789044941945,
+      "_timestamp": 1793122279.6173875
+    },
+    {
+      "_step": 3201,
+      "val/per": 0.32397584854826683,
+      "val/errores": 13468,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.423445442931296,
+      "_timestamp": 1793122362.1117127
+    },
+    {
+      "_step": 3251,
+      "val/per": 0.32527483101200355,
+      "val/errores": 13522,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.323416534841876,
+      "_timestamp": 1793122447.0060308
+    },
+    {
+      "_step": 3301,
+      "val/per": 0.32265281085372016,
+      "val/errores": 13413,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.421956216472466,
+      "_timestamp": 1793122530.1181889
+    },
+    {
+      "_step": 3351,
+      "val/per": 0.31360804406918286,
+      "val/errores": 13037,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.360227694576736,
+      "_timestamp": 1793122613.8358424
+    },
+    {
+      "_step": 3401,
+      "val/per": 0.31377643068485245,
+      "val/errores": 13044,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.06299320900277,
+      "_timestamp": 1793122697.6470716
+    },
+    {
+      "_step": 3451,
+      "val/per": 0.3192369680787087,
+      "val/errores": 13271,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.214001266270465,
+      "_timestamp": 1793122780.8400333
+    },
+    {
+      "_step": 3501,
+      "val/per": 0.31459430853239034,
+      "val/errores": 13078,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.40986080430958,
+      "_timestamp": 1793122861.5165849
+    },
+    {
+      "_step": 3551,
+      "val/per": 0.3158451805345072,
+      "val/errores": 13130,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.51114055685801,
+      "_timestamp": 1793122944.8067698
+    },
+    {
+      "_step": 3601,
+      "val/per": 0.31146712852709824,
+      "val/errores": 12948,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.73429298400879,
+      "_timestamp": 1793123028.9971752
+    },
+    {
+      "_step": 3651,
+      "val/per": 0.31351182314594306,
+      "val/errores": 13033,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.0051649119756,
+      "_timestamp": 1793123109.5958507
+    },
+    {
+      "_step": 3701,
+      "val/per": 0.31209256452815665,
+      "val/errores": 12974,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.23971280659715,
+      "_timestamp": 1793123188.515752
+    },
+    {
+      "_step": 3751,
+      "val/per": 0.3080031752904669,
+      "val/errores": 12804,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.73980453700236,
+      "_timestamp": 1793123267.3464649
+    },
+    {
+      "_step": 3801,
+      "val/per": 0.3093983786774434,
+      "val/errores": 12862,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.49861254757398,
+      "_timestamp": 1793123348.7274888
+    },
+    {
+      "_step": 3851,
+      "val/per": 0.309157826369344,
+      "val/errores": 12852,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.881402452024695,
+      "_timestamp": 1793123430.5140927
+    },
+    {
+      "_step": 3901,
+      "val/per": 0.3116114599119579,
+      "val/errores": 12954,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.04690355274775,
+      "_timestamp": 1793123513.3098087
+    },
+    {
+      "_step": 3951,
+      "val/per": 0.31045680883308074,
+      "val/errores": 12906,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.00294162279939,
+      "_timestamp": 1793123596.6067455
+    },
+    {
+      "_step": 4001,
+      "val/per": 0.30886916359962474,
+      "val/errores": 12840,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.690856316971455,
+      "_timestamp": 1793123676.7387166
+    },
+    {
+      "_step": 4051,
+      "val/per": 0.3058382045175723,
+      "val/errores": 12714,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.43377945259826,
+      "_timestamp": 1793123763.5958955
+    },
+    {
+      "_step": 4101,
+      "val/per": 0.3074980154434582,
+      "val/errores": 12783,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.44363619660678,
+      "_timestamp": 1793123851.4761984
+    },
+    {
+      "_step": 4151,
+      "val/per": 0.3108657477568497,
+      "val/errores": 12923,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.65995795367515,
+      "_timestamp": 1793123931.8682857
+    },
+    {
+      "_step": 4201,
+      "val/per": 0.30898943975367443,
+      "val/errores": 12845,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.412757596577684,
+      "_timestamp": 1793124012.6585436
+    },
+    {
+      "_step": 4251,
+      "val/per": 0.30615092251810155,
+      "val/errores": 12727,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.53505372347897,
+      "_timestamp": 1793124097.5747375
+    },
+    {
+      "_step": 4301,
+      "val/per": 0.30201342281879195,
+      "val/errores": 12555,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.04164081730255,
+      "_timestamp": 1793124184.090487
+    },
+    {
+      "_step": 4351,
+      "val/per": 0.30870077698395515,
+      "val/errores": 12833,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.50470558061992,
+      "_timestamp": 1793124265.8797543
+    },
+    {
+      "_step": 4401,
+      "val/per": 0.3036972889754877,
+      "val/errores": 12625,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.80902489440082,
+      "_timestamp": 1793124346.594686
+    },
+    {
+      "_step": 4451,
+      "val/per": 0.3022780303577013,
+      "val/errores": 12566,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.49106640750415,
+      "_timestamp": 1793124429.8544798
+    },
+    {
+      "_step": 4501,
+      "val/per": 0.30432272497654617,
+      "val/errores": 12651,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.11371351790755,
+      "_timestamp": 1793124507.2276096
+    },
+    {
+      "_step": 4551,
+      "val/per": 0.3044911115922157,
+      "val/errores": 12658,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.25796898097208,
+      "_timestamp": 1793124592.7717943
+    },
+    {
+      "_step": 4601,
+      "val/per": 0.3021096437420317,
+      "val/errores": 12559,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 35.850131607055665,
+      "_timestamp": 1793124675.2812946
+    },
+    {
+      "_step": 4651,
+      "val/per": 0.30360106805224796,
+      "val/errores": 12621,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.36821665306614,
+      "_timestamp": 1793124758.0766037
+    },
+    {
+      "_step": 4701,
+      "val/per": 0.30037766712371605,
+      "val/errores": 12487,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.89013592968249,
+      "_timestamp": 1793124836.9511037
+    },
+    {
+      "_step": 4751,
+      "val/per": 0.3021096437420317,
+      "val/errores": 12559,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.2544470643344,
+      "_timestamp": 1793124925.590602
+    },
+    {
+      "_step": 4801,
+      "val/per": 0.3036732337446778,
+      "val/errores": 12624,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.44136984315637,
+      "_timestamp": 1793125007.5716379
+    },
+    {
+      "_step": 4851,
+      "val/per": 0.30694474513482956,
+      "val/errores": 12760,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.4697622168554,
+      "_timestamp": 1793125093.9708865
+    },
+    {
+      "_step": 4901,
+      "val/per": 0.3080512857520868,
+      "val/errores": 12806,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.23246803806253,
+      "_timestamp": 1793125175.7039268
+    },
+    {
+      "_step": 4951,
+      "val/per": 0.30648769574944074,
+      "val/errores": 12741,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.897613211853866,
+      "_timestamp": 1793125255.0194802
+    },
+    {
+      "_step": 5001,
+      "val/per": 0.3023501960501311,
+      "val/errores": 12569,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.825179562503344,
+      "_timestamp": 1793125337.1742668
+    },
+    {
+      "_step": 5051,
+      "val/per": 0.3025426378966106,
+      "val/errores": 12577,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.603182356324915,
+      "_timestamp": 1793125417.1503122
+    },
+    {
+      "_step": 5101,
+      "val/per": 0.30352890235981816,
+      "val/errores": 12618,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.091140726167865,
+      "_timestamp": 1793125498.3747249
+    },
+    {
+      "_step": 5151,
+      "val/per": 0.30352890235981816,
+      "val/errores": 12618,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.281070322533175,
+      "_timestamp": 1793125581.5964966
+    },
+    {
+      "_step": 5201,
+      "val/per": 0.2976834812730028,
+      "val/errores": 12375,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.41475446518153,
+      "_timestamp": 1793125662.0115695
+    },
+    {
+      "_step": 5251,
+      "val/per": 0.29936734742969856,
+      "val/errores": 12445,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.66810272425821,
+      "_timestamp": 1793125751.6570113
+    },
+    {
+      "_step": 5301,
+      "val/per": 0.29850135912054077,
+      "val/errores": 12409,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.58202174983612,
+      "_timestamp": 1793125832.867961
+    },
+    {
+      "_step": 5351,
+      "val/per": 0.29977628635346754,
+      "val/errores": 12462,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.123481990866466,
+      "_timestamp": 1793125919.6279905
+    },
+    {
+      "_step": 5401,
+      "val/per": 0.3011474345096341,
+      "val/errores": 12519,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.48185966178163,
+      "_timestamp": 1793126003.685083
+    },
+    {
+      "_step": 5451,
+      "val/per": 0.298405138197301,
+      "val/errores": 12405,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.030740434829504,
+      "_timestamp": 1793126083.544123
+    },
+    {
+      "_step": 5501,
+      "val/per": 0.29631233311683625,
+      "val/errores": 12318,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.65434811735806,
+      "_timestamp": 1793126165.6468635
+    },
+    {
+      "_step": 5551,
+      "val/per": 0.29881407712107,
+      "val/errores": 12422,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.24497718288474,
+      "_timestamp": 1793126248.5339873
+    },
+    {
+      "_step": 5601,
+      "val/per": 0.2960958360395468,
+      "val/errores": 12309,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.01612100470556,
+      "_timestamp": 1793126334.4090374
+    },
+    {
+      "_step": 5651,
+      "val/per": 0.29987250727670733,
+      "val/errores": 12466,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.974597356090804,
+      "_timestamp": 1793126425.1659164
+    },
+    {
+      "_step": 5701,
+      "val/per": 0.2988381323518799,
+      "val/errores": 12423,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.8324910830145,
+      "_timestamp": 1793126508.3847334
+    },
+    {
+      "_step": 5751,
+      "val/per": 0.29898246373673953,
+      "val/errores": 12429,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 36.886548692886144,
+      "_timestamp": 1793126592.2876396
+    },
+    {
+      "_step": 5801,
+      "val/per": 0.299198960814029,
+      "val/errores": 12438,
+      "val/fonemas": 41571,
+      "val/frases": 1460,
+      "val/completo": 1,
+      "val/ctc_loss": 37.85276055531959,
+      "_timestamp": 1793126674.017595
+    }
+  ],
+  "best_validation": {
+    "_step": 5601,
+    "val/per": 0.2960958360395468,
+    "val/errores": 12309,
+    "val/fonemas": 41571,
+    "val/frases": 1460,
+    "val/completo": 1,
+    "val/ctc_loss": 36.01612100470556,
+    "_timestamp": 1793126334.4090374
+  },
+  "wandb_files": [
+    {
+      "name": "artifact/4245575882/wandb_manifest.json",
+      "size": 0
+    },
+    {
+      "name": "config.yaml",
+      "size": 5084
+    },
+    {
+      "name": "output.log",
+      "size": 65920
+    },
+    {
+      "name": "requirements.txt",
+      "size": 1867
+    },
+    {
+      "name": "wandb-metadata.json",
+      "size": 945
+    },
+    {
+      "name": "wandb-summary.json",
+      "size": 671
+    }
+  ],
+  "snapshot_included_in_executed_notebook": true,
+  "training_completed_to_planned_budget": false,
+  "weights_present_locally": true,
+  "test_evaluated": false,
+  "scope": "real baseline training interrupted before 10001 planned updates; weights received and reload verified; local GPU workloads suspended after reported desktop freeze",
+  "source_base_commit": "5ebd1364372ec0498e5686975b567810ca5f21d2",
+  "last_synced_step": 5801,
+  "planned_steps": 10001,
+  "best_validation_step": 5601,
+  "validation_evaluations": 117,
+  "validation_phrase_count": 1460,
+  "validation_phone_count": 41571,
+  "notebook": {
+    "path": "notebooks/09_comparativa_t12_colab.ipynb",
+    "observation_snapshot": "runs/auditoria/notebook09_m6sn4um1/09_comparativa_t12_colab.ipynb",
+    "sha256": "14feae8dacfb3e3ed182821b6797c374eeed51a03dbc38691ad091f54bd64ed3",
+    "all_cell_text_unchanged": true,
+    "snapshot_sha256": "451ca97239eccc7323daeef28b8bf58855f271dd5681bb18940dd1840f922d32",
+    "source_file_count": 54,
+    "all_source_hashes_verified": true,
+    "sources_match_current_checkout": true,
+    "last_printed_step_in_saved_cell": 5760,
+    "post_training_cells_executed": false
+  },
+  "expected_drive_checkpoint_folder": "speech_bci/checkpoints/speech_comparacion_t4/m6sn4um1",
+  "drive_experiment_folder": "speech_bci/experimentos/comparativa_t12_20261027_163056_42f094ec",
+  "expected_best_checkpoint": "checkpoints/speech_comparacion_t4/m6sn4um1/mejor_val.pt",
+  "checkpoint_bytes_and_sha256_verified": true,
+  "independent_reload_verified": true,
+  "colab_limit_reported_by_author": true,
+  "failure_cause_independently_verified": false,
+  "final_result_json_present": false,
+  "exact_training_resume_supported_by_existing_checkpoint_format": false,
+  "full_training_budget_reached": false,
+  "comparison_at_equal_budget_complete": false,
+  "author_interpretation_reviewed": false,
+  "full_goal_complete": false,
+  "environment_recovery": "neural_data was unmounted; inspected via ro,noload and restored normal mount without filesystem repair or fstab changes",
+  "figure": {
+    "path": "docs/figuras/t12_baseline_m6sn4um1/curvas_validacion.png",
+    "sha256": "6872c2cf1136d64a765d867c88c85d6021d79b945adab3e1f57db3f8e2dfc20d",
+    "visually_reviewed": true,
+    "scope": "117 synchronized complete validation evaluations; best PER marker, no comparison across budgets"
+  },
+  "local_checks": {
+    "command": "python -m pytest tests/test_speech_comparison.py tests/test_colab_baseline.py -q",
+    "passed": 12,
+    "seconds": 1.44,
+    "scope": "notebook structure, embedded source extraction, common configurations and tiny synthetic processes; no new T12 training",
+    "author_notebook_outputs_preserved": true,
+    "test_source_sha256": {
+      "tests/test_speech_comparison.py": "eaaec78dcdaeb636fcca787ff902673b834af124cff518496b23b406d6dfac20",
+      "tests/test_colab_baseline.py": "f3b61d97f5e48ced1fca007bd572ec1e52f748955184d722c37bc13badc2d33e"
+    }
+  },
+  "last_persisted_checkpoint_step": 5751,
+  "local_recovery_record": "docs/resultados/speech_baseline_m6sn4um1_recarga_local.json",
+  "local_gpu_workloads_suspended_after_desktop_freeze": true
+}

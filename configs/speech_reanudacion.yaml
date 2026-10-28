@@ -1,0 +1,4 @@
+# Persistencia y límite operativo de una sesión; no cambia el presupuesto ni LR.
+reanudacion:
+  cada_pasos: 250
+  max_pasos_sesion: null

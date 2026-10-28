@@ -38,8 +38,9 @@ bloques y mostrará la decodificación. Alice es una exploración anterior.
 ## Cómo se ejecuta
 
 Desde la raíz, con el entorno activado. En Colab,
-`notebooks/09_comparativa_t12_colab.ipynb` permite elegir variante y semilla.
-Se conservan `notebooks/07_baseline_t12_colab.ipynb` para el baseline y
+`notebooks/11_entrenamiento_reanudable_colab.ipynb` permite elegir variante,
+semilla y estado para continuar. Se conservan el notebook 09 de comparación,
+`notebooks/07_baseline_t12_colab.ipynb` para el baseline y
 `notebooks/08_salidas_t12_colab.ipynb` para la prueba de 200 pasos.
 
 ```bash
@@ -127,4 +128,18 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
   `docs/resultados/*_xz71t4vd_mediciones.json`, figuras en `docs/figuras/t12_e1_mediciones/`.
   Se generan desde `configs/speech_figuras_e1.yaml` sin cargar el modelo.
   La demo ejecutada original se conserva aparte en `docs/resultados/*_demo_ejecutada.ipynb`.
-- Pendiente: incorporar la reanudación y los registros de entrenamientos posteriores.
+- Hecho: notebook 09 conserva el baseline interrumpido `m6sn4um1`, con
+  5.801 pasos sincronizados de 10.001 y 117 evaluaciones completas de val.
+  Su registro y curva están en `docs/resultados/speech_baseline_m6sn4um1.json`
+  y `docs/figuras/t12_baseline_m6sn4um1/`; no hay cierre normal del entrenamiento.
+- Hecho: el pipeline local lee `WANDB_API_KEY` desde `.env` si no está
+  definida en el entorno. Solo carga esa variable, sin imprimirla ni añadirla
+  a la configuración. El notebook 11 también la lee del `.env` de Drive.
+- Hecho: `entrenamiento.pt` guarda modelo, Adam, paso, estado aleatorio,
+  muestreo, historial y selección. `run.py --reanudar RUTA` exige datos,
+  fuentes y configuración compatibles. Los pesos antiguos son de inferencia.
+  Online conserva el run de W&B; offline usa segmentos con un ID lógico común.
+- Hecho: perfil y notebook 11 reanudables, con fuentes y lock empaquetados.
+  La guía está en `docs/experimentos/t12_reanudacion.md` y la verificación
+  original en `docs/resultados/t12_reanudacion_verificacion.json`.
+- Pendiente: incorporar los registros de los entrenamientos completos.
