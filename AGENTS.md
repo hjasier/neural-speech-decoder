@@ -146,4 +146,6 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
   seleccionado desde los registros de la ronda, con fuentes y hashes.
   Configuración en `configs/speech_figuras_semilla0.yaml`; solo usa CPU,
   sin cargar pesos. No combina las medidas de latencia con este generador.
-- Pendiente: incorporar las figuras guardadas y revisar la documentación de E1.
+- Hecho: figuras de la ronda en `docs/figuras/t12_semilla0/`, con PNG/SVG,
+  datos y hashes originales de procedencia.
+- Pendiente: revisar la documentación de ejecución y presentación de E1.

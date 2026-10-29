@@ -1,0 +1,13 @@
+{
+  "config": "configs/speech_figuras_semilla0.yaml",
+  "script": "scripts/plot_speech_training_round.py",
+  "sha256": {
+    "configs/speech_figuras_semilla0.yaml": "26f4e21dbc1276040570ccc117672d169b7b13b98e17397a6b8d7da827a2079a",
+    "/run/media/hjasi/neural_data/Trabajo Integrado/tic_proyecto/scripts/plot_speech_training_round.py": "6adb2d0aea6d12dc72ff948411b27fb0d5c639f7ca4cec0ef26d5ad4db54cf91",
+    "docs/figuras/t12_semilla0/curvas_per.png": "26789dddb5e297d756e73b2fdf306929051d6c04142ac4caa5c9ebf0e7aea6a8",
+    "docs/figuras/t12_semilla0/curvas_per.svg": "123f7f48d0f7d9b04001850cf159d76b31902b3f9cbc81eaf455a435b28d7127",
+    "docs/figuras/t12_semilla0/per_seleccionado.png": "62ce89f5580d85a58d2a2b5210e31d985d0269b3c1c70d843807e5fc186dc76e",
+    "docs/figuras/t12_semilla0/per_seleccionado.svg": "6f5c18fe7024dc1dfdaca37fa6073840431af4763e5d3a08a7418ab195c96e44",
+    "docs/figuras/t12_semilla0/datos_figuras.json": "37592de324d9d7d85c19eaf8b889c37dd5d543348a0b66e977f6594367c74581"
+  }
+}
