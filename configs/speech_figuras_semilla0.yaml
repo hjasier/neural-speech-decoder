@@ -1,0 +1,40 @@
+# Presentación de PER e historias verificadas; no combina metadatos de latencia.
+resumen: docs/resultados/t12_semilla0_resumen.json
+titulo: "T12 · primera ronda · semilla 0"
+alcance: "4 entrenamientos · 10.001 actualizaciones · 1.460 frases val · sin test"
+nota: "La conjunta usa un checkpoint común elegido por salida 5. Una semilla; discusión del autor pendiente."
+dpi: 160
+formatos: [png, svg]
+limites_per: [0, 110]
+limites_detalle: [25, 45]
+perfiles:
+  - variante: baseline_5
+    salida: 5
+    etiqueta: Baseline · 5 capas
+    color: "#264653"
+    estilo: "-"
+  - variante: conjunta_235
+    salida: 2
+    etiqueta: Conjunta · salida 2
+    color: "#b45131"
+    estilo: ":"
+  - variante: conjunta_235
+    salida: 3
+    etiqueta: Conjunta · salida 3
+    color: "#b45131"
+    estilo: "--"
+  - variante: conjunta_235
+    salida: 5
+    etiqueta: Conjunta · salida 5
+    color: "#b45131"
+    estilo: "-"
+  - variante: control_2
+    salida: 2
+    etiqueta: Independiente · 2 capas
+    color: "#217a6b"
+    estilo: "-"
+  - variante: control_3
+    salida: 3
+    etiqueta: Independiente · 3 capas
+    color: "#735095"
+    estilo: "-"

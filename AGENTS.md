@@ -142,4 +142,8 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
 - Hecho: perfil y notebook 11 reanudables, con fuentes y lock empaquetados.
   La guía está en `docs/experimentos/t12_reanudacion.md` y la verificación
   original en `docs/resultados/t12_reanudacion_verificacion.json`.
-- Pendiente: incorporar los registros de los entrenamientos completos.
+- Hecho: `scripts/plot_speech_training_round.py` presenta curvas y PER
+  seleccionado desde los registros de la ronda, con fuentes y hashes.
+  Configuración en `configs/speech_figuras_semilla0.yaml`; solo usa CPU,
+  sin cargar pesos. No combina las medidas de latencia con este generador.
+- Pendiente: incorporar las figuras guardadas y revisar la documentación de E1.
