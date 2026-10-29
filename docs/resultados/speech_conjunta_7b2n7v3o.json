@@ -1,5 +1,5 @@
 {
-  "queried_at_utc": "2026-10-29T12:52:01.794793+00:00",
+  "queried_at_utc": "2026-10-29T13:00:11.081796+00:00",
   "scope": "descriptive full joint training and reload record; scientific interpretation pending author review",
   "runs": {
     "training": {
@@ -4759,21 +4759,851 @@
           "normalizacion_epsilon": 1e-08
         }
       }
+    },
+    "reload_latest": {
+      "id": "9jc1lhxj",
+      "name": "speech_salidas_t4_seed0_colab_recarga_val",
+      "url": "https://wandb.ai/aaurre-deusto/tiiac-2026/runs/9jc1lhxj",
+      "state": "finished",
+      "created_at": "2026-10-29T12:56:48Z",
+      "config": {
+        "datos": {
+          "raiz": "data/speech_2023/competitionData",
+          "fonemas": [
+            "AA",
+            "AE",
+            "AH",
+            "AO",
+            "AW",
+            "AY",
+            "B",
+            "CH",
+            "D",
+            "DH",
+            "EH",
+            "ER",
+            "EY",
+            "F",
+            "G",
+            "HH",
+            "IH",
+            "IY",
+            "JH",
+            "K",
+            "L",
+            "M",
+            "N",
+            "NG",
+            "OW",
+            "OY",
+            "P",
+            "R",
+            "S",
+            "SH",
+            "T",
+            "TH",
+            "UH",
+            "UW",
+            "V",
+            "W",
+            "Y",
+            "Z",
+            "ZH",
+            "SIL"
+          ],
+          "sesiones": [
+            "t12.2022.04.28",
+            "t12.2022.05.05",
+            "t12.2022.05.17",
+            "t12.2022.05.19",
+            "t12.2022.05.24",
+            "t12.2022.05.26",
+            "t12.2022.06.02",
+            "t12.2022.06.07",
+            "t12.2022.06.14",
+            "t12.2022.06.16",
+            "t12.2022.06.21",
+            "t12.2022.06.28",
+            "t12.2022.07.05",
+            "t12.2022.07.14",
+            "t12.2022.07.21",
+            "t12.2022.07.27",
+            "t12.2022.08.02",
+            "t12.2022.08.11",
+            "t12.2022.08.13"
+          ],
+          "batch_size": 64,
+          "pin_memory": false,
+          "preparados": "data/speech_2023/preparados_comparacion_v1",
+          "num_workers": 0
+        },
+        "wandb": {
+          "modo": "online",
+          "entidad": null,
+          "proyecto": "tiiac-2026",
+          "directorio": "runs/tracking"
+        },
+        "modelo": {
+          "capas": 5,
+          "kernel": 32,
+          "nombre": "speech_gru",
+          "stride": 4,
+          "entrada": 256,
+          "capa_dia": 256,
+          "unidades": 1024,
+          "dropout_gru": 0.4,
+          "bidireccional": false,
+          "dropout_entrada": 0.2,
+          "salidas_intermedias": [
+            2,
+            3
+          ]
+        },
+        "salida": {
+          "directorio": "checkpoints/speech_salidas"
+        },
+        "ejecucion": {
+          "hilos_cpu": 2,
+          "dispositivo": "cuda"
+        },
+        "etiquetas": {
+          "salida": "data/speech_2023/fonemas_original",
+          "recursos": "data/speech_2023/recursos_g2p",
+          "silencio": "SIL",
+          "max_fonemas": 500,
+          "recursos_nltk": [
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.zip",
+              "sha256": "d07cca47fd72ad32ea9d8ad1219f85301eeaf4568f8b6b73747506a71fb5afd6",
+              "archivo": "corpora/cmudict.zip"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger.zip",
+              "sha256": "e1f13cf2532daadfd6f3bc481a49859f0b8ea6432ccdcd83e6a49a5f19008de9",
+              "archivo": "taggers/averaged_perceptron_tagger.zip"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger_eng.zip",
+              "sha256": "6025f530624335c67d6547d44757b357b4e79bae030a0383e9887a92c1718f0b",
+              "archivo": "taggers/averaged_perceptron_tagger_eng.zip"
+            }
+          ],
+          "timeout_descarga": 30
+        },
+        "protocolo": {
+          "metodo": "ultimos_bloques_por_sesion",
+          "nombre": "t12_bloques_v1",
+          "sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb",
+          "manifiesto": "docs/datasets/speech_2023/particion_t12_v1.json",
+          "fraccion_validacion": 0.2,
+          "seleccion_checkpoint": "per"
+        },
+        "evaluacion": {
+          "max_lotes": null,
+          "cada_pasos": 50,
+          "micro_batch_size": 16
+        },
+        "comparacion": {
+          "plan": "configs/speech_comparativa.yaml",
+          "variante": "conjunta_235",
+          "config_base": "configs/speech_salidas_t4.yaml",
+          "plan_sha256": "a8976055d54aeef0fa7ba937b983f16e72b07cf27bbbfe15d2dc46a2c2e9cba6",
+          "config_base_sha256": "3a91ecc2c53e750c739ff2e04e85a23d98a386f57c6d079fa251529a93844095"
+        },
+        "experimento": {
+          "seed": 0,
+          "nombre": "speech_salidas_t4_seed0_colab_recarga_val"
+        },
+        "reanudacion": {
+          "cada_pasos": 250,
+          "max_pasos_sesion": null
+        },
+        "entrenamiento": {
+          "l2": 1e-05,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "pasos": 10001,
+          "ruido": {
+            "blanco_sd": 1,
+            "offset_sd": 0.2
+          },
+          "epsilon": 0.1,
+          "ctc_pesos": {
+            "2": 0.25,
+            "3": 0.25,
+            "5": 0.5
+          },
+          "optimizador": "adam_tensorflow",
+          "imprimir_cada": 10,
+          "learning_rate": {
+            "final": 0,
+            "inicio": 0.02,
+            "potencia": 1,
+            "decay_pasos": 10000
+          },
+          "clip_grad_norm": 10,
+          "micro_batch_size": 16
+        },
+        "preprocesamiento": {
+          "suavizado": {
+            "sigma": 2,
+            "umbral": 0.01,
+            "truncate": 4,
+            "longitud_impulso": 100
+          },
+          "normalizacion_epsilon": 1e-08
+        }
+      },
+      "summary": {
+        "_runtime": 15.140789184,
+        "_step": 7651,
+        "_timestamp": 1793278622.7727869,
+        "_wandb.runtime": 15,
+        "checkpoint/paso": 7651,
+        "checkpoint/sha256": "098f37388cdb1a02da39fb275dd35c8aeb2ea4c96afee5069138e4dcaab2b564",
+        "val_recarga/capa_2/completo": 1,
+        "val_recarga/capa_2/ctc_loss": 40.10026512145996,
+        "val_recarga/capa_2/errores": 12277,
+        "val_recarga/capa_2/fonemas": 41571,
+        "val_recarga/capa_2/frases": 1460,
+        "val_recarga/capa_2/per": 0.2953260686536287,
+        "val_recarga/capa_3/completo": 1,
+        "val_recarga/capa_3/ctc_loss": 39.75362725453834,
+        "val_recarga/capa_3/errores": 12011,
+        "val_recarga/capa_3/fonemas": 41571,
+        "val_recarga/capa_3/frases": 1460,
+        "val_recarga/capa_3/per": 0.2889273772581848,
+        "val_recarga/capa_5/completo": 1,
+        "val_recarga/capa_5/ctc_loss": 40.22552639686898,
+        "val_recarga/capa_5/errores": 11681,
+        "val_recarga/capa_5/fonemas": 41571,
+        "val_recarga/capa_5/frases": 1460,
+        "val_recarga/capa_5/per": 0.2809891510909047,
+        "verificacion/actualizaciones": 0,
+        "verificacion/correcta": true,
+        "verificacion/test_evaluado": false
+      }
+    },
+    "controls": {
+      "id": "k3kooorl",
+      "name": "speech_salidas_t4_seed0_colab_diagnostico_val",
+      "url": "https://wandb.ai/aaurre-deusto/tiiac-2026/runs/k3kooorl",
+      "state": "finished",
+      "created_at": "2026-10-29T12:57:30Z",
+      "config": {
+        "datos": {
+          "raiz": "data/speech_2023/competitionData",
+          "fonemas": [
+            "AA",
+            "AE",
+            "AH",
+            "AO",
+            "AW",
+            "AY",
+            "B",
+            "CH",
+            "D",
+            "DH",
+            "EH",
+            "ER",
+            "EY",
+            "F",
+            "G",
+            "HH",
+            "IH",
+            "IY",
+            "JH",
+            "K",
+            "L",
+            "M",
+            "N",
+            "NG",
+            "OW",
+            "OY",
+            "P",
+            "R",
+            "S",
+            "SH",
+            "T",
+            "TH",
+            "UH",
+            "UW",
+            "V",
+            "W",
+            "Y",
+            "Z",
+            "ZH",
+            "SIL"
+          ],
+          "sesiones": [
+            "t12.2022.04.28",
+            "t12.2022.05.05",
+            "t12.2022.05.17",
+            "t12.2022.05.19",
+            "t12.2022.05.24",
+            "t12.2022.05.26",
+            "t12.2022.06.02",
+            "t12.2022.06.07",
+            "t12.2022.06.14",
+            "t12.2022.06.16",
+            "t12.2022.06.21",
+            "t12.2022.06.28",
+            "t12.2022.07.05",
+            "t12.2022.07.14",
+            "t12.2022.07.21",
+            "t12.2022.07.27",
+            "t12.2022.08.02",
+            "t12.2022.08.11",
+            "t12.2022.08.13"
+          ],
+          "batch_size": 64,
+          "pin_memory": false,
+          "preparados": "data/speech_2023/preparados_comparacion_v1",
+          "num_workers": 0
+        },
+        "wandb": {
+          "modo": "online",
+          "entidad": null,
+          "proyecto": "tiiac-2026",
+          "directorio": "runs/tracking"
+        },
+        "modelo": {
+          "capas": 5,
+          "kernel": 32,
+          "nombre": "speech_gru",
+          "stride": 4,
+          "entrada": 256,
+          "capa_dia": 256,
+          "unidades": 1024,
+          "dropout_gru": 0.4,
+          "bidireccional": false,
+          "dropout_entrada": 0.2,
+          "salidas_intermedias": [
+            2,
+            3
+          ]
+        },
+        "salida": {
+          "directorio": "checkpoints/speech_salidas"
+        },
+        "ejecucion": {
+          "hilos_cpu": 2,
+          "dispositivo": "cuda"
+        },
+        "etiquetas": {
+          "salida": "data/speech_2023/fonemas_original",
+          "recursos": "data/speech_2023/recursos_g2p",
+          "silencio": "SIL",
+          "max_fonemas": 500,
+          "recursos_nltk": [
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.zip",
+              "sha256": "d07cca47fd72ad32ea9d8ad1219f85301eeaf4568f8b6b73747506a71fb5afd6",
+              "archivo": "corpora/cmudict.zip"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger.zip",
+              "sha256": "e1f13cf2532daadfd6f3bc481a49859f0b8ea6432ccdcd83e6a49a5f19008de9",
+              "archivo": "taggers/averaged_perceptron_tagger.zip"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger_eng.zip",
+              "sha256": "6025f530624335c67d6547d44757b357b4e79bae030a0383e9887a92c1718f0b",
+              "archivo": "taggers/averaged_perceptron_tagger_eng.zip"
+            }
+          ],
+          "timeout_descarga": 30
+        },
+        "protocolo": {
+          "metodo": "ultimos_bloques_por_sesion",
+          "nombre": "t12_bloques_v1",
+          "sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb",
+          "manifiesto": "docs/datasets/speech_2023/particion_t12_v1.json",
+          "fraccion_validacion": 0.2,
+          "seleccion_checkpoint": "per"
+        },
+        "evaluacion": {
+          "max_lotes": null,
+          "cada_pasos": 50,
+          "micro_batch_size": 16
+        },
+        "comparacion": {
+          "plan": "configs/speech_comparativa.yaml",
+          "variante": "conjunta_235",
+          "config_base": "configs/speech_salidas_t4.yaml",
+          "plan_sha256": "a8976055d54aeef0fa7ba937b983f16e72b07cf27bbbfe15d2dc46a2c2e9cba6",
+          "config_base_sha256": "3a91ecc2c53e750c739ff2e04e85a23d98a386f57c6d079fa251529a93844095"
+        },
+        "diagnostico": {
+          "split": "val",
+          "salidas": null,
+          "controles": [
+            "original",
+            "cero",
+            "permutada"
+          ],
+          "semilla_control": 314159
+        },
+        "experimento": {
+          "seed": 0,
+          "nombre": "speech_salidas_t4_seed0_colab_diagnostico_val"
+        },
+        "reanudacion": {
+          "cada_pasos": 250,
+          "max_pasos_sesion": null
+        },
+        "entrenamiento": {
+          "l2": 1e-05,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "pasos": 10001,
+          "ruido": {
+            "blanco_sd": 1,
+            "offset_sd": 0.2
+          },
+          "epsilon": 0.1,
+          "ctc_pesos": {
+            "2": 0.25,
+            "3": 0.25,
+            "5": 0.5
+          },
+          "optimizador": "adam_tensorflow",
+          "imprimir_cada": 10,
+          "learning_rate": {
+            "final": 0,
+            "inicio": 0.02,
+            "potencia": 1,
+            "decay_pasos": 10000
+          },
+          "clip_grad_norm": 10,
+          "micro_batch_size": 16
+        },
+        "preprocesamiento": {
+          "suavizado": {
+            "sigma": 2,
+            "umbral": 0.01,
+            "truncate": 4,
+            "longitud_impulso": 100
+          },
+          "normalizacion_epsilon": 1e-08
+        }
+      },
+      "summary": {
+        "_runtime": 21.460799368,
+        "_step": 7651,
+        "_timestamp": 1793278671.807971,
+        "_wandb.runtime": 21,
+        "checkpoint/paso": 7651,
+        "checkpoint/semilla_entrenamiento": 0,
+        "checkpoint/sha256": "098f37388cdb1a02da39fb275dd35c8aeb2ea4c96afee5069138e4dcaab2b564",
+        "diagnostico/actualizaciones": 0,
+        "diagnostico/por_sesion": {
+          "path": "media/table/diagnostico/por_sesion_0_756efe5d74397c7c4a79.table.json",
+          "size": 15864,
+          "_type": "table-file",
+          "ncols": 9,
+          "nrows": 171,
+          "sha256": "756efe5d74397c7c4a79e8fe8f4ab6a4ca5fb30ba6d4fd3f47514d46bdf79c92",
+          "artifact_path": "wandb-client-artifact://cdkz5jwjapg8j5m3rzkft580vypx59ltd7mc9qlcff8cqn5s4ck8lfqr86w4nfvyeec19mlt06m0b08f0hbk8ne5bag2qyufw28xrz8wmne2ppqoxgaw6d7om16tskml/diagnostico/por_sesion.table.json",
+          "_latest_artifact_path": "wandb-client-artifact://rhkj67i9k5co2rvnasf3pwdsht8felkhhg24qwerwcq4a1xpd9s5mtsgbup0n9md4aojc6zeuy8es0heforeiypvv3mtelsfc9kxofk7fhhpz6vpuiu9bvsz4duc1z2r:latest/diagnostico/por_sesion.table.json"
+        },
+        "diagnostico/split": "val",
+        "diagnostico/test_evaluado": false,
+        "diagnostico/val/cero/capa_2/completo": 1,
+        "diagnostico/val/cero/capa_2/ctc_loss": 219.5725139225999,
+        "diagnostico/val/cero/capa_2/errores": 33587,
+        "diagnostico/val/cero/capa_2/fonemas": 41571,
+        "diagnostico/val/cero/capa_2/frases": 1460,
+        "diagnostico/val/cero/capa_2/per": 0.8079430372134421,
+        "diagnostico/val/cero/capa_3/completo": 1,
+        "diagnostico/val/cero/capa_3/ctc_loss": 218.65488097830993,
+        "diagnostico/val/cero/capa_3/errores": 33652,
+        "diagnostico/val/cero/capa_3/fonemas": 41571,
+        "diagnostico/val/cero/capa_3/frases": 1460,
+        "diagnostico/val/cero/capa_3/per": 0.8095066272160881,
+        "diagnostico/val/cero/capa_5/completo": 1,
+        "diagnostico/val/cero/capa_5/ctc_loss": 220.70187746596665,
+        "diagnostico/val/cero/capa_5/errores": 34023,
+        "diagnostico/val/cero/capa_5/fonemas": 41571,
+        "diagnostico/val/cero/capa_5/frases": 1460,
+        "diagnostico/val/cero/capa_5/per": 0.8184311178465757,
+        "diagnostico/val/original/capa_2/completo": 1,
+        "diagnostico/val/original/capa_2/ctc_loss": 40.10026507615176,
+        "diagnostico/val/original/capa_2/errores": 12277,
+        "diagnostico/val/original/capa_2/fonemas": 41571,
+        "diagnostico/val/original/capa_2/frases": 1460,
+        "diagnostico/val/original/capa_2/per": 0.2953260686536287,
+        "diagnostico/val/original/capa_3/completo": 1,
+        "diagnostico/val/original/capa_3/ctc_loss": 39.75362727128237,
+        "diagnostico/val/original/capa_3/errores": 12011,
+        "diagnostico/val/original/capa_3/fonemas": 41571,
+        "diagnostico/val/original/capa_3/frases": 1460,
+        "diagnostico/val/original/capa_3/per": 0.2889273772581848,
+        "diagnostico/val/original/capa_5/completo": 1,
+        "diagnostico/val/original/capa_5/ctc_loss": 40.22552635995671,
+        "diagnostico/val/original/capa_5/errores": 11681,
+        "diagnostico/val/original/capa_5/fonemas": 41571,
+        "diagnostico/val/original/capa_5/frases": 1460,
+        "diagnostico/val/original/capa_5/per": 0.2809891510909047,
+        "diagnostico/val/permutada/capa_2/completo": 1,
+        "diagnostico/val/permutada/capa_2/ctc_loss": 190.055192922566,
+        "diagnostico/val/permutada/capa_2/errores": 32814,
+        "diagnostico/val/permutada/capa_2/fonemas": 41571,
+        "diagnostico/val/permutada/capa_2/frases": 1460,
+        "diagnostico/val/permutada/capa_2/per": 0.7893483437973587,
+        "diagnostico/val/permutada/capa_3/completo": 1,
+        "diagnostico/val/permutada/capa_3/ctc_loss": 191.3673635417468,
+        "diagnostico/val/permutada/capa_3/errores": 33193,
+        "diagnostico/val/permutada/capa_3/fonemas": 41571,
+        "diagnostico/val/permutada/capa_3/frases": 1460,
+        "diagnostico/val/permutada/capa_3/per": 0.7984652762743258,
+        "diagnostico/val/permutada/capa_5/completo": 1,
+        "diagnostico/val/permutada/capa_5/ctc_loss": 193.77062271065907,
+        "diagnostico/val/permutada/capa_5/errores": 33487,
+        "diagnostico/val/permutada/capa_5/fonemas": 41571,
+        "diagnostico/val/permutada/capa_5/frases": 1460,
+        "diagnostico/val/permutada/capa_5/per": 0.8055375141324481
+      },
+      "downloaded_table_receipts": {
+        "diagnostico/por_sesion": {
+          "path": "runs/auditoria/conjunta_7b2n7v3o_tablas/controls/media/table/diagnostico/por_sesion_0_756efe5d74397c7c4a79.table.json",
+          "sha256": "756efe5d74397c7c4a79e8fe8f4ab6a4ca5fb30ba6d4fd3f47514d46bdf79c92",
+          "rows": 171,
+          "columns": [
+            "control",
+            "salida",
+            "sesion",
+            "ctc_loss",
+            "per",
+            "errores",
+            "fonemas",
+            "frases",
+            "completo"
+          ],
+          "global_counts_reproduced_from_19_sessions": true
+        }
+      }
+    },
+    "benchmark": {
+      "id": "r7zg66f8",
+      "name": "speech_salidas_t4_seed0_colab_benchmark",
+      "url": "https://wandb.ai/aaurre-deusto/tiiac-2026/runs/r7zg66f8",
+      "state": "finished",
+      "created_at": "2026-10-29T12:58:08Z",
+      "config": {
+        "datos": {
+          "raiz": "data/speech_2023/competitionData",
+          "fonemas": [
+            "AA",
+            "AE",
+            "AH",
+            "AO",
+            "AW",
+            "AY",
+            "B",
+            "CH",
+            "D",
+            "DH",
+            "EH",
+            "ER",
+            "EY",
+            "F",
+            "G",
+            "HH",
+            "IH",
+            "IY",
+            "JH",
+            "K",
+            "L",
+            "M",
+            "N",
+            "NG",
+            "OW",
+            "OY",
+            "P",
+            "R",
+            "S",
+            "SH",
+            "T",
+            "TH",
+            "UH",
+            "UW",
+            "V",
+            "W",
+            "Y",
+            "Z",
+            "ZH",
+            "SIL"
+          ],
+          "sesiones": [
+            "t12.2022.04.28",
+            "t12.2022.05.05",
+            "t12.2022.05.17",
+            "t12.2022.05.19",
+            "t12.2022.05.24",
+            "t12.2022.05.26",
+            "t12.2022.06.02",
+            "t12.2022.06.07",
+            "t12.2022.06.14",
+            "t12.2022.06.16",
+            "t12.2022.06.21",
+            "t12.2022.06.28",
+            "t12.2022.07.05",
+            "t12.2022.07.14",
+            "t12.2022.07.21",
+            "t12.2022.07.27",
+            "t12.2022.08.02",
+            "t12.2022.08.11",
+            "t12.2022.08.13"
+          ],
+          "batch_size": 64,
+          "pin_memory": false,
+          "preparados": "data/speech_2023/preparados_comparacion_v1",
+          "num_workers": 0
+        },
+        "wandb": {
+          "modo": "online",
+          "entidad": null,
+          "proyecto": "tiiac-2026",
+          "directorio": "runs/tracking"
+        },
+        "modelo": {
+          "capas": 5,
+          "kernel": 32,
+          "nombre": "speech_gru",
+          "stride": 4,
+          "entrada": 256,
+          "capa_dia": 256,
+          "unidades": 1024,
+          "dropout_gru": 0.4,
+          "bidireccional": false,
+          "dropout_entrada": 0.2,
+          "salidas_intermedias": [
+            2,
+            3
+          ]
+        },
+        "salida": {
+          "directorio": "checkpoints/speech_salidas"
+        },
+        "benchmark": {
+          "split": "val",
+          "salidas": null,
+          "sesiones": null,
+          "hilos_cpu": 2,
+          "batch_size": 1,
+          "dispositivo": "cuda",
+          "repeticiones": 5,
+          "calentamiento": 2,
+          "semilla_muestras": 271828,
+          "ensayos_por_sesion": 2
+        },
+        "ejecucion": {
+          "hilos_cpu": 2,
+          "dispositivo": "cuda"
+        },
+        "etiquetas": {
+          "salida": "data/speech_2023/fonemas_original",
+          "recursos": "data/speech_2023/recursos_g2p",
+          "silencio": "SIL",
+          "max_fonemas": 500,
+          "recursos_nltk": [
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.zip",
+              "sha256": "d07cca47fd72ad32ea9d8ad1219f85301eeaf4568f8b6b73747506a71fb5afd6",
+              "archivo": "corpora/cmudict.zip"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger.zip",
+              "sha256": "e1f13cf2532daadfd6f3bc481a49859f0b8ea6432ccdcd83e6a49a5f19008de9",
+              "archivo": "taggers/averaged_perceptron_tagger.zip"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger_eng.zip",
+              "sha256": "6025f530624335c67d6547d44757b357b4e79bae030a0383e9887a92c1718f0b",
+              "archivo": "taggers/averaged_perceptron_tagger_eng.zip"
+            }
+          ],
+          "timeout_descarga": 30
+        },
+        "protocolo": {
+          "metodo": "ultimos_bloques_por_sesion",
+          "nombre": "t12_bloques_v1",
+          "sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb",
+          "manifiesto": "docs/datasets/speech_2023/particion_t12_v1.json",
+          "fraccion_validacion": 0.2,
+          "seleccion_checkpoint": "per"
+        },
+        "evaluacion": {
+          "max_lotes": null,
+          "cada_pasos": 50,
+          "micro_batch_size": 16
+        },
+        "comparacion": {
+          "plan": "configs/speech_comparativa.yaml",
+          "variante": "conjunta_235",
+          "config_base": "configs/speech_salidas_t4.yaml",
+          "plan_sha256": "a8976055d54aeef0fa7ba937b983f16e72b07cf27bbbfe15d2dc46a2c2e9cba6",
+          "config_base_sha256": "3a91ecc2c53e750c739ff2e04e85a23d98a386f57c6d079fa251529a93844095"
+        },
+        "experimento": {
+          "seed": 0,
+          "nombre": "speech_salidas_t4_seed0_colab_benchmark"
+        },
+        "reanudacion": {
+          "cada_pasos": 250,
+          "max_pasos_sesion": null
+        },
+        "entrenamiento": {
+          "l2": 1e-05,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "pasos": 10001,
+          "ruido": {
+            "blanco_sd": 1,
+            "offset_sd": 0.2
+          },
+          "epsilon": 0.1,
+          "ctc_pesos": {
+            "2": 0.25,
+            "3": 0.25,
+            "5": 0.5
+          },
+          "optimizador": "adam_tensorflow",
+          "imprimir_cada": 10,
+          "learning_rate": {
+            "final": 0,
+            "inicio": 0.02,
+            "potencia": 1,
+            "decay_pasos": 10000
+          },
+          "clip_grad_norm": 10,
+          "micro_batch_size": 16
+        },
+        "preprocesamiento": {
+          "suavizado": {
+            "sigma": 2,
+            "umbral": 0.01,
+            "truncate": 4,
+            "longitud_impulso": 100
+          },
+          "normalizacion_epsilon": 1e-08
+        }
+      },
+      "summary": {
+        "_runtime": 34.977018656,
+        "_step": 7651,
+        "_timestamp": 1793278722.9582007,
+        "_wandb.runtime": 34,
+        "benchmark/actualizaciones": 0,
+        "benchmark/capa_2/forward/gpu_extra_allocated_bytes": 135028224,
+        "benchmark/capa_2/forward/gpu_peak_allocated_bytes": 388772352,
+        "benchmark/capa_2/forward/gpu_peak_reserved_bytes": 545259520,
+        "benchmark/capa_2/forward/mean_ms": 2.5356066788892924,
+        "benchmark/capa_2/forward/observations": 190,
+        "benchmark/capa_2/forward/p50_ms": 2.541302999816253,
+        "benchmark/capa_2/forward/p95_ms": 3.4840989999793237,
+        "benchmark/capa_2/forward/phrases_per_second": 394.3829334122294,
+        "benchmark/capa_2/raw_to_phones/gpu_extra_allocated_bytes": 136305664,
+        "benchmark/capa_2/raw_to_phones/gpu_peak_allocated_bytes": 389411328,
+        "benchmark/capa_2/raw_to_phones/gpu_peak_reserved_bytes": 545259520,
+        "benchmark/capa_2/raw_to_phones/mean_ms": 3.575141557973295,
+        "benchmark/capa_2/raw_to_phones/observations": 190,
+        "benchmark/capa_2/raw_to_phones/p50_ms": 3.525473500303633,
+        "benchmark/capa_2/raw_to_phones/p95_ms": 4.695239349894109,
+        "benchmark/capa_2/raw_to_phones/phrases_per_second": 279.7092041767678,
+        "benchmark/capa_3/forward/gpu_extra_allocated_bytes": 135028224,
+        "benchmark/capa_3/forward/gpu_peak_allocated_bytes": 388772352,
+        "benchmark/capa_3/forward/gpu_peak_reserved_bytes": 545259520,
+        "benchmark/capa_3/forward/mean_ms": 3.398157015717037,
+        "benchmark/capa_3/forward/observations": 190,
+        "benchmark/capa_3/forward/p50_ms": 3.386644500096736,
+        "benchmark/capa_3/forward/p95_ms": 4.822533499100245,
+        "benchmark/capa_3/forward/phrases_per_second": 294.2771612302889,
+        "benchmark/capa_3/raw_to_phones/gpu_extra_allocated_bytes": 136305664,
+        "benchmark/capa_3/raw_to_phones/gpu_peak_allocated_bytes": 389411328,
+        "benchmark/capa_3/raw_to_phones/gpu_peak_reserved_bytes": 545259520,
+        "benchmark/capa_3/raw_to_phones/mean_ms": 4.4414458841856685,
+        "benchmark/capa_3/raw_to_phones/observations": 190,
+        "benchmark/capa_3/raw_to_phones/p50_ms": 4.431197499798145,
+        "benchmark/capa_3/raw_to_phones/p95_ms": 6.159581399697341,
+        "benchmark/capa_3/raw_to_phones/phrases_per_second": 225.15190459949696,
+        "benchmark/capa_5/forward/gpu_extra_allocated_bytes": 135028224,
+        "benchmark/capa_5/forward/gpu_peak_allocated_bytes": 388772352,
+        "benchmark/capa_5/forward/gpu_peak_reserved_bytes": 545259520,
+        "benchmark/capa_5/forward/mean_ms": 5.115606615694752,
+        "benchmark/capa_5/forward/observations": 190,
+        "benchmark/capa_5/forward/p50_ms": 5.092401999718277,
+        "benchmark/capa_5/forward/p95_ms": 7.451951399889367,
+        "benchmark/capa_5/forward/phrases_per_second": 195.4802382442751,
+        "benchmark/capa_5/raw_to_phones/gpu_extra_allocated_bytes": 136305664,
+        "benchmark/capa_5/raw_to_phones/gpu_peak_allocated_bytes": 389411328,
+        "benchmark/capa_5/raw_to_phones/gpu_peak_reserved_bytes": 545259520,
+        "benchmark/capa_5/raw_to_phones/mean_ms": 6.198169157859842,
+        "benchmark/capa_5/raw_to_phones/observations": 190,
+        "benchmark/capa_5/raw_to_phones/p50_ms": 6.166647500322142,
+        "benchmark/capa_5/raw_to_phones/p95_ms": 8.68983309928808,
+        "benchmark/capa_5/raw_to_phones/phrases_per_second": 161.33796521702044,
+        "benchmark/input_signature": "50c808dfb33bdf5e0dd64a1092c8e009d7e5f38b0ba7a09fab773364604b1006",
+        "benchmark/mediciones": {
+          "path": "media/table/benchmark/mediciones_0_9f2cae51afc7c577d017.table.json",
+          "size": 98272,
+          "_type": "table-file",
+          "ncols": 10,
+          "nrows": 1140,
+          "sha256": "9f2cae51afc7c577d0176b36a7c997f9992823f354aaa564a1eba576f7d94732",
+          "artifact_path": "wandb-client-artifact://h610g6q6g2pkad19hbvpee3cv87hrkq8uy48iigd1udtr2rmi0cmzld9s7fgm3jylacbh10om1uwtnrpjqvsu2w5gf5w0r6ejil0xg45anrlptve5ykjtyjaphgsur19/benchmark/mediciones.table.json",
+          "_latest_artifact_path": "wandb-client-artifact://glozlnlf9szzbdipx05keeqqaqgy44zljtzvwzwuvel4fqp236sccgx0kysoiy8pd9ourillvalc65fvuqumv3vuq0bdmfg9zx9jdyg3c9flm19e00irci7dljgt89wx:latest/benchmark/mediciones.table.json"
+        },
+        "benchmark/model_load_seconds": 2.1482470400005695,
+        "benchmark/semilla_entrenamiento": 0,
+        "checkpoint/sha256": "098f37388cdb1a02da39fb275dd35c8aeb2ea4c96afee5069138e4dcaab2b564"
+      },
+      "downloaded_table_receipts": {
+        "benchmark/mediciones": {
+          "path": "runs/auditoria/conjunta_7b2n7v3o_tablas/benchmark/media/table/benchmark/mediciones_0_9f2cae51afc7c577d017.table.json",
+          "sha256": "9f2cae51afc7c577d0176b36a7c997f9992823f354aaa564a1eba576f7d94732",
+          "rows": 1140,
+          "columns": [
+            "exit",
+            "stage",
+            "batch_index",
+            "repeat",
+            "batch_size",
+            "max_input_bins",
+            "elapsed_ms",
+            "gpu_peak_allocated_bytes",
+            "gpu_peak_reserved_bytes",
+            "gpu_extra_allocated_bytes"
+          ],
+          "counts_and_stage_medians_reproduced": true
+        }
+      }
     }
   },
   "notebook": {
     "path": "notebooks/11_entrenamiento_reanudable_colab.ipynb",
-    "sha256": "407177b9b33f88c70543276d9574c08ac8f308dc47d31e0e613c1f76d4d90e0a",
-    "only_source_change": "cell4: baseline_5 to conjunta_235",
+    "sha256": "c335acccad951fef57b4dd862fce1b22cacb4350f52a0d60348f2e62844c2abf",
     "changed_source_indices": [
       7
     ],
     "snapshot_sha256": "b5d466839c6370d81d6d17d4c77c11feda8bb5e195f340e7b66f2173f3d43397",
     "snapshot_sources_match_checkout": true,
     "snapshot_files": 59,
-    "saved_controls_run_id": "5u0uh25h",
-    "saved_benchmark_run_id": "38eifndq",
-    "saved_controls_and_benchmark_belong_to": "baseline ofxo8x9a; not joint 7b2n7v3o"
+    "saved_controls_run_id": "k3kooorl",
+    "saved_benchmark_run_id": "r7zg66f8",
+    "saved_controls_and_benchmark_belong_to": "joint 7b2n7v3o; confirmed SHA and step7651",
+    "only_source_change_since_previous_receipt": "cell10: explicitly select joint checkpoint",
+    "changed_source_indices_since_previous_receipt": [
+      17
+    ],
+    "source_changes_since_baseline_receipt": "cell4 selects conjunta_235; cell10 explicitly selects joint checkpoint; training sources unchanged"
   },
   "verification": {
     "training_config_matches_frozen_joint_seed0_profile": true,
@@ -4781,10 +5611,15 @@
     "selection_by_final_head_first_minimum": true,
     "all_heads_reloaded_correctly": true,
     "test_evaluated": false,
-    "local_gpu_computation": false
+    "local_gpu_computation": false,
+    "controls_verified": true,
+    "benchmark_verified": true,
+    "all_post_training_runs_use_same_checkpoint_sha256": true,
+    "control_counts_reproduced_from_session_table": true,
+    "benchmark_medians_reproduced": true,
+    "benchmark_inputs_match_baseline": true
   },
   "pending": {
-    "controls_and_benchmark": "await latest notebook outputs or matching online runs; currently saved cells12/13 reference baseline checkpoint",
     "local_weights": "weights remain in Drive"
   },
   "notebook_training_summary": {
