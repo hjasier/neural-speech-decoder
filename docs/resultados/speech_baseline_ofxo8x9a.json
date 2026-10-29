@@ -1,0 +1,2862 @@
+{
+  "queried_at_utc": "2026-10-29T11:16:56.523897+00:00",
+  "scope": "descriptive execution record; scientific interpretation pending author review",
+  "runs": {
+    "training": {
+      "id": "ofxo8x9a",
+      "name": "speech_comparacion_baseline_t4_seed0_colab",
+      "state": "finished",
+      "url": "https://wandb.ai/aaurre-deusto/tiiac-2026/runs/ofxo8x9a",
+      "summary": {
+        "_runtime": 3556.153461902,
+        "_step": 10001,
+        "_timestamp": 1793272130.0539448,
+        "_wandb.runtime": 3556,
+        "checkpoint": "checkpoints/speech_comparacion_t4/ofxo8x9a/mejor_val.pt",
+        "cuda/pico_asignado_mib": 1994.5810546875,
+        "cuda/pico_reservado_mib": 3630,
+        "dispositivo": "cuda",
+        "ejecucion/segundos": 3536.0715220959996,
+        "entrenamiento/parada_por_tiempo": false,
+        "entrenamiento/pasos": 10001,
+        "entrenamiento/pasos_previstos": 10001,
+        "entrenamiento/segundos": 1714.1709357900013,
+        "hardware": "NVIDIA A100-SXM4-40GB",
+        "protocolo/sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb",
+        "seleccion/empates": "primer checkpoint",
+        "seleccion/metrica": "val/per",
+        "seleccion/paso": 9751,
+        "train/ctc_loss": 26.73487901687622,
+        "train/frases_disponibles": 5180,
+        "train/grad_norm": 59.6839714050293,
+        "train/l2": 0.15180741250514984,
+        "train/learning_rate": 0,
+        "train/loss": 26.88668642938137,
+        "train/segundos_acumulados": 1714.1709357900013,
+        "val/completo": 1,
+        "val/ctc_loss": 38.25132462227181,
+        "val/errores": 11543,
+        "val/fonemas": 41571,
+        "val/frases": 1460,
+        "val/frases_disponibles": 1460,
+        "val/per": 0.2776695292391331,
+        "val/segundos": 2.3110288259995286,
+        "val_final/completo": 1,
+        "val_final/ctc_loss": 38.25132462227181,
+        "val_final/errores": 11543,
+        "val_final/fonemas": 41571,
+        "val_final/frases": 1460,
+        "val_final/per": 0.2776695292391331,
+        "val_final/segundos": 2.3110288259995286,
+        "val_mejor/completo": 1,
+        "val_mejor/ctc_loss": 38.30045716272642,
+        "val_mejor/errores": 11513,
+        "val_mejor/fonemas": 41571,
+        "val_mejor/frases": 1460,
+        "val_mejor/per": 0.27694787231483486,
+        "val_mejor/segundos": 2.283352976999595
+      },
+      "config": {
+        "datos": {
+          "raiz": "data/speech_2023/competitionData",
+          "fonemas": [
+            "AA",
+            "AE",
+            "AH",
+            "AO",
+            "AW",
+            "AY",
+            "B",
+            "CH",
+            "D",
+            "DH",
+            "EH",
+            "ER",
+            "EY",
+            "F",
+            "G",
+            "HH",
+            "IH",
+            "IY",
+            "JH",
+            "K",
+            "L",
+            "M",
+            "N",
+            "NG",
+            "OW",
+            "OY",
+            "P",
+            "R",
+            "S",
+            "SH",
+            "T",
+            "TH",
+            "UH",
+            "UW",
+            "V",
+            "W",
+            "Y",
+            "Z",
+            "ZH",
+            "SIL"
+          ],
+          "sesiones": [
+            "t12.2022.04.28",
+            "t12.2022.05.05",
+            "t12.2022.05.17",
+            "t12.2022.05.19",
+            "t12.2022.05.24",
+            "t12.2022.05.26",
+            "t12.2022.06.02",
+            "t12.2022.06.07",
+            "t12.2022.06.14",
+            "t12.2022.06.16",
+            "t12.2022.06.21",
+            "t12.2022.06.28",
+            "t12.2022.07.05",
+            "t12.2022.07.14",
+            "t12.2022.07.21",
+            "t12.2022.07.27",
+            "t12.2022.08.02",
+            "t12.2022.08.11",
+            "t12.2022.08.13"
+          ],
+          "batch_size": 64,
+          "pin_memory": false,
+          "preparados": "data/speech_2023/preparados_comparacion_v1",
+          "num_workers": 0
+        },
+        "wandb": {
+          "modo": "online",
+          "entidad": null,
+          "proyecto": "tiiac-2026",
+          "directorio": "runs/tracking"
+        },
+        "modelo": {
+          "capas": 5,
+          "kernel": 32,
+          "nombre": "speech_gru",
+          "stride": 4,
+          "entrada": 256,
+          "capa_dia": 256,
+          "unidades": 1024,
+          "dropout_gru": 0.4,
+          "bidireccional": false,
+          "dropout_entrada": 0.2
+        },
+        "salida": {
+          "directorio": "checkpoints/speech_comparacion_t4"
+        },
+        "ejecucion": {
+          "hilos_cpu": 2,
+          "dispositivo": "cuda"
+        },
+        "etiquetas": {
+          "salida": "data/speech_2023/fonemas_original",
+          "recursos": "data/speech_2023/recursos_g2p",
+          "silencio": "SIL",
+          "max_fonemas": 500,
+          "recursos_nltk": [
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.zip",
+              "sha256": "d07cca47fd72ad32ea9d8ad1219f85301eeaf4568f8b6b73747506a71fb5afd6",
+              "archivo": "corpora/cmudict.zip"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger.zip",
+              "sha256": "e1f13cf2532daadfd6f3bc481a49859f0b8ea6432ccdcd83e6a49a5f19008de9",
+              "archivo": "taggers/averaged_perceptron_tagger.zip"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger_eng.zip",
+              "sha256": "6025f530624335c67d6547d44757b357b4e79bae030a0383e9887a92c1718f0b",
+              "archivo": "taggers/averaged_perceptron_tagger_eng.zip"
+            }
+          ],
+          "timeout_descarga": 30
+        },
+        "protocolo": {
+          "metodo": "ultimos_bloques_por_sesion",
+          "nombre": "t12_bloques_v1",
+          "sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb",
+          "manifiesto": "docs/datasets/speech_2023/particion_t12_v1.json",
+          "fraccion_validacion": 0.2,
+          "seleccion_checkpoint": "per"
+        },
+        "evaluacion": {
+          "max_lotes": null,
+          "cada_pasos": 50,
+          "micro_batch_size": 16
+        },
+        "comparacion": {
+          "plan": "configs/speech_comparativa.yaml",
+          "variante": "baseline_5",
+          "config_base": "configs/speech_comparacion_t4.yaml",
+          "plan_sha256": "a8976055d54aeef0fa7ba937b983f16e72b07cf27bbbfe15d2dc46a2c2e9cba6",
+          "config_base_sha256": "3636c80ea3b12d3bbb5484afa7d2c38dd9ef09c06e8d807123a6ec02c91f34be"
+        },
+        "experimento": {
+          "seed": 0,
+          "nombre": "speech_comparacion_baseline_t4_seed0_colab"
+        },
+        "reanudacion": {
+          "cada_pasos": 250,
+          "max_pasos_sesion": null
+        },
+        "entrenamiento": {
+          "l2": 1e-05,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "pasos": 10001,
+          "ruido": {
+            "blanco_sd": 1,
+            "offset_sd": 0.2
+          },
+          "epsilon": 0.1,
+          "optimizador": "adam_tensorflow",
+          "imprimir_cada": 10,
+          "learning_rate": {
+            "final": 0,
+            "inicio": 0.02,
+            "potencia": 1,
+            "decay_pasos": 10000
+          },
+          "clip_grad_norm": 10,
+          "micro_batch_size": 16
+        },
+        "preprocesamiento": {
+          "suavizado": {
+            "sigma": 2,
+            "umbral": 0.01,
+            "truncate": 4,
+            "longitud_impulso": 100
+          },
+          "normalizacion_epsilon": 1e-08
+        }
+      },
+      "validation_history": [
+        {
+          "_step": 1,
+          "val/per": 0.9004835101392797,
+          "val/ctc_loss": 199.43320429553725,
+          "val/errores": 37434,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 51,
+          "val/per": 0.9999278343075702,
+          "val/ctc_loss": 91.47986914229719,
+          "val/errores": 41568,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 101,
+          "val/per": 0.9659377931731254,
+          "val/ctc_loss": 86.1820557894772,
+          "val/errores": 40155,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 151,
+          "val/per": 0.9043323470688701,
+          "val/ctc_loss": 81.68605486726108,
+          "val/errores": 37594,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 201,
+          "val/per": 0.7287532173871208,
+          "val/ctc_loss": 75.92235567275792,
+          "val/errores": 30295,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 251,
+          "val/per": 0.6407110726227419,
+          "val/ctc_loss": 69.48527347094392,
+          "val/errores": 26635,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 301,
+          "val/per": 0.6027278631738472,
+          "val/ctc_loss": 64.95901353391882,
+          "val/errores": 25056,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 351,
+          "val/per": 0.5670539558827067,
+          "val/ctc_loss": 61.737217796012146,
+          "val/errores": 23573,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 401,
+          "val/per": 0.5300329556662097,
+          "val/ctc_loss": 58.745163172891694,
+          "val/errores": 22034,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 451,
+          "val/per": 0.5128334656371027,
+          "val/ctc_loss": 55.568701004655395,
+          "val/errores": 21319,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 501,
+          "val/per": 0.5037646436217555,
+          "val/ctc_loss": 55.7023585280327,
+          "val/errores": 20942,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 551,
+          "val/per": 0.4873830314401867,
+          "val/ctc_loss": 52.20424683453285,
+          "val/errores": 20261,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 601,
+          "val/per": 0.4697986577181208,
+          "val/ctc_loss": 50.87793057585416,
+          "val/errores": 19530,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 651,
+          "val/per": 0.45341704553655193,
+          "val/ctc_loss": 48.89197674058888,
+          "val/errores": 18849,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 701,
+          "val/per": 0.4491352144523827,
+          "val/ctc_loss": 48.62679355569082,
+          "val/errores": 18671,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 751,
+          "val/per": 0.440258834283515,
+          "val/ctc_loss": 46.80994707917514,
+          "val/errores": 18302,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 801,
+          "val/per": 0.42216930071444037,
+          "val/ctc_loss": 44.88781958802106,
+          "val/errores": 17550,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 851,
+          "val/per": 0.4218325274831012,
+          "val/ctc_loss": 45.18143574440316,
+          "val/errores": 17536,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 901,
+          "val/per": 0.41319669962233285,
+          "val/ctc_loss": 43.790917404383826,
+          "val/errores": 17177,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 951,
+          "val/per": 0.40730316807389766,
+          "val/ctc_loss": 42.315130578655086,
+          "val/errores": 16932,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1001,
+          "val/per": 0.4105025137716196,
+          "val/ctc_loss": 42.28631203011291,
+          "val/errores": 17065,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1051,
+          "val/per": 0.4037429939140266,
+          "val/ctc_loss": 42.81217623148879,
+          "val/errores": 16784,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1101,
+          "val/per": 0.39818623559693056,
+          "val/ctc_loss": 42.41411159985686,
+          "val/errores": 16553,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1151,
+          "val/per": 0.39587693343917635,
+          "val/ctc_loss": 41.63004852712971,
+          "val/errores": 16457,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1201,
+          "val/per": 0.38858819850376464,
+          "val/ctc_loss": 41.744362379100224,
+          "val/errores": 16154,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1251,
+          "val/per": 0.3867840561930192,
+          "val/ctc_loss": 39.999363980227955,
+          "val/errores": 16079,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1301,
+          "val/per": 0.37533376632748794,
+          "val/ctc_loss": 40.14189957919186,
+          "val/errores": 15603,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1351,
+          "val/per": 0.3746842750956195,
+          "val/ctc_loss": 40.41201202183554,
+          "val/errores": 15576,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1401,
+          "val/per": 0.3717976473984268,
+          "val/ctc_loss": 40.36422798470275,
+          "val/errores": 15456,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1451,
+          "val/per": 0.3730004089389238,
+          "val/ctc_loss": 39.9464557595449,
+          "val/errores": 15506,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1501,
+          "val/per": 0.3716292607827572,
+          "val/ctc_loss": 40.01058572220476,
+          "val/errores": 15449,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1551,
+          "val/per": 0.37567053955882707,
+          "val/ctc_loss": 40.124072281301835,
+          "val/errores": 15617,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1601,
+          "val/per": 0.3621274446128311,
+          "val/ctc_loss": 38.60165863037109,
+          "val/errores": 15054,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1651,
+          "val/per": 0.36311370907603857,
+          "val/ctc_loss": 38.797466366911586,
+          "val/errores": 15095,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1701,
+          "val/per": 0.36431647061653555,
+          "val/ctc_loss": 39.85378041724636,
+          "val/errores": 15145,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1751,
+          "val/per": 0.3633061509225181,
+          "val/ctc_loss": 39.57932658783377,
+          "val/errores": 15103,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1801,
+          "val/per": 0.3595294796853576,
+          "val/ctc_loss": 39.02552203348238,
+          "val/errores": 14946,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1851,
+          "val/per": 0.3613817324577229,
+          "val/ctc_loss": 39.99051844453158,
+          "val/errores": 15023,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1901,
+          "val/per": 0.3531307882899136,
+          "val/ctc_loss": 38.55199377504113,
+          "val/errores": 14680,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 1951,
+          "val/per": 0.3583267181448606,
+          "val/ctc_loss": 39.33158093805182,
+          "val/errores": 14896,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2001,
+          "val/per": 0.34531283827668324,
+          "val/ctc_loss": 38.353956295692754,
+          "val/errores": 14355,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2051,
+          "val/per": 0.3458901638161218,
+          "val/ctc_loss": 38.36130035086854,
+          "val/errores": 14379,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2101,
+          "val/per": 0.3543335498304106,
+          "val/ctc_loss": 39.439791896245254,
+          "val/errores": 14730,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2151,
+          "val/per": 0.34947439320680285,
+          "val/ctc_loss": 39.353352031969045,
+          "val/errores": 14528,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2201,
+          "val/per": 0.34030935026821585,
+          "val/ctc_loss": 37.74540663418705,
+          "val/errores": 14147,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2251,
+          "val/per": 0.34112722811575374,
+          "val/ctc_loss": 39.14619451026394,
+          "val/errores": 14181,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2301,
+          "val/per": 0.33958769334391764,
+          "val/ctc_loss": 37.26880201574874,
+          "val/errores": 14117,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2351,
+          "val/per": 0.3394914724206779,
+          "val/ctc_loss": 38.4380689333563,
+          "val/errores": 14113,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2401,
+          "val/per": 0.34444684996752545,
+          "val/ctc_loss": 38.47996203278842,
+          "val/errores": 14319,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2451,
+          "val/per": 0.3354261384137981,
+          "val/ctc_loss": 37.497738103997214,
+          "val/errores": 13944,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2501,
+          "val/per": 0.3346323157970701,
+          "val/ctc_loss": 38.1166056384779,
+          "val/errores": 13911,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2551,
+          "val/per": 0.32792090640109695,
+          "val/ctc_loss": 37.0487834564627,
+          "val/errores": 13632,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2601,
+          "val/per": 0.33658078949267517,
+          "val/ctc_loss": 39.35882410023311,
+          "val/errores": 13992,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2651,
+          "val/per": 0.33189001948473695,
+          "val/ctc_loss": 38.41677345380391,
+          "val/errores": 13797,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2701,
+          "val/per": 0.333068725794424,
+          "val/ctc_loss": 38.553175448064934,
+          "val/errores": 13846,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2751,
+          "val/per": 0.33285222871713455,
+          "val/ctc_loss": 39.30673818196336,
+          "val/errores": 13837,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2801,
+          "val/per": 0.3281374034783864,
+          "val/ctc_loss": 37.68131448928624,
+          "val/errores": 13641,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2851,
+          "val/per": 0.32751196747732797,
+          "val/ctc_loss": 37.47774481054855,
+          "val/errores": 13615,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2901,
+          "val/per": 0.3308796997907195,
+          "val/ctc_loss": 38.60770245904792,
+          "val/errores": 13755,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 2951,
+          "val/per": 0.33309278102523393,
+          "val/ctc_loss": 39.10871458184229,
+          "val/errores": 13847,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3001,
+          "val/per": 0.329099612710784,
+          "val/ctc_loss": 38.13324188859495,
+          "val/errores": 13681,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3051,
+          "val/per": 0.32630920593683094,
+          "val/ctc_loss": 38.192805219676394,
+          "val/errores": 13565,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3101,
+          "val/per": 0.3216184359288927,
+          "val/ctc_loss": 38.099594225948806,
+          "val/errores": 13370,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3151,
+          "val/per": 0.3271270837843689,
+          "val/ctc_loss": 38.62229519151661,
+          "val/errores": 13599,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3201,
+          "val/per": 0.32356690962449786,
+          "val/ctc_loss": 37.65372534973981,
+          "val/errores": 13451,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3251,
+          "val/per": 0.320704337158115,
+          "val/ctc_loss": 37.07836861806373,
+          "val/errores": 13332,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3301,
+          "val/per": 0.3207765028505449,
+          "val/ctc_loss": 37.71891939868666,
+          "val/errores": 13335,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3351,
+          "val/per": 0.32209954054509154,
+          "val/ctc_loss": 38.10667248033497,
+          "val/errores": 13390,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3401,
+          "val/per": 0.319934569772197,
+          "val/ctc_loss": 37.48211183939895,
+          "val/errores": 13300,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3451,
+          "val/per": 0.32193115392942195,
+          "val/ctc_loss": 38.3712342667253,
+          "val/errores": 13383,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3501,
+          "val/per": 0.32669408962979,
+          "val/ctc_loss": 39.71199797538862,
+          "val/errores": 13581,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3551,
+          "val/per": 0.32053595054244544,
+          "val/ctc_loss": 38.289196683282725,
+          "val/errores": 13325,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3601,
+          "val/per": 0.31974212792571743,
+          "val/ctc_loss": 36.70569767364084,
+          "val/errores": 13292,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3651,
+          "val/per": 0.3188520843857497,
+          "val/ctc_loss": 37.413181378090215,
+          "val/errores": 13255,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3701,
+          "val/per": 0.3138726516080922,
+          "val/ctc_loss": 37.43780336771926,
+          "val/errores": 13048,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3751,
+          "val/per": 0.31894830530898943,
+          "val/ctc_loss": 38.128447383723845,
+          "val/errores": 13259,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3801,
+          "val/per": 0.3168555002285247,
+          "val/ctc_loss": 37.037336642121616,
+          "val/errores": 13172,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3851,
+          "val/per": 0.31355993360756296,
+          "val/ctc_loss": 37.97194441703901,
+          "val/errores": 13035,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3901,
+          "val/per": 0.3183950350003608,
+          "val/ctc_loss": 38.560661613777896,
+          "val/errores": 13236,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 3951,
+          "val/per": 0.31808231699983164,
+          "val/ctc_loss": 39.13471149810373,
+          "val/errores": 13223,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4001,
+          "val/per": 0.31815448269226143,
+          "val/ctc_loss": 38.706274711922426,
+          "val/errores": 13226,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4051,
+          "val/per": 0.31524379976425876,
+          "val/ctc_loss": 38.499494442874436,
+          "val/errores": 13105,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4101,
+          "val/per": 0.31384859637728224,
+          "val/ctc_loss": 38.54021744401488,
+          "val/errores": 13047,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4151,
+          "val/per": 0.3125736691443554,
+          "val/ctc_loss": 37.846291445379386,
+          "val/errores": 12994,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4201,
+          "val/per": 0.3104808640638907,
+          "val/ctc_loss": 36.80953763674383,
+          "val/errores": 12907,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4251,
+          "val/per": 0.3067282480575401,
+          "val/ctc_loss": 36.81209639457807,
+          "val/errores": 12751,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4301,
+          "val/per": 0.31125063144980875,
+          "val/ctc_loss": 37.31093323067443,
+          "val/errores": 12939,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4351,
+          "val/per": 0.307979120059657,
+          "val/ctc_loss": 37.28009020661654,
+          "val/errores": 12803,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4401,
+          "val/per": 0.30451516682302565,
+          "val/ctc_loss": 36.62392825819042,
+          "val/errores": 12659,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4451,
+          "val/per": 0.3063433643645811,
+          "val/ctc_loss": 37.312030703400914,
+          "val/errores": 12735,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4501,
+          "val/per": 0.30475571913112504,
+          "val/ctc_loss": 37.06541393227773,
+          "val/errores": 12669,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4551,
+          "val/per": 0.30432272497654617,
+          "val/ctc_loss": 36.37635181897307,
+          "val/errores": 12651,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4601,
+          "val/per": 0.30109932404801426,
+          "val/ctc_loss": 36.277679785637005,
+          "val/errores": 12517,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4651,
+          "val/per": 0.3029996872819995,
+          "val/ctc_loss": 36.33047528724148,
+          "val/errores": 12596,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4701,
+          "val/per": 0.3037453994371076,
+          "val/ctc_loss": 37.70761118849663,
+          "val/errores": 12627,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4751,
+          "val/per": 0.30598253590243196,
+          "val/ctc_loss": 37.823247930448346,
+          "val/errores": 12720,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4801,
+          "val/per": 0.30304779774361934,
+          "val/ctc_loss": 37.74368969642953,
+          "val/errores": 12598,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4851,
+          "val/per": 0.2985975800437805,
+          "val/ctc_loss": 35.98036539521936,
+          "val/errores": 12413,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4901,
+          "val/per": 0.299198960814029,
+          "val/ctc_loss": 36.54324271842225,
+          "val/errores": 12438,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 4951,
+          "val/per": 0.2976353708113829,
+          "val/ctc_loss": 36.655840322416125,
+          "val/errores": 12373,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5001,
+          "val/per": 0.29854946958216066,
+          "val/ctc_loss": 36.644506109577335,
+          "val/errores": 12411,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5051,
+          "val/per": 0.2958793389622573,
+          "val/ctc_loss": 37.27771233336566,
+          "val/errores": 12300,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5101,
+          "val/per": 0.2991508503524091,
+          "val/ctc_loss": 36.63736984827747,
+          "val/errores": 12436,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5151,
+          "val/per": 0.3009068822015347,
+          "val/ctc_loss": 36.985549111562236,
+          "val/errores": 12509,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5201,
+          "val/per": 0.29732265281085374,
+          "val/ctc_loss": 36.88452639645093,
+          "val/errores": 12360,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5251,
+          "val/per": 0.2973707632724736,
+          "val/ctc_loss": 36.502815335417445,
+          "val/errores": 12362,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5301,
+          "val/per": 0.29489307449904983,
+          "val/ctc_loss": 36.61870407209005,
+          "val/errores": 12259,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5351,
+          "val/per": 0.2977315917346227,
+          "val/ctc_loss": 37.22504025812018,
+          "val/errores": 12377,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5401,
+          "val/per": 0.29744292896490343,
+          "val/ctc_loss": 37.15665587856345,
+          "val/errores": 12365,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5451,
+          "val/per": 0.2910682928002694,
+          "val/ctc_loss": 36.987844890437714,
+          "val/errores": 12100,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5501,
+          "val/per": 0.2945803564985206,
+          "val/ctc_loss": 37.14520114741913,
+          "val/errores": 12246,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5551,
+          "val/per": 0.29551851050010824,
+          "val/ctc_loss": 37.106259259785695,
+          "val/errores": 12285,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5601,
+          "val/per": 0.2975150946573332,
+          "val/ctc_loss": 37.41466561408892,
+          "val/errores": 12368,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5651,
+          "val/per": 0.29782781265786246,
+          "val/ctc_loss": 37.3785793147675,
+          "val/errores": 12381,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5701,
+          "val/per": 0.2950374058839095,
+          "val/ctc_loss": 37.54693421664303,
+          "val/errores": 12265,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5751,
+          "val/per": 0.2978518678886724,
+          "val/ctc_loss": 37.687757795150965,
+          "val/errores": 12382,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5801,
+          "val/per": 0.295205792499579,
+          "val/ctc_loss": 37.597549574342494,
+          "val/errores": 12272,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5851,
+          "val/per": 0.2941233071131317,
+          "val/ctc_loss": 37.02424240896146,
+          "val/errores": 12227,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5901,
+          "val/per": 0.2913569555699887,
+          "val/ctc_loss": 36.72662337838787,
+          "val/errores": 12112,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 5951,
+          "val/per": 0.2933294844964037,
+          "val/ctc_loss": 37.33115643017913,
+          "val/errores": 12194,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6001,
+          "val/per": 0.29121262418512905,
+          "val/ctc_loss": 37.547616634630174,
+          "val/errores": 12106,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6051,
+          "val/per": 0.29400303095908203,
+          "val/ctc_loss": 37.28453490897401,
+          "val/errores": 12222,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6101,
+          "val/per": 0.2898414760289625,
+          "val/ctc_loss": 36.97563181837944,
+          "val/errores": 12049,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6151,
+          "val/per": 0.2917899497245676,
+          "val/ctc_loss": 37.16556042187835,
+          "val/errores": 12130,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6201,
+          "val/per": 0.2923191648023863,
+          "val/ctc_loss": 37.24977311434811,
+          "val/errores": 12152,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6251,
+          "val/per": 0.29193428110942726,
+          "val/ctc_loss": 37.40653010590436,
+          "val/errores": 12136,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6301,
+          "val/per": 0.286040749560992,
+          "val/ctc_loss": 36.75868615450924,
+          "val/errores": 11891,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6351,
+          "val/per": 0.2906112434148806,
+          "val/ctc_loss": 37.26175443570908,
+          "val/errores": 12081,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6401,
+          "val/per": 0.28803733371821705,
+          "val/ctc_loss": 36.98539435504234,
+          "val/errores": 11974,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6451,
+          "val/per": 0.29085179572298,
+          "val/ctc_loss": 37.36331156377923,
+          "val/errores": 12091,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6501,
+          "val/per": 0.28950470279762336,
+          "val/ctc_loss": 36.92519264221191,
+          "val/errores": 12035,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6551,
+          "val/per": 0.2895528132592432,
+          "val/ctc_loss": 37.13061528140551,
+          "val/errores": 12037,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6601,
+          "val/per": 0.2879651680257872,
+          "val/ctc_loss": 37.025145682243455,
+          "val/errores": 11971,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6651,
+          "val/per": 0.28483798802049504,
+          "val/ctc_loss": 36.74622966818614,
+          "val/errores": 11841,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6701,
+          "val/per": 0.28664213033124053,
+          "val/ctc_loss": 37.19222712582105,
+          "val/errores": 11916,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6751,
+          "val/per": 0.2840201101729571,
+          "val/ctc_loss": 37.50214054682483,
+          "val/errores": 11807,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6801,
+          "val/per": 0.2875321738712083,
+          "val/ctc_loss": 37.579979549042164,
+          "val/errores": 11953,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6851,
+          "val/per": 0.28974525510572274,
+          "val/ctc_loss": 37.82671952966141,
+          "val/errores": 12045,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6901,
+          "val/per": 0.2893122609511438,
+          "val/ctc_loss": 37.44844085484335,
+          "val/errores": 12027,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 6951,
+          "val/per": 0.2890957638738544,
+          "val/ctc_loss": 37.707684352299935,
+          "val/errores": 12018,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7001,
+          "val/per": 0.2859204734069423,
+          "val/ctc_loss": 37.337491701727046,
+          "val/errores": 11886,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7051,
+          "val/per": 0.28695484833176976,
+          "val/ctc_loss": 37.78521071133548,
+          "val/errores": 11929,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7101,
+          "val/per": 0.28606480479180196,
+          "val/ctc_loss": 37.3998381183572,
+          "val/errores": 11892,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7151,
+          "val/per": 0.28678646171610017,
+          "val/ctc_loss": 37.03125120189092,
+          "val/errores": 11922,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7201,
+          "val/per": 0.28683457217772007,
+          "val/ctc_loss": 37.21902648455476,
+          "val/errores": 11924,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7251,
+          "val/per": 0.28567992109884294,
+          "val/ctc_loss": 37.75203832338934,
+          "val/errores": 11876,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7301,
+          "val/per": 0.289240095258714,
+          "val/ctc_loss": 38.23009223154146,
+          "val/errores": 12024,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7351,
+          "val/per": 0.2863294123307113,
+          "val/ctc_loss": 37.441387045873356,
+          "val/errores": 11903,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7401,
+          "val/per": 0.2882057203338866,
+          "val/ctc_loss": 37.90756989047952,
+          "val/errores": 11981,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7451,
+          "val/per": 0.2845733804815857,
+          "val/ctc_loss": 37.99133701585743,
+          "val/errores": 11830,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7501,
+          "val/per": 0.28493420894373483,
+          "val/ctc_loss": 38.14198130777437,
+          "val/errores": 11845,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7551,
+          "val/per": 0.2827932934016502,
+          "val/ctc_loss": 38.460227558710805,
+          "val/errores": 11756,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7601,
+          "val/per": 0.28276923817084026,
+          "val/ctc_loss": 38.00846652462058,
+          "val/errores": 11755,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7651,
+          "val/per": 0.2852228717134541,
+          "val/ctc_loss": 38.12945767755378,
+          "val/errores": 11857,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7701,
+          "val/per": 0.28356306078756827,
+          "val/ctc_loss": 38.3533914539912,
+          "val/errores": 11788,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7751,
+          "val/per": 0.283659281710808,
+          "val/ctc_loss": 38.33692754980636,
+          "val/errores": 11792,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7801,
+          "val/per": 0.2843809386351062,
+          "val/ctc_loss": 38.33799229974616,
+          "val/errores": 11822,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7851,
+          "val/per": 0.2815905318611532,
+          "val/ctc_loss": 38.24511213955814,
+          "val/errores": 11706,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7901,
+          "val/per": 0.2816386423227731,
+          "val/ctc_loss": 37.93238021380281,
+          "val/errores": 11708,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 7951,
+          "val/per": 0.2815664766303433,
+          "val/ctc_loss": 37.813813201695275,
+          "val/errores": 11705,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8001,
+          "val/per": 0.2801472180125568,
+          "val/ctc_loss": 37.44798434009291,
+          "val/errores": 11646,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8051,
+          "val/per": 0.28296168001731975,
+          "val/ctc_loss": 38.35970192478128,
+          "val/errores": 11763,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8101,
+          "val/per": 0.28368333694161796,
+          "val/ctc_loss": 37.88758078274662,
+          "val/errores": 11793,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8151,
+          "val/per": 0.28118159293738426,
+          "val/ctc_loss": 38.52856325645969,
+          "val/errores": 11689,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8201,
+          "val/per": 0.28272112770922037,
+          "val/ctc_loss": 38.33287756410363,
+          "val/errores": 11753,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8251,
+          "val/per": 0.28154242139953334,
+          "val/ctc_loss": 38.45038769343128,
+          "val/errores": 11704,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8301,
+          "val/per": 0.2810372615525246,
+          "val/ctc_loss": 38.34279658173862,
+          "val/errores": 11683,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8351,
+          "val/per": 0.2810613167833345,
+          "val/ctc_loss": 38.401014474320085,
+          "val/errores": 11684,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8401,
+          "val/per": 0.2809891510909047,
+          "val/ctc_loss": 38.398244936172276,
+          "val/errores": 11681,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8451,
+          "val/per": 0.28086887493685503,
+          "val/ctc_loss": 38.27178757549965,
+          "val/errores": 11676,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8501,
+          "val/per": 0.27877606985639025,
+          "val/ctc_loss": 38.31445236728616,
+          "val/errores": 11589,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8551,
+          "val/per": 0.2819513603233023,
+          "val/ctc_loss": 38.351451625562696,
+          "val/errores": 11721,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8601,
+          "val/per": 0.28209569170816196,
+          "val/ctc_loss": 38.320702283676354,
+          "val/errores": 11727,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8651,
+          "val/per": 0.2806042673979457,
+          "val/ctc_loss": 38.257554595111166,
+          "val/errores": 11665,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8701,
+          "val/per": 0.2820235260157321,
+          "val/ctc_loss": 38.69475033903775,
+          "val/errores": 11724,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8751,
+          "val/per": 0.27954583724230836,
+          "val/ctc_loss": 38.21419600656588,
+          "val/errores": 11621,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8801,
+          "val/per": 0.28002694185850713,
+          "val/ctc_loss": 38.478990110632495,
+          "val/errores": 11641,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8851,
+          "val/per": 0.2817589184768228,
+          "val/ctc_loss": 38.710147345555974,
+          "val/errores": 11713,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8901,
+          "val/per": 0.27997883139688723,
+          "val/ctc_loss": 38.497720415298254,
+          "val/errores": 11639,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 8951,
+          "val/per": 0.27865579370234056,
+          "val/ctc_loss": 38.311500209651584,
+          "val/errores": 11584,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9001,
+          "val/per": 0.278487407086671,
+          "val/ctc_loss": 38.1714742059577,
+          "val/errores": 11577,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9051,
+          "val/per": 0.27798224723966225,
+          "val/ctc_loss": 38.3087597494256,
+          "val/errores": 11556,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9101,
+          "val/per": 0.27810252339371194,
+          "val/ctc_loss": 38.23967605747589,
+          "val/errores": 11561,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9151,
+          "val/per": 0.27827091000938153,
+          "val/ctc_loss": 38.259599029854556,
+          "val/errores": 11568,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9201,
+          "val/per": 0.27887229077963005,
+          "val/ctc_loss": 38.54201047714442,
+          "val/errores": 11593,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9251,
+          "val/per": 0.27995477616607733,
+          "val/ctc_loss": 38.3853377694953,
+          "val/errores": 11638,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9301,
+          "val/per": 0.2783430757018114,
+          "val/ctc_loss": 38.444683067112756,
+          "val/errores": 11571,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9351,
+          "val/per": 0.2786076832407207,
+          "val/ctc_loss": 38.434953114757796,
+          "val/errores": 11582,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9401,
+          "val/per": 0.279281229703399,
+          "val/ctc_loss": 38.42786155857452,
+          "val/errores": 11610,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9451,
+          "val/per": 0.27899256693367974,
+          "val/ctc_loss": 38.488636683111324,
+          "val/errores": 11598,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9501,
+          "val/per": 0.2778138606239927,
+          "val/ctc_loss": 38.32667742689995,
+          "val/errores": 11549,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9551,
+          "val/per": 0.2782949652401915,
+          "val/ctc_loss": 38.21058302056299,
+          "val/errores": 11569,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9601,
+          "val/per": 0.2778860263164225,
+          "val/ctc_loss": 38.357664761477956,
+          "val/errores": 11552,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9651,
+          "val/per": 0.2782468547785716,
+          "val/ctc_loss": 38.24639922102837,
+          "val/errores": 11567,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9701,
+          "val/per": 0.2778860263164225,
+          "val/ctc_loss": 38.18201030051871,
+          "val/errores": 11552,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9751,
+          "val/per": 0.27694787231483486,
+          "val/ctc_loss": 38.30045716272642,
+          "val/errores": 11513,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9801,
+          "val/per": 0.2779581920088523,
+          "val/ctc_loss": 38.288997744207514,
+          "val/errores": 11555,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9851,
+          "val/per": 0.2776454740083231,
+          "val/ctc_loss": 38.2476543165233,
+          "val/errores": 11542,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9901,
+          "val/per": 0.2774530321618436,
+          "val/ctc_loss": 38.261546281265886,
+          "val/errores": 11534,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 9951,
+          "val/per": 0.2774530321618436,
+          "val/ctc_loss": 38.246295035375304,
+          "val/errores": 11534,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        },
+        {
+          "_step": 10001,
+          "val/per": 0.2776695292391331,
+          "val/ctc_loss": 38.25132462227181,
+          "val/errores": 11543,
+          "val/fonemas": 41571,
+          "val/frases": 1460,
+          "val/completo": 1
+        }
+      ],
+      "selected_validation": {
+        "_step": 9751,
+        "val/per": 0.27694787231483486,
+        "val/ctc_loss": 38.30045716272642,
+        "val/errores": 11513,
+        "val/fonemas": 41571,
+        "val/frases": 1460,
+        "val/completo": 1
+      }
+    },
+    "reload": {
+      "id": "gutnezi6",
+      "name": "speech_comparacion_baseline_t4_seed0_colab_recarga_val",
+      "state": "finished",
+      "url": "https://wandb.ai/aaurre-deusto/tiiac-2026/runs/gutnezi6",
+      "summary": {
+        "_runtime": 31.253809728,
+        "_step": 9751,
+        "_timestamp": 1793272177.6372936,
+        "_wandb.runtime": 31,
+        "checkpoint/paso": 9751,
+        "checkpoint/sha256": "066705e5c78e433a2f2bace58fe05c4f27f91237b2e7246cd5c07697997ba980",
+        "val_recarga/capa_5/completo": 1,
+        "val_recarga/capa_5/ctc_loss": 38.30045716272642,
+        "val_recarga/capa_5/errores": 11513,
+        "val_recarga/capa_5/fonemas": 41571,
+        "val_recarga/capa_5/frases": 1460,
+        "val_recarga/capa_5/per": 0.27694787231483486,
+        "verificacion/actualizaciones": 0,
+        "verificacion/correcta": true,
+        "verificacion/test_evaluado": false
+      },
+      "config": {
+        "datos": {
+          "raiz": "data/speech_2023/competitionData",
+          "fonemas": [
+            "AA",
+            "AE",
+            "AH",
+            "AO",
+            "AW",
+            "AY",
+            "B",
+            "CH",
+            "D",
+            "DH",
+            "EH",
+            "ER",
+            "EY",
+            "F",
+            "G",
+            "HH",
+            "IH",
+            "IY",
+            "JH",
+            "K",
+            "L",
+            "M",
+            "N",
+            "NG",
+            "OW",
+            "OY",
+            "P",
+            "R",
+            "S",
+            "SH",
+            "T",
+            "TH",
+            "UH",
+            "UW",
+            "V",
+            "W",
+            "Y",
+            "Z",
+            "ZH",
+            "SIL"
+          ],
+          "sesiones": [
+            "t12.2022.04.28",
+            "t12.2022.05.05",
+            "t12.2022.05.17",
+            "t12.2022.05.19",
+            "t12.2022.05.24",
+            "t12.2022.05.26",
+            "t12.2022.06.02",
+            "t12.2022.06.07",
+            "t12.2022.06.14",
+            "t12.2022.06.16",
+            "t12.2022.06.21",
+            "t12.2022.06.28",
+            "t12.2022.07.05",
+            "t12.2022.07.14",
+            "t12.2022.07.21",
+            "t12.2022.07.27",
+            "t12.2022.08.02",
+            "t12.2022.08.11",
+            "t12.2022.08.13"
+          ],
+          "batch_size": 64,
+          "pin_memory": false,
+          "preparados": "data/speech_2023/preparados_comparacion_v1",
+          "num_workers": 0
+        },
+        "wandb": {
+          "modo": "online",
+          "entidad": null,
+          "proyecto": "tiiac-2026",
+          "directorio": "runs/tracking"
+        },
+        "modelo": {
+          "capas": 5,
+          "kernel": 32,
+          "nombre": "speech_gru",
+          "stride": 4,
+          "entrada": 256,
+          "capa_dia": 256,
+          "unidades": 1024,
+          "dropout_gru": 0.4,
+          "bidireccional": false,
+          "dropout_entrada": 0.2
+        },
+        "salida": {
+          "directorio": "checkpoints/speech_comparacion_t4"
+        },
+        "ejecucion": {
+          "hilos_cpu": 2,
+          "dispositivo": "cuda"
+        },
+        "etiquetas": {
+          "salida": "data/speech_2023/fonemas_original",
+          "recursos": "data/speech_2023/recursos_g2p",
+          "silencio": "SIL",
+          "max_fonemas": 500,
+          "recursos_nltk": [
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.zip",
+              "sha256": "d07cca47fd72ad32ea9d8ad1219f85301eeaf4568f8b6b73747506a71fb5afd6",
+              "archivo": "corpora/cmudict.zip"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger.zip",
+              "sha256": "e1f13cf2532daadfd6f3bc481a49859f0b8ea6432ccdcd83e6a49a5f19008de9",
+              "archivo": "taggers/averaged_perceptron_tagger.zip"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger_eng.zip",
+              "sha256": "6025f530624335c67d6547d44757b357b4e79bae030a0383e9887a92c1718f0b",
+              "archivo": "taggers/averaged_perceptron_tagger_eng.zip"
+            }
+          ],
+          "timeout_descarga": 30
+        },
+        "protocolo": {
+          "metodo": "ultimos_bloques_por_sesion",
+          "nombre": "t12_bloques_v1",
+          "sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb",
+          "manifiesto": "docs/datasets/speech_2023/particion_t12_v1.json",
+          "fraccion_validacion": 0.2,
+          "seleccion_checkpoint": "per"
+        },
+        "evaluacion": {
+          "max_lotes": null,
+          "cada_pasos": 50,
+          "micro_batch_size": 16
+        },
+        "comparacion": {
+          "plan": "configs/speech_comparativa.yaml",
+          "variante": "baseline_5",
+          "config_base": "configs/speech_comparacion_t4.yaml",
+          "plan_sha256": "a8976055d54aeef0fa7ba937b983f16e72b07cf27bbbfe15d2dc46a2c2e9cba6",
+          "config_base_sha256": "3636c80ea3b12d3bbb5484afa7d2c38dd9ef09c06e8d807123a6ec02c91f34be"
+        },
+        "experimento": {
+          "seed": 0,
+          "nombre": "speech_comparacion_baseline_t4_seed0_colab_recarga_val"
+        },
+        "reanudacion": {
+          "cada_pasos": 250,
+          "max_pasos_sesion": null
+        },
+        "entrenamiento": {
+          "l2": 1e-05,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "pasos": 10001,
+          "ruido": {
+            "blanco_sd": 1,
+            "offset_sd": 0.2
+          },
+          "epsilon": 0.1,
+          "optimizador": "adam_tensorflow",
+          "imprimir_cada": 10,
+          "learning_rate": {
+            "final": 0,
+            "inicio": 0.02,
+            "potencia": 1,
+            "decay_pasos": 10000
+          },
+          "clip_grad_norm": 10,
+          "micro_batch_size": 16
+        },
+        "preprocesamiento": {
+          "suavizado": {
+            "sigma": 2,
+            "umbral": 0.01,
+            "truncate": 4,
+            "longitud_impulso": 100
+          },
+          "normalizacion_epsilon": 1e-08
+        }
+      }
+    },
+    "controls": {
+      "id": "5u0uh25h",
+      "name": "speech_comparacion_baseline_t4_seed0_colab_diagnostico_val",
+      "state": "finished",
+      "url": "https://wandb.ai/aaurre-deusto/tiiac-2026/runs/5u0uh25h",
+      "summary": {
+        "_runtime": 19.767028903,
+        "_step": 9751,
+        "_timestamp": 1793272205.1048255,
+        "_wandb.runtime": 19,
+        "checkpoint/paso": 9751,
+        "checkpoint/semilla_entrenamiento": 0,
+        "checkpoint/sha256": "066705e5c78e433a2f2bace58fe05c4f27f91237b2e7246cd5c07697997ba980",
+        "diagnostico/actualizaciones": 0,
+        "diagnostico/por_sesion": {
+          "path": "media/table/diagnostico/por_sesion_0_670a5a94330198de5e03.table.json",
+          "size": 5338,
+          "_type": "table-file",
+          "ncols": 9,
+          "nrows": 57,
+          "sha256": "670a5a94330198de5e036bac9fb1c5906648984351bc0c2449498f32c8e45512",
+          "artifact_path": "wandb-client-artifact://6ps23pnhmc8ndp0tuagxqk5cm840lhxahw095aqpbw1dj1sz06e1zl6338pnzrnlr6pq1apuo9nzerjhdrtktahy3trr4ujdklms4sbw5p2t8jqm82a1lnx53g2vk802/diagnostico/por_sesion.table.json",
+          "_latest_artifact_path": "wandb-client-artifact://6cjx3g5hh7ry57xlq4kqkr462u0r4pvpzl1y8lpz1t7k6tc7ev95yue0q7synr4ct1gnw9m22yhwbtsgw5jqoc7k0ywlefzvkzbgfye0bq2nfteyjy4d7hlvrqy39euj:latest/diagnostico/por_sesion.table.json"
+        },
+        "diagnostico/split": "val",
+        "diagnostico/test_evaluado": false,
+        "diagnostico/val/cero/capa_5/completo": 1,
+        "diagnostico/val/cero/capa_5/ctc_loss": 201.9600985749127,
+        "diagnostico/val/cero/capa_5/errores": 34273,
+        "diagnostico/val/cero/capa_5/fonemas": 41571,
+        "diagnostico/val/cero/capa_5/frases": 1460,
+        "diagnostico/val/cero/capa_5/per": 0.8244449255490607,
+        "diagnostico/val/original/capa_5/completo": 1,
+        "diagnostico/val/original/capa_5/ctc_loss": 38.300457142255816,
+        "diagnostico/val/original/capa_5/errores": 11513,
+        "diagnostico/val/original/capa_5/fonemas": 41571,
+        "diagnostico/val/original/capa_5/frases": 1460,
+        "diagnostico/val/original/capa_5/per": 0.27694787231483486,
+        "diagnostico/val/permutada/capa_5/completo": 1,
+        "diagnostico/val/permutada/capa_5/ctc_loss": 187.7814882872856,
+        "diagnostico/val/permutada/capa_5/errores": 33602,
+        "diagnostico/val/permutada/capa_5/fonemas": 41571,
+        "diagnostico/val/permutada/capa_5/frases": 1460,
+        "diagnostico/val/permutada/capa_5/per": 0.8083038656755912
+      },
+      "config": {
+        "datos": {
+          "raiz": "data/speech_2023/competitionData",
+          "fonemas": [
+            "AA",
+            "AE",
+            "AH",
+            "AO",
+            "AW",
+            "AY",
+            "B",
+            "CH",
+            "D",
+            "DH",
+            "EH",
+            "ER",
+            "EY",
+            "F",
+            "G",
+            "HH",
+            "IH",
+            "IY",
+            "JH",
+            "K",
+            "L",
+            "M",
+            "N",
+            "NG",
+            "OW",
+            "OY",
+            "P",
+            "R",
+            "S",
+            "SH",
+            "T",
+            "TH",
+            "UH",
+            "UW",
+            "V",
+            "W",
+            "Y",
+            "Z",
+            "ZH",
+            "SIL"
+          ],
+          "sesiones": [
+            "t12.2022.04.28",
+            "t12.2022.05.05",
+            "t12.2022.05.17",
+            "t12.2022.05.19",
+            "t12.2022.05.24",
+            "t12.2022.05.26",
+            "t12.2022.06.02",
+            "t12.2022.06.07",
+            "t12.2022.06.14",
+            "t12.2022.06.16",
+            "t12.2022.06.21",
+            "t12.2022.06.28",
+            "t12.2022.07.05",
+            "t12.2022.07.14",
+            "t12.2022.07.21",
+            "t12.2022.07.27",
+            "t12.2022.08.02",
+            "t12.2022.08.11",
+            "t12.2022.08.13"
+          ],
+          "batch_size": 64,
+          "pin_memory": false,
+          "preparados": "data/speech_2023/preparados_comparacion_v1",
+          "num_workers": 0
+        },
+        "wandb": {
+          "modo": "online",
+          "entidad": null,
+          "proyecto": "tiiac-2026",
+          "directorio": "runs/tracking"
+        },
+        "modelo": {
+          "capas": 5,
+          "kernel": 32,
+          "nombre": "speech_gru",
+          "stride": 4,
+          "entrada": 256,
+          "capa_dia": 256,
+          "unidades": 1024,
+          "dropout_gru": 0.4,
+          "bidireccional": false,
+          "dropout_entrada": 0.2
+        },
+        "salida": {
+          "directorio": "checkpoints/speech_comparacion_t4"
+        },
+        "ejecucion": {
+          "hilos_cpu": 2,
+          "dispositivo": "cuda"
+        },
+        "etiquetas": {
+          "salida": "data/speech_2023/fonemas_original",
+          "recursos": "data/speech_2023/recursos_g2p",
+          "silencio": "SIL",
+          "max_fonemas": 500,
+          "recursos_nltk": [
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.zip",
+              "sha256": "d07cca47fd72ad32ea9d8ad1219f85301eeaf4568f8b6b73747506a71fb5afd6",
+              "archivo": "corpora/cmudict.zip"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger.zip",
+              "sha256": "e1f13cf2532daadfd6f3bc481a49859f0b8ea6432ccdcd83e6a49a5f19008de9",
+              "archivo": "taggers/averaged_perceptron_tagger.zip"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger_eng.zip",
+              "sha256": "6025f530624335c67d6547d44757b357b4e79bae030a0383e9887a92c1718f0b",
+              "archivo": "taggers/averaged_perceptron_tagger_eng.zip"
+            }
+          ],
+          "timeout_descarga": 30
+        },
+        "protocolo": {
+          "metodo": "ultimos_bloques_por_sesion",
+          "nombre": "t12_bloques_v1",
+          "sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb",
+          "manifiesto": "docs/datasets/speech_2023/particion_t12_v1.json",
+          "fraccion_validacion": 0.2,
+          "seleccion_checkpoint": "per"
+        },
+        "evaluacion": {
+          "max_lotes": null,
+          "cada_pasos": 50,
+          "micro_batch_size": 16
+        },
+        "comparacion": {
+          "plan": "configs/speech_comparativa.yaml",
+          "variante": "baseline_5",
+          "config_base": "configs/speech_comparacion_t4.yaml",
+          "plan_sha256": "a8976055d54aeef0fa7ba937b983f16e72b07cf27bbbfe15d2dc46a2c2e9cba6",
+          "config_base_sha256": "3636c80ea3b12d3bbb5484afa7d2c38dd9ef09c06e8d807123a6ec02c91f34be"
+        },
+        "diagnostico": {
+          "split": "val",
+          "salidas": null,
+          "controles": [
+            "original",
+            "cero",
+            "permutada"
+          ],
+          "semilla_control": 314159
+        },
+        "experimento": {
+          "seed": 0,
+          "nombre": "speech_comparacion_baseline_t4_seed0_colab_diagnostico_val"
+        },
+        "reanudacion": {
+          "cada_pasos": 250,
+          "max_pasos_sesion": null
+        },
+        "entrenamiento": {
+          "l2": 1e-05,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "pasos": 10001,
+          "ruido": {
+            "blanco_sd": 1,
+            "offset_sd": 0.2
+          },
+          "epsilon": 0.1,
+          "optimizador": "adam_tensorflow",
+          "imprimir_cada": 10,
+          "learning_rate": {
+            "final": 0,
+            "inicio": 0.02,
+            "potencia": 1,
+            "decay_pasos": 10000
+          },
+          "clip_grad_norm": 10,
+          "micro_batch_size": 16
+        },
+        "preprocesamiento": {
+          "suavizado": {
+            "sigma": 2,
+            "umbral": 0.01,
+            "truncate": 4,
+            "longitud_impulso": 100
+          },
+          "normalizacion_epsilon": 1e-08
+        }
+      },
+      "downloaded_table_receipts": {
+        "diagnostico/por_sesion": {
+          "path": "runs/auditoria/ofxo8x9a_tablas/controls/media/table/diagnostico/por_sesion_0_670a5a94330198de5e03.table.json",
+          "sha256": "670a5a94330198de5e036bac9fb1c5906648984351bc0c2449498f32c8e45512",
+          "rows": 57,
+          "columns": [
+            "control",
+            "salida",
+            "sesion",
+            "ctc_loss",
+            "per",
+            "errores",
+            "fonemas",
+            "frases",
+            "completo"
+          ],
+          "global_counts_reproduced_from_19_sessions": true
+        }
+      }
+    },
+    "benchmark": {
+      "id": "38eifndq",
+      "name": "speech_comparacion_baseline_t4_seed0_colab_benchmark",
+      "state": "finished",
+      "url": "https://wandb.ai/aaurre-deusto/tiiac-2026/runs/38eifndq",
+      "summary": {
+        "_runtime": 30.456392102,
+        "_step": 9751,
+        "_timestamp": 1793272245.641169,
+        "_wandb.runtime": 30,
+        "benchmark/actualizaciones": 0,
+        "benchmark/capa_5/forward/gpu_extra_allocated_bytes": 135028224,
+        "benchmark/capa_5/forward/gpu_peak_allocated_bytes": 388435456,
+        "benchmark/capa_5/forward/gpu_peak_reserved_bytes": 545259520,
+        "benchmark/capa_5/forward/mean_ms": 5.162446721054661,
+        "benchmark/capa_5/forward/observations": 190,
+        "benchmark/capa_5/forward/p50_ms": 5.077127500044298,
+        "benchmark/capa_5/forward/p95_ms": 7.41290425007719,
+        "benchmark/capa_5/forward/phrases_per_second": 193.7065996093622,
+        "benchmark/capa_5/raw_to_phones/gpu_extra_allocated_bytes": 136305664,
+        "benchmark/capa_5/raw_to_phones/gpu_peak_allocated_bytes": 389074432,
+        "benchmark/capa_5/raw_to_phones/gpu_peak_reserved_bytes": 545259520,
+        "benchmark/capa_5/raw_to_phones/mean_ms": 6.261941536850875,
+        "benchmark/capa_5/raw_to_phones/observations": 190,
+        "benchmark/capa_5/raw_to_phones/p50_ms": 6.131077000190999,
+        "benchmark/capa_5/raw_to_phones/p95_ms": 8.717484049748236,
+        "benchmark/capa_5/raw_to_phones/phrases_per_second": 159.6948796335935,
+        "benchmark/input_signature": "50c808dfb33bdf5e0dd64a1092c8e009d7e5f38b0ba7a09fab773364604b1006",
+        "benchmark/mediciones": {
+          "path": "media/table/benchmark/mediciones_0_b5c414bf65d2e092585b.table.json",
+          "size": 32809,
+          "_type": "table-file",
+          "ncols": 10,
+          "nrows": 380,
+          "sha256": "b5c414bf65d2e092585b383be12b6bf9e7f6d87da3d4b8f2b26ea193516a8db5",
+          "artifact_path": "wandb-client-artifact://q0ncwd3plikvhohm5xyif0tsphqngcxh5q24a6fbnypwg4agyk3y5pggewp06tz4rrrj9y52wft8nux6gdw5r1g9an47qzai8hvxpzowzxigpi2zqqq0v275ch2uu50v/benchmark/mediciones.table.json",
+          "_latest_artifact_path": "wandb-client-artifact://ojotmoluttbfymturlformeeg4fmj412wtrrs0yt3r3s1qxajg4me16g8d2nrcr8tkhqlmzrs3zfny1k1qe51mjv97gzohdbtwzt8t454vgt2ympsjxshc2jfldxp354:latest/benchmark/mediciones.table.json"
+        },
+        "benchmark/model_load_seconds": 2.1174934860000576,
+        "benchmark/semilla_entrenamiento": 0,
+        "checkpoint/sha256": "066705e5c78e433a2f2bace58fe05c4f27f91237b2e7246cd5c07697997ba980"
+      },
+      "config": {
+        "datos": {
+          "raiz": "data/speech_2023/competitionData",
+          "fonemas": [
+            "AA",
+            "AE",
+            "AH",
+            "AO",
+            "AW",
+            "AY",
+            "B",
+            "CH",
+            "D",
+            "DH",
+            "EH",
+            "ER",
+            "EY",
+            "F",
+            "G",
+            "HH",
+            "IH",
+            "IY",
+            "JH",
+            "K",
+            "L",
+            "M",
+            "N",
+            "NG",
+            "OW",
+            "OY",
+            "P",
+            "R",
+            "S",
+            "SH",
+            "T",
+            "TH",
+            "UH",
+            "UW",
+            "V",
+            "W",
+            "Y",
+            "Z",
+            "ZH",
+            "SIL"
+          ],
+          "sesiones": [
+            "t12.2022.04.28",
+            "t12.2022.05.05",
+            "t12.2022.05.17",
+            "t12.2022.05.19",
+            "t12.2022.05.24",
+            "t12.2022.05.26",
+            "t12.2022.06.02",
+            "t12.2022.06.07",
+            "t12.2022.06.14",
+            "t12.2022.06.16",
+            "t12.2022.06.21",
+            "t12.2022.06.28",
+            "t12.2022.07.05",
+            "t12.2022.07.14",
+            "t12.2022.07.21",
+            "t12.2022.07.27",
+            "t12.2022.08.02",
+            "t12.2022.08.11",
+            "t12.2022.08.13"
+          ],
+          "batch_size": 64,
+          "pin_memory": false,
+          "preparados": "data/speech_2023/preparados_comparacion_v1",
+          "num_workers": 0
+        },
+        "wandb": {
+          "modo": "online",
+          "entidad": null,
+          "proyecto": "tiiac-2026",
+          "directorio": "runs/tracking"
+        },
+        "modelo": {
+          "capas": 5,
+          "kernel": 32,
+          "nombre": "speech_gru",
+          "stride": 4,
+          "entrada": 256,
+          "capa_dia": 256,
+          "unidades": 1024,
+          "dropout_gru": 0.4,
+          "bidireccional": false,
+          "dropout_entrada": 0.2
+        },
+        "salida": {
+          "directorio": "checkpoints/speech_comparacion_t4"
+        },
+        "benchmark": {
+          "split": "val",
+          "salidas": null,
+          "sesiones": null,
+          "hilos_cpu": 2,
+          "batch_size": 1,
+          "dispositivo": "cuda",
+          "repeticiones": 5,
+          "calentamiento": 2,
+          "semilla_muestras": 271828,
+          "ensayos_por_sesion": 2
+        },
+        "ejecucion": {
+          "hilos_cpu": 2,
+          "dispositivo": "cuda"
+        },
+        "etiquetas": {
+          "salida": "data/speech_2023/fonemas_original",
+          "recursos": "data/speech_2023/recursos_g2p",
+          "silencio": "SIL",
+          "max_fonemas": 500,
+          "recursos_nltk": [
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.zip",
+              "sha256": "d07cca47fd72ad32ea9d8ad1219f85301eeaf4568f8b6b73747506a71fb5afd6",
+              "archivo": "corpora/cmudict.zip"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger.zip",
+              "sha256": "e1f13cf2532daadfd6f3bc481a49859f0b8ea6432ccdcd83e6a49a5f19008de9",
+              "archivo": "taggers/averaged_perceptron_tagger.zip"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/taggers/averaged_perceptron_tagger_eng.zip",
+              "sha256": "6025f530624335c67d6547d44757b357b4e79bae030a0383e9887a92c1718f0b",
+              "archivo": "taggers/averaged_perceptron_tagger_eng.zip"
+            }
+          ],
+          "timeout_descarga": 30
+        },
+        "protocolo": {
+          "metodo": "ultimos_bloques_por_sesion",
+          "nombre": "t12_bloques_v1",
+          "sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb",
+          "manifiesto": "docs/datasets/speech_2023/particion_t12_v1.json",
+          "fraccion_validacion": 0.2,
+          "seleccion_checkpoint": "per"
+        },
+        "evaluacion": {
+          "max_lotes": null,
+          "cada_pasos": 50,
+          "micro_batch_size": 16
+        },
+        "comparacion": {
+          "plan": "configs/speech_comparativa.yaml",
+          "variante": "baseline_5",
+          "config_base": "configs/speech_comparacion_t4.yaml",
+          "plan_sha256": "a8976055d54aeef0fa7ba937b983f16e72b07cf27bbbfe15d2dc46a2c2e9cba6",
+          "config_base_sha256": "3636c80ea3b12d3bbb5484afa7d2c38dd9ef09c06e8d807123a6ec02c91f34be"
+        },
+        "experimento": {
+          "seed": 0,
+          "nombre": "speech_comparacion_baseline_t4_seed0_colab_benchmark"
+        },
+        "reanudacion": {
+          "cada_pasos": 250,
+          "max_pasos_sesion": null
+        },
+        "entrenamiento": {
+          "l2": 1e-05,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "pasos": 10001,
+          "ruido": {
+            "blanco_sd": 1,
+            "offset_sd": 0.2
+          },
+          "epsilon": 0.1,
+          "optimizador": "adam_tensorflow",
+          "imprimir_cada": 10,
+          "learning_rate": {
+            "final": 0,
+            "inicio": 0.02,
+            "potencia": 1,
+            "decay_pasos": 10000
+          },
+          "clip_grad_norm": 10,
+          "micro_batch_size": 16
+        },
+        "preprocesamiento": {
+          "suavizado": {
+            "sigma": 2,
+            "umbral": 0.01,
+            "truncate": 4,
+            "longitud_impulso": 100
+          },
+          "normalizacion_epsilon": 1e-08
+        }
+      },
+      "downloaded_table_receipts": {
+        "benchmark/mediciones": {
+          "path": "runs/auditoria/ofxo8x9a_tablas/benchmark/media/table/benchmark/mediciones_0_b5c414bf65d2e092585b.table.json",
+          "sha256": "b5c414bf65d2e092585b383be12b6bf9e7f6d87da3d4b8f2b26ea193516a8db5",
+          "rows": 380,
+          "columns": [
+            "exit",
+            "stage",
+            "batch_index",
+            "repeat",
+            "batch_size",
+            "max_input_bins",
+            "elapsed_ms",
+            "gpu_peak_allocated_bytes",
+            "gpu_peak_reserved_bytes",
+            "gpu_extra_allocated_bytes"
+          ],
+          "counts_and_stage_medians_reproduced": true
+        }
+      }
+    }
+  },
+  "notebook": {
+    "path": "notebooks/11_entrenamiento_reanudable_colab.ipynb",
+    "sha256": "53f8b170bd05487573a5d6ed7a9ae4b8bf54b97336819f12e6baeed77a2f1207",
+    "cell_sources_unchanged": true,
+    "snapshot_files": 59,
+    "snapshot_sha256": "b5d466839c6370d81d6d17d4c77c11feda8bb5e195f340e7b66f2173f3d43397",
+    "local_gpu_computation": false
+  },
+  "notebook_training_summary": {
+    "run_id": "ofxo8x9a",
+    "completed_steps": 10001,
+    "experiment_name": "speech_comparacion_baseline_t4_seed0_colab",
+    "seed": 0,
+    "model_layers": 5,
+    "available_exits": [
+      5
+    ],
+    "comparison": {
+      "variante": "baseline_5",
+      "plan": "configs/speech_comparativa.yaml",
+      "plan_sha256": "a8976055d54aeef0fa7ba937b983f16e72b07cf27bbbfe15d2dc46a2c2e9cba6",
+      "config_base": "configs/speech_comparacion_t4.yaml",
+      "config_base_sha256": "3636c80ea3b12d3bbb5484afa7d2c38dd9ef09c06e8d807123a6ec02c91f34be"
+    },
+    "planned_steps": 10001,
+    "completed_budget": true,
+    "best_val_step": 9751,
+    "best_val": {
+      "ctc_loss": 38.30045716272642,
+      "per": 0.27694787231483486,
+      "errores": 11513,
+      "fonemas": 41571,
+      "frases": 1460,
+      "completo": 1,
+      "segundos": 2.283352976999595
+    },
+    "last_val": {
+      "ctc_loss": 38.25132462227181,
+      "per": 0.2776695292391331,
+      "errores": 11543,
+      "fonemas": 41571,
+      "frases": 1460,
+      "completo": 1,
+      "segundos": 2.3110288259995286
+    },
+    "test_evaluated": false,
+    "hardware": "NVIDIA A100-SXM4-40GB",
+    "model_parameters": 54801193,
+    "training_seconds": 1714.1709357900013,
+    "loop_seconds": 3536.072314738,
+    "cuda_memory": {
+      "cuda/pico_asignado_mib": 1994.5810546875,
+      "cuda/pico_reservado_mib": 3630.0
+    },
+    "torch_version": "2.5.1+cu124",
+    "protocol_sha256": "d9043f30f4755dfef1bdfa33f454ea7025c638ae01cb8a49e182ac1aaf62ccdb",
+    "checkpoint": "/content/drive/MyDrive/speech_bci/checkpoints/speech_comparacion_t4/ofxo8x9a/mejor_val.pt",
+    "checkpoint_sha256": "066705e5c78e433a2f2bace58fe05c4f27f91237b2e7246cd5c07697997ba980",
+    "scope": "presupuesto y métricas observadas; la convergencia requiere revisión del autor"
+  },
+  "figure": {
+    "path": "docs/figuras/t12_baseline_ofxo8x9a/curvas_validacion.png",
+    "sha256": "980cad47206f2efef442d0c3f52a17c08b2b8c0c8b002783820ad5f945c10838",
+    "source": "existing PNG generated by cell10 in Colab; no replot or GPU computation"
+  },
+  "preservation": {
+    "all_notebook_cell_sources_identical_to_commit": "6ca1eb0",
+    "snapshot_source_files_match_checkout": true,
+    "older_notebooks_unchanged": true,
+    "baseline_weights_remain_in_drive": true,
+    "local_weight_copy_received": false
+  },
+  "verification": {
+    "notebook_auth_and_launcher_tests": 16,
+    "test_runtime_seconds": 3.86,
+    "cpu_only": true,
+    "training_wandb_finished": true,
+    "full_validation_rows": 201,
+    "reload_verified": true,
+    "test_evaluated": false,
+    "no_new_training_or_local_gpu": true,
+    "training_config_matches_frozen_profile": true,
+    "all_post_training_runs_use_same_checkpoint_sha256": true
+  }
+}
