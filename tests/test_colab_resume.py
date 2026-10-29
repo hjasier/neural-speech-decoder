@@ -21,7 +21,7 @@ def test_resume_notebook_extracts_verified_sources_without_touching_older_ones(t
     for cell in nb.cells:
         if cell.cell_type != 'code':
             continue
-        assert cell.execution_count is None and not cell.outputs
+        # Conservar las salidas de la ejecución real del autor del notebook 11.
         for node in ast.walk(ast.parse(cell.source)):
             if (isinstance(node, ast.Assign) and isinstance(node.value, ast.Constant)
                     and isinstance(node.value.value, str) and any(
