@@ -1,0 +1,14 @@
+# Fragmento temporal; el perfil completo de entrenamiento se cerrará en la fase 5.
+# Bins de 20 ms: sigma 2 equivale a 40 ms y retardo 8 a 160 ms.
+preprocesamiento:
+  normalizacion_epsilon: 1.0e-08
+  suavizado:
+    modo: causal
+    sigma: 2.0
+    retardo_bins: 8
+    umbral: 0.0
+    longitud_impulso: 100
+    truncate: 4.0
+modelo:
+  kernel: 14
+  stride: 4
