@@ -107,45 +107,31 @@ def test_interleaved_streams_and_reset_match_complete_sequences(
                 for depth, logits in expected[name].items()
             }
     observed: dict[str, dict[int, list[torch.Tensor]]] = {
-        name: {depth: [] for depth in original.available_exits} for name in ("a", "b", "again")
+        name: {depth: [] for depth in original.available_exits} for name in streams
     }
-    current = {"flow": "a"}
-    heads = {int(depth): head for depth, head in checkpoint.model.intermediate_heads.items()}
-    heads[original.num_layers] = checkpoint.model.output_layer
-    hooks = [
-        head.register_forward_hook(
-            lambda _module, _inputs, output, depth=depth:
-            observed[current["flow"]][depth].append(output.detach().clone())
-        )
-        for depth, head in heads.items()
-    ]
     updates = {name: {depth: [] for depth in stream.layers} for name, stream in streams.items()}
     packets = {"a": np.split(raw["a"], [1, 3, 8, 16, 29]),
                "b": np.split(raw["b"], [2, 17, 18, 31, 57])}
-    try:
-        for index in range(len(packets["a"])):
-            for name in streams:
-                current["flow"] = name
-                for depth, phones in streams[name].push(packets[name][index]).items():
-                    updates[name][depth].extend(phones)
-        for name, stream in streams.items():
-            for depth, logits in expected[name].items():
-                torch.testing.assert_close(torch.cat(observed[name][depth], dim=1), logits,
-                                           atol=1e-6, rtol=1e-5)
-            assert updates[name] == stream.hypotheses == expected_ids[name]
-        assert observed["b"][3] == observed["b"][5] == []
-        assert streams["b"].finish() == streams["b"].finish() == {2: []}
-        assert streams["b"].hypotheses == expected_ids["b"]
-
-        # Reiniciar una frase abierta debe borrar filtro, solapamiento, GRU y CTC.
-        streams["a"].reset()
-        current["flow"] = "again"
-        assert streams["a"].push(raw["a"]) == expected_ids["a"]
-        assert streams["a"].finish() == {depth: [] for depth in streams["a"].layers}
-        assert streams["a"].hypotheses == expected_ids["a"]
-        for depth, logits in expected["a"].items():
-            torch.testing.assert_close(torch.cat(observed["again"][depth], dim=1), logits,
+    for index in range(len(packets["a"])):
+        for name in streams:
+            chunk = streams[name].push_with_logits(packets[name][index])
+            for depth, phones in chunk.new_ids.items():
+                updates[name][depth].extend(phones)
+                observed[name][depth].append(chunk.logits[depth].unsqueeze(0))
+    for name, stream in streams.items():
+        for depth, logits in expected[name].items():
+            torch.testing.assert_close(torch.cat(observed[name][depth], dim=1), logits,
                                        atol=1e-6, rtol=1e-5)
-    finally:
-        for hook in hooks:
-            hook.remove()
+        assert updates[name] == stream.hypotheses == expected_ids[name]
+    assert observed["b"][3] == observed["b"][5] == []
+    assert streams["b"].finish() == streams["b"].finish() == {2: []}
+    assert streams["b"].hypotheses == expected_ids["b"]
+
+    # Reiniciar una frase abierta debe borrar filtro, solapamiento, GRU y CTC.
+    streams["a"].reset()
+    again = streams["a"].push_with_logits(raw["a"])
+    assert again.new_ids == expected_ids["a"]
+    assert streams["a"].finish() == {depth: [] for depth in streams["a"].layers}
+    assert streams["a"].hypotheses == expected_ids["a"]
+    for depth, logits in expected["a"].items():
+        torch.testing.assert_close(again.logits[depth].unsqueeze(0), logits, atol=1e-6, rtol=1e-5)

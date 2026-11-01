@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Sequence
 
@@ -13,6 +14,14 @@ from torch import Tensor
 from src.inference.checkpoints import SpeechCheckpoint, load_inference_checkpoint
 from src.inference.ctc import IncrementalCTC
 from src.inference.preprocessing import OnlinePreprocessor
+
+
+@dataclass(frozen=True)
+class SpeechChunk:
+    """Logits tiempo × clases y nuevos fonemas CTC de un único bloque por salida."""
+
+    logits: dict[int, Tensor]
+    new_ids: dict[int, list[int]]
 
 
 class OnlineSpeechDecoder:
@@ -83,20 +92,31 @@ class SpeechStream:
             decoder.reset()
         self._closed = False
 
-    def _consume(self, windows: Tensor) -> dict[int, list[int]]:
+    def _consume(self, windows: Tensor) -> SpeechChunk:
         if windows.shape[1] == 0:
-            return {depth: [] for depth in self.layers}
+            empty = self._checkpoint.model.initial_state
+            return SpeechChunk({depth: empty.new_empty((0, self._checkpoint.blank_id + 1))
+                                for depth in self.layers}, {depth: [] for depth in self.layers})
         logits, self._states = self._checkpoint.model.forward_windows(
             windows, self._states, layers=self.layers,
         )
         updates = {depth: self._ctc[depth].push(logits[depth][0]) for depth in self.layers}
         for depth, phones in updates.items():
             self._hypotheses[depth].extend(phones)
-        return updates
+        return SpeechChunk({depth: value[0] for depth, value in logits.items()}, updates)
 
     @torch.inference_mode()
     def push(self, features: NDArray[np.float32]) -> dict[int, list[int]]:
         """Recibe T × 256 crudo en orden tx1/spikePow y emite solo IDs nuevos."""
+        return self.push_with_logits(features).new_ids
+
+    @torch.inference_mode()
+    def push_with_logits(self, features: NDArray[np.float32]) -> SpeechChunk:
+        """Avanza una sola vez y conserva las alternativas para el modelo de lenguaje.
+
+        Los logits incluyen SIL y blank en el orden original del checkpoint.
+        No se acumulan internamente: el consumidor procesa cada bloque en orden.
+        """
         if self._closed:
             raise ValueError("La frase está cerrada; inicia otra con reset().")
         return self._consume(self._preprocessor.push(features))
@@ -106,7 +126,7 @@ class SpeechStream:
         """Cierra sin inventar bins; conserva la hipótesis y no duplica emisiones."""
         if self._closed:
             return {depth: [] for depth in self.layers}
-        updates = self._consume(self._preprocessor.finish())
+        updates = self._consume(self._preprocessor.finish()).new_ids
         self._states = None
         self._closed = True
         return updates
