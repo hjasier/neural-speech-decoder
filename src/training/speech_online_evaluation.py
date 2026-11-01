@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Callable, Iterable, Iterator
 from dataclasses import dataclass
 import json
+import math
 from pathlib import Path
 from time import perf_counter
 from typing import Any
@@ -121,6 +122,94 @@ def _distribution(values: list[float]) -> dict[str, float | int | None]:
             "p95_ms": float(np.percentile(values, 95)) if values else None}
 
 
+def _complete_logits(
+    decoder: OnlineSpeechDecoder, trial: OnlineTrial, exits: tuple[int, ...],
+) -> dict[int, torch.Tensor]:
+    checkpoint = decoder.checkpoint
+    session_id = checkpoint.sessions.index(trial.session)
+    normalized = checkpoint.normalization[trial.session].transform_features(trial.raw, trial.session)
+    features = torch.from_numpy(normalized).unsqueeze(0).to(checkpoint.model.initial_state)
+    return checkpoint.model.forward_exits(checkpoint.smoother(features),
+                                         torch.tensor([session_id], device=features.device), layers=exits)
+
+
+def _stream_logits(
+    decoder: OnlineSpeechDecoder, trial: OnlineTrial, depth: int, block_bins: int,
+) -> tuple[torch.Tensor, list[int]]:
+    # Captura solo durante el diagnóstico, nunca durante las medidas de tiempo.
+    model = decoder.checkpoint.model
+    head = model.output_layer if depth == model.num_layers else model.intermediate_heads[str(depth)]
+    chunks = []
+
+    def capture(_module: torch.nn.Module, _inputs: tuple, output: torch.Tensor) -> None:
+        chunks.append(output.detach().clone())
+
+    handle = head.register_forward_hook(capture)
+    try:
+        stream = decoder.start(trial.session, layers=(depth,))
+        for start in range(0, len(trial.raw), block_bins):
+            stream.push(trial.raw[start:start + block_bins])
+        stream.finish()
+    finally:
+        handle.remove()
+    logits = torch.cat(chunks, dim=1) if chunks else model.initial_state.new_empty((1, 0, head.out_features))
+    return logits, stream.hypotheses[depth]
+
+
+def _compare_logits(complete: torch.Tensor, streamed: torch.Tensor, spec: dict[str, Any]) -> dict[str, Any]:
+    result = {"complete_shape": list(complete.shape), "streamed_shape": list(streamed.shape),
+              "logits_atol": spec["logits_atol"], "logits_rtol": spec["logits_rtol"], "logits_close": False}
+    if complete.shape != streamed.shape:
+        return result
+    result["finite"] = bool(torch.isfinite(complete).all() & torch.isfinite(streamed).all())
+    if not result["finite"]:
+        return result
+    difference = (complete - streamed).abs()
+    result.update(logits_close=bool(torch.allclose(streamed, complete, atol=spec["logits_atol"], rtol=spec["logits_rtol"])),
+                  max_abs_error=float(difference.max()) if difference.numel() else 0.0,
+                  mean_abs_error=float(difference.mean()) if difference.numel() else 0.0,
+                  argmax_different_frames=int((complete.argmax(-1) != streamed.argmax(-1)).sum()))
+    return result
+
+
+def _decode_logits(logits: torch.Tensor, blank_id: int) -> list[int]:
+    return decode_ctc(logits, torch.tensor([logits.shape[1]]), blank_id)[0]
+
+
+def _evaluation_exits(decoder: OnlineSpeechDecoder, spec: dict[str, Any]) -> tuple[int, ...]:
+    available = decoder.checkpoint.model.available_exits
+    exits = available if spec["salidas"] is None else tuple(spec["salidas"])
+    if (spec["split"] not in ("val", "test")
+            or type(spec["bloque_bins"]) is not int or spec["bloque_bins"] <= 0
+            or type(spec["calentamiento"]) is not int or spec["calentamiento"] < 0
+            or not exits or len(set(exits)) != len(exits)
+            or any(type(depth) is not int or depth not in available for depth in exits)
+            or any(not math.isfinite(spec[key]) or spec[key] < 0 for key in ("logits_atol", "logits_rtol"))):
+        raise ValueError("Split, bloques, calentamiento, salidas o tolerancias de evaluación no válidos.")
+    return exits
+
+
+@torch.inference_mode()
+def diagnose_online_trial(
+    decoder: OnlineSpeechDecoder, trial: OnlineTrial, spec: dict[str, Any],
+) -> dict[str, Any]:
+    """Compara logits completos y por bloques de una frase, sin medir PER ni tiempos."""
+    exits = _evaluation_exits(decoder, spec)
+    complete = _complete_logits(decoder, trial, exits)
+    profiles = {}
+    for depth in exits:
+        streamed, ids = _stream_logits(decoder, trial, depth, spec["bloque_bins"])
+        reference = _decode_logits(complete[depth], decoder.checkpoint.blank_id)
+        profiles[depth] = {**_compare_logits(complete[depth], streamed, spec),
+                           "complete_ids": reference, "streamed_ids": ids, "matches_complete": ids == reference,
+                           "incremental_matches_collapsed": ids == _decode_logits(streamed, decoder.checkpoint.blank_id)}
+    return {"session": trial.session, "source_trial_index": trial.trial_index, "split": spec["split"],
+            "optimizer_steps": 0, "profiles": profiles,
+            "all_logits_close": all(profile["logits_close"] for profile in profiles.values()),
+            "all_checks_passed": all(profile["logits_close"] and profile["incremental_matches_collapsed"]
+                                     for profile in profiles.values())}
+
+
 @torch.inference_mode()
 def evaluate_online(
     decoder: OnlineSpeechDecoder, trials: Iterable[OnlineTrial], spec: dict[str, Any],
@@ -129,36 +218,28 @@ def evaluate_online(
     """Evalúa cada prefijo por separado y contrasta CTC con la pasada causal completa.
 
     PER suma errores y fonemas. Los tiempos excluyen lectura, referencia
-    completa, PER y escritura. El reloj de llegada se simula sin esperas reales:
+    completa, diagnóstico de equivalencia, PER y escritura. El reloj de llegada se simula sin esperas reales:
     cada bloque está disponible cuando han llegado todos sus bins de 20 ms.
     El primer fonema (incluido SIL) se mide desde el inicio de la frase,
     sin alineación fonética ni transporte HTTP.
     """
     model = decoder.checkpoint.model
-    exits = model.available_exits if spec["salidas"] is None else tuple(spec["salidas"])
-    if (spec["split"] not in ("val", "test") or expected_trials <= 0
-            or type(spec["bloque_bins"]) is not int or spec["bloque_bins"] <= 0
-            or type(spec["calentamiento"]) is not int or spec["calentamiento"] < 0
-            or not exits or len(set(exits)) != len(exits)
-            or any(type(depth) is not int or depth not in model.available_exits for depth in exits)):
-        raise ValueError("Split, bloques, calentamiento o salidas de evaluación no válidos.")
+    exits = _evaluation_exits(decoder, spec)
+    if expected_trials <= 0:
+        raise ValueError("La partición de evaluación debe contener frases.")
     totals = {depth: _counts() for depth in exits}
     sessions: dict[int, dict[str, dict[str, int]]] = {depth: {} for depth in exits}
     timing = {depth: {"processing_ms": 0.0, "signal_ms": 0.0,
                       "packet_ms": [], "first_input_ms": [], "first_ready_ms": []} for depth in exits}
-    count = 0
+    count = exact_matches = 0
+    ctc_mismatches = {depth: 0 for depth in exits}
     for trial in trials:
         if not trial.reference_ids or any(phone < 0 or phone >= decoder.checkpoint.blank_id
                                           for phone in trial.reference_ids):
             raise ValueError("La referencia debe contener fonemas válidos, sin blank.")
-        session_id = decoder.checkpoint.sessions.index(trial.session)
-        normalized = decoder.checkpoint.normalization[trial.session].transform_features(trial.raw, trial.session)
-        features = torch.from_numpy(normalized).unsqueeze(0).to(model.initial_state)
-        outputs = model.forward_exits(decoder.checkpoint.smoother(features),
-                                      torch.tensor([session_id], device=features.device), layers=exits)
-        complete = {depth: decode_ctc(logits, torch.tensor([logits.shape[1]]), decoder.checkpoint.blank_id)[0]
+        outputs = _complete_logits(decoder, trial, exits)
+        complete = {depth: _decode_logits(logits, decoder.checkpoint.blank_id)
                     for depth, logits in outputs.items()}
-        del outputs, features
         row = {"split": spec["split"], "source_split": "train" if spec["split"] == "val" else "test",
                "session": trial.session, "source_trial_index": trial.trial_index, "block": trial.block,
                "input_bins": len(trial.raw), "reference_ids": list(trial.reference_ids),
@@ -169,8 +250,19 @@ def evaluate_online(
                 for _ in range(spec["calentamiento"]):
                     _run_profile(decoder, trial, depth, spec["bloque_bins"])
             profile = _run_profile(decoder, trial, depth, spec["bloque_bins"])
-            if profile["ids"] != complete[depth]:
-                raise ValueError(f"Bloques y secuencia causal completa difieren: {trial.session}, ensayo {trial.trial_index}, salida {depth}.")
+            matches = profile["ids"] == complete[depth]
+            if not matches:
+                streamed, replay_ids = _stream_logits(decoder, trial, depth, spec["bloque_bins"])
+                comparison = _compare_logits(outputs[depth], streamed, spec)
+                comparison.update(complete_ids=complete[depth], replay_matches_measured=replay_ids == profile["ids"],
+                                  incremental_matches_collapsed=replay_ids == _decode_logits(streamed, decoder.checkpoint.blank_id))
+                profile["equivalence"] = comparison
+                if not all(comparison[key] for key in
+                           ("logits_close", "replay_matches_measured", "incremental_matches_collapsed")):
+                    raise ValueError(f"Diferencia de logits o repetición online inestable: {trial.session}, "
+                                     f"ensayo {trial.trial_index}, salida {depth}. "
+                                     f"Diagnóstico: {json.dumps(comparison, ensure_ascii=False)}")
+                ctc_mismatches[depth] += 1
             errors = edit_distance(trial.reference_ids, profile["ids"])
             for total in (totals[depth], sessions[depth].setdefault(trial.session, _counts())):
                 total["errores"] += errors
@@ -184,8 +276,9 @@ def evaluate_online(
                 measured["first_input_ms"].append(profile["first_phone_input_ms"])
                 measured["first_ready_ms"].append(profile["first_phone_ready_ms"])
             profile.update(errors=errors, per=errors / len(trial.reference_ids),
-                           rtf=profile["processing_ms"] / signal_ms, matches_complete=True)
+                           rtf=profile["processing_ms"] / signal_ms, matches_complete=matches)
             row["profiles"][depth] = profile
+        exact_matches += all(profile["matches_complete"] for profile in row["profiles"].values())
         count += 1
         if prediction_sink is not None:
             prediction_sink(row)
@@ -193,7 +286,8 @@ def evaluate_online(
         raise ValueError("La evaluación online no recorrió exactamente la partición completa.")
     return {"split": spec["split"], "test_evaluated": spec["split"] == "test", "optimizer_steps": 0,
             "available_exits": list(model.available_exits), "evaluated_exits": list(exits),
-            "complete_sequence_matches": count, "bin_ms": BIN_SECONDS * 1000,
+            "complete_sequence_matches": exact_matches, "ctc_mismatches_with_close_logits": ctc_mismatches,
+            "bin_ms": BIN_SECONDS * 1000,
             "global": {depth: _per(total) for depth, total in totals.items()},
             "by_session": {depth: {name: _per(total) for name, total in days.items()}
                            for depth, days in sessions.items()},
@@ -204,6 +298,6 @@ def evaluate_online(
                                "first_phone_ready": _distribution(measured["first_ready_ms"]),
                                "phrases_without_emission": count - len(measured["first_input_ms"])}
                        for depth, measured in timing.items()},
-            "timing_scope": "perfiles independientes, pesos compartidos residentes; apertura, normalización, filtro, ventanas, GRU, CTC y cierre; sin disco, pasada completa, PER ni escritura",
+            "timing_scope": "perfiles independientes, pesos compartidos residentes; apertura, normalización, filtro, ventanas, GRU, CTC y cierre; sin disco, pasada completa, diagnóstico de equivalencia, PER ni escritura",
             "arrival_clock": "simulado sin sleep ni red; bloque disponible en stop_bin * bin_ms; consumidor secuencial con cola",
-            "equivalence_reference": "mismo checkpoint causal, pasada completa y CTC voraz"}
+            "equivalence_reference": "mismo checkpoint causal, pasada completa y CTC voraz; si CTC difiere, se exige repetición estable y logits dentro de tolerancia"}

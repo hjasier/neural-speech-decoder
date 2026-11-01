@@ -5,5 +5,13 @@ bloque_bins: 4  # Paquetes de 80 ms; bins T12 de 20 ms.
 calentamiento: 1  # Frase inicial por perfil, excluida de las mediciones.
 dispositivo: cpu
 hilos_cpu: 2
+# Precisión de inferencia explícita, también al medir tiempos en CUDA.
+permitir_tf32: false
+# Comparar kernels FP32 completos/por bloques, también cerca de cero.
+# A100 sin TF32: máximo observado 1,91e-5; con TF32: 3,37e-2 y CTC distinto.
+# Esta tolerancia admite el primer caso y sigue rechazando el segundo.
+# No modifica las tolerancias de recarga del mismo forward/checkpoint.
+logits_atol: 1.0e-4
+logits_rtol: 1.0e-5
 # Tiempos de proceso observados; llegadas simuladas sin HTTP ni sleep.
 # RTF = suma de tiempos de proceso / duración total de señal.

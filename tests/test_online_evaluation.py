@@ -78,3 +78,39 @@ def test_online_timing_accounts_for_arrival_backlog_and_total_duration(
         assert first["first_phone_input_ms"] == pytest.approx(320)
         assert first["first_phone_ready_ms"] == pytest.approx(600)
         assert first["packets"][-1]["input_ms"] == pytest.approx(380)
+
+
+@pytest.mark.parametrize(("difference", "should_pass"), [(2e-5, True), (0.03, False)])
+def test_ctc_rounding_is_recorded_but_logit_drift_stops_evaluation(
+    online_evaluation_case: tuple, difference: float, should_pass: bool,
+) -> None:
+    """Un casi empate puede cambiar CTC; una desviación grande debe seguir fallando."""
+    decoder, trials, spec = online_evaluation_case
+    model = decoder.checkpoint.model
+    spec["salidas"] = [model.num_layers]
+    with torch.no_grad():
+        model.output_layer.bias[1] = model.output_layer.bias[0]
+
+    def perturb_stream(_module: torch.nn.Module, _inputs: tuple, logits: torch.Tensor) -> torch.Tensor:
+        # La pasada completa tiene varias ventanas; los bloques generan una cada vez.
+        if logits.shape[1] == 1:
+            logits = logits.clone()
+            logits[..., 1] += difference
+        return logits
+
+    handle = model.output_layer.register_forward_hook(perturb_stream)
+    try:
+        if not should_pass:
+            with pytest.raises(ValueError, match="logits"):
+                evaluate_online(decoder, trials[:1], spec, expected_trials=1)
+        else:
+            rows = []
+            result = evaluate_online(decoder, trials[:1], spec, expected_trials=1, prediction_sink=rows.append)
+            profile = rows[0]["profiles"][model.num_layers]
+            assert profile["ids"] == [1]
+            assert profile["matches_complete"] is False
+            assert profile["equivalence"]["logits_close"] is True
+            assert result["complete_sequence_matches"] == 0
+            assert result["global"][model.num_layers]["errores"] == 1
+    finally:
+        handle.remove()
