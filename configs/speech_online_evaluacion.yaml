@@ -1,0 +1,9 @@
+# Validación completa. Test solo al cerrar la selección de modelos.
+split: val
+salidas: null
+bloque_bins: 4  # Paquetes de 80 ms; bins T12 de 20 ms.
+calentamiento: 1  # Frase inicial por perfil, excluida de las mediciones.
+dispositivo: cpu
+hilos_cpu: 2
+# Tiempos de proceso observados; llegadas simuladas sin HTTP ni sleep.
+# RTF = suma de tiempos de proceso / duración total de señal.
