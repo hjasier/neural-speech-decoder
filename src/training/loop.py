@@ -15,11 +15,18 @@ OPTIMIZADORES = {
 }
 
 
-def entrenar(modelo: nn.Module, train_loader: DataLoader,
-             val_loader: DataLoader, cfg: dict, run=None) -> nn.Module:
+def entrenar(
+    modelo: nn.Module,
+    train_loader: DataLoader,
+    val_loader: DataLoader,
+    cfg: dict,
+    run=None,
+) -> nn.Module:
+    """Entrena el clasificador sintético durante los pasos del smoke."""
     tcfg = cfg["entrenamiento"]
-    opt = OPTIMIZADORES[tcfg["optimizador"]](modelo.parameters(),
-                                             lr=tcfg["learning_rate"])
+    opt = OPTIMIZADORES[tcfg["optimizador"]](
+        modelo.parameters(), lr=tcfg["learning_rate"]
+    )
     criterio = nn.CrossEntropyLoss()
     max_steps = tcfg.get("max_steps")
 
@@ -33,22 +40,23 @@ def entrenar(modelo: nn.Module, train_loader: DataLoader,
             opt.step()
 
             paso += 1
-            # .item() rompe el grafo: sin esto se acumula memoria hasta reventar
+            # Registrar escalares evita conservar el grafo de cada paso.
             registrar(run, {"train/loss": perdida.item()}, paso)
             if max_steps and paso >= max_steps:
                 return modelo
 
         metricas = evaluar(modelo, val_loader, cfg)
         registrar(run, {f"val/{k}": v for k, v in metricas.items()}, paso)
-        print(f"epoca {epoca + 1}/{tcfg['epochs']}  "
-              + "  ".join(f"{k}={v:.4f}" for k, v in metricas.items()))
+        print(
+            f"epoca {epoca + 1}/{tcfg['epochs']}  "
+            + "  ".join(f"{k}={v:.4f}" for k, v in metricas.items())
+        )
     return modelo
 
 
 @torch.no_grad()
 def evaluar(modelo: nn.Module, loader: DataLoader, cfg: dict) -> dict[str, float]:
-    """Evaluacion. El decorador no_grad no es opcional: sin el, la evaluacion
-    construye grafo y agota la memoria."""
+    """Calcula pérdida y aciertos sin construir gradientes."""
     modelo.eval()
     criterio = nn.CrossEntropyLoss()
     perdida_total, aciertos, total = 0.0, 0, 0
@@ -56,9 +64,7 @@ def evaluar(modelo: nn.Module, loader: DataLoader, cfg: dict) -> dict[str, float
     for x, y in loader:
         logits = modelo(x)
         perdida_total += criterio(logits, y).item() * y.size(0)
-        # dim=1 son las clases. dim=0 seria el batch: no da error y esta MAL.
         aciertos += (logits.argmax(dim=1) == y).sum().item()
         total += y.size(0)
 
-    return {"loss": perdida_total / max(total, 1),
-            "accuracy": aciertos / max(total, 1)}
+    return {"loss": perdida_total / max(total, 1), "accuracy": aciertos / max(total, 1)}

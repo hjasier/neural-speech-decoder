@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
+from torch import Tensor
 import torch.nn as nn
 
 
-class ModeloPlaceholder(nn.Module):
-    """Sustituye esto por la arquitectura del paper."""
+class ModeloSmoke(nn.Module):
+    """Clasificador pequeño usado únicamente por el smoke sintético."""
 
-    def __init__(self, dim_entrada: int = 32, clases: int = 10):
+    def __init__(self, dim_entrada: int = 32, clases: int = 10) -> None:
+        """Crea las dos capas del clasificador sintético."""
         super().__init__()
         self.red = nn.Sequential(
             nn.Linear(dim_entrada, 64),
@@ -16,17 +18,14 @@ class ModeloPlaceholder(nn.Module):
             nn.Linear(64, clases),
         )
 
-    def forward(self, x):
+    def forward(self, x: Tensor) -> Tensor:
+        """Devuelve los logits de clase del lote sintético."""
         return self.red(x)
 
 
 def construir_modelo(cfg: dict) -> nn.Module:
-    """Construye la GRU de habla o la plantilla durante la migración del pipeline."""
+    """Construye la GRU de habla o el clasificador de la prueba sintética."""
     nombre = cfg["modelo"]["nombre"]
-    if nombre == "alice_gru":
-        from src.models.alice_gru import AliceGRU
-
-        return AliceGRU(cfg["modelo"])
     if nombre == "speech_gru":
         from src.models.speech_gru import SpeechGRU
 
@@ -34,7 +33,9 @@ def construir_modelo(cfg: dict) -> nn.Module:
         sessions = cfg["datos"]["sesiones"]
         phones = cfg["datos"]["fonemas"]
         if not sessions or len(set(sessions)) != len(sessions):
-            raise ValueError("Las sesiones deben ser una lista no vacía sin duplicados.")
+            raise ValueError(
+                "Las sesiones deben ser una lista no vacía sin duplicados."
+            )
         if not phones or len(set(phones)) != len(phones):
             raise ValueError("El vocabulario de fonemas está vacío o tiene duplicados.")
         if mcfg["bidireccional"]:
@@ -53,5 +54,5 @@ def construir_modelo(cfg: dict) -> nn.Module:
             intermediate_layers=mcfg.get("salidas_intermedias", ()),
         )
     if nombre == "mi_modelo":
-        return ModeloPlaceholder()
+        return ModeloSmoke()
     raise ValueError(f"modelo desconocido: {nombre}")

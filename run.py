@@ -15,107 +15,133 @@ from __future__ import annotations
 
 import argparse
 import sys
+from typing import Any
 from pathlib import Path
 
 import yaml
 
-sys.path.insert(0, str(Path(__file__).parent))
-
-from src.utils.seed import fijar_seed          # noqa: E402
-from src.utils.tracking import abrir_run       # noqa: E402
-from src.data.loaders import construir_loaders  # noqa: E402
-from src.models.factory import construir_modelo  # noqa: E402
-from src.training.loop import entrenar, evaluar  # noqa: E402
+from src.data.loaders import construir_loaders
+from src.models.factory import construir_modelo
+from src.training.loop import entrenar, evaluar
+from src.utils.seed import fijar_seed
+from src.utils.tracking import abrir_run
 
 
 def cargar_config(ruta: Path) -> dict:
-    """Lee los parámetros del experimento desde YAML."""
-    with open(ruta, encoding="utf-8") as f:
-        return yaml.safe_load(f)
+    """Lee la configuración YAML del experimento."""
+    with ruta.open(encoding="utf-8") as stream:
+        return yaml.safe_load(stream)
+
+
+def _argumentos() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--config", type=Path, default=Path("configs/default.yaml"))
+    parser.add_argument("--smoke", action="store_true", help="prueba sintética en CPU")
+    parser.add_argument(
+        "--solo-evaluar", action="store_true", help="evalúa sin entrenar"
+    )
+    parser.add_argument("--checkpoint", type=Path, help="pesos para --solo-evaluar")
+    parser.add_argument(
+        "--reanudar", type=Path, help="estado completo entrenamiento.pt"
+    )
+    parser.add_argument(
+        "--split",
+        choices=("val", "test"),
+        help="partición de evaluación; por defecto test",
+    )
+    args = parser.parse_args()
+    if args.solo_evaluar and args.checkpoint is None:
+        parser.error("--solo-evaluar requiere --checkpoint")
+    if args.checkpoint is not None and not args.solo_evaluar:
+        parser.error(
+            "--checkpoint requiere --solo-evaluar; para continuar usa --reanudar"
+        )
+    if args.reanudar is not None and (
+        args.solo_evaluar or args.checkpoint is not None or args.split is not None
+    ):
+        parser.error(
+            "--reanudar no se combina con --solo-evaluar, --checkpoint ni --split"
+        )
+    if args.split is not None and not args.solo_evaluar:
+        parser.error("--split requiere --solo-evaluar")
+    for path in (args.checkpoint, args.reanudar):
+        if path is not None and not path.is_file():
+            parser.error(f"no existe el archivo {path}")
+    return args
+
+
+def _estado_reanudacion(cfg: dict, args: argparse.Namespace) -> dict | None:
+    if not (args.reanudar is not None or cfg.get("reanudacion")):
+        return None
+    from src.training.speech_resume import (
+        read_training_checkpoint,
+        validate_resume_config,
+    )
+
+    if cfg["modelo"]["nombre"] != "speech_gru":
+        raise ValueError("La reanudación solo está disponible para T12.")
+    validate_resume_config(cfg)
+    if args.reanudar is None:
+        return None
+    state = read_training_checkpoint(args.reanudar, cfg)
+    if args.reanudar.parent.name != state["tracking"]["logical_id"]:
+        raise ValueError(
+            "Conserva el nombre de la carpeta del run al copiar el estado completo."
+        )
+    return state
+
+
+def _ejecutar(
+    cfg: dict, args: argparse.Namespace, run: Any, resume_state: dict | None
+) -> dict:
+    if cfg["modelo"]["nombre"] == "speech_gru":
+        from src.training.speech import ejecutar_habla
+
+        return ejecutar_habla(
+            cfg,
+            run,
+            checkpoint=args.checkpoint,
+            solo_evaluar=args.solo_evaluar,
+            split_evaluacion=args.split,
+            resume_state=resume_state,
+            resume_path=args.reanudar,
+        )
+    train, val = construir_loaders(cfg)
+    modelo = construir_modelo(cfg)
+    entrenar(modelo, train, val, cfg, run)
+    return evaluar(modelo, val, cfg)
 
 
 def main() -> int:
-    """Orquesta datos, modelo, seguimiento y entrenamiento o evaluación."""
-    ap = argparse.ArgumentParser(description=__doc__,
-                                 formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--config", type=Path, default=Path("configs/default.yaml"),
-                    help="fichero de configuracion")
-    ap.add_argument("--smoke", action="store_true",
-                    help="usa configs/smoke.yaml: prueba corta de la plantilla sintética")
-    ap.add_argument("--solo-evaluar", action="store_true",
-                    help="carga el checkpoint y evalua, sin entrenar")
-    ap.add_argument("--checkpoint", type=Path,
-                    help="checkpoint de habla para --solo-evaluar")
-    ap.add_argument("--reanudar", type=Path,
-                    help="entrenamiento.pt completo de T12; conserva el presupuesto original")
-    ap.add_argument("--split", choices=("val", "test"),
-                    help="partición T12 en --solo-evaluar; por defecto test")
-    args = ap.parse_args()
-    if args.solo_evaluar and args.checkpoint is None:
-        ap.error("--solo-evaluar requiere --checkpoint")
-    if args.checkpoint is not None and not args.solo_evaluar:
-        ap.error("--checkpoint requiere --solo-evaluar; para entrenamiento usa --reanudar")
-    if args.reanudar is not None and (args.solo_evaluar or args.checkpoint is not None or args.split is not None):
-        ap.error("--reanudar no se combina con evaluación ni --checkpoint/--split")
-    if args.reanudar is not None and not args.reanudar.is_file():
-        ap.error(f"no existe el estado de entrenamiento {args.reanudar}")
-    if args.split is not None and not args.solo_evaluar:
-        ap.error("--split requiere --solo-evaluar")
-    if args.checkpoint is not None and not args.checkpoint.is_file():
-        ap.error(f"no existe el checkpoint {args.checkpoint}")
-
+    """Carga la configuración, abre W&B y ejecuta el modo solicitado."""
+    args = _argumentos()
     ruta = Path("configs/smoke.yaml") if args.smoke else args.config
     if not ruta.is_file():
         print(f"error: no existe {ruta}", file=sys.stderr)
         return 2
     cfg = cargar_config(ruta)
-    alice_ctc = cfg.get("tarea") == "alice_ctc"
-    speech = cfg["modelo"]["nombre"] == "speech_gru" and not alice_ctc
-    alice = cfg.get("tarea") == "alice_power"
-    if args.solo_evaluar and not (speech or alice_ctc):
-        ap.error("la evaluación desde checkpoint está implementada para habla y Alice CTC")
-    if args.split is not None and not speech:
-        ap.error("--split está disponible únicamente para habla T12")
-    resume_state = None
-    if args.reanudar is not None or cfg.get("reanudacion"):
-        if not speech:
-            ap.error("La reanudación está implementada únicamente para habla T12")
-        from src.training.speech_resume import read_training_checkpoint, validate_resume_config
-
-        validate_resume_config(cfg)
-        if args.reanudar is not None:
-            resume_state = read_training_checkpoint(args.reanudar, cfg)
-            if args.reanudar.parent.name != resume_state["tracking"]["logical_id"]:
-                ap.error("Conserva el nombre de la carpeta del run al copiar el estado completo")
-
-    # 1 · reproducibilidad, antes que nada
+    if cfg.get("tarea") is not None:
+        raise ValueError(
+            "Las exploraciones anteriores están retiradas; usa un perfil T12 o el smoke."
+        )
+    speech = cfg["modelo"]["nombre"] == "speech_gru"
+    if (args.solo_evaluar or args.split is not None) and not speech:
+        raise ValueError(
+            "La evaluación desde checkpoint solo está disponible para T12."
+        )
+    resume_state = _estado_reanudacion(cfg, args)
     fijar_seed(cfg["experimento"]["seed"])
-
-    # 2 · seguimiento del experimento
-    run = abrir_run(cfg, resume=resume_state["tracking"]) if resume_state is not None else abrir_run(cfg)
+    run = (
+        abrir_run(cfg, resume=resume_state["tracking"])
+        if resume_state is not None
+        else abrir_run(cfg)
+    )
     try:
-        if alice_ctc:
-            from src.training.alice_ctc import ejecutar_alice_ctc
-
-            metricas = ejecutar_alice_ctc(cfg, run, checkpoint=args.checkpoint, solo_evaluar=args.solo_evaluar)
-        elif alice:
-            from src.training.alice import ejecutar_alice
-
-            metricas = ejecutar_alice(cfg, run)
-        elif speech:
-            from src.training.speech import ejecutar_habla
-
-            metricas = ejecutar_habla(cfg, run, checkpoint=args.checkpoint, solo_evaluar=args.solo_evaluar,
-                                      split_evaluacion=args.split, resume_state=resume_state,
-                                      resume_path=args.reanudar)
-        else:
-            train_loader, val_loader = construir_loaders(cfg)
-            modelo = construir_modelo(cfg)
-            entrenar(modelo, train_loader, val_loader, cfg, run)
-            metricas = evaluar(modelo, val_loader, cfg)
-        label = "validacion" if args.split == "val" else (
-            "validacion; checkpoint seleccionado" if cfg.get("protocolo") and not args.solo_evaluar else "test publicado")
-        print(f"\n=== metricas ({label}) ===" if speech else "\n=== metricas ===")
+        metricas = _ejecutar(cfg, args, run, resume_state)
+        split = args.split or (
+            "val" if cfg.get("protocolo") and not args.solo_evaluar else "test"
+        )
+        print(f"\n=== métricas ({split}) ===" if speech else "\n=== métricas ===")
         for key, value in metricas.items():
             print(f"{key}: {value:.4f}")
     except BaseException:
