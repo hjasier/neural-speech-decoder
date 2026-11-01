@@ -1,5 +1,0 @@
-# La demo local añade únicamente los controles interactivos del notebook.
--r requirements.txt
-ipywidgets==8.1.7
-widgetsnbextension==4.0.16
-jupyterlab_widgets==3.0.17
