@@ -1,7 +1,0 @@
-[
-  {
-    "asset": "assets/brain.png",
-    "tool": "Codex image generation",
-    "prompt": "Use case: scientific-educational. Asset type: conceptual anatomical illustration used as a hero image in a scientific HTML presentation. Create a striking high quality 3D lateral view of a human cerebral hemisphere, realistic cortical folds with delicate blue-white surface shading, floating in a deep midnight navy background. The brain occupies the right two thirds, left third dark negative space for a title. A restrained fine network of softly luminous blue points and thin connections follows the cortical surface to suggest recorded neural activity, without asserting specific implant locations. It should look like an elegant neuroscience editorial image, anatomically plausible and visually sophisticated, not a cartoon, not a sci-fi robot, not a brain with circuit board panels. Palette deep navy, ice blue, cool white and subtle cyan. Strong contrast, large readable silhouette, precise tissue contours. Wide 16:9 landscape. No words, numbers, labels, chart axes, logos or watermarks."
-  }
-]
