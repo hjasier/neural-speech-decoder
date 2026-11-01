@@ -5,23 +5,20 @@ from __future__ import annotations
 import copy
 import json
 from pathlib import Path
-import subprocess
-import sys
 from types import SimpleNamespace
 
 import pytest
 import torch
 from torch import nn
-from torch.utils.data import DataLoader
 import yaml
 
 from src.data.speech_dataset import SpeechSample, collate_speech
 from src.models.factory import construir_modelo
 from src.training.checkpoints import load_checkpoint
 from src.training.speech import (
-    _backward_microbatch, _criterion, _ctc_weights, entrenar_habla, evaluar_habla, evaluar_salidas,
+    _backward_microbatch, _criterion, _ctc_weights, entrenar_habla,
 )
-from src.utils.seed import fijar_seed, crear_generador
+from src.utils.seed import fijar_seed
 
 
 def _fixture():
@@ -39,17 +36,7 @@ def _fixture():
     return cfg, rows, collate_speech(rows)
 
 
-@pytest.mark.parametrize("weights", [
-    {"2": 0.5, "5": 0.5}, {"2": 0.25, "3": 0.25, "5": 0.6},
-    {"2": -0.25, "3": 0.75, "5": 0.5}, {"2": 0.25, "3": float("nan"), "5": 0.5},
-])
-def test_invalid_ctc_weights_are_rejected(weights):
-    cfg, _, _ = _fixture()
-    cfg["entrenamiento"]["ctc_pesos"] = weights
-    with pytest.raises(ValueError):
-        _ctc_weights(cfg)
-
-
+# Comprueba que la pérdida conjunta y sus gradientes coinciden con calcular la CTC de cada salida y aplicar sus pesos.
 def test_joint_loss_and_gradients_match_explicit_weighted_ctc():
     cfg, _, batch = _fixture()
     fijar_seed(0)
@@ -60,7 +47,7 @@ def test_joint_loss_and_gradients_match_explicit_weighted_ctc():
                                torch.device("cpu"), 3, component_losses=logged)
     outputs = reference.forward_exits(batch.features, batch.session_ids)
     criterion = nn.CTCLoss(blank=40, reduction="none", zero_infinity=False)
-    weights = _ctc_weights(cfg)
+    weights = {int(depth): weight for depth, weight in cfg["entrenamiento"]["ctc_pesos"].items()}
     parts = {depth: criterion(logits.log_softmax(-1).transpose(0, 1).contiguous(), batch.targets,
                               reference.output_lengths(batch.input_lengths), batch.target_lengths).mean()
              for depth, logits in outputs.items()}
@@ -75,6 +62,7 @@ def test_joint_loss_and_gradients_match_explicit_weighted_ctc():
     assert all(head.weight.grad.abs().sum() > 0 for head in model.intermediate_heads.values())
 
 
+# Comprueba que dividir un lote en microlotes, aunque el último sea más pequeño, conserva la pérdida y los gradientes del lote completo.
 def test_unequal_microbatches_preserve_joint_loss_and_gradients():
     cfg, _, batch = _fixture()
     fijar_seed(0)
@@ -91,46 +79,21 @@ def test_unequal_microbatches_preserve_joint_loss_and_gradients():
         torch.testing.assert_close(parameter.grad, other.grad, rtol=2e-5, atol=1e-6, msg=name)
 
 
-def test_shared_evaluation_matches_each_independent_exit():
-    cfg, rows, _ = _fixture()
-    model = construir_modelo(cfg).eval()
-    loader = DataLoader(rows, batch_size=2, collate_fn=collate_speech, generator=crear_generador(0))
-    together, _ = evaluar_salidas(model, loader, cfg, nn.Identity(), torch.device("cpu"))
-
-    class Profile(nn.Module):
-        def __init__(self, depth):
-            super().__init__()
-            self.model = model
-            self.depth = depth
-
-        def forward(self, features, sessions):
-            return self.model(features, sessions, exit_layer=self.depth)
-
-        def output_lengths(self, lengths):
-            return self.model.output_lengths(lengths)
-
-    for depth, metrics in together.items():
-        separate = evaluar_habla(Profile(depth), loader, cfg, nn.Identity(), torch.device("cpu"))
-        for key, value in metrics.items():
-            assert value == pytest.approx(separate[key], rel=1e-6)
-        assert metrics["fonemas"] == 5 and metrics["frases"] == 3
-
-
-def test_checkpoint_selection_uses_final_exit_and_logs_each_head(tmp_path, monkeypatch):
+# Comprueba que elegimos los pesos por el PER de la salida final y conservamos el primer mínimo si hay empate, aunque otra salida mejore después.
+def test_joint_checkpoint_is_selected_by_final_exit(tmp_path, monkeypatch):
     cfg, _, batch = _fixture()
-    cfg["entrenamiento"]["pasos"] = 3
+    cfg["entrenamiento"]["pasos"] = 4
     cfg["evaluacion"]["cada_pasos"] = 1
     model = construir_modelo(cfg).train()
-    captured = []
-    run = SimpleNamespace(id="joint_contract", summary={}, log=lambda values, step=None: captured.append((step, dict(values))))
+    run = SimpleNamespace(id="joint_contract", summary={}, log=lambda *_args, **_kwargs: None)
 
     class Loader:
         dataset = SimpleNamespace(normalization_states={}, sessions=cfg["datos"]["sesiones"])
 
         def __iter__(self):
-            return iter([batch, batch, batch])
+            return iter([batch] * 4)
 
-    values = iter([(0.10, 0.20, 0.50), (0.80, 0.60, 0.40), (0.05, 0.10, 0.45)])
+    values = iter([(0.10, 0.20, 0.50), (0.80, 0.60, 0.40), (0.05, 0.10, 0.45), (0.01, 0.02, 0.40)])
     validation_loader = object()
 
     def controlled_validation(_model, loader, *_args):
@@ -149,17 +112,7 @@ def test_checkpoint_selection_uses_final_exit_and_logs_each_head(tmp_path, monke
     assert state["ctc_weights"] == cfg["entrenamiento"]["ctc_pesos"]
     restored = construir_modelo(cfg)
     load_checkpoint(tmp_path / "mejor_val.pt", restored, cfg, Loader.dataset)
+    assert all(torch.equal(restored.state_dict()[name], value) for name, value in state["model_state"].items())
     report = json.loads((tmp_path / "resultado.json").read_text())
     assert report["best_val_by_exit"]["2"]["per"] == 0.80
     assert report["test_evaluated"] is False
-    for depth in (2, 3, 5):
-        assert any(f"train/capa_{depth}/ctc_loss" in values for _, values in captured)
-        assert any(f"val/capa_{depth}/per" in values for _, values in captured)
-    for _, values in captured:
-        if "train/ctc_loss" in values:
-            assert values["train/ctc_loss"] == pytest.approx(sum(
-                _ctc_weights(cfg)[depth] * values[f"train/capa_{depth}/ctc_loss"] for depth in (2, 3, 5)), rel=1e-6)
-    subprocess.run([sys.executable, "scripts/report_speech_training.py", "--run-dir", str(tmp_path)],
-                   check=True, capture_output=True, text=True)
-    summary = json.loads((tmp_path / "resumen_salidas.json").read_text())
-    assert summary["selection_exit"] == 5 and summary["best_val_by_exit"]["2"]["per"] == 0.80

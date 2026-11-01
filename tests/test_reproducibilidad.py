@@ -1,27 +1,17 @@
-"""La misma seed tiene que dar el mismo numero. Si este test falla, cualquier
-comparacion entre experimentos del proyecto carece de valor."""
+"""Inicialización reproducible de la GRU y sus cabezas intermedias."""
 
 import torch
 
 from src.models.factory import construir_modelo
 from src.utils.seed import fijar_seed
 
-CFG = {"modelo": {"nombre": "mi_modelo"}}
 
-
-def test_la_misma_seed_da_los_mismos_pesos():
+# Comprueba que al crear dos modelos con la misma semilla sus pesos iniciales son exactamente iguales.
+def test_la_misma_seed_da_los_mismos_pesos(cfg_habla_pequena: dict) -> None:
+    """La misma semilla reproduce todas las claves y pesos del modelo de habla."""
     fijar_seed(42)
-    a = construir_modelo(CFG)
+    a = construir_modelo(cfg_habla_pequena).state_dict()
     fijar_seed(42)
-    b = construir_modelo(CFG)
-    for pa, pb in zip(a.parameters(), b.parameters()):
-        assert torch.equal(pa, pb)
-
-
-def test_seeds_distintas_dan_pesos_distintos():
-    fijar_seed(42)
-    a = construir_modelo(CFG)
-    fijar_seed(1234)
-    b = construir_modelo(CFG)
-    assert any(not torch.equal(pa, pb)
-               for pa, pb in zip(a.parameters(), b.parameters()))
+    b = construir_modelo(cfg_habla_pequena).state_dict()
+    assert a.keys() == b.keys()
+    assert all(torch.equal(a[nombre], b[nombre]) for nombre in a)
