@@ -1,0 +1,9 @@
+# Solo en el entorno CPU del decodificador oficial; no instalar en .venv.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==1.13.1+cpu
+numpy==1.24.4
+typing-extensions==4.15.0
+setuptools==68.2.2
+wheel==0.41.3
+pip==24.3.1
+cmake==3.27.9

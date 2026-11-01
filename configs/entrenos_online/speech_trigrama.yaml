@@ -1,0 +1,25 @@
+# Modelo y parámetros del baseline 3-gram publicado en speechBCI.
+# Referencia: AnalysisExamples/rnn_step3_baselineRNNInference.ipynb.
+modelo: data/language_models/speech_trigram
+archivo_sha256: 7b64d36c64765dc0a5e890bb0cc795657c827b7d314fbf5ed5dc8778bd166d7e
+python_runtime: data/language_models/runtime/bin/python
+torch_runtime: 1.13.1+cpu
+hilos_cpu: 2
+timeout_segundos: 600
+busqueda:
+  max_active: 7000
+  min_active: 200
+  beam: 18.0
+  lattice_beam: 8.0
+  acoustic_scale: 0.8
+  blank_skip_threshold: 1.0
+  blank_penalty: 0.6931471805599453  # log(2), baseline oficial de tres gramos.
+  length_penalty: 0.0
+  nbest: 1
+fonemas_grafo: [AA, AE, AH, AO, AW, AY, B, CH, D, DH, EH, ER, EY, F, G, HH, IH, IY, JH, K, L, M, N, NG, OW, OY, P, R, S, SH, T, TH, UH, UW, V, W, Y, Z, ZH, SIL]
+preparacion:
+  repositorio: https://github.com/fwillett/speechBCI.git
+  commit: 522a9605ccf0818def80b6fd80007598e790408e
+  fuentes: data/language_models/speechBCI
+  python: 3.10.15
+  archivo: data/speech_2023/languageModel.tar.gz
