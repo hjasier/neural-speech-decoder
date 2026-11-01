@@ -32,7 +32,7 @@ def main() -> int:
     """Usa la configuración del checkpoint y guarda métricas y emisiones por bloque."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--checkpoint", type=Path, required=True)
-    parser.add_argument("--evaluation-config", type=Path, default=Path("configs/speech_online_evaluacion.yaml"))
+    parser.add_argument("--evaluation-config", type=Path, default=Path("configs/entrenos_online/speech_online_evaluacion.yaml"))
     parser.add_argument("--split", choices=("val", "test"))
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
@@ -72,6 +72,8 @@ def main() -> int:
                       checkpoint_step=decoder.checkpoint.step, training_seed=cfg["experimento"]["seed"],
                       protocol_sha256=cfg.get("protocolo", {}).get("sha256"),
                       data_signature=decoder.checkpoint.data_signature,
+                      checkpoint_format=decoder.checkpoint.format_version,
+                      inference_sha256=decoder.checkpoint.inference_sha256,
                       prepared_manifest_sha256=file_sha256(dataset.root / "manifest.json"),
                       evaluation_config=spec, model_load_seconds=load_seconds,
                       runtime={"device": str(device), "hardware": torch.cuda.get_device_name(device)
@@ -93,6 +95,7 @@ def main() -> int:
                        for key, value in metrics[stage].items() if value is not None})
         registrar(run, logged, decoder.checkpoint.step)
         run.summary.update({"checkpoint/sha256": digest, "online/actualizaciones": 0,
+                            "checkpoint/inference_sha256": decoder.checkpoint.inference_sha256,
                             "online/test_evaluado": result["test_evaluated"]})
         for depth, metrics in result["global"].items():
             print(f"Salida {depth}: PER={metrics['per']:.2%} ({metrics['errores']}/{metrics['fonemas']}); "

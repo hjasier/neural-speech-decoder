@@ -40,7 +40,7 @@ def online_evaluation_case(cfg_habla_online_pequena: dict) -> tuple[OnlineSpeech
                           sessions[index], index, 1, "referencia sintética")
               for index, (length, ids) in enumerate(((19, (0,)), (25, (1, 2, 3, 4))))]
     root = Path(__file__).resolve().parents[1]
-    spec = yaml.safe_load((root / "configs/speech_online_evaluacion.yaml").read_text())
+    spec = yaml.safe_load((root / "configs/entrenos_online/speech_online_evaluacion.yaml").read_text())
     spec["calentamiento"] = 0
     return OnlineSpeechDecoder(checkpoint), trials, spec
 

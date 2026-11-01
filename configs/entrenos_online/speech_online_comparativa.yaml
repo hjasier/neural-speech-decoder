@@ -1,0 +1,12 @@
+# Mismas variantes y semillas acordadas, con parámetros y suavizado causales comunes.
+# Los perfiles centrados históricos siguen en configs/speech_comparativa.yaml.
+referencia: baseline_5
+semillas:
+- 0
+- 1
+- 2
+variantes:
+  baseline_5: configs/entrenos_online/speech_online.yaml
+  conjunta_235: configs/entrenos_online/speech_online_salidas.yaml
+  control_2: configs/entrenos_online/speech_online_control_2.yaml
+  control_3: configs/entrenos_online/speech_online_control_3.yaml

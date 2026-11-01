@@ -22,7 +22,7 @@ def cfg_habla_pequena() -> dict:
 def cfg_habla_online_pequena(cfg_habla_pequena: dict) -> dict:
     """Conserva las 256 características y los tiempos online con una GRU pequeña."""
     root = Path(__file__).resolve().parents[1]
-    temporal = yaml.safe_load((root / "configs/speech_online_temporal.yaml").read_text())
+    temporal = yaml.safe_load((root / "configs/entrenos_online/speech_online_temporal.yaml").read_text())
     cfg_habla_pequena["preprocesamiento"] = temporal["preprocesamiento"]
     cfg_habla_pequena["modelo"].update(
         temporal["modelo"], entrada=2 * AREA_6V_CHANNELS, capa_dia=2 * AREA_6V_CHANNELS,

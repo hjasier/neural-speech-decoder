@@ -9,7 +9,9 @@ from typing import Any
 import torch
 
 from src.data.speech_dataset import SpeechDataset, preparation_signature
-from src.inference.checkpoints import read_speech_checkpoint
+from src.inference.checkpoints import (
+    inference_format, inference_signature, read_speech_checkpoint, streaming_spec,
+)
 from src.models.speech_gru import SpeechGRU
 
 
@@ -32,7 +34,7 @@ def save_checkpoint(
             raise ValueError("El checkpoint debe conservar todas las salidas y seleccionar por la final.")
     path.parent.mkdir(parents=True, exist_ok=True)
     state = {
-        "format_version": 2 if cfg.get("protocolo") else 1,
+        "format_version": inference_format(cfg),
         "model_state": {name: value.detach().cpu() for name, value in model.state_dict().items()},
         "config": cfg,
         "normalization": dataset.normalization_states,
@@ -47,6 +49,9 @@ def save_checkpoint(
     if exit_metrics is not None:
         state.update(exit_metrics=exit_metrics, selection_exit=cfg["modelo"]["capas"],
                      ctc_weights=cfg["entrenamiento"]["ctc_pesos"])
+    if state["format_version"] == 3:
+        state["streaming"] = streaming_spec()
+        state["inference_sha256"] = inference_signature(state)
     temporary = path.with_suffix(".tmp")
     torch.save(state, temporary)
     temporary.replace(path)
@@ -64,7 +69,7 @@ def load_checkpoint(
     state = read_speech_checkpoint(path)
     original = state["config"]
     if (
-        state["format_version"] != (2 if cfg.get("protocolo") else 1)
+        state["format_version"] != inference_format(cfg)
         or (cfg.get("protocolo") and state.get("val_metrics", {}).get("completo") != 1)
         or (cfg["modelo"].get("salidas_intermedias")
             and (state.get("selection_exit") != cfg["modelo"]["capas"]

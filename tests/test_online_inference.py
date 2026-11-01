@@ -66,6 +66,20 @@ def test_incremental_ctc_preserves_runs_and_blank_boundaries() -> None:
     assert decoder.push(logits[-2:]) == [2]
 
 
+# Cambiar el retardo conserva todas las dimensiones de pesos, pero cambia el modelo temporal.
+def test_checkpoint_prevents_changing_delay_with_same_weights(
+    online_checkpoint: tuple[Path, SpeechGRU, dict[str, TrainingNormalization]],
+) -> None:
+    """Un checkpoint válido no permite aplicar sus pesos con otro retardo causal."""
+    path, _, _ = online_checkpoint
+    OnlineSpeechDecoder.from_checkpoint(path)
+    state = torch.load(path, map_location="cpu", weights_only=True)
+    state["config"]["preprocesamiento"]["suavizado"]["retardo_bins"] += 1
+    torch.save(state, path)
+    with pytest.raises(ValueError):
+        OnlineSpeechDecoder.from_checkpoint(path)
+
+
 # Compara logits reales: solo mirar argmax podría ocultar estados GRU mal continuados.
 def test_interleaved_streams_and_reset_match_complete_sequences(
     online_checkpoint: tuple[Path, SpeechGRU, dict[str, TrainingNormalization]],
