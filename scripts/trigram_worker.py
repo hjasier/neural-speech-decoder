@@ -10,12 +10,15 @@ import base64
 import json
 from pathlib import Path
 import platform
+import resource as process_resource
 import sys
 from typing import Any
 
 import numpy as np
 import torch
 import lm_decoder
+
+from trigram_mmap_cache import MappedGraphCache, mapped_bytes
 
 
 def respond(payload: dict[str, Any]) -> None:
@@ -25,9 +28,11 @@ def respond(payload: dict[str, Any]) -> None:
 
 def main() -> int:
     """Comparte recursos del grafo, con un BrainSpeechDecoder por frase activa."""
-    respond({"python": platform.python_version(), "torch": str(torch.__version__), "numpy": np.__version__})
+    respond({"python": platform.python_version(), "torch": str(torch.__version__), "numpy": np.__version__,
+             "mapped_graphs": hasattr(lm_decoder, "SetFstReadMode")})
     flows = {}
     resource = options = None
+    graph_cache = None
     blank_penalty = None
     for line in sys.stdin:
         try:
@@ -37,13 +42,28 @@ def main() -> int:
                 torch.set_num_threads(request["threads"])
                 model = Path(request["model"])
                 cfg = request["options"]
+                read_mode = request.get("read_mode", "read")
+                cache_policy = request.get("mapped_cache")
+                if read_mode not in ("read", "map"):
+                    raise ValueError("Modo de lectura del grafo no reconocido.")
+                if read_mode == "map" and not hasattr(lm_decoder, "SetFstReadMode"):
+                    raise ValueError("El runtime no tiene soporte de lectura map.")
+                if cache_policy is not None and read_mode != "map":
+                    raise ValueError("El control de caché requiere lectura map.")
+                if hasattr(lm_decoder, "SetFstReadMode"):
+                    lm_decoder.SetFstReadMode(read_mode)
                 blank_penalty = cfg["blank_penalty"]
                 options = lm_decoder.DecodeOptions(
                     cfg["max_active"], cfg["min_active"], cfg["beam"], cfg["lattice_beam"],
                     cfg["acoustic_scale"], cfg["blank_skip_threshold"], cfg["length_penalty"], cfg["nbest"],
                 )
                 resource = lm_decoder.DecodeResource(str(model / "TLG.fst"), "", "", str(model / "words.txt"), "")
-                respond({})
+                mapped = mapped_bytes(model / "TLG.fst") if read_mode == "map" else 0
+                if read_mode == "map" and (not mapped or mapped < (model / "TLG.fst").stat().st_size - 4096):
+                    raise RuntimeError("OpenFst no ha mapeado el grafo completo; se rechaza el fallback a RAM.")
+                graph_cache = MappedGraphCache(model / "TLG.fst", cache_policy) if cache_policy is not None else None
+                respond({"read_mode": read_mode, "mapped_graph_bytes": mapped,
+                         "peak_rss_bytes": process_resource.getrusage(process_resource.RUSAGE_SELF).ru_maxrss * 1024})
                 continue
             identifier = request["flow"]
             if operation == "start":
@@ -70,9 +90,11 @@ def main() -> int:
                 del flows[identifier]
             else:
                 raise ValueError(f"Operación desconocida: {operation}")
-            respond({"candidates": [{"sentence": result.sentence.strip(),
+            candidates = [{"sentence": result.sentence.strip(),
                                      "acoustic_score": float(result.ac_score),
-                                     "language_score": float(result.lm_score)} for result in decoder.result()]})
+                                     "language_score": float(result.lm_score)} for result in decoder.result()]
+            cache_stats = graph_cache.maintain(finish=operation == "finish") if graph_cache is not None else None
+            respond({"candidates": candidates, "mapped_cache": cache_stats})
         except Exception as error:
             print(json.dumps({"ok": False, "error": f"{type(error).__name__}: {error}"}), flush=True)
     return 0

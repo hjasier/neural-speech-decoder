@@ -9,6 +9,7 @@ No entrena ni modifica el entorno de la GRU. Solo extrae TLG.fst y words.txt.
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import hashlib
 import json
 import os
@@ -17,11 +18,52 @@ import shutil
 import subprocess
 import tarfile
 from tempfile import TemporaryDirectory
-from typing import Any
+from typing import Any, Iterator
 
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+@contextmanager
+def mapped_binding(sources: Path, enabled: bool) -> Iterator[None]:
+    """Añade el selector OpenFst al compilar y restaura después la fuente original."""
+    if not enabled:
+        yield
+        return
+    path = sources / "LanguageModelDecoder/runtime/server/x86/python/lm_decoder.cc"
+    original = path.read_bytes()
+    text = original.decode("utf-8")
+    declaration = '#include "utils/log.h"'
+    binding = '    m.def("DecodeNumpy", &DecodeNumpy);'
+    if text.count(declaration) != 1 or text.count(binding) != 1:
+        raise ValueError("El binding oficial ha cambiado; no se aplica el parche de lectura.")
+    text = text.replace(declaration, declaration + '\n#include <fstream>\n#include <stdexcept>\n\nDECLARE_string(fst_read_mode);')
+    text = text.replace(binding, binding + '''
+    m.def("SetFstReadMode", [](const std::string &mode) {
+        if (mode != "read" && mode != "map") {
+            throw std::invalid_argument("Expected read or map");
+        }
+        FLAGS_fst_read_mode = mode;
+    });
+    m.def("WriteConstFst", [](const std::string &source, const std::string &destination) {
+        std::unique_ptr<fst::Fst<fst::StdArc>> graph(fst::Fst<fst::StdArc>::Read(source));
+        if (!graph) throw std::runtime_error("Cannot read source FST");
+        std::ofstream output(destination, std::ios::out | std::ios::binary);
+        fst::FstWriteOptions options(destination);
+        options.align = true;
+        // Write directly: constructing ConstFst(graph) would allocate another full graph.
+        if (!fst::ConstFst<fst::StdArc>::WriteFst(*graph, output, options)) {
+            throw std::runtime_error("Cannot write aligned ConstFst");
+        }
+        output.close();
+        if (!output) throw std::runtime_error("Cannot close aligned ConstFst");
+    });''')
+    try:
+        path.write_text(text, encoding="utf-8")
+        yield
+    finally:
+        path.write_bytes(original)
 
 
 def digest(path: Path) -> str:
@@ -99,17 +141,25 @@ def build_runtime(spec: dict[str, Any]) -> None:
                    "PATH": str(python.parent) + os.pathsep + os.environ["PATH"]}
     subprocess.run([uv, "pip", "install", "--python", str(python), "--index-strategy", "unsafe-best-match",
                     "-r", str(ROOT / "requirements-trigram-runtime.txt")], env=environment, check=True)
-    subprocess.run([str(python), "setup.py", "install"],
-                   cwd=sources / "LanguageModelDecoder/runtime/server/x86", env=environment, check=True)
+    mapped = spec.get("lectura_grafo", "read") == "map"
+    with mapped_binding(sources, mapped):
+        subprocess.run([str(python), "setup.py", "install"],
+                       cwd=sources / "LanguageModelDecoder/runtime/server/x86", env=environment, check=True)
     probe = subprocess.check_output([str(python), "-c",
         "import json, platform, torch, numpy, lm_decoder; "
         "print(json.dumps({'python':platform.python_version(),'torch':str(torch.__version__),"
-        "'numpy':numpy.__version__,'binding':lm_decoder.__file__}))"], env=environment, text=True)
+        "'numpy':numpy.__version__,'binding':lm_decoder.__file__,"
+        "'mapped_graphs':hasattr(lm_decoder,'SetFstReadMode'),"
+        "'compact_writer':hasattr(lm_decoder,'WriteConstFst')}))"], env=environment, text=True)
     runtime = json.loads(probe)
     if runtime["torch"] != spec["torch_runtime"] or runtime["python"] != prep["python"]:
         raise ValueError("El runtime compilado no corresponde a las versiones declaradas.")
+    if mapped and not (runtime["mapped_graphs"] and runtime["compact_writer"]):
+        raise ValueError("El runtime compilado no incluye el selector de lectura map.")
     freeze = subprocess.check_output([str(python), "-m", "pip", "freeze"], text=True, env=environment)
     marker = {"source_commit": revision, "runtime": runtime, "pip_freeze": freeze,
+              "mapped_graph_patch": "const-map-v1" if mapped else None,
+              "preparation_script_sha256": digest(Path(__file__)),
               "requirements_sha256": digest(ROOT / "requirements-trigram-runtime.txt")}
     (environment_root / "runtime_build.json").write_text(json.dumps(marker, indent=2) + "\n", encoding="utf-8")
     print("Runtime CPU preparado:", python)

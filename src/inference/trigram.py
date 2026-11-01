@@ -23,6 +23,8 @@ from typing import Any, Sequence
 import numpy as np
 from torch import Tensor
 
+from src.inference.fst import require_mappable_fst
+
 
 @dataclass(frozen=True)
 class WordHypothesis:
@@ -61,6 +63,11 @@ class TrigramDecoder:
         self.columns = kaldi_columns(phones, blank_id, spec["fonemas_grafo"])
         self.spec = spec
         model = Path(spec["modelo"])
+        read_mode = spec.get("lectura_grafo", "read")
+        if read_mode not in ("read", "map"):
+            raise ValueError("lectura_grafo debe ser read o map.")
+        if read_mode == "map":
+            require_mappable_fst(model / "TLG.fst")
         manifest = json.loads((model / "manifest.json").read_text(encoding="utf-8"))
         if (manifest["archive_sha256"] != spec["archivo_sha256"]
                 or manifest["graph_phones"] != spec["fonemas_grafo"]):
@@ -83,12 +90,16 @@ class TrigramDecoder:
             self._log.close()
             raise
         self._next_id = 0
+        self.graph_cache: dict[str, Any] | None = None
         try:
             self.runtime = self._read_reply()
             if self.runtime["torch"] != spec["torch_runtime"]:
                 raise ValueError("El trabajador no usa la versión CPU de PyTorch declarada.")
+            if read_mode == "map" and not self.runtime.get("mapped_graphs"):
+                raise ValueError("El runtime necesita compilarse con soporte para lectura map.")
             self._request({"op": "init", "model": str(model.resolve()), "options": spec["busqueda"],
-                           "threads": spec["hilos_cpu"]})
+                           "threads": spec["hilos_cpu"], "read_mode": read_mode,
+                           "mapped_cache": spec.get("cache_mapeo")})
         except BaseException:
             self.close()
             raise
@@ -130,7 +141,10 @@ class TrigramDecoder:
             self._process.stdin.flush()
         except BrokenPipeError as error:
             raise self._process_failure() from error
-        return self._read_reply()
+        response = self._read_reply()
+        if "mapped_cache" in response:
+            self.graph_cache = response["mapped_cache"]
+        return response
 
     def _open_flow(self) -> int:
         self._next_id += 1

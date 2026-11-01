@@ -1,0 +1,42 @@
+# Mismo trigrama y búsqueda; representación ConstFst alineada y lectura map.
+modelo: data/language_models/speech_trigram_compacto
+archivo_sha256: 7b64d36c64765dc0a5e890bb0cc795657c827b7d314fbf5ed5dc8778bd166d7e
+python_runtime: data/language_models/runtime/bin/python
+torch_runtime: 1.13.1+cpu
+lectura_grafo: map
+cache_mapeo:
+  rss_archivos_umbral_gib: 1.5
+  liberar_al_final_frase: true
+hilos_cpu: 2
+timeout_segundos: 600
+busqueda:
+  max_active: 7000
+  min_active: 200
+  beam: 18.0
+  lattice_beam: 8.0
+  acoustic_scale: 0.8
+  blank_skip_threshold: 1.0
+  blank_penalty: 0.6931471805599453
+  length_penalty: 0.0
+  nbest: 1
+fonemas_grafo: [AA, AE, AH, AO, AW, AY, B, CH, D, DH, EH, ER, EY, F, G, HH, IH, IY, JH, K, L, M, N, NG, OW, OY, P, R, S, SH, T, TH, UH, UW, V, W, Y, Z, ZH, SIL]
+compactacion:
+  origen: data/language_models/speech_trigram
+  minimo_disponible_preparacion_gib: 64
+  reserva_disco_gib: 5
+  limite_rss_carga_gib: 6
+  reserva_sistema_gib: 2
+  timeout_carga_segundos: 90
+comprobacion_cpu:
+  max_frases: 3
+  bloque_bins: 4
+  limite_rss_total_gib: 6
+  reserva_sistema_gib: 2
+  timeout_segundos: 900
+  periodo_muestreo_segundos: 0.1
+preparacion:
+  repositorio: https://github.com/fwillett/speechBCI.git
+  commit: 522a9605ccf0818def80b6fd80007598e790408e
+  fuentes: data/language_models/speechBCI
+  python: 3.10.15
+  archivo: data/speech_2023/languageModel.tar.gz

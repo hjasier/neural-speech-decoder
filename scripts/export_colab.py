@@ -46,7 +46,9 @@ def build_source_bundle(perfil: str = "speech_reanudable") -> tuple[bytes, dict[
         evaluation_scripts = ("evaluate_speech_online.py",)
         if perfil == "speech_trigrama":
             configs.append(Path("configs/entrenos_online/speech_trigrama.yaml"))
-            evaluation_scripts += ("prepare_speech_trigram.py", "evaluate_speech_trigram.py", "trigram_worker.py")
+            configs.append(Path("configs/entrenos_online/speech_trigrama_compacto.yaml"))
+            evaluation_scripts += ("prepare_speech_trigram.py", "evaluate_speech_trigram.py", "trigram_worker.py",
+                                   "trigram_mmap_cache.py", "compact_speech_trigram.py", "check_speech_trigram_cpu.py")
     paths = [
         Path("run.py"), Path("requirements.txt"),
         Path("docs/datasets/speech_2023/manifest.json"),

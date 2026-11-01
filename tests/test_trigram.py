@@ -1,7 +1,10 @@
 """Orden de clases y agregación WER: fallos que pueden pasar inadvertidos."""
 
 import base64
+import hashlib
+import mmap
 from pathlib import Path
+import re
 from types import SimpleNamespace
 
 import numpy as np
@@ -12,6 +15,35 @@ from src.inference.speech import SpeechChunk
 from src.inference.trigram import TrigramStream, kaldi_columns
 from src.training.speech_online_evaluation import OnlineTrial
 from src.training.speech_trigram_evaluation import evaluate_trigram
+from scripts.trigram_mmap_cache import MappedGraphCache
+
+
+def test_releasing_graph_pages_preserves_graph_and_other_memory(tmp_path: Path) -> None:
+    """Descartar páginas de solo lectura debe conservar pesos, archivo y buffers ajenos."""
+    graph = tmp_path / "grafo con espacios.fst"
+    data = bytes(range(256)) * (32 * 1024)
+    graph.write_bytes(data)
+    expected = hashlib.sha256(data).hexdigest()
+
+    def resident_bytes() -> int:
+        total, selected = 0, False
+        for line in Path("/proc/self/smaps").read_text().splitlines():
+            if re.match(r"^[0-9a-f]+-[0-9a-f]+ ", line):
+                selected = line.endswith(str(graph))
+            elif selected and line.startswith("Rss:"):
+                total += int(line.split()[1]) * 1024
+        return total
+
+    with graph.open("rb") as stream, mmap.mmap(stream.fileno(), 0, access=mmap.ACCESS_READ) as mapped, mmap.mmap(-1, 4096) as other:
+        other[:8] = b"preserva"
+        assert hashlib.sha256(mapped).hexdigest() == expected
+        assert resident_bytes() >= len(data)
+        cache = MappedGraphCache(graph, {"rss_archivos_umbral_gib": 1.5, "liberar_al_final_frase": True})
+        cache.maintain(finish=True)
+        assert resident_bytes() == 0
+        assert other[:8] == b"preserva"
+        assert hashlib.sha256(mapped).hexdigest() == expected
+    assert hashlib.sha256(graph.read_bytes()).hexdigest() == expected
 
 
 def test_trigram_receives_all_logits_with_blank_and_sil_first() -> None:

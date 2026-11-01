@@ -15,9 +15,9 @@ Dos páginas se leen enteras. Quince, no.
 ## Qué es esto
 
 Decodificador offline y causal en PyTorch basado en la GRU + CTC de Willett et al.
-(2023), con datos intracorticales T12 de `competitionData`. La métrica actual
-es PER de fonemas; la conexión al trigrama para obtener texto y medir WER
-está preparada, pendiente de validación real en Colab. No es una reproducción
+(2023), con datos intracorticales T12 de `competitionData`. La evaluación
+incluye PER de fonemas y WER con el trigrama original, ya ejecutado en val
+en Colab. No es una reproducción
 del sistema clínico completo.
 
 La propuesta estudia salidas tras las capas 2/3/5 y su compromiso entre PER
@@ -35,6 +35,9 @@ bloques y mostrará la decodificación. Alice es una exploración anterior.
 - Entrenamiento y cálculos GPU en Colab. No usar GPU local, tampoco para
   inferencia o demos, por los bloqueos del PC. Comprobaciones CPU pequeñas,
   con CUDA oculta y dos hilos; no entrenar de nuevo para verificar cambios menores.
+- La inferencia completa de la demo debe caber en la máquina local y usar CPU.
+  El trigrama original necesita RAM alta; no cargarlo localmente. Preparar la
+  representación compacta en Colab y medir memoria y tiempo antes de darla por válida.
 
 ## Cómo se ejecuta
 
@@ -154,6 +157,11 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
 - Hecho: figuras de la ronda en `docs/figuras/t12_semilla0/`, con PNG/SVG,
   datos y hashes originales de procedencia.
 - Pendiente: revisar la documentación de ejecución y presentación de E1.
-- Preparado: logits por bloque, cliente del trigrama y evaluación PER/WER.
-  Notebook 13 con fuentes empaquetadas; compilación del runtime y validación
-  del grafo original pendientes de ejecutar en Colab. OPT queda para otra fase.
+- Hecho: logits por bloque, cliente del trigrama y evaluación PER/WER; grafo
+  original validado en Colab, run `e3gy3ugk`, sin entrenamiento ni uso de test.
+- Hecho en Colab: conversión a ConstFst alineado y carga map del grafo,
+  conservada en el notebook 13. La carga sola no certifica la inferencia local.
+- Hecho en Colab CPU: comprobación de GRU + trigrama sobre tres frases de val,
+  con control de páginas residentes y pico RSS conjunto de 3,29 GiB.
+  Pendiente: trasladar el grafo, preparar el runtime CPU y medir en la máquina local.
+  Guía en `docs/experimentos/trigrama_compacto.md`. OPT queda para otra fase.

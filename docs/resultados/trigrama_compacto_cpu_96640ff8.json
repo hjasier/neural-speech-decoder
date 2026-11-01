@@ -1,0 +1,285 @@
+{
+  "scope": "gru_y_trigrama_cpu_subconjunto_val",
+  "verified": true,
+  "local_demo_verified": false,
+  "peak_tree_rss_bytes": 3528036352,
+  "stopped_by_probe": null,
+  "limits": {
+    "max_frases": 3,
+    "bloque_bins": 4,
+    "limite_rss_total_gib": 6,
+    "reserva_sistema_gib": 2,
+    "timeout_segundos": 900,
+    "periodo_muestreo_segundos": 0.1
+  },
+  "memory_scope": "máximo muestreado de la suma RSS del proceso principal y sus descendientes; conservador por páginas compartidas",
+  "source_sha256": "25dff1ce8729d80d0a6404a04096864d90a0025ca7dac48f7583bbb3150072e0",
+  "language_config": {
+    "modelo": "/content/drive/MyDrive/speech_bci/modelos_lenguaje/speech_trigram_compacto",
+    "archivo_sha256": "7b64d36c64765dc0a5e890bb0cc795657c827b7d314fbf5ed5dc8778bd166d7e",
+    "python_runtime": "/content/tic_proyecto_trigrama_colab/data/language_models/runtime/bin/python",
+    "torch_runtime": "1.13.1+cpu",
+    "lectura_grafo": "map",
+    "hilos_cpu": 2,
+    "timeout_segundos": 600,
+    "busqueda": {
+      "max_active": 7000,
+      "min_active": 200,
+      "beam": 18.0,
+      "lattice_beam": 8.0,
+      "acoustic_scale": 0.8,
+      "blank_skip_threshold": 1.0,
+      "blank_penalty": 0.6931471805599453,
+      "length_penalty": 0.0,
+      "nbest": 1
+    },
+    "fonemas_grafo": [
+      "AA",
+      "AE",
+      "AH",
+      "AO",
+      "AW",
+      "AY",
+      "B",
+      "CH",
+      "D",
+      "DH",
+      "EH",
+      "ER",
+      "EY",
+      "F",
+      "G",
+      "HH",
+      "IH",
+      "IY",
+      "JH",
+      "K",
+      "L",
+      "M",
+      "N",
+      "NG",
+      "OW",
+      "OY",
+      "P",
+      "R",
+      "S",
+      "SH",
+      "T",
+      "TH",
+      "UH",
+      "UW",
+      "V",
+      "W",
+      "Y",
+      "Z",
+      "ZH",
+      "SIL"
+    ],
+    "compactacion": {
+      "origen": "/content/drive/MyDrive/speech_bci/modelos_lenguaje/speech_trigram",
+      "minimo_disponible_preparacion_gib": 64,
+      "reserva_disco_gib": 5,
+      "limite_rss_carga_gib": 6,
+      "reserva_sistema_gib": 2,
+      "timeout_carga_segundos": 90
+    },
+    "preparacion": {
+      "repositorio": "https://github.com/fwillett/speechBCI.git",
+      "commit": "522a9605ccf0818def80b6fd80007598e790408e",
+      "fuentes": "/content/tic_proyecto_trigrama_colab/data/language_models/speechBCI",
+      "python": "3.10.15",
+      "archivo": "data/speech_2023/languageModel.tar.gz"
+    },
+    "comprobacion_cpu": {
+      "max_frases": 3,
+      "bloque_bins": 4,
+      "limite_rss_total_gib": 6,
+      "reserva_sistema_gib": 2,
+      "timeout_segundos": 900,
+      "periodo_muestreo_segundos": 0.1
+    },
+    "cache_mapeo": {
+      "rss_archivos_umbral_gib": 1.5,
+      "liberar_al_final_frase": true
+    }
+  },
+  "python": "3.12.11 (main, Oct  7 2025, 15:34:39) [Clang 20.1.4 ]",
+  "machine": "x86_64",
+  "peak_tree_memory": {
+    "rss_bytes": 3528036352,
+    "anonymous_bytes": 685740032,
+    "file_bytes": 2842296320,
+    "shared_memory_bytes": 0,
+    "processes": [
+      {
+        "pid": 58905,
+        "rss_bytes": 713834496,
+        "anonymous_bytes": 501182464,
+        "file_bytes": 212652032,
+        "shared_memory_bytes": 0
+      },
+      {
+        "pid": 59406,
+        "rss_bytes": 2814201856,
+        "anonymous_bytes": 184557568,
+        "file_bytes": 2629644288,
+        "shared_memory_bytes": 0
+      }
+    ]
+  },
+  "last_tree_memory": {
+    "rss_bytes": 0,
+    "anonymous_bytes": 0,
+    "file_bytes": 0,
+    "shared_memory_bytes": 0,
+    "processes": [
+      {
+        "pid": 58905,
+        "rss_bytes": 0,
+        "anonymous_bytes": 0,
+        "file_bytes": 0,
+        "shared_memory_bytes": 0
+      }
+    ]
+  },
+  "returncode": 0,
+  "elapsed_seconds": 140.44119199499983,
+  "stdout_tail": "Cargando el checkpoint en CPU y comprobando la partición val.\nVerificando los hashes del grafo compacto y abriendo el trabajador CPU.\nProcesando t12.2022.04.28, ensayo 220, en bloques.\nProcesando t12.2022.04.28, ensayo 221, en bloques.\nProcesando t12.2022.04.28, ensayo 222, en bloques.\nInferencia CPU del subconjunto terminada.\n",
+  "stderr_tail": "",
+  "inference": {
+    "scope": "subconjunto_val_cpu; requiere comprobación adicional en el host de la demo",
+    "optimizer_steps": 0,
+    "test_evaluated": false,
+    "checkpoint_sha256": "853fa9c706c86ca75bcdba74208a4749389d24ca69c7309d535eb2e8697a1ebe",
+    "checkpoint_step": 9951,
+    "trial_selection": "primeras frases de val, en orden",
+    "trials": 3,
+    "depth": 5,
+    "streaming_verified": true,
+    "language_manifest_sha256": "9d77bb736b9f867a9955a774a1a6bdf354fef43bab37397f9b0b3f1ed67cdd43",
+    "worker_runtime": {
+      "ok": true,
+      "python": "3.10.15",
+      "torch": "1.13.1+cpu",
+      "numpy": "1.24.4",
+      "mapped_graphs": true
+    },
+    "language_resources": {
+      "format_version": 2,
+      "archive_sha256": "7b64d36c64765dc0a5e890bb0cc795657c827b7d314fbf5ed5dc8778bd166d7e",
+      "source_url": "https://datadryad.org/downloads/file_stream/2547356",
+      "graph_phones": [
+        "AA",
+        "AE",
+        "AH",
+        "AO",
+        "AW",
+        "AY",
+        "B",
+        "CH",
+        "D",
+        "DH",
+        "EH",
+        "ER",
+        "EY",
+        "F",
+        "G",
+        "HH",
+        "IH",
+        "IY",
+        "JH",
+        "K",
+        "L",
+        "M",
+        "N",
+        "NG",
+        "OW",
+        "OY",
+        "P",
+        "R",
+        "S",
+        "SH",
+        "T",
+        "TH",
+        "UH",
+        "UW",
+        "V",
+        "W",
+        "Y",
+        "Z",
+        "ZH",
+        "SIL"
+      ],
+      "files": {
+        "TLG.fst": {
+          "size_bytes": 31688012736,
+          "sha256": "358feb45e68bf554b26df505a8560724452c1be5adbbdb568616f10621178765"
+        },
+        "words.txt": {
+          "size_bytes": 1826231,
+          "sha256": "2c898be9d1e5d247d6bd528d786967a61f3ef8d3e5b595ab5c28a36fa57c7109"
+        }
+      },
+      "transformation": {
+        "type": "openfst_const_aligned",
+        "probability_pruning": false,
+        "source_manifest_sha256": "49ee319d1520d5f78d0d0564d57eb13cf44f3fdfbd2e0ae579f24c003f795018",
+        "source_graph_sha256": "8dac8423fccb48af5ba71a01791734f69439532ffe08bd73cf760ba1fc24881e",
+        "source_commit": "522a9605ccf0818def80b6fd80007598e790408e",
+        "openfst_version": "1.6.5",
+        "runtime_build_sha256": "a0f5479078a0d00ab8f91d29aa4277def553fccb05fffc0d908fe0189ab43831",
+        "writer": "ConstFst<StdArc>::WriteFst",
+        "align": true,
+        "small_fst_equal": true
+      },
+      "fst_header": {
+        "fst_type": "const",
+        "arc_type": "standard",
+        "version": 1,
+        "flags": 4,
+        "properties": 111693399719937,
+        "start": 0,
+        "states": 403695268,
+        "arcs": 1475881706
+      }
+    },
+    "mapped_graph_cache": {
+      "evictions": 14,
+      "eviction_ms": 681.2709760015423,
+      "peak_observed_file_bytes": 2658422784,
+      "policy": {
+        "rss_archivos_umbral_gib": 1.5,
+        "liberar_al_final_frase": true
+      },
+      "scope": "solo mapeos de TLG.fst; la caché de archivos del kernel puede seguir siendo recuperable",
+      "last_before": {
+        "rss_bytes": 312344576,
+        "anonymous_bytes": 166223872,
+        "file_bytes": 146120704
+      },
+      "last_after": {
+        "rss_bytes": 261664768,
+        "anonymous_bytes": 166223872,
+        "file_bytes": 95440896
+      }
+    },
+    "runtime": {
+      "device": "cpu",
+      "torch": "2.5.1+cu124",
+      "cpu_threads": 2,
+      "machine": "x86_64",
+      "processor": "x86_64"
+    },
+    "timing": {
+      "processing_ms": 9763.087031979012,
+      "signal_ms": 34220.0,
+      "rtf": 0.2853035368784048,
+      "packet_count": 429,
+      "packet_p50_ms": 12.658038998779375,
+      "packet_p95_ms": 79.2744854006741
+    },
+    "timing_scope": "preprocesamiento, GRU, CTC, IPC y WFST; excluye carga y comprobación inicial",
+    "cache_scope": "caché de disco sin controlar; primera frase verificada antes de medir",
+    "arrival_clock": "simulado, sin HTTP ni sleep; no representa la red de la demo"
+  }
+}
