@@ -1,6 +1,6 @@
 """Genera etiquetas de fonemas para los splits etiquetados de T12.
 
-    python scripts/prepare_phoneme_labels.py --config configs/speech_original.yaml
+    python scripts/prepare_phoneme_labels.py --config configs/speech_comparacion_t4.yaml
 
 Lee únicamente sentenceText de los .mat: no abre matrices neuronales,
 no utiliza competitionHoldOut y no entrena. Guarda etiquetas y procedencia

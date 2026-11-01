@@ -1,7 +1,7 @@
 """Descarga y verifica los recursos NLTK fijados para g2p-en.
 
-    python scripts/get_phoneme_resources.py --config configs/speech_original.yaml
-    python scripts/get_phoneme_resources.py --config configs/speech_original.yaml --verify-only
+    python scripts/get_phoneme_resources.py --config configs/speech_comparacion_t4.yaml
+    python scripts/get_phoneme_resources.py --config configs/speech_comparacion_t4.yaml --verify-only
 
 No descarga señales ni entrena. Los recursos quedan dentro de data/, ignorado
 por Git. Después de este paso, la conversión a fonemas funciona sin red.

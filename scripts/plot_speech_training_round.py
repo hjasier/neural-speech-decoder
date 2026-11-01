@@ -19,8 +19,7 @@ import yaml
 def collect_training_round(cfg: dict[str, Any]) -> dict[str, Any]:
     """Vincula cada PER e historia al registro de su entrenamiento y selección.
 
-    Solo presenta calidad: el benchmark completo conserva su validador
-    independiente en plot_speech_results.py, que exige los JSON originales.
+    Solo presenta calidad; no combina estos registros con medidas de latencia.
     """
     source = Path(cfg["resumen"])
     payload = source.read_bytes()

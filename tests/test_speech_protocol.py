@@ -14,7 +14,7 @@ from src.data.speech_protocol import read_speech_protocol
 
 # Comprueba que la partición incluye todos los ensayos previstos sin compartir frases ni bloques entre entrenamiento y validación.
 def test_protocol_covers_official_trials_without_overlapping_blocks():
-    cfg = yaml.safe_load(Path("configs/speech_comparacion.yaml").read_text())
+    cfg = yaml.safe_load(Path("configs/speech_comparacion_t4.yaml").read_text())
     protocol = read_speech_protocol(cfg)
     assert protocol["totals"] == {"train": 5180, "val": 1460, "test": 680}
     for session in protocol["sessions"]:

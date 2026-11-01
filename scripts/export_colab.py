@@ -21,54 +21,31 @@ from typing import Any
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
-NOTEBOOK = Path("notebooks/04_entrenamiento_colab.ipynb")
+NOTEBOOK = Path("notebooks/11_entrenamiento_reanudable_colab.ipynb")
 
 
-def build_source_bundle(perfil: str = "speech") -> tuple[bytes, dict[str, Any]]:
-    """Empaqueta una lista explícita de archivos y registra sus SHA-256."""
-    if perfil not in {"speech", "alice", "speech_comparacion", "speech_salidas", "speech_comparativa", "speech_reanudable"}:
-        raise ValueError(f"Perfil desconocido: {perfil}")
+def build_source_bundle(perfil: str = "speech_reanudable") -> tuple[bytes, dict[str, Any]]:
+    """Empaqueta el flujo T12 vigente y registra los SHA-256 de sus fuentes."""
+    if perfil != "speech_reanudable":
+        raise ValueError("Los perfiles anteriores son históricos; usa speech_reanudable.")
     paths = [
-        Path("run.py"), Path("requirements.txt"), Path("configs/speech_original.yaml"),
-        Path("configs/speech_2h.yaml"),
+        Path("run.py"), Path("requirements.txt"),
         Path("docs/datasets/speech_2023/manifest.json"),
+        Path("docs/datasets/speech_2023/particion_t12_v1.json"),
+        *(Path("configs") / name for name in (
+            "speech_comparacion_t4.yaml", "speech_salidas_t4.yaml",
+            "speech_control_2_t4.yaml", "speech_control_3_t4.yaml",
+            "speech_comparativa.yaml", "speech_reanudacion.yaml",
+            "speech_evaluacion.yaml", "speech_benchmark.yaml", "verificacion_checkpoint.yaml",
+        )),
         *(Path("scripts") / name for name in (
-            "get_data.py", "get_phoneme_resources.py",
-            "prepare_phoneme_labels.py", "prepare_speech_data.py",
+            "get_data.py", "get_phoneme_resources.py", "prepare_phoneme_labels.py",
+            "prepare_speech_data.py", "report_speech_training.py",
+            "configure_speech_comparison.py", "configure_speech_resume.py",
+            "verify_speech_checkpoint.py", "evaluate_speech.py", "benchmark_speech.py",
         )),
         *(path.relative_to(ROOT) for path in sorted((ROOT / "src").rglob("*.py"))),
     ]
-    if perfil == "alice":
-        paths = [Path("run.py"), Path("requirements-alice.txt"),
-                 Path("configs/alice_ctc.yaml"), Path("configs/alice_ctc_cpu.yaml"),
-                 Path("configs/alice_ctc_t4.yaml"),
-                 Path("docs/datasets/alice_eeg/catalogo_ctc.json"),
-                 Path("docs/datasets/alice_eeg/catalogo_ctc_t4.json"),
-                 *(Path("scripts") / name for name in ("get_alice.py", "get_phoneme_resources.py", "prepare_alice_ctc.py", "report_alice_ctc.py")),
-                 *(path.relative_to(ROOT) for path in sorted((ROOT / "src").rglob("*.py")))]
-    elif perfil in {"speech_comparacion", "speech_salidas", "speech_comparativa", "speech_reanudable"}:
-        paths = [
-            Path("run.py"), Path("requirements.txt"),
-            Path("configs/speech_comparacion.yaml"), Path("configs/speech_comparacion_t4.yaml"),
-            Path("docs/datasets/speech_2023/manifest.json"),
-            Path("docs/datasets/speech_2023/particion_t12_v1.json"),
-            *(Path("scripts") / name for name in (
-                "get_data.py", "get_phoneme_resources.py", "prepare_phoneme_labels.py",
-                "prepare_speech_data.py", "report_speech_training.py",
-            )),
-            *(path.relative_to(ROOT) for path in sorted((ROOT / "src").rglob("*.py"))),
-        ]
-        if perfil in {"speech_salidas", "speech_comparativa", "speech_reanudable"}:
-            paths += [Path("configs/speech_salidas_t4.yaml"), Path("configs/speech_salidas_e1.yaml"),
-                      Path("configs/verificacion_checkpoint.yaml"), Path("scripts/verify_speech_checkpoint.py")]
-        if perfil in {"speech_comparativa", "speech_reanudable"}:
-            paths += [Path("configs/speech_control_2_t4.yaml"), Path("configs/speech_control_3_t4.yaml"),
-                      Path("configs/speech_comparativa.yaml"), Path("scripts/configure_speech_comparison.py"),
-                      Path("configs/speech_evaluacion.yaml"), Path("scripts/evaluate_speech.py"),
-                      Path("configs/speech_benchmark.yaml"), Path("scripts/benchmark_speech.py")]
-        if perfil == "speech_reanudable":
-            paths += [Path("configs/speech_reanudacion.yaml"), Path("scripts/configure_speech_resume.py"),
-                      Path("requirements-e1.lock")]
     files = {path.as_posix(): (ROOT / path).read_bytes() for path in sorted(paths)}
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     manifest = {
@@ -86,7 +63,7 @@ def build_source_bundle(perfil: str = "speech") -> tuple[bytes, dict[str, Any]]:
     return buffer.getvalue(), manifest
 
 
-def export_notebook(path: Path, perfil: str = "speech") -> dict[str, Any]:
+def export_notebook(path: Path, perfil: str = "speech_reanudable") -> dict[str, Any]:
     """Refresca la celda marcada source_bundle y elimina salidas del notebook."""
     if perfil == "speech_reanudable" and path.name in {
         "01_exploracion_t12.ipynb", "02_test_fonemas_t12.ipynb", "03_pruebas_fonem_bueno_t12.ipynb",
@@ -95,18 +72,22 @@ def export_notebook(path: Path, perfil: str = "speech") -> dict[str, Any]:
         "09_comparativa_t12_colab.ipynb", "10_demo_salidas_local.ipynb",
     }:
         raise ValueError("El perfil reanudable debe conservar los notebooks anteriores y sus salidas.")
-    if perfil in {"speech_comparacion", "speech_salidas", "speech_comparativa"} and path.name in {
-        "04_entrenamiento_colab.ipynb", "05_alice_colab.ipynb", "06_demo_ahpsn.ipynb",
-    }:
-        raise ValueError("El perfil de comparación debe usar otro notebook; se conservan los históricos.")
-    if perfil in {"speech_salidas", "speech_comparativa"} and path.name == "07_baseline_t12_colab.ipynb":
-        raise ValueError("El perfil de salidas debe conservar el notebook 07 del baseline.")
-    if perfil == "speech_comparativa" and path.name == "08_salidas_t12_colab.ipynb":
-        raise ValueError("El perfil comparativo debe conservar el notebook 08 de la demo.")
     notebook = json.loads(path.read_text(encoding="utf-8"))
     cells = [cell for cell in notebook["cells"] if "source_bundle" in cell["metadata"].get("tags", [])]
     if len(cells) != 1:
         raise ValueError("El notebook debe contener una celda marcada source_bundle.")
+    # Solo se modifica la copia que se exporta; no los snapshots históricos.
+    for cell in notebook["cells"]:
+        source = "".join(cell.get("source", []))
+        if cell["cell_type"] == "code" and source.startswith("#@title 3."):
+            start = source.index('subprocess.run([UV, "pip", "install"')
+            end = source.index('subprocess.run([UV, "pip", "check"', start)
+            source = (source[:start]
+                      + 'subprocess.run([UV, "pip", "install", "--python", str(PYTHON), '
+                        '"-r", "requirements.txt"], cwd=PROJECT, check=True)\n'
+                      + source[end:])
+        source = source.replace("requirements-e1.lock", "requirements.txt")
+        cell["source"] = source.splitlines(keepends=True)
     payload, manifest = build_source_bundle(perfil)
     digest = hashlib.sha256(payload).hexdigest()
     chunks = "\n".join(f"    {chunk!r}" for chunk in textwrap.wrap(base64.b64encode(payload).decode(), 120))
@@ -151,14 +132,9 @@ def main() -> int:
     """Genera el snapshot dentro del notebook indicado, sin entrenar."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--notebook", type=Path)
-    parser.add_argument("--perfil", choices=("speech", "alice", "speech_comparacion", "speech_salidas", "speech_comparativa", "speech_reanudable"), default="speech")
+    parser.add_argument("--perfil", choices=("speech_reanudable",), default="speech_reanudable")
     args = parser.parse_args()
-    notebooks = {"speech": NOTEBOOK, "alice": Path("notebooks/05_alice_colab.ipynb"),
-                 "speech_comparacion": Path("notebooks/07_baseline_t12_colab.ipynb"),
-                 "speech_salidas": Path("notebooks/08_salidas_t12_colab.ipynb"),
-                 "speech_comparativa": Path("notebooks/09_comparativa_t12_colab.ipynb"),
-                 "speech_reanudable": Path("notebooks/11_entrenamiento_reanudable_colab.ipynb")}
-    relative = args.notebook or notebooks[args.perfil]
+    relative = args.notebook or NOTEBOOK
     path = relative if relative.is_absolute() else ROOT / relative
     print(json.dumps({"notebook": str(relative), **export_notebook(path, args.perfil)}, indent=2))
     return 0

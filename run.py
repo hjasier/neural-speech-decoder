@@ -3,8 +3,8 @@
 Punto de entrada unico del proyecto.
 
     python run.py --smoke                        # plantilla sintética anterior
-    python run.py --config configs/speech_original.yaml
-    python run.py --config configs/speech_original.yaml --solo-evaluar --checkpoint RUTA
+    python run.py --config configs/speech_comparacion_t4.yaml
+    python run.py --config configs/speech_comparacion_t4.yaml --solo-evaluar --checkpoint RUTA
 
 Este fichero es deliberadamente corto: orquesta, no implementa. La logica vive
 en src/. Si run.py crece por encima de un centenar de lineas, algo tendria que

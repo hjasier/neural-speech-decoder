@@ -70,10 +70,10 @@ def ejecutar_alice_ctc(
     requested = cfg["ejecucion"]["dispositivo"]
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu") if requested == "auto" else torch.device(requested)
     if device.type == "cuda" and not torch.cuda.is_available():
-        raise RuntimeError("Este perfil requiere CUDA; para CPU usa configs/alice_ctc_cpu.yaml.")
+        raise RuntimeError("Este perfil requiere CUDA; utiliza una configuración CPU para ejecutarlo sin GPU.")
     manifest_path = Path(cfg["datos"]["preparados"]) / "manifest.json"
     if not manifest_path.is_file():
-        raise FileNotFoundError("Falta preparar Alice: ejecuta scripts/prepare_alice_ctc.py --config con el mismo YAML.")
+        raise FileNotFoundError("Faltan los datos preparados de Alice. El preparador de esta exploración está retirado; recupera la revisión histórica desde Git.")
     manifest_hash = file_sha256(manifest_path)
     datasets = {split: AliceCTCDataset(cfg, split) for split in ("train", "val", "test")}
     manifest = datasets["train"].manifest

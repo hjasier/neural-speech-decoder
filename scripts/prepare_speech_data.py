@@ -1,6 +1,6 @@
 """Prepara señales T12 normalizadas en archivos NPY para lectura por fragmentos.
 
-    python scripts/prepare_speech_data.py --config configs/speech_original.yaml
+    python scripts/prepare_speech_data.py --config configs/speech_comparacion_t4.yaml
 
 Procesa una sesión cada vez, conserva todos sus ensayos y no suaviza ni añade
 ruido. Las estadísticas proceden únicamente de train y se guardan para test
