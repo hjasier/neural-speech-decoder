@@ -6,17 +6,7 @@ from typing import Sequence
 
 from torch import Tensor
 
-
-def decode_ctc(logits: Tensor, lengths: Tensor, blank_id: int) -> list[list[int]]:
-    """Colapsa repeticiones antes de quitar blank; excluye el padding temporal."""
-    paths = logits.detach().argmax(dim=-1).cpu()
-    decoded: list[list[int]] = []
-    for path, length in zip(paths, lengths.tolist(), strict=True):
-        if not 0 < length <= path.numel():
-            raise ValueError("Longitud de salida CTC no válida.")
-        collapsed = path[:length].unique_consecutive().tolist()
-        decoded.append([phone for phone in collapsed if phone != blank_id])
-    return decoded
+from src.inference.ctc import decode_ctc
 
 
 def edit_distance(reference: Sequence[int], hypothesis: Sequence[int]) -> int:

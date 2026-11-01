@@ -9,6 +9,7 @@ from typing import Any
 import torch
 
 from src.data.speech_dataset import SpeechDataset, preparation_signature
+from src.inference.checkpoints import read_speech_checkpoint
 from src.models.speech_gru import SpeechGRU
 
 
@@ -60,7 +61,7 @@ def load_checkpoint(
     path: Path, model: SpeechGRU, cfg: dict[str, Any], dataset: SpeechDataset,
 ) -> dict[str, Any]:
     """Carga con weights_only y rechaza modelos, vocabularios o datos distintos."""
-    state = torch.load(path, map_location="cpu", weights_only=True)
+    state = read_speech_checkpoint(path)
     original = state["config"]
     if (
         state["format_version"] != (2 if cfg.get("protocolo") else 1)

@@ -46,6 +46,8 @@ def _sources() -> dict[str, str]:
         "src/training/checkpoints.py",
         "src/training/optim.py",
         "src/training/metrics.py",
+        "src/inference/ctc.py",
+        "src/inference/checkpoints.py",
         "src/data/preprocessing.py",
         "src/data/speech_protocol.py",
     ]
