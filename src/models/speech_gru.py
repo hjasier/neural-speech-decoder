@@ -1,4 +1,4 @@
-"""GRU del baseline offline de speechBCI, implementada en PyTorch.
+"""GRU de speechBCI con ejecución completa o por grupos de ventanas.
 
 La entrada contiene características de 6v ya normalizadas y suavizadas,
 en el orden tx1 seguido de spikePow. La salida son logits para CTC.
@@ -119,8 +119,12 @@ class SpeechGRU(nn.Module):
             raise ValueError("Una secuencia es más corta que la ventana de entrada.")
         return (input_lengths - self.kernel_size) // self.stride + 1
 
-    def _input_features(self, features: Tensor, session_ids: Tensor) -> Tensor:
-        """Valida, adapta la sesión y forma ventanas sin ejecutar GRU."""
+    def prepare_windows(self, features: Tensor, session_ids: Tensor) -> Tensor:
+        """Adapta la sesión y devuelve ventanas B × T' × (kernel * input_size).
+
+        No conserva contexto entre llamadas: recibe la señal necesaria para
+        formar todas las ventanas solicitadas, incluido su solapamiento.
+        """
         if features.ndim != 3 or features.shape[-1] != self.input_features:
             raise ValueError("La entrada debe tener forma batch × tiempo × características.")
         if features.shape[0] == 0 or features.shape[1] < self.kernel_size:
@@ -145,22 +149,38 @@ class SpeechGRU(nn.Module):
         x = x.permute(0, 1, 3, 2).flatten(start_dim=2)
         return x
 
-    def forward_exits(
-        self, features: Tensor, session_ids: Tensor, *, layers: Sequence[int] | None = None,
-    ) -> dict[int, Tensor]:
-        """Calcula las salidas pedidas en una pasada hasta su mayor profundidad.
+    def forward_windows(
+        self, windows: Tensor, states: Sequence[Tensor] | None = None,
+        *, layers: Sequence[int] | None = None,
+    ) -> tuple[dict[int, Tensor], tuple[Tensor, ...]]:
+        """Ejecuta ventanas preparadas y devuelve logits y estados por capa.
 
-        Los índices son desde uno. La última salida usa output_layer; las
-        intermedias usan sus propias proyecciones. No ejecuta GRU posteriores
-        ni cabezas que no se hayan solicitado. Las longitudes CTC son comunes.
+        states contiene un tensor 1 × B × hidden_size por capa, en orden.
+        None inicia una frase; para continuar, se devuelven los estados a la
+        siguiente llamada con el mismo orden de ejemplos y profundidad máxima.
+        La continuación requiere eval(), pues el dropout de entrenamiento
+        genera una máscara nueva por llamada. El modelo no guarda estos estados.
         """
         requested = self.available_exits if layers is None else tuple(layers)
         if (not requested or any(type(depth) is not int or depth not in self.available_exits for depth in requested)
                 or len(set(requested)) != len(requested)):
             raise ValueError(f"Selecciona salidas distintas entre {self.available_exits}.")
         maximum = max(requested)
-        x = self._input_features(features, session_ids)
+        if (windows.ndim != 3 or windows.shape[0] == 0 or windows.shape[1] == 0
+                or windows.shape[2] != self.gru_layers[0].input_size):
+            raise ValueError("Se necesitan ventanas B × T' × (kernel * input_size), sin ejes vacíos.")
+        if states is not None:
+            if self.training:
+                raise ValueError("Continuar estados entre bloques requiere model.eval().")
+            if len(states) != maximum:
+                raise ValueError("Se necesita un estado por cada capa ejecutada.")
+            expected = (1, windows.shape[0], self.hidden_size)
+            if any(state.shape != expected or state.device != windows.device
+                   or state.dtype != windows.dtype for state in states):
+                raise ValueError("Los estados deben conservar la forma, dispositivo y dtype de las ventanas.")
+        x = windows
         outputs: dict[int, Tensor] = {}
+        final_states: list[Tensor] = []
 
         for depth, layer in enumerate(self.gru_layers, start=1):
             if depth > maximum:
@@ -169,12 +189,27 @@ class SpeechGRU(nn.Module):
                 mask = F.dropout(torch.ones_like(x[:, :1, :]), p=self.gru_dropout)
                 x = x * mask
             state = None
-            if depth == 1:
+            if states is not None:
+                state = states[depth - 1]
+            elif depth == 1:
                 state = self.initial_state.unsqueeze(0).expand(1, x.shape[0], -1).contiguous()
-            x, _ = layer(x, state)
+            x, state = layer(x, state)
+            final_states.append(state)
             if depth in requested:
                 head = self.output_layer if depth == self.num_layers else self.intermediate_heads[str(depth)]
                 outputs[depth] = head(x)
+        return outputs, tuple(final_states)
+
+    def forward_exits(
+        self, features: Tensor, session_ids: Tensor, *, layers: Sequence[int] | None = None,
+    ) -> dict[int, Tensor]:
+        """Calcula las salidas pedidas desde el inicio de una frase completa.
+
+        Los índices son desde uno. Solo ejecuta GRU hasta la mayor profundidad
+        solicitada y comparte el cálculo recurrente con forward_windows.
+        """
+        windows = self.prepare_windows(features, session_ids)
+        outputs, _ = self.forward_windows(windows, layers=layers)
         return outputs
 
     def forward(self, features: Tensor, session_ids: Tensor, *, exit_layer: int | None = None) -> Tensor:
