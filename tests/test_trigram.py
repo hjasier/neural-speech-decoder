@@ -2,12 +2,16 @@
 
 import base64
 import hashlib
+import io
 import mmap
 from pathlib import Path
 import re
+import subprocess
+import tarfile
 from types import SimpleNamespace
 
 import numpy as np
+import pytest
 import torch
 import yaml
 
@@ -16,6 +20,7 @@ from src.inference.trigram import TrigramStream, kaldi_columns
 from src.training.speech_online_evaluation import OnlineTrial
 from src.training.speech_trigram_evaluation import evaluate_trigram
 from scripts.trigram_mmap_cache import MappedGraphCache
+from scripts.restore_speech_trigram_runtime import build_launcher, extract_backup
 
 
 def test_releasing_graph_pages_preserves_graph_and_other_memory(tmp_path: Path) -> None:
@@ -91,3 +96,47 @@ def test_trigram_wer_sums_errors_and_reference_words() -> None:
     assert result["by_session"][5]["a"]["wer"] == 0
     assert result["by_session"][5]["b"]["wer"] == 3 / 4
     assert rows[1]["profiles"][5]["errores_palabras"] == 3
+
+
+def test_restored_runtime_uses_its_files_after_moving(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Los enlaces y el lanzador no deben seguir usando las rutas originales o el entorno padre."""
+    origin = "/colab space"
+    prefix, base = origin + "/runtime", origin + "/python"
+    interpreter = b'#!/bin/sh\nprintf "%s\\n" "$CUDA_VISIBLE_DEVICES" "$OMP_NUM_THREADS" "$PYTHONHOME" "$PYTHONPATH" "$@"\n'
+    files = {f"rootfs{base}/bin/python3.10": interpreter,
+             f"rootfs{base}/lib/python3.10/os.py": b"# fixture\n",
+             f"rootfs{prefix}/lib/python3.10/site-packages/torch/__init__.py": b"# fixture\n",
+             f"rootfs{prefix}/lib/python3.10/site-packages/lm_decoder.so": b"fixture"}
+    links = {f"rootfs{prefix}/bin/python": base + "/bin/python3.10",
+             f"rootfs{prefix}/bin/python3": "python"}
+    archive_path = tmp_path / "runtime.tar.gz"
+    records = {}
+    with tarfile.open(archive_path, "w:gz") as archive:
+        for name, data in files.items():
+            member = tarfile.TarInfo(name)
+            member.size, member.mode = len(data), 0o755
+            archive.addfile(member, io.BytesIO(data))
+            records[name] = {"type": "file", "size_bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()}
+        for name, target in links.items():
+            member = tarfile.TarInfo(name)
+            member.type, member.linkname = tarfile.SYMTYPE, target
+            archive.addfile(member)
+            records[name] = {"type": "symlink", "target": target}
+    stage = tmp_path / "staging runtime"
+    extract_backup(archive_path, records, stage)
+    inventory = {"files": records, "probe": {"prefix": prefix, "base_prefix": base,
+        "python": "3.10.15", "executable": base + "/bin/python3.10",
+        "binding": prefix + "/lib/python3.10/site-packages/lm_decoder.so"}}
+    build_launcher(stage, inventory, threads=2)
+    final = tmp_path / "moved runtime"
+    stage.rename(final)
+    link = final / ("rootfs" + prefix + "/bin/python3")
+    expected_interpreter = final / ("rootfs" + base + "/bin/python3.10")
+    assert link.resolve() == expected_interpreter
+    assert expected_interpreter.read_bytes() == interpreter
+    monkeypatch.setenv("CUDA_VISIBLE_DEVICES", "parent-device")
+    monkeypatch.setenv("PYTHONPATH", "/parent/packages")
+    result = subprocess.check_output([str(final / "bin/python"), "argument with spaces", "$literal"], text=True).splitlines()
+    assert result == ["", "2", str(final / ("rootfs" + base)),
+        str(final / ("rootfs" + prefix + "/lib/python3.10/site-packages")),
+        "argument with spaces", "$literal"]

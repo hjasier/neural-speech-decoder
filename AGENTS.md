@@ -163,5 +163,12 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
   conservada en el notebook 13. La carga sola no certifica la inferencia local.
 - Hecho en Colab CPU: comprobación de GRU + trigrama sobre tres frases de val,
   con control de páginas residentes y pico RSS conjunto de 3,29 GiB.
-  Pendiente: trasladar el grafo, preparar el runtime CPU y medir en la máquina local.
-  Guía en `docs/experimentos/trigrama_compacto.md`. OPT queda para otra fase.
+  Runtime CPU restaurado localmente con `scripts/restore_speech_trigram_runtime.py`:
+  hashes, importación y arranque/cierre del trabajador verificados. Informe en
+  `data/language_models/runtime/runtime_restore.json`.
+- Hecho en CPU local: hashes del grafo y tres frases de val comprobados, con
+  dos hilos, pico RSS conjunto de 3,30 GiB y RTF observado de 0,73. Informe en
+  `runs/trigrama_compacto_cpu_local_20261102_01/comprobacion_cpu.json`.
+  Esta prueba no incluye HTTP. `data/speech_2023` enlaza los datos preparados
+  de la otra copia local; el perfil del grafo apunta mediante enlace al directorio
+  descargado `data/speech_triagam_compacto`. OPT queda para otra fase.
