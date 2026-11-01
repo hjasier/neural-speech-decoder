@@ -21,28 +21,38 @@ from typing import Any
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
-NOTEBOOK = Path("notebooks/11_entrenamiento_reanudable_colab.ipynb")
+NOTEBOOKS = {
+    "speech_reanudable": Path("notebooks/11_entrenamiento_reanudable_colab.ipynb"),
+    "speech_online": Path("notebooks/12_entrenamiento_online_colab.ipynb"),
+}
 
 
 def build_source_bundle(perfil: str = "speech_reanudable") -> tuple[bytes, dict[str, Any]]:
     """Empaqueta el flujo T12 vigente y registra los SHA-256 de sus fuentes."""
-    if perfil != "speech_reanudable":
-        raise ValueError("Los perfiles anteriores son históricos; usa speech_reanudable.")
+    if perfil not in NOTEBOOKS:
+        raise ValueError("Usa speech_reanudable o speech_online.")
+    configs = [Path("configs") / name for name in (
+        "speech_comparacion_t4.yaml", "speech_salidas_t4.yaml",
+        "speech_control_2_t4.yaml", "speech_control_3_t4.yaml",
+        "speech_comparativa.yaml", "speech_reanudacion.yaml",
+        "speech_evaluacion.yaml", "speech_benchmark.yaml", "verificacion_checkpoint.yaml",
+    )]
+    evaluation_scripts = ("evaluate_speech.py", "benchmark_speech.py")
+    if perfil == "speech_online":
+        configs = [Path("configs/speech_reanudacion.yaml"), Path("configs/verificacion_checkpoint.yaml"),
+                   *(path.relative_to(ROOT) for path in sorted(
+                       (ROOT / "configs/entrenos_online").glob("speech_online*.yaml")))]
+        evaluation_scripts = ("evaluate_speech_online.py",)
     paths = [
         Path("run.py"), Path("requirements.txt"),
         Path("docs/datasets/speech_2023/manifest.json"),
         Path("docs/datasets/speech_2023/particion_t12_v1.json"),
-        *(Path("configs") / name for name in (
-            "speech_comparacion_t4.yaml", "speech_salidas_t4.yaml",
-            "speech_control_2_t4.yaml", "speech_control_3_t4.yaml",
-            "speech_comparativa.yaml", "speech_reanudacion.yaml",
-            "speech_evaluacion.yaml", "speech_benchmark.yaml", "verificacion_checkpoint.yaml",
-        )),
+        *configs,
         *(Path("scripts") / name for name in (
             "get_data.py", "get_phoneme_resources.py", "prepare_phoneme_labels.py",
             "prepare_speech_data.py", "report_speech_training.py",
             "configure_speech_comparison.py", "configure_speech_resume.py",
-            "verify_speech_checkpoint.py", "evaluate_speech.py", "benchmark_speech.py",
+            "verify_speech_checkpoint.py", *evaluation_scripts,
         )),
         *(path.relative_to(ROOT) for path in sorted((ROOT / "src").rglob("*.py"))),
     ]
@@ -53,6 +63,8 @@ def build_source_bundle(perfil: str = "speech_reanudable") -> tuple[bytes, dict[
         "git_commit_base": revision,
         "files": {name: hashlib.sha256(payload).hexdigest() for name, payload in files.items()},
     }
+    if perfil == "speech_online":
+        manifest["profile"] = perfil
     files["source_snapshot.json"] = (json.dumps(manifest, indent=2) + "\n").encode()
     buffer = io.BytesIO()
     with ZipFile(buffer, "w") as archive:
@@ -65,13 +77,16 @@ def build_source_bundle(perfil: str = "speech_reanudable") -> tuple[bytes, dict[
 
 def export_notebook(path: Path, perfil: str = "speech_reanudable") -> dict[str, Any]:
     """Refresca la celda marcada source_bundle y elimina salidas del notebook."""
-    if perfil == "speech_reanudable" and path.name in {
+    historical = {
         "01_exploracion_t12.ipynb", "02_test_fonemas_t12.ipynb", "03_pruebas_fonem_bueno_t12.ipynb",
         "04_entrenamiento_colab.ipynb", "05_alice_colab.ipynb", "06_demo_ahpsn.ipynb",
         "07_baseline_t12_colab.ipynb", "08_salidas_t12_colab.ipynb",
         "09_comparativa_t12_colab.ipynb", "10_demo_salidas_local.ipynb",
-    }:
-        raise ValueError("El perfil reanudable debe conservar los notebooks anteriores y sus salidas.")
+    }
+    if path.name in historical or (perfil == "speech_online" and path.name == NOTEBOOKS["speech_reanudable"].name):
+        raise ValueError("Conserva los notebooks históricos y sus salidas; exporta el perfil online al notebook 12.")
+    if path.name == NOTEBOOKS["speech_online"].name and perfil != "speech_online":
+        raise ValueError("El notebook 12 requiere --perfil speech_online.")
     notebook = json.loads(path.read_text(encoding="utf-8"))
     cells = [cell for cell in notebook["cells"] if "source_bundle" in cell["metadata"].get("tags", [])]
     if len(cells) != 1:
@@ -132,9 +147,9 @@ def main() -> int:
     """Genera el snapshot dentro del notebook indicado, sin entrenar."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--notebook", type=Path)
-    parser.add_argument("--perfil", choices=("speech_reanudable",), default="speech_reanudable")
+    parser.add_argument("--perfil", choices=tuple(NOTEBOOKS), default="speech_online")
     args = parser.parse_args()
-    relative = args.notebook or NOTEBOOK
+    relative = args.notebook or NOTEBOOKS[args.perfil]
     path = relative if relative.is_absolute() else ROOT / relative
     print(json.dumps({"notebook": str(relative), **export_notebook(path, args.perfil)}, indent=2))
     return 0

@@ -38,8 +38,10 @@ bloques y mostrará la decodificación. Alice es una exploración anterior.
 ## Cómo se ejecuta
 
 Desde la raíz, con el entorno activado. En Colab,
-`notebooks/11_entrenamiento_reanudable_colab.ipynb` permite elegir variante,
-semilla y estado para continuar. Se conservan el notebook 09 de comparación,
+`notebooks/12_entrenamiento_online_colab.ipynb` permite elegir variante causal,
+semilla, reanudar y evaluar por bloques en val. Usa `configs/entrenos_online/`.
+El notebook 11 conserva los entrenamientos centrados reanudables.
+Se conservan el notebook 09 de comparación,
 `notebooks/07_baseline_t12_colab.ipynb` para el baseline y
 `notebooks/08_salidas_t12_colab.ipynb` para la prueba de 200 pasos.
 
