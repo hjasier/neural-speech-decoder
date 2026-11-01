@@ -16,6 +16,7 @@ import json
 import os
 from pathlib import Path
 import select
+import signal
 import subprocess
 from typing import Any, Sequence
 
@@ -92,12 +93,32 @@ class TrigramDecoder:
             self.close()
             raise
 
+    def _process_failure(self) -> RuntimeError:
+        try:
+            returncode = self._process.wait(timeout=1)
+        except subprocess.TimeoutExpired:
+            returncode = None
+        status = f"código {returncode}" if returncode is not None else "salida cerrada; proceso todavía activo"
+        if returncode is not None and returncode < 0:
+            try:
+                status += f", {signal.Signals(-returncode).name}"
+            except ValueError:
+                status += f", señal {-returncode}"
+        try:
+            with self._log_path.open("rb") as stream:
+                stream.seek(0, os.SEEK_END)
+                stream.seek(max(0, stream.tell() - 8192))
+                tail = stream.read().decode("utf-8", errors="replace").strip()
+        except OSError:
+            tail = "No se pudo leer el log del trabajador."
+        return RuntimeError(f"El trabajador del trigrama terminó ({status}); revisar {self._log_path}\n{tail}")
+
     def _read_reply(self) -> dict[str, Any]:
         if not select.select([self._process.stdout], [], [], self.spec["timeout_segundos"])[0]:
             raise RuntimeError(f"El trabajador del trigrama no responde; revisar {self._log_path}")
         line = self._process.stdout.readline()
         if not line:
-            raise RuntimeError(f"El trabajador del trigrama terminó; revisar {self._log_path}")
+            raise self._process_failure()
         response = json.loads(line)
         if not response.get("ok"):
             raise RuntimeError(f"Error del trigrama: {response.get('error')}; revisar {self._log_path}")
@@ -108,7 +129,7 @@ class TrigramDecoder:
             self._process.stdin.write(json.dumps(payload, allow_nan=False) + "\n")
             self._process.stdin.flush()
         except BrokenPipeError as error:
-            raise RuntimeError(f"El trabajador del trigrama terminó; revisar {self._log_path}") from error
+            raise self._process_failure() from error
         return self._read_reply()
 
     def _open_flow(self) -> int:

@@ -1,6 +1,6 @@
-"""Actualiza el código empaquetado en el notebook de entrenamiento Colab.
+"""Actualiza el código empaquetado en un lanzador Colab sin ejecutar.
 
-    python scripts/export_colab.py
+    python scripts/export_colab.py --perfil speech_trigrama
 
 Solo incluye fuentes, configuración, dependencias y el manifiesto público
 de Dryad. No empaqueta datos, pesos, credenciales, Git ni el entorno local.
@@ -24,13 +24,14 @@ ROOT = Path(__file__).resolve().parents[1]
 NOTEBOOKS = {
     "speech_reanudable": Path("notebooks/11_entrenamiento_reanudable_colab.ipynb"),
     "speech_online": Path("notebooks/12_entrenamiento_online_colab.ipynb"),
+    "speech_trigrama": Path("notebooks/13_trigrama_colab.ipynb"),
 }
 
 
 def build_source_bundle(perfil: str = "speech_reanudable") -> tuple[bytes, dict[str, Any]]:
     """Empaqueta el flujo T12 vigente y registra los SHA-256 de sus fuentes."""
     if perfil not in NOTEBOOKS:
-        raise ValueError("Usa speech_reanudable o speech_online.")
+        raise ValueError("Perfil Colab no reconocido.")
     configs = [Path("configs") / name for name in (
         "speech_comparacion_t4.yaml", "speech_salidas_t4.yaml",
         "speech_control_2_t4.yaml", "speech_control_3_t4.yaml",
@@ -38,11 +39,14 @@ def build_source_bundle(perfil: str = "speech_reanudable") -> tuple[bytes, dict[
         "speech_evaluacion.yaml", "speech_benchmark.yaml", "verificacion_checkpoint.yaml",
     )]
     evaluation_scripts = ("evaluate_speech.py", "benchmark_speech.py")
-    if perfil == "speech_online":
+    if perfil in ("speech_online", "speech_trigrama"):
         configs = [Path("configs/speech_reanudacion.yaml"), Path("configs/verificacion_checkpoint.yaml"),
                    *(path.relative_to(ROOT) for path in sorted(
                        (ROOT / "configs/entrenos_online").glob("speech_online*.yaml")))]
         evaluation_scripts = ("evaluate_speech_online.py",)
+        if perfil == "speech_trigrama":
+            configs.append(Path("configs/entrenos_online/speech_trigrama.yaml"))
+            evaluation_scripts += ("prepare_speech_trigram.py", "evaluate_speech_trigram.py", "trigram_worker.py")
     paths = [
         Path("run.py"), Path("requirements.txt"),
         Path("docs/datasets/speech_2023/manifest.json"),
@@ -56,6 +60,8 @@ def build_source_bundle(perfil: str = "speech_reanudable") -> tuple[bytes, dict[
         )),
         *(path.relative_to(ROOT) for path in sorted((ROOT / "src").rglob("*.py"))),
     ]
+    if perfil == "speech_trigrama":
+        paths.append(Path("requirements-trigram-runtime.txt"))
     files = {path.as_posix(): (ROOT / path).read_bytes() for path in sorted(paths)}
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     manifest = {
@@ -63,7 +69,7 @@ def build_source_bundle(perfil: str = "speech_reanudable") -> tuple[bytes, dict[
         "git_commit_base": revision,
         "files": {name: hashlib.sha256(payload).hexdigest() for name, payload in files.items()},
     }
-    if perfil == "speech_online":
+    if perfil in ("speech_online", "speech_trigrama"):
         manifest["profile"] = perfil
     files["source_snapshot.json"] = (json.dumps(manifest, indent=2) + "\n").encode()
     buffer = io.BytesIO()
@@ -76,18 +82,22 @@ def build_source_bundle(perfil: str = "speech_reanudable") -> tuple[bytes, dict[
 
 
 def export_notebook(path: Path, perfil: str = "speech_reanudable") -> dict[str, Any]:
-    """Refresca la celda marcada source_bundle y elimina salidas del notebook."""
+    """Refresca la celda source_bundle sin reemplazar notebooks ya ejecutados."""
     historical = {
         "01_exploracion_t12.ipynb", "02_test_fonemas_t12.ipynb", "03_pruebas_fonem_bueno_t12.ipynb",
         "04_entrenamiento_colab.ipynb", "05_alice_colab.ipynb", "06_demo_ahpsn.ipynb",
         "07_baseline_t12_colab.ipynb", "08_salidas_t12_colab.ipynb",
         "09_comparativa_t12_colab.ipynb", "10_demo_salidas_local.ipynb",
     }
-    if path.name in historical or (perfil == "speech_online" and path.name == NOTEBOOKS["speech_reanudable"].name):
-        raise ValueError("Conserva los notebooks históricos y sus salidas; exporta el perfil online al notebook 12.")
-    if path.name == NOTEBOOKS["speech_online"].name and perfil != "speech_online":
-        raise ValueError("El notebook 12 requiere --perfil speech_online.")
+    if path.name in historical:
+        raise ValueError("Conserva los notebooks históricos y sus snapshots; exporta a un lanzador nuevo.")
+    for expected, notebook_path in NOTEBOOKS.items():
+        if path.name == notebook_path.name and perfil != expected:
+            raise ValueError(f"{path.name} requiere --perfil {expected}.")
     notebook = json.loads(path.read_text(encoding="utf-8"))
+    if any(cell.get("outputs") or cell.get("execution_count") is not None
+           for cell in notebook["cells"] if cell["cell_type"] == "code"):
+        raise ValueError("El notebook ya tiene ejecuciones: conserva sus salidas y su snapshot original.")
     cells = [cell for cell in notebook["cells"] if "source_bundle" in cell["metadata"].get("tags", [])]
     if len(cells) != 1:
         raise ValueError("El notebook debe contener una celda marcada source_bundle.")

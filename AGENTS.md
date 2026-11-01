@@ -14,10 +14,11 @@ Dos páginas se leen enteras. Quince, no.
 
 ## Qué es esto
 
-Decodificador offline en PyTorch basado en la GRU + CTC de Willett et al.
+Decodificador offline y causal en PyTorch basado en la GRU + CTC de Willett et al.
 (2023), con datos intracorticales T12 de `competitionData`. La métrica actual
-es PER de fonemas; el modelo de lenguaje para obtener texto y medir WER
-queda pendiente. No es una reproducción del sistema clínico completo.
+es PER de fonemas; la conexión al trigrama para obtener texto y medir WER
+está preparada, pendiente de validación real en Colab. No es una reproducción
+del sistema clínico completo.
 
 La propuesta estudia salidas tras las capas 2/3/5 y su compromiso entre PER
 y latencia. El aplicativo previsto emulará la recepción de grabaciones por
@@ -40,6 +41,8 @@ bloques y mostrará la decodificación. Alice es una exploración anterior.
 Desde la raíz, con el entorno activado. En Colab,
 `notebooks/12_entrenamiento_online_colab.ipynb` permite elegir variante causal,
 semilla, reanudar y evaluar por bloques en val. Usa `configs/entrenos_online/`.
+El notebook 13 conecta el checkpoint causal al trigrama y evalúa PER/WER en val;
+su runtime CPU se instala aparte. No reexportar notebooks ya ejecutados.
 El notebook 11 conserva los entrenamientos centrados reanudables.
 Se conservan el notebook 09 de comparación,
 `notebooks/07_baseline_t12_colab.ipynb` para el baseline y
@@ -151,3 +154,6 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
 - Hecho: figuras de la ronda en `docs/figuras/t12_semilla0/`, con PNG/SVG,
   datos y hashes originales de procedencia.
 - Pendiente: revisar la documentación de ejecución y presentación de E1.
+- Preparado: logits por bloque, cliente del trigrama y evaluación PER/WER.
+  Notebook 13 con fuentes empaquetadas; compilación del runtime y validación
+  del grafo original pendientes de ejecutar en Colab. OPT queda para otra fase.
