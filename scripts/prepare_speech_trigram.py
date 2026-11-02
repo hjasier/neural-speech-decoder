@@ -26,6 +26,29 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 @contextmanager
+def runtime_build_sources(sources: Path, threads: int) -> Iterator[None]:
+    """Ajusta hilos y compatibilidad de OpenFst y restaura el CMake original."""
+    path = sources / "LanguageModelDecoder/runtime/server/x86/CMakeLists.txt"
+    original = path.read_bytes()
+    text = original.decode("utf-8")
+    command = "BUILD_COMMAND     make -j 4"
+    copy = "COMMAND           ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/patch/openfst ${openfst_SOURCE_DIR}"
+    if text.count(command) != 1 or text.count(copy) != 1:
+        raise ValueError("El CMake oficial ha cambiado; no se aplican los ajustes de compilación.")
+    text = text.replace(command, f"BUILD_COMMAND     make -j {threads}")
+    # OpenFst 1.6.5 copia un miembro inexistente (s_) en esta plantilla.
+    # GCC 15 lo rechaza incluso sin instanciarla. Corrige solo ese constructor
+    # tras extraer y aplicar los parches oficiales.
+    text = text.replace(copy, copy + '\n    COMMAND sed -i "s/new S(table[.]s_)/new S(*table.selector_)/" '
+                        '${openfst_SOURCE_DIR}/src/include/fst/bi-table.h')
+    try:
+        path.write_text(text, encoding="utf-8")
+        yield
+    finally:
+        path.write_bytes(original)
+
+
+@contextmanager
 def mapped_binding(sources: Path, enabled: bool) -> Iterator[None]:
     """Añade el selector OpenFst al compilar y restaura después la fuente original."""
     if not enabled:
@@ -118,12 +141,78 @@ def prepare_model(spec: dict[str, Any], archive_path: Path) -> None:
     print("Trigrama verificado:", destination)
 
 
+def _probe_runtime(python: Path, spec: dict[str, Any], environment: dict[str, str]) -> dict[str, Any]:
+    """Comprueba versiones e importación sin cargar el grafo ni instalar paquetes."""
+    probe = subprocess.check_output([str(python), "-c",
+        "import json, platform, torch, numpy, lm_decoder; "
+        "print(json.dumps({'python':platform.python_version(),'torch':str(torch.__version__),"
+        "'numpy':numpy.__version__,'binding':lm_decoder.__file__,'cuda_build':torch.version.cuda,"
+        "'mapped_graphs':hasattr(lm_decoder,'SetFstReadMode'),"
+        "'compact_writer':hasattr(lm_decoder,'WriteConstFst')}))"],
+        env=environment, text=True, stderr=subprocess.STDOUT, timeout=spec["timeout_segundos"])
+    runtime = json.loads(probe)
+    if runtime["torch"] != spec["torch_runtime"] or runtime["python"] != spec["preparacion"]["python"]:
+        raise ValueError("El runtime no corresponde a las versiones declaradas.")
+    if runtime["cuda_build"] is not None:
+        raise ValueError("El runtime debe usar PyTorch CPU.")
+    if spec.get("lectura_grafo", "read") == "map" and not (runtime["mapped_graphs"] and runtime["compact_writer"]):
+        raise ValueError("El runtime no incluye el selector de lectura map y el escritor ConstFst.")
+    return runtime
+
+
+def _verify_virtualenv(python: Path, spec: dict[str, Any], environment: dict[str, str]) -> None:
+    """Evita instalar dependencias en un Python base o en un runtime restaurado."""
+    probe = subprocess.check_output([str(python), "-c",
+        "import json, platform, sys; "
+        "print(json.dumps({'python':platform.python_version(),'prefix':sys.prefix,'base_prefix':sys.base_prefix}))"],
+        env=environment, text=True, stderr=subprocess.STDOUT, timeout=spec["timeout_segundos"])
+    interpreter = json.loads(probe)
+    if (interpreter["python"] != spec["preparacion"]["python"]
+            or interpreter["prefix"] == interpreter["base_prefix"]
+            or Path(interpreter["prefix"]).resolve() != python.parent.parent.resolve()):
+        raise ValueError("El intérprete existente no es el venv aislado esperado; se conserva sin cambios.")
+
+
 def build_runtime(spec: dict[str, Any]) -> None:
-    """Compila el binding original con Python 3.10 y libtorch 1.13.1 en otro entorno."""
+    """Reutiliza un runtime válido o compila el binding en un venv aislado."""
+    prep = spec["preparacion"]
+    python = Path(spec["python_runtime"]).absolute()
+    environment_root = python.parent.parent
+    environment = {**os.environ, "CUDA_VISIBLE_DEVICES": "", "CMAKE_BUILD_PARALLEL_LEVEL": str(spec["hilos_cpu"]),
+                   "OMP_NUM_THREADS": str(spec["hilos_cpu"]), "OPENBLAS_NUM_THREADS": str(spec["hilos_cpu"]),
+                   "MKL_NUM_THREADS": str(spec["hilos_cpu"]), "PYTHONNOUSERSITE": "1", "PYTHONDONTWRITEBYTECODE": "1",
+                   "PATH": str(python.parent) + os.pathsep + os.environ["PATH"]}
+    for variable in ("PYTHONHOME", "PYTHONPATH"):
+        environment.pop(variable, None)
+    # gflags ya se compila con FetchContent. Evita que glog importe además
+    # los targets del sistema, incluso al reintentar una configuración fallida.
+    environment["CMAKE_ARGS"] = " ".join(filter(None, (
+        environment.get("CMAKE_ARGS"), "-Ugflags_DIR -DCMAKE_DISABLE_FIND_PACKAGE_gflags=ON",
+    )))
+    if python.exists():
+        try:
+            _probe_runtime(python, spec, environment)
+        except (OSError, subprocess.SubprocessError, ValueError) as error:
+            if (environment_root / "runtime_restore.json").exists() or not (environment_root / "pyvenv.cfg").is_file():
+                detail = error.output if isinstance(error, subprocess.CalledProcessError) else str(error)
+                raise RuntimeError(
+                    f"El runtime existente no supera la comprobación: {detail}\n"
+                    "Se conserva sin instalar ni sobrescribir archivos. Restaura un respaldo válido "
+                    "o elige otra ruta python_runtime en la configuración para compilar uno nuevo. "
+                    "Consulta docs/instalacion_runtime_trigrama.md."
+                ) from error
+        else:
+            print("Runtime CPU ya preparado y verificado:", python)
+            return
+        _verify_virtualenv(python, spec, environment)
+    elif environment_root.exists():
+        raise RuntimeError(
+            f"Ya existe {environment_root}, pero falta su intérprete. Se conserva sin cambios; "
+            "elige otra ruta python_runtime en la configuración."
+        )
     uv = shutil.which("uv")
     if uv is None:
-        raise RuntimeError("Falta uv; usa el notebook Colab, que instala la versión fijada.")
-    prep = spec["preparacion"]
+        raise RuntimeError("Falta uv; instálalo con: python -m pip install uv==0.9.4")
     sources = Path(prep["fuentes"]).resolve()
     sources.parent.mkdir(parents=True, exist_ok=True)
     if not sources.exists():
@@ -133,29 +222,16 @@ def build_runtime(spec: dict[str, Any]) -> None:
     if revision != prep["commit"]:
         raise ValueError("Las fuentes existentes corresponden a otro commit; se conservan.")
     subprocess.run(["git", "-C", str(sources), "diff", "--exit-code", "HEAD"], check=True)
-    python = Path(spec["python_runtime"]).absolute()
-    environment_root = python.parent.parent
     if not python.exists():
-        subprocess.run([uv, "venv", "--python", prep["python"], "--seed", str(environment_root)], check=True)
-    environment = {**os.environ, "CUDA_VISIBLE_DEVICES": "", "CMAKE_BUILD_PARALLEL_LEVEL": str(spec["hilos_cpu"]),
-                   "PATH": str(python.parent) + os.pathsep + os.environ["PATH"]}
+        subprocess.run([uv, "venv", "--python", prep["python"], "--seed", str(environment_root)], env=environment, check=True)
+        _verify_virtualenv(python, spec, environment)
     subprocess.run([uv, "pip", "install", "--python", str(python), "--index-strategy", "unsafe-best-match",
                     "-r", str(ROOT / "requirements-trigram-runtime.txt")], env=environment, check=True)
     mapped = spec.get("lectura_grafo", "read") == "map"
-    with mapped_binding(sources, mapped):
+    with runtime_build_sources(sources, spec["hilos_cpu"]), mapped_binding(sources, mapped):
         subprocess.run([str(python), "setup.py", "install"],
                        cwd=sources / "LanguageModelDecoder/runtime/server/x86", env=environment, check=True)
-    probe = subprocess.check_output([str(python), "-c",
-        "import json, platform, torch, numpy, lm_decoder; "
-        "print(json.dumps({'python':platform.python_version(),'torch':str(torch.__version__),"
-        "'numpy':numpy.__version__,'binding':lm_decoder.__file__,"
-        "'mapped_graphs':hasattr(lm_decoder,'SetFstReadMode'),"
-        "'compact_writer':hasattr(lm_decoder,'WriteConstFst')}))"], env=environment, text=True)
-    runtime = json.loads(probe)
-    if runtime["torch"] != spec["torch_runtime"] or runtime["python"] != prep["python"]:
-        raise ValueError("El runtime compilado no corresponde a las versiones declaradas.")
-    if mapped and not (runtime["mapped_graphs"] and runtime["compact_writer"]):
-        raise ValueError("El runtime compilado no incluye el selector de lectura map.")
+    runtime = _probe_runtime(python, spec, environment)
     freeze = subprocess.check_output([str(python), "-m", "pip", "freeze"], text=True, env=environment)
     marker = {"source_commit": revision, "runtime": runtime, "pip_freeze": freeze,
               "mapped_graph_patch": "const-map-v1" if mapped else None,
@@ -176,10 +252,13 @@ def main() -> int:
     if not (args.prepare_model or args.build_runtime):
         parser.error("Indica --prepare-model, --build-runtime o ambos.")
     spec = yaml.safe_load(args.config.read_text())
-    if args.prepare_model:
-        prepare_model(spec, args.archive or Path(spec["preparacion"]["archivo"]))
-    if args.build_runtime:
-        build_runtime(spec)
+    try:
+        if args.prepare_model:
+            prepare_model(spec, args.archive or Path(spec["preparacion"]["archivo"]))
+        if args.build_runtime:
+            build_runtime(spec)
+    except (OSError, subprocess.SubprocessError, ValueError, RuntimeError) as error:
+        parser.exit(1, f"error: {error}\n")
     return 0
 
 
