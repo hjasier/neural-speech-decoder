@@ -1,0 +1,11 @@
+# Reproducción de una muestra de val; inferencia CPU, sin entrenamiento.
+checkpoint: data/speech_online_baseline/jaovk23p/mejor_val.pt
+lenguaje: configs/entrenos_online/speech_trigrama_compacto.yaml
+seed: 0
+servidor:
+  host: 127.0.0.1
+  puerto: 8766
+transmision:
+  bloque_bins: 4
+  max_bloques_pendientes: 64
+salida: runs/demo_http

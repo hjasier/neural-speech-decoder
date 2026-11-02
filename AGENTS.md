@@ -172,3 +172,12 @@ Los datos y pesos no se copian automáticamente entre carpetas de trabajo.
   Esta prueba no incluye HTTP. `data/speech_2023` enlaza los datos preparados
   de la otra copia local; el perfil del grafo apunta mediante enlace al directorio
   descargado `data/speech_triagam_compacto`. OPT queda para otra fase.
+
+- Hecho: demo HTTP local en `scripts/demo_speech_http.py`, perfil único en
+  `configs/entrenos_online/speech_demo_http.yaml`, puerto 8766. El navegador
+  transmite una muestra cruda aleatoria de val; un consumidor mantiene GRU/WFST
+  entre bloques y la cola no bloquea la recepción. Reintentos idempotentes,
+  estados nuevos por frase y cancelación sin finalizar un beam vacío.
+  Verificada una frase completa por HTTP y una cancelación sin bloques, en CPU
+  con dos hilos y supervisor de RAM. Registro:
+  `runs/demo_http/servidor_20261102_005057_b81682/verificacion_http.json`.

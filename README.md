@@ -229,8 +229,7 @@ La ejecución de habla rechaza el modo disabled y se detiene si falta W&B.
 `cpu` o `cuda`. La versión completa no tiene un tiempo de entrenamiento medido
 ni cumple aún el límite docente de 20 minutos; la configuración reducida está
 pendiente. `python run.py --smoke` y `configs/default.yaml` conservan la plantilla
-sintética anterior y **no verifican el pipeline de habla**. El aplicativo sigue
-pendiente de conexión con el checkpoint de habla.
+sintética anterior y **no verifican el pipeline de habla**. La demo HTTP causal en CPU se describe más abajo.
 
 La primera comprobación de integración del 19 de octubre usó dos
 actualizaciones con lotes de dos frases y la arquitectura completa, en CPU
@@ -252,7 +251,48 @@ El entrenamiento completo y su comparación de calidad siguen pendientes.
 No se añadieron archivos de pruebas; el lanzador de Colab se añadió después
 por petición expresa del autor.
 
-## Demo de AHPSN con un checkpoint entrenado
+## Demo HTTP causal en CPU
+
+Desde la raíz del repositorio:
+
+```bash
+CUDA_VISIBLE_DEVICES='' OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 MKL_NUM_THREADS=2 \
+    .venv/bin/python scripts/demo_speech_http.py
+```
+
+Esperar al mensaje `Demo lista` y abrir **http://127.0.0.1:8766**. El perfil
+`configs/entrenos_online/speech_demo_http.yaml` identifica el checkpoint online, el perfil
+del trigrama compacto, el puerto y el tamaño de bloque. Requiere los pesos,
+el grafo compacto y su runtime CPU ya preparados; no descarga ni instala nada.
+El supervisor reutiliza el límite de 6 GiB y la reserva de 2 GiB del perfil
+del trigrama. Ctrl+C cierra el servidor y su trabajador nativo.
+
+Elegir una muestra, pulsar **Transmitir** y observar señal, texto parcial y
+bins pendientes. El navegador carga una frase aleatoria de val y envía la
+señal cruda en bloques de 4 bins, a 80 ms por bloque. El receptor acusa la
+recepción antes de calcular y un único trabajador conserva GRU/CTC/WFST entre
+bloques. El reloj de envío usa los tiempos de la grabación y la cola muestra
+lo recibido que aún no se ha procesado. Los parciales sustituyen al texto
+anterior. **Detener** descarta los bloques pendientes; otra transmisión usa
+estados nuevos y conserva los pesos y el grafo.
+
+La referencia solo sirve para la pantalla. No se transmite al motor ni se
+calculan PER/WER en esta demo. La vista muestra tx1 normalizado con estadísticas
+de train; el modelo recibe tx1 y spikePow crudos y aplica su preprocesamiento
+causal. Los registros de servidor y cada transmisión quedan en `runs/demo_http/`.
+
+API local: `GET /api/state`, `POST /api/sample`, `POST /api/start` con
+`sample_id`, y `POST /api/block`, `/api/finish`, `/api/cancel` con `stream_id`.
+Cada bloque añade `sequence` (desde cero) y `features` (bins × 256). Se comprueba
+el orden y el hash de la señal completa. Repetir exactamente un bloque devuelve
+su acuse sin procesarlo otra vez; cambiarlo o adelantarse se rechaza.
+`--port PUERTO` permite elegir otro puerto local.
+
+## Demo histórica de AHPSN con un checkpoint entrenado
+
+La referencia siguiente conserva la ejecución anterior con GPU. La demo vigente
+para este ordenador es la HTTP en CPU descrita arriba; no ejecutar los pasos
+históricos de GPU local.
 
 Abrir `notebooks/06_demo_ahpsn.ipynb` localmente en VS Code y seleccionar el
 kernel de `.venv`. Usa **CUDA en la GPU local** y dos hilos de CPU; no entrena

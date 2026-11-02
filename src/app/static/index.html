@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>De señal a palabras · T12</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header class="masthead">
+      <div class="identity"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 21h6l4-11 7 22 5-18 4 7h6"/></svg><span>Speech BCI <span class="muted">/ T12</span></span></div>
+      <span class="connection" id="connection"><i></i>Conectando…</span>
+    </header>
+    <section class="intro">
+      <h1>De señal a palabras</h1>
+      <p>Reproducción en tiempo real de una grabación neuronal.</p>
+    </section>
+    <section class="workbench" aria-label="Transmisión y decodificación">
+      <div class="toolbar">
+        <div class="sample-heading"><span class="sample-mark" aria-hidden="true"></span><div><h2 id="sample-title">Elige una muestra para empezar</h2><p id="sample-info">Una frase aleatoria de la partición de validación.</p></div></div>
+        <div class="actions"><button id="load" class="secondary">Elegir muestra</button><button id="play" class="primary" disabled><span aria-hidden="true">▶</span> Transmitir</button><button id="stop" class="stop" disabled aria-label="Detener transmisión"><span aria-hidden="true">■</span> Detener</button></div>
+      </div>
+      <p id="error" class="error" role="alert" hidden></p>
+      <div class="workspace">
+        <section class="signal-pane" aria-label="Actividad recibida">
+          <div class="pane-title"><h3>Señal recibida</h3><span id="clock">0,00 s</span></div>
+          <p class="pane-caption">128 canales tx1 · bins de 20 ms</p>
+          <div class="signal-view"><span class="channel-label top">128</span><span class="channel-label bottom">1</span><canvas id="signal" width="1280" height="128" aria-label="Actividad neuronal recibida por HTTP"></canvas><div id="cursor" class="processed-cursor" hidden></div><p id="signal-empty">La señal aparecerá al transmitir.</p></div>
+          <div class="signal-axis"><span>0 s</span><span id="duration">—</span></div>
+          <div class="legend"><span><i class="processed-key"></i>Procesado</span><span class="scale"><span>−3</span><i></i><span>+3 z</span></span></div>
+          <div class="progress-label"><span id="delivery-label">Esperando una muestra</span><span id="delivery-percent">0 %</span></div>
+          <div class="progress"><div id="received-progress"></div><div id="processed-progress"></div></div>
+        </section>
+        <section class="text-pane" aria-label="Transcripción">
+          <div class="pane-title"><h3>Texto decodificado</h3><span class="phase" id="phase">En espera</span></div>
+          <p id="transcript" class="transcript empty" aria-live="polite">Las palabras aparecerán a medida que llegue la señal.</p>
+          <p id="transcript-note" class="transcript-note">El texto parcial puede cambiar al llegar nuevos bloques.</p>
+          <details id="reference-box" hidden><summary>Ver frase de referencia</summary><p id="reference"></p></details>
+          <details id="phones-box" hidden><summary>Ver fonemas</summary><p id="phones" class="phones"></p></details>
+        </section>
+      </div>
+      <dl class="instruments">
+        <div><dt>Recibido</dt><dd id="received">0,00 <small>s</small></dd></div>
+        <div><dt>Procesado</dt><dd id="processed">0,00 <small>s</small></dd></div>
+        <div><dt>Pendiente de procesar</dt><dd id="pending">0 <small>ms</small></dd></div>
+        <div><dt>Último bloque</dt><dd id="packet">— <small>ms</small></dd></div>
+      </dl>
+    </section>
+    <footer><p>Emisor en el navegador <span aria-hidden="true">→</span> HTTP <span aria-hidden="true">→</span> GRU + trigrama</p><p>La entrada del modelo contiene tx1 y spikePow, 256 características.</p></footer>
+  </main>
+</body>
+</html>

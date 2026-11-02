@@ -218,6 +218,12 @@ class TrigramStream:
             self._closed = True
         return self.text
 
+    def abort(self) -> None:
+        """Descarta el beam sin finalizar la búsqueda; admite también una frase vacía."""
+        if not self._closed:
+            self._decoder._request({"op": "abort", "flow": self._flow})
+            self._closed = True
+
     def reset(self) -> None:
         """Borra las hipótesis; una frase cerrada abre un estado nuevo en el mismo grafo."""
         if self._closed:

@@ -73,6 +73,12 @@ def main() -> int:
                 respond({})
                 continue
             decoder = flows[identifier]
+            if operation == "abort":
+                del flows[identifier]
+                decoder = None
+                cache = graph_cache.maintain(finish=True) if graph_cache is not None else None
+                respond({"mapped_cache": cache} if cache is not None else {})
+                continue
             if operation == "reset":
                 decoder.Reset()
                 respond({})
