@@ -27,7 +27,7 @@ def _clean_copy(tmp_path: Path) -> Path:
     shutil.copy2(root / "run.py", tmp_path / "run.py")
     shutil.copytree(root / "src", tmp_path / "src", ignore=shutil.ignore_patterns("__pycache__", "static"))
     (tmp_path / "scripts").mkdir()
-    for name in ("smoke_speech.py", "smoke_speech_data.py", "smoke_trigram.py", "prepare_speech_data.py", "trigram_worker.py", "trigram_mmap_cache.py"):
+    for name in ("smoke_speech.py", "smoke_speech_data.py", "smoke_speech_synthetic.py", "smoke_trigram.py", "prepare_speech_data.py", "trigram_worker.py", "trigram_mmap_cache.py"):
         shutil.copy2(root / "scripts" / name, tmp_path / "scripts" / name)
     (tmp_path / "configs").mkdir()
     shutil.copy2(root / "configs/smoke.yaml", tmp_path / "configs/smoke.yaml")
@@ -96,10 +96,15 @@ def _download_fixture(tmp_path: Path) -> dict:
     return cfg
 
 
-def _run_smoke(tmp_path: Path) -> subprocess.CompletedProcess:
+def _run_smoke(tmp_path: Path, *, mode: str | None = "t12", github_actions: bool = False) -> subprocess.CompletedProcess:
     environment = {key: value for key, value in os.environ.items()
                    if not key.startswith(("WANDB_", "LIVEKIT_"))}
     environment.update(CUDA_VISIBLE_DEVICES="", OMP_NUM_THREADS="2", OPENBLAS_NUM_THREADS="2", MKL_NUM_THREADS="2")
+    environment["GITHUB_ACTIONS"] = "true" if github_actions else "false"
+    if mode is None:
+        environment.pop("TIIAC_SMOKE_DATOS", None)
+    else:
+        environment["TIIAC_SMOKE_DATOS"] = mode
     return subprocess.run(
         [sys.executable, "run.py", "--smoke"], cwd=tmp_path, env=environment,
         capture_output=True, text=True, timeout=90, check=False,
@@ -126,6 +131,7 @@ def test_smoke_verifies_downloads_then_trains_reloads_and_decodes_words(tmp_path
     assert len(reports) == 1
     report = json.loads(reports[0].read_text())
     assert report["ok"] and report["datos"] == "t12"
+    assert report["datos_reales_comprobados"] is True
     assert report["datos_verificados"]["archivos_originales_verificados"] == 6
     assert report["datos_verificados"]["etiquetas_verificadas"] == 6
     assert report["datos_verificados"]["archivo_descarga_verificado"] is True
@@ -219,3 +225,31 @@ def test_smoke_accepts_verified_extracted_files_without_the_archive(tmp_path: Pa
     _, _, report = comprobar_datos_smoke(cfg)
     assert report["archivos_originales_verificados"] == 6
     assert report["archivo_descarga_verificado"] is False
+
+
+def test_smoke_in_github_actions_uses_synthetic_inputs_without_t12(tmp_path: Path) -> None:
+    """CI ejecuta la GRU y el WFST reales, pero declara que no ha verificado T12."""
+    root = _clean_copy(tmp_path)
+    runtime = root / "data/language_models/runtime"
+    if not (runtime / "bin/python").is_file():
+        pytest.skip("La integración WFST necesita el runtime CPU del notebook 13.")
+    (tmp_path / "data/language_models").mkdir(parents=True)
+    (tmp_path / "data/language_models/runtime").symlink_to(runtime, target_is_directory=True)
+    completed = _run_smoke(tmp_path, mode=None, github_actions=True)
+    assert completed.returncode == 0, completed.stdout + completed.stderr
+    assert "DATOS SINTÉTICOS" in completed.stdout and "Smoke OK" in completed.stdout
+    assert not (tmp_path / "data/speech_2023").exists()
+    reports = list((tmp_path / "runs/smoke").glob("*/checkpoints/*/smoke.json"))
+    assert len(reports) == 1
+    report = json.loads(reports[0].read_text())
+    assert report["datos"] == "sinteticos" and report["datos_reales_comprobados"] is False
+    assert report["datos_verificados"]["archivos_originales_verificados"] == 0
+    assert report["trigrama"] is True and report["frases_por_bloques"] == 4
+
+
+def test_github_actions_can_require_real_data_explicitly(tmp_path: Path) -> None:
+    """El modo explícito t12 conserva la comprobación de descargas incluso en CI."""
+    _clean_copy(tmp_path)
+    completed = _run_smoke(tmp_path, mode="t12", github_actions=True)
+    assert completed.returncode == 2 and "Smoke OK" not in completed.stdout
+    assert "DATOS SINTÉTICOS" not in completed.stdout

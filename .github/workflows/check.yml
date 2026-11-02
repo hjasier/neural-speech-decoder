@@ -6,23 +6,59 @@ on:
 
 jobs:
   reproducibilidad:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    runs-on: ubuntu-22.04
+    # Instalar y compilar dependencias no cuenta dentro de los 5 min del smoke.
+    timeout-minutes: 45
+    env:
+      CUDA_VISIBLE_DEVICES: ""
+      OMP_NUM_THREADS: "2"
+      OPENBLAS_NUM_THREADS: "2"
+      MKL_NUM_THREADS: "2"
+      WANDB_MODE: offline
     steps:
       - uses: actions/checkout@v4
 
+      - name: Python del runtime WFST
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10.15"
+
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
           cache: pip
 
       - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          python -m pip install torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt uv==0.9.4
+
+      - name: Caché del runtime WFST y sus bibliotecas nativas
+        id: wfst
+        uses: actions/cache@v4
+        with:
+          path: |
+            data/language_models/runtime
+            data/language_models/speechBCI/LanguageModelDecoder/runtime/server/x86/fc_base
+          key: wfst-ubuntu22-${{ runner.arch }}-py31015-${{ hashFiles('requirements-trigram-runtime.txt', 'scripts/prepare_speech_trigram.py', 'configs/entrenos_online/speech_trigrama_compacto.yaml') }}
+
+      - name: Compilar runtime WFST en CPU
+        if: steps.wfst.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes build-essential autoconf automake libtool zlib1g-dev
+          python3.10 -m venv data/language_models/runtime
+          python scripts/prepare_speech_trigram.py --config configs/entrenos_online/speech_trigrama_compacto.yaml --build-runtime
+
+      - name: Comprobar runtime WFST
+        run: |
+          data/language_models/runtime/bin/python -c 'import torch, lm_decoder; assert torch.__version__ == "1.13.1+cpu"; assert hasattr(lm_decoder, "SetFstReadMode"); assert hasattr(lm_decoder, "WriteConstFst"); print("Runtime WFST CPU listo")'
 
       - name: Tests
         run: python -m pytest tests/ -q
 
       - name: Comprobador de reproducibilidad
+        env:
+          TIIAC_SMOKE_DATOS: sinteticos
         run: python tools/tiiac_check.py .

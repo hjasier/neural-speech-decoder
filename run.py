@@ -161,7 +161,7 @@ def main() -> int:
         split = args.split or (
             "val" if cfg.get("protocolo") and not args.solo_evaluar else "test"
         )
-        label = "smoke T12" if smoke else split
+        label = f"smoke, datos {cfg['smoke']['origen_datos']}" if smoke else split
         print(f"\n=== métricas ({label}) ===" if speech else "\n=== métricas ===")
         for key, value in metricas.items():
             print(f"{key}: {value:.4f}")

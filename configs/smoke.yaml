@@ -1,4 +1,4 @@
-# Pipeline pequeño con datos reales de T12, solo CPU. No descarga ni sustituye datos.
+# Pipeline pequeño en CPU: T12 en local y señales sintéticas en GitHub Actions.
 experimento:
   nombre: smoke_habla_t12
   seed: 42
@@ -6,6 +6,10 @@ smoke:
   directorio: runs/smoke
   config_datos: configs/entrenos_online/speech_online.yaml
   manifiesto_descarga: docs/datasets/speech_2023/manifest.json
+  datos_sinteticos:
+    sesiones: [smoke_ci_a, smoke_ci_b]
+    nombre_experimento: smoke_habla_ci_sintetica
+    longitudes_bins: [54, 62, 70]
   frases_por_sesion:
     train: 4
     val: 2

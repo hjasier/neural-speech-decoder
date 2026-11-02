@@ -1,9 +1,10 @@
-"""Smoke del pipeline de habla sobre unas pocas frases reales de T12."""
+"""Smoke del pipeline de habla con T12 local o entradas sintéticas en CI."""
 
 from __future__ import annotations
 
 from copy import deepcopy
 import json
+import os
 from math import isclose, isfinite
 from pathlib import Path
 import tempfile
@@ -13,6 +14,7 @@ import torch
 
 from scripts.prepare_speech_data import prepare_signals
 from scripts.smoke_speech_data import comprobar_datos_smoke, preparar_subconjunto_smoke
+from scripts.smoke_speech_synthetic import preparar_datos_sinteticos_smoke
 from scripts.smoke_trigram import preparar_trigrama_smoke
 from src.data.preprocessing import extract_model_features
 from src.data.speech import load_session
@@ -32,10 +34,17 @@ def _write_json(path: Path, value: Any) -> str:
 
 
 def preparar_smoke(cfg: dict[str, Any]) -> dict[str, Any]:
-    """Verifica datos descargados y prepara un subconjunto real sin modificar T12."""
+    """Verifica T12 en local; en GitHub Actions usa entradas sintéticas declaradas."""
     cfg = deepcopy(cfg)
     spec = cfg["smoke"]
-    source, protocol, data_report = comprobar_datos_smoke(cfg)
+    mode = os.environ.get("TIIAC_SMOKE_DATOS", "sinteticos" if os.environ.get("GITHUB_ACTIONS") == "true" else "t12")
+    if mode not in ("t12", "sinteticos"):
+        raise ValueError("TIIAC_SMOKE_DATOS debe ser t12 o sinteticos.")
+    if mode == "t12":
+        source, protocol, data_report = comprobar_datos_smoke(cfg)
+    else:
+        data_report = {"archivos_originales_verificados": 0, "etiquetas_verificadas": 0,
+                       "archivo_descarga_verificado": False}
     parent = Path(spec["directorio"])
     parent.mkdir(parents=True, exist_ok=True)
     root = Path(tempfile.mkdtemp(prefix="habla_", dir=parent)).resolve().relative_to(Path.cwd())
@@ -44,7 +53,13 @@ def preparar_smoke(cfg: dict[str, Any]) -> dict[str, Any]:
     cfg["salida"] = {"directorio": str(root / "checkpoints")}
     cfg["wandb"]["directorio"] = str(root / "tracking")
     cfg["protocolo"]["manifiesto"] = str(root / "particion.json")
-    provenance = preparar_subconjunto_smoke(cfg, source, protocol, root)
+    if mode == "t12":
+        provenance = preparar_subconjunto_smoke(cfg, source, protocol, root)
+    else:
+        preparar_datos_sinteticos_smoke(cfg)
+        provenance = {}
+        print("Smoke CI: DATOS SINTÉTICOS. Esta ejecución no comprueba la descarga de T12.", flush=True)
+    cfg["smoke"]["origen_datos"] = mode
     cfg["smoke"]["datos_verificados"] = data_report
     cfg["smoke"]["procedencia"] = provenance
     cfg["smoke"]["trigrama"] = preparar_trigrama_smoke(cfg, root)
@@ -52,7 +67,7 @@ def preparar_smoke(cfg: dict[str, Any]) -> dict[str, Any]:
         Path(cfg["protocolo"]["manifiesto"]), build_speech_protocol(cfg),
     )
     prepare_signals(cfg)
-    print("Smoke: frases reales de T12, GRU reducida y WFST con un trigrama de tres palabras.", flush=True)
+    print(f"Smoke: datos {mode}, GRU reducida y WFST con un trigrama de tres palabras.", flush=True)
     return cfg
 
 
@@ -102,14 +117,15 @@ def verificar_smoke(cfg: dict[str, Any], run: Any, metrics: dict[str, float | in
                 raise RuntimeError("Los fonemas cambian al procesar la frase por bloques.")
             max_error = max(max_error, float((observed - expected).abs().max()))
             checked += 1
-    report = {"ok": True, "datos": "t12", "dispositivo": "cpu", "trigrama": True,
+    report = {"ok": True, "datos": cfg["smoke"]["origen_datos"], "dispositivo": "cpu", "trigrama": True,
+              "datos_reales_comprobados": cfg["smoke"]["origen_datos"] == "t12",
               "pasos": result["completed_steps"], "frases_por_bloques": checked,
               "max_error_logits": max_error, "metricas_recargadas": reloaded,
               "checkpoint": str(output / "mejor_val.pt"), "datos_verificados": cfg["smoke"]["datos_verificados"],
               "procedencia": cfg["smoke"]["procedencia"], **report_data}
     report_path = output / "smoke.json"
     _write_json(report_path, report)
-    run.summary.update({"smoke/ok": True, "smoke/datos": "t12",
+    run.summary.update({"smoke/ok": True, "smoke/datos": cfg["smoke"]["origen_datos"],
                         "smoke/frases_por_bloques": checked, "smoke/max_error_logits": max_error})
     print(f"Smoke OK: señal a texto, recarga y bloques comprobados en {checked} frases. Informe: {report_path}", flush=True)
 
