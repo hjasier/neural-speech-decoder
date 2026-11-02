@@ -26,16 +26,23 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 @contextmanager
-def runtime_build_threads(sources: Path, threads: int) -> Iterator[None]:
-    """Limita también el make de OpenFst y restaura después el CMake original."""
+def runtime_build_sources(sources: Path, threads: int) -> Iterator[None]:
+    """Ajusta hilos y compatibilidad de OpenFst y restaura el CMake original."""
     path = sources / "LanguageModelDecoder/runtime/server/x86/CMakeLists.txt"
     original = path.read_bytes()
     text = original.decode("utf-8")
     command = "BUILD_COMMAND     make -j 4"
-    if text.count(command) != 1:
-        raise ValueError("El CMake oficial ha cambiado; no se aplica el límite de hilos.")
+    copy = "COMMAND           ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/patch/openfst ${openfst_SOURCE_DIR}"
+    if text.count(command) != 1 or text.count(copy) != 1:
+        raise ValueError("El CMake oficial ha cambiado; no se aplican los ajustes de compilación.")
+    text = text.replace(command, f"BUILD_COMMAND     make -j {threads}")
+    # OpenFst 1.6.5 copia un miembro inexistente (s_) en esta plantilla.
+    # GCC 15 lo rechaza incluso sin instanciarla. Corrige solo ese constructor
+    # tras extraer y aplicar los parches oficiales.
+    text = text.replace(copy, copy + '\n    COMMAND sed -i "s/new S(table[.]s_)/new S(*table.selector_)/" '
+                        '${openfst_SOURCE_DIR}/src/include/fst/bi-table.h')
     try:
-        path.write_text(text.replace(command, f"BUILD_COMMAND     make -j {threads}"), encoding="utf-8")
+        path.write_text(text, encoding="utf-8")
         yield
     finally:
         path.write_bytes(original)
@@ -221,7 +228,7 @@ def build_runtime(spec: dict[str, Any]) -> None:
     subprocess.run([uv, "pip", "install", "--python", str(python), "--index-strategy", "unsafe-best-match",
                     "-r", str(ROOT / "requirements-trigram-runtime.txt")], env=environment, check=True)
     mapped = spec.get("lectura_grafo", "read") == "map"
-    with runtime_build_threads(sources, spec["hilos_cpu"]), mapped_binding(sources, mapped):
+    with runtime_build_sources(sources, spec["hilos_cpu"]), mapped_binding(sources, mapped):
         subprocess.run([str(python), "setup.py", "install"],
                        cwd=sources / "LanguageModelDecoder/runtime/server/x86", env=environment, check=True)
     runtime = _probe_runtime(python, spec, environment)
