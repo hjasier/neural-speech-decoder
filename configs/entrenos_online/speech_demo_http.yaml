@@ -9,3 +9,27 @@ transmision:
   bloque_bins: 4
   max_bloques_pendientes: 64
 salida: runs/demo_http
+llamadas:
+  habilitado: true
+  env_archivos: [.env, ../.env]
+  token_segundos: 3600
+  conexion_timeout_segundos: 25
+  heartbeat_timeout_segundos: 60
+  duracion_maxima_segundos: 1800
+  sondeo_segundos: 0.1
+  reintento_segundos: 0.02
+  entrada_sample_rate: 16000
+  vad:
+    umbral_rms: 0.012
+    voz_minima_ms: 240
+    silencio_ms: 700
+    turno_maximo_ms: 15000
+    pausa_eco_ms: 700
+  tts:
+    voz: slt
+    sample_rate: 24000
+    frame_ms: 20
+    cola_ms: 100
+    estabilidad_segundos: 0.35
+    palabras_por_fragmento: 4
+    timeout_segundos: 15

@@ -12,7 +12,7 @@ import threading
 from time import perf_counter
 import traceback
 from typing import Any
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
 from uuid import uuid4
 
 import numpy as np
@@ -133,6 +133,7 @@ class DemoController:
         self.active: StreamInbox | None = None
         self.loading_sample = False
         self.fatal_error: str | None = None
+        self.call_owner: str | None = None
         self._jobs: SimpleQueue[StreamInbox | None] = SimpleQueue()
         self._worker = threading.Thread(target=self._work, name="speech-inference", daemon=True)
         self._worker.start()
@@ -143,11 +144,44 @@ class DemoController:
             return {"ready": self.fatal_error is None, "error": self.fatal_error,
                     "loading_sample": self.loading_sample, "cpu_threads": self.cfg["hilos_cpu"],
                     "block_bins": self.cfg["transmision"]["bloque_bins"], "bin_ms": BIN_SECONDS * 1000,
+                    "sample_id": self.sample.id if self.sample else None, "call_active": self.call_owner is not None,
                     "stream": self.active.snapshot() if self.active else None}
 
-    def load_sample(self) -> dict[str, Any]:
+    def claim_call(self, owner: str) -> None:
+        """Reserva el motor completo para una llamada sin interrumpir otra emisión."""
+        with self.lock:
+            if (self.fatal_error or self.call_owner or self.loading_sample
+                    or self.active and self.active.status not in TERMINAL):
+                raise RequestError("El motor está ocupado. Termina la transmisión o llamada actual.", 409)
+            self.call_owner = owner
+
+    def release_call(self, owner: str) -> None:
+        """Devuelve los controles manuales únicamente al propietario de la reserva."""
+        with self.lock:
+            if self.call_owner == owner:
+                self.call_owner = None
+
+    def _authorize(self, owner: str | None) -> None:
+        if self.call_owner is not None and owner != self.call_owner:
+            raise RequestError("El motor está reservado por la llamada. Cuélgala desde la app de llamadas.", 409)
+        if owner is not None and owner != self.call_owner:
+            raise RequestError("Esta llamada ya no controla el motor.", 409)
+
+    def view(self, sample_id: str, offset: int) -> dict[str, Any]:
+        """Sincroniza otro navegador entregando solo los bins ya recibidos."""
+        with self.lock:
+            if self.sample is None or sample_id != self.sample.id:
+                raise RequestError("La muestra ha cambiado; vuelve a consultar el estado.", 409)
+            received = self.active.received_bins if self.active else 0
+            if not 0 <= offset <= received:
+                raise RequestError("La posición de la vista no corresponde a la recepción.", 409)
+            return {"sample": self.sample.metadata(), "start": offset,
+                    "features": self.sample.raw[offset:received].tolist(), "received_bins": received}
+
+    def load_sample(self, owner: str | None = None) -> dict[str, Any]:
         """Prepara una nueva muestra del emisor cuando no existe una frase activa."""
         with self.lock:
+            self._authorize(owner)
             if self.loading_sample or self.active and self.active.status not in TERMINAL:
                 raise RequestError("Detén la transmisión antes de elegir otra muestra.", 409)
             self.loading_sample = True
@@ -162,9 +196,10 @@ class DemoController:
             with self.lock:
                 self.loading_sample = False
 
-    def start(self, sample_id: str) -> dict[str, Any]:
+    def start(self, sample_id: str, owner: str | None = None) -> dict[str, Any]:
         """Reserva una frase; solo entrega sesión y metadatos al consumidor."""
         with self.lock:
+            self._authorize(owner)
             if self.fatal_error:
                 raise RequestError(self.fatal_error, 503)
             if self.loading_sample or self.active and self.active.status not in TERMINAL:
@@ -176,9 +211,10 @@ class DemoController:
             self._jobs.put(self.active)
             return self.active.snapshot()
 
-    def command(self, operation: str, payload: dict[str, Any]) -> dict[str, Any]:
+    def command(self, operation: str, payload: dict[str, Any], owner: str | None = None) -> dict[str, Any]:
         """Valida cada petición antes de modificar la recepción de su frase."""
         with self.lock:
+            self._authorize(owner)
             flow = self.active
             if flow is None or payload.get("stream_id") != flow.id:
                 raise RequestError("La petición no corresponde a la transmisión activa.", 409)
@@ -268,6 +304,7 @@ class DemoHTTPServer(ThreadingHTTPServer):
     def __init__(self, address: tuple[str, int], controller: DemoController | None) -> None:
         """Asocia las conexiones HTTP con un controlador de inferencia."""
         self.controller = controller
+        self.calls = None
         super().__init__(address, DemoHandler)
 
 
@@ -293,11 +330,27 @@ class DemoHandler(BaseHTTPRequestHandler):
         """Sirve la vista y el progreso sin ejecutar inferencia en el handler."""
         path = urlsplit(self.path).path
         if path == "/api/state":
-            self._json(200, self.server.controller.state())
+            state = self.server.controller.state()
+            state["calls"] = self.server.calls.state() if self.server.calls else {"available": False, "error": "Llamadas desactivadas."}
+            self._json(200, state)
+            return
+        if path == "/api/view":
+            try:
+                query = parse_qs(urlsplit(self.path).query)
+                self._json(200, self.server.controller.view(query.get("sample_id", [""])[0], int(query.get("from", ["0"])[0])))
+            except RequestError as error:
+                self._json(error.status, {"error": str(error)})
+            except ValueError:
+                self._json(400, {"error": "Posición de vista inválida."})
             return
         assets = {"/": ("index.html", "text/html; charset=utf-8"),
                   "/app.js": ("app.js", "text/javascript; charset=utf-8"),
-                  "/style.css": ("style.css", "text/css; charset=utf-8")}
+                  "/style.css": ("style.css", "text/css; charset=utf-8"),
+                  "/llamada": ("call.html", "text/html; charset=utf-8"),
+                  "/llamada/": ("call.html", "text/html; charset=utf-8"),
+                  "/call.js": ("call.js", "text/javascript; charset=utf-8"),
+                  "/call.css": ("call.css", "text/css; charset=utf-8"),
+                  "/vendor/livekit-client.umd.min.js": ("vendor/livekit-client.umd.min.js", "text/javascript; charset=utf-8")}
         if path not in assets:
             self._json(404, {"error": "Ruta no disponible."})
             return
@@ -307,6 +360,10 @@ class DemoHandler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         """Recibe señal cruda y devuelve el acuse antes de procesarla."""
         try:
+            origin = self.headers.get("Origin")
+            if origin and urlsplit(origin).netloc != self.headers.get("Host"):
+                self.close_connection = True
+                raise RequestError("La petición debe proceder de esta misma web.", 403)
             if self.headers.get_content_type() != "application/json":
                 raise RequestError("La petición debe usar application/json.", 415)
             size = int(self.headers.get("Content-Length", "0"))
@@ -319,7 +376,12 @@ class DemoHandler(BaseHTTPRequestHandler):
             if not isinstance(payload, dict):
                 raise RequestError("Se esperaba un objeto JSON.")
             operation = urlsplit(self.path).path.removeprefix("/api/")
-            if operation == "sample":
+            if operation.startswith("calls/"):
+                if self.server.calls is None:
+                    raise RequestError("Las llamadas no están configuradas.", 503)
+                result = self.server.calls.command(operation.removeprefix("calls/"), payload)
+                self._json(201 if operation == "calls/start" else 200, result)
+            elif operation == "sample":
                 self._json(200, controller.load_sample())
             elif operation == "start":
                 self._json(201, controller.start(payload.get("sample_id")))

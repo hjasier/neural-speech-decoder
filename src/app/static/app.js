@@ -23,10 +23,10 @@ function metric(id, value, unit, digits = 2) {
 }
 function serverBusy() { return latest?.stream && !["finished", "cancelled", "error"].includes(latest.stream.status); }
 function controls() {
-  const busy = loading || starting || running || serverBusy();
+  const busy = loading || starting || running || serverBusy() || latest?.call_active;
   $("load").disabled = !ready || busy;
-  $("play").disabled = !ready || !sample || busy;
-  $("stop").disabled = !(starting || running || serverBusy()) || latest?.stream?.status === "cancelling";
+  $("play").disabled = !ready || !sample || sample.features.length !== sample.bins || busy;
+  $("stop").disabled = latest?.call_active || !(starting || running || serverBusy()) || latest?.stream?.status === "cancelling";
 }
 function resetView() {
   context.fillStyle = "#f5f9fc";
@@ -68,14 +68,42 @@ async function loadSample() {
   try {
     sample = await api("sample", {});
     streamId = null; receivedBins = 0; origin = 0;
-    $("sample-title").textContent = `Ensayo ${sample.trial_index} · ${fmt(sample.bins * sample.bin_ms / 1000)} s`;
-    $("sample-info").textContent = `${sample.session} · validación · muestra aleatoria`;
-    $("duration").textContent = `${fmt(sample.bins * sample.bin_ms / 1000)} s`;
-    $("reference").textContent = sample.reference;
-    $("reference-box").hidden = false; $("reference-box").open = false;
+    describeSample();
     resetView(); $("delivery-label").textContent = "Muestra preparada para transmitir";
   } catch (error) { showError(error.message); }
   finally { loading = false; $("load").textContent = sample ? "Otra muestra" : "Elegir muestra"; controls(); }
+}
+function describeSample() {
+  $("sample-title").textContent = `Ensayo ${sample.trial_index} · ${fmt(sample.bins * sample.bin_ms / 1000)} s`;
+  $("sample-info").textContent = `${sample.session} · validación · ${latest?.call_active ? "llamada en directo" : "muestra aleatoria"}`;
+  $("duration").textContent = `${fmt(sample.bins * sample.bin_ms / 1000)} s`;
+  $("reference").textContent = sample.reference;
+  $("reference-box").hidden = false; $("reference-box").open = false;
+}
+async function synchronize(state) {
+  if (loading || starting || running || !state.sample_id) return;
+  const changed = sample?.id !== state.sample_id;
+  const newStream = state.stream && state.stream.id !== streamId;
+  if (!changed && !newStream && (!state.stream || state.stream.received_bins <= receivedBins)) return;
+  const offset = changed || newStream ? 0 : receivedBins;
+  const view = await api(`view?sample_id=${encodeURIComponent(state.sample_id)}&from=${offset}`);
+  if (loading || starting || running) return;
+  if (changed) {
+    sample = {...view.sample, features: []};
+    describeSample();
+  }
+  if (changed || newStream) { resetView(); receivedBins = 0; }
+  streamId = state.stream?.id || null;
+  if (view.features.length) {
+    drawBlock(view.features, view.start);
+    view.features.forEach((row, index) => { sample.features[view.start + index] = row; });
+  }
+  receivedBins = view.received_bins;
+  const percent = 100 * receivedBins / sample.bins;
+  $("received-progress").style.width = `${percent}%`;
+  $("delivery-percent").textContent = `${fmt(percent, 0)} %`;
+  $("clock").textContent = `${fmt(receivedBins * sample.bin_ms / 1000)} s`;
+  $("delivery-label").textContent = state.call_active ? "Recibiendo la señal de la llamada" : "Siguiendo la transmisión del servidor";
 }
 async function sendWithRetry(operation, payload, token) {
   let networkFailures = 0;
@@ -162,9 +190,10 @@ function render(flow) {
 async function poll() {
   try {
     latest = await api("state"); ready = latest.ready; blockBins = latest.block_bins;
-    $("connection").textContent = `CPU · ${latest.cpu_threads} hilos`;
+    $("connection").textContent = `${latest.call_active ? "Llamada en directo · " : ""}CPU · ${latest.cpu_threads} hilos`;
     const dot = document.createElement("i"); $("connection").prepend(dot);
     $("connection").className = "connection connected";
+    try { await synchronize(latest); } catch (error) { if (error.status !== 409) throw error; }
     render(latest.stream); if (latest.error) showError(latest.error);
   } catch (_) {
     ready = false; $("connection").textContent = "Servidor desconectado";
