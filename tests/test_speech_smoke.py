@@ -165,6 +165,7 @@ def test_smoke_fails_instead_of_skipping_the_word_decoder(tmp_path: Path) -> Non
     completed = _run_smoke(tmp_path)
     assert completed.returncode != 0
     assert "Falta el runtime CPU del trigrama" in completed.stderr
+    assert "scripts/prepare_speech_trigram.py" in completed.stderr and "--build-runtime" in completed.stderr
     assert "Smoke OK" not in completed.stdout
     assert not list((tmp_path / "runs").rglob("smoke.json"))
 

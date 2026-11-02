@@ -34,6 +34,8 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+Para el smoke y la demo, instala también el [runtime CPU del trigrama](docs/instalacion_runtime_trigrama.md).
+
 ## Datos
 
 ```bash

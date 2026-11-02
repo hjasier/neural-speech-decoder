@@ -29,8 +29,12 @@ def preparar_trigrama_smoke(cfg: dict[str, Any], root: Path) -> dict[str, Any]:
     runtime = Path(spec["python_runtime"])
     if not runtime.is_file():
         raise FileNotFoundError(
-            "Falta el runtime CPU del trigrama. Prepáralo con el notebook 13 "
-            "antes de ejecutar el smoke completo; no basta con requirements.txt."
+            "Falta el runtime CPU del trigrama. Instálalo una vez con:\n"
+            "  python -m pip install uv==0.9.4\n"
+            "  python scripts/prepare_speech_trigram.py "
+            "--config configs/entrenos_online/speech_trigrama_compacto.yaml --build-runtime\n"
+            "También puedes restaurar el respaldo CPU de Colab. "
+            "Instrucciones y dependencias del sistema: docs/instalacion_runtime_trigrama.md."
         )
     model = root / "trigrama"
     model.mkdir()
