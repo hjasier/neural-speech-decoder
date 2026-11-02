@@ -1,28 +1,92 @@
-# Configuracion del smoke test: el pipeline ENTERO, en miniatura.
-# Tiene que terminar en menos de 5 minutos en CPU (regla 5/20).
-# No se trata de entrenar bien: se trata de demostrar que todas las piezas
-# encajan y que hay una metrica al final.
-
+# Pipeline pequeño con datos reales de T12, solo CPU. No descarga ni sustituye datos.
 experimento:
-  nombre: smoke
+  nombre: smoke_habla_t12
   seed: 42
-
+smoke:
+  directorio: runs/smoke
+  config_datos: configs/entrenos_online/speech_online.yaml
+  manifiesto_descarga: docs/datasets/speech_2023/manifest.json
+  frases_por_sesion:
+    train: 4
+    val: 2
+    test: 2
+  frases_control:
+    - {texto: ah, fonemas: [AA, SIL]}
+    - {texto: bee, fonemas: [B, IY, SIL]}
+    - {texto: ah bee see, fonemas: [AA, SIL, B, IY, SIL, S, IY, SIL]}
+  bloque_bins: 4
+  lenguaje:
+    config_runtime: configs/entrenos_online/speech_trigrama_compacto.yaml
+    timeout_segundos: 30
+    lexico:
+      ah: [AA]
+      bee: [B, IY]
+      see: [S, IY]
+    corpus: [ah bee see, bee see ah, see ah bee, ah ah bee]
+    suavizado: 1.0
+    logit_alto: 10.0
+    logit_bajo: -10.0
+    busqueda:
+      min_active: 1
+      max_active: 100
 datos:
-  raiz: data/
-  subset: 64
-  batch_size: 8
+  batch_size: 2
   num_workers: 0
-
+  pin_memory: false
+  sesiones: [t12.2022.04.28, t12.2022.05.05]
+  fonemas: [AA, AE, AH, AO, AW, AY, B, CH, D, DH, EH, ER, EY, F, G, HH, IH, IY, JH, K, L, M, N, NG, OW, OY, P, R, S, SH, T, TH, UH, UW, V, W, Y, Z, ZH, SIL]
+etiquetas:
+  silencio: SIL
+preprocesamiento:
+  normalizacion_epsilon: 1.0e-08
+  suavizado:
+    modo: causal
+    sigma: 2.0
+    retardo_bins: 8
+    umbral: 0.0
+    longitud_impulso: 100
+    truncate: 4.0
 modelo:
-  nombre: mi_modelo
-
+  nombre: speech_gru
+  entrada: 256
+  capa_dia: 16
+  capas: 5
+  unidades: 16
+  bidireccional: false
+  kernel: 14
+  stride: 4
+  dropout_entrada: 0.2
+  dropout_gru: 0.4
 entrenamiento:
-  learning_rate: 0.001
-  epochs: 1
-  max_steps: 10
-  optimizador: adam
-
+  pasos: 3
+  micro_batch_size: 1
+  optimizador: adam_tensorflow
+  betas: [0.9, 0.999]
+  epsilon: 0.1
+  learning_rate:
+    inicio: 0.02
+    final: 0.0
+    decay_pasos: 3
+    potencia: 1.0
+  clip_grad_norm: 10.0
+  l2: 1.0e-05
+  ruido:
+    blanco_sd: 1.0
+    offset_sd: 0.2
+  imprimir_cada: 1
+evaluacion:
+  micro_batch_size: 1
+  cada_pasos: 1
+  max_lotes: null
+ejecucion:
+  dispositivo: cpu
+  hilos_cpu: 2
 wandb:
   proyecto: tiiac-2026
   entidad: null
-  modo: disabled
+  modo: offline
+protocolo:
+  nombre: smoke_subconjunto_t12
+  metodo: ultimos_bloques_por_sesion
+  fraccion_validacion: 0.3333333333333333
+  seleccion_checkpoint: per
