@@ -23,3 +23,7 @@ regex==2026.9.29
 more-itertools==11.2.1
 typeguard==4.6.0
 cloudpickle==3.1.2
+# Descargas públicas de Drive, reanudación HTTP y bloqueo entre procesos.
+gdown==6.5.1
+filelock==4.2.6
+requests==2.34.2

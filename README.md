@@ -24,7 +24,7 @@ y [13, trigrama](notebooks/13_trigrama_colab.ipynb).
 
 ## Instalación
 
-Python 3.12 y `curl` para descargar los datos.
+Python 3.12.
 
 ```bash
 git clone https://github.com/hjasier/tic_proyecto.git
@@ -38,16 +38,18 @@ pip install -r requirements.txt
 
 ```bash
 python scripts/get_data.py --dataset speech_2023 --files competitionData.tar.gz
-tar -xzf data/speech_2023/competitionData.tar.gz -C data/speech_2023
 python scripts/get_phoneme_resources.py --config configs/entrenos_online/speech_online.yaml
 python scripts/prepare_phoneme_labels.py --config configs/entrenos_online/speech_online.yaml
 python scripts/prepare_speech_data.py --config configs/entrenos_online/speech_online.yaml
 ```
 
-El script descarga `competitionData` de [Dryad](https://doi.org/10.5061/dryad.x69p8czpq)
-y verifica su SHA-256. Son 3,67 GB comprimidos, unos 6,95 GB extraídos y
+El script descarga `competitionData` de [Drive](https://drive.google.com/file/d/1poJhxAJv2G9tcgf-g3CsFH_ej0uX_GsC/view)
+y verifica su SHA-256 antes de descomprimirlo. Son 3,67 GB comprimidos, unos 6,95 GB extraídos y
 2,44 GB de señales preparadas. Licencia CC0 1.0. Se utilizan 19 sesiones:
 5.180 frases para entrenar, 1.460 para validar y 680 reservadas como test.
+
+Si Drive bloquea la descarga, abre los enlaces que muestra el script, deja
+los archivos en `data/` y repite el comando para verificarlos y descomprimirlos.
 
 ## Ejecución
 
