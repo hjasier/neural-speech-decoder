@@ -1,44 +1,36 @@
-<!--
-PLANTILLA. Sustituye TODO lo que va entre <angulos>. Borra este comentario.
-
-Un README se lee en treinta segundos o no se lee. Quien lo abre quiere saber
-tres cosas: qué es esto, cómo lo ejecuto, y funcionó o no. En ese orden.
-
-Recuerda que en noviembre otra pareja va a clonar este repositorio y va a
-intentar reproducir una métrica SIN PREGUNTAROS NADA. Este fichero es lo único
-que van a tener.
--->
-
 # Decodificación de habla con señales cerebrales
 
-Implementación PyTorch del baseline offline de **Willett et al. (2023),
-A high-performance speech neuroprosthesis**, con datos intracorticales T12.
-Incluye una adaptación propia del mismo decodificador GRU + CTC a EEG de
-escucha de *Alice in Wonderland*. El aplicativo previsto recibirá señales
-grabadas por bloques y mostrará la decodificación; su conexión sigue pendiente.
+Réplica en PyTorch de **Willett et al. (2023), A high-performance speech
+neuroprosthesis**, con las grabaciones del paciente **T12**.
 
-- **Paper de referencia:** [Willett et al., 2023](https://doi.org/10.1038/s41586-023-06377-x).
+- **Paper:** [A high-performance speech neuroprosthesis](https://doi.org/10.1038/s41586-023-06377-x).
 - **Implementación de referencia:** [speechBCI](https://github.com/fwillett/speechBCI).
-- **Seguimiento:** [W&B · tiiac-2026](https://wandb.ai/aaurre-deusto/tiiac-2026).
+- **Experimentos:** [W&B · tiiac-2026](https://wandb.ai/aaurre-deusto/tiiac-2026).
+- **Autoría:** Asier Aurre.
 
 ## Resultado
 
-| Ejecución | PER greedy | Tiempo medido | Alcance |
+| Métrica | Paper, habla vocalizada | Réplica causal | Escala de la réplica |
 |---|---:|---:|---|
-| T12, perfil de 2.001 pasos | 32,22 % | 45 min 03 s, T4 | 680 frases test; entrenamiento original de 10.001 pasos pendiente. |
-| Alice, adaptación de 1.000 pasos | 75,05 % | 97,80 s, CPU con 2 hilos | Un participante, 36 fragmentos test; prior sin EEG: 77,31 %. |
+| PER, error de fonemas | 19,7 % | 31,90 % | T12, 1.460 frases de validación |
+| WER, error de palabras | 23,8 % | 37,95 % | Mismas frases, con trigrama |
 
-Los tiempos corresponden a los bucles con sus validaciones/evaluaciones y
-guardados, sin instalación ni descarga. Son tareas y modalidades diferentes.
-Alice sigue siendo exploratorio: su PER sin SIL es 90,89 %. La adaptación no
-replica el método del artículo de Alice ni acredita un decodificador funcional.
+El sistema decodifica online, por bloques de 80 ms. La llegada de señal se
+simula con grabaciones; el paper la recibe de un implante en uso.
+Estas métricas se calcularon por bloques sobre validación, con otra partición
+y normalización, por lo que las condiciones de evaluación son distintas.
+Resultados y ejecución en los notebooks [12, modelo causal](notebooks/12_entrenamiento_online_colab.ipynb)
+y [13, trigrama](notebooks/13_trigrama_colab.ipynb).
 
 ## Instalación
 
+Python 3.12 y `curl` para descargar los datos.
+
 ```bash
-git clone <url>
-cd <repo>
-python -m venv .venv && source .venv/bin/activate    # Windows: .venv\Scripts\activate
+git clone https://github.com/hjasier/tic_proyecto.git
+cd tic_proyecto
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -46,347 +38,93 @@ pip install -r requirements.txt
 
 ```bash
 python scripts/get_data.py --dataset speech_2023 --files competitionData.tar.gz
+tar -xzf data/speech_2023/competitionData.tar.gz -C data/speech_2023
+python scripts/get_phoneme_resources.py --config configs/entrenos_online/speech_online.yaml
+python scripts/prepare_phoneme_labels.py --config configs/entrenos_online/speech_online.yaml
+python scripts/prepare_speech_data.py --config configs/entrenos_online/speech_online.yaml
 ```
 
-Descarga `competitionData` de Dryad y verifica su SHA-256 oficial: 3,67 GB
-comprimidos y unos 6,95 GB extraídos, con licencia CC0. Los `.mat` deben
-quedar en `data/speech_2023/competitionData/{train,test,competitionHoldOut}/`.
-Para extraer el archivo verificado:
-
-```bash
-python - <<'PY'
-import tarfile
-with tarfile.open("data/speech_2023/competitionData.tar.gz") as archive:
-    archive.extractall("data/speech_2023", filter="data")
-PY
-```
-
-La configuración `configs/speech_original.yaml` selecciona las 19 sesiones
-del baseline TensorFlow publicado: **6.640 ensayos de train y 680 de test**.
-Desde la raíz del repositorio, con las dependencias instaladas:
-
-```bash
-python scripts/get_phoneme_resources.py --config configs/speech_original.yaml
-python scripts/prepare_phoneme_labels.py --config configs/speech_original.yaml
-python scripts/prepare_speech_data.py --config configs/speech_original.yaml
-```
-
-La preparación procesa una sesión cada vez. Guarda señales en el orden
-`tx1 → spikePow`, normalizadas con estadísticas de train del mismo día,
-en 38 archivos NPY que ocupan **2,44 GB adicionales**. No aplica suavizado
-ni ruido: se harán al formar la entrada del modelo. Los manifiestos conservan
-estadísticas, límites de los ensayos, referencias y hashes. Todo queda en
-`data/`, ignorado por Git; no se modifican los `.mat` originales.
-
-`construir_loaders(cfg)` ya devuelve lotes reales para esta configuración.
-Entrenamiento elige una sesión uniformemente por lote y recorre sus ensayos
-barajados, con un RNG independiente del modelo. Cada lote conserva señales
-con padding cero, fonemas concatenados sin padding, longitudes reales e IDs
-de sesión. **El ID 0 es un fonema válido y el blank CTC es 40.** El segundo
-loader recorre el test publicado, sin barajar ni descartar el último lote;
-no constituye una validación independiente.
+El script descarga `competitionData` de [Dryad](https://doi.org/10.5061/dryad.x69p8czpq)
+y verifica su SHA-256. Son 3,67 GB comprimidos, unos 6,95 GB extraídos y
+2,44 GB de señales preparadas. Licencia CC0 1.0. Se utilizan 19 sesiones:
+5.180 frases para entrenar, 1.460 para validar y 680 reservadas como test.
 
 ## Ejecución
 
 ```bash
-# Baseline de habla: datos reales, cinco GRU de 1.024 unidades, CTC y PER.
-python run.py --config configs/speech_original.yaml
+# Comprobar la instalación con datos sintéticos.
+python run.py --smoke
 
-# Prueba acortada con presupuesto de dos horas; no es la réplica completa.
-python run.py --config configs/speech_2h.yaml
-
-# Evaluar pesos guardados, sin entrenar; sustituir ID_RUN por el ID impreso.
-python run.py --config configs/speech_original.yaml --solo-evaluar \
-    --checkpoint checkpoints/speech_original/ID_RUN/ultimo.pt
-```
-
-Para entrenar en una máquina de Colab, abre
-[`notebooks/04_entrenamiento_colab.ipynb`](notebooks/04_entrenamiento_colab.ipynb).
-Sube ese archivo a Colab, selecciona GPU y ejecuta sus celdas en orden. Contiene
-un snapshot de las fuentes verificado por SHA-256, de modo que funciona sin
-dar acceso de Colab al repositorio. No incluye datos, pesos ni credenciales.
-Instala un entorno aislado con Python 3.12.11 y las dependencias fijadas,
-descarga y verifica el corpus público y llama al mismo `run.py`. Conserva
-arquitectura, sesiones y lote efectivo; fuerza CUDA para evitar entrenar por
-accidente en CPU. W&B usa la clave de Secretos de Colab o una entrada oculta.
-
-La celda 4 elige el perfil. Por defecto usa `configs/speech_2h.yaml`: misma
-arquitectura, normalización, 19 sesiones y lote efectivo de 64, con
-microlotes de 16, hasta 2.001 pasos, learning rate de 0,02 a 0 en 2.000 pasos
-y evaluación completa cada 250 pasos, además de la primera y la última.
-La primera ejecución de este perfil, en Tesla T4, completó los 2.001 pasos
-en 2.702,83 s de bucle con evaluaciones y guardados (unos 45 min 03 s),
-con PER del 32,22 % sobre las 680 frases y picos de 1.994 MiB asignados y
-3.010 MiB reservados. El resultado, configuración y procedencia están en
-[`docs/resultados/speech_2h_unjiabqs.md`](docs/resultados/speech_2h_unjiabqs.md).
-La recarga y reevaluación de ese checkpoint sigue pendiente. Este tiempo
-no incluye instalación y preparación, y supera el límite docente de 20 min.
-
-`entrenamiento.max_segundos: 5400` añade un límite suave de 90 minutos al
-bucle, incluidas sus evaluaciones periódicas y guardados. Se comprueba entre
-actualizaciones y se termina con evaluación y checkpoint del paso alcanzado;
-si una evaluación periódica ya agotó el presupuesto, se reutiliza ese
-resultado. Preparación, lote en curso, evaluación final, guardado y
-sincronización pueden añadir tiempo. W&B registra los pasos previstos,
-completados y si terminó por tiempo. El perfil completo mantiene sus
-10.001 pasos, microlotes de 4, evaluación cada 50 y ningún límite temporal.
-El perfil de dos horas no equivale al entrenamiento completo ni cumple la
-regla docente de menos de 20 minutos.
-
-Cambiar un YAML no modifica un run ya iniciado. Para usar el perfil nuevo
-en una sesión de Colab ya preparada, detén la celda 9 y ejecuta las celdas
-2 (fuentes actualizadas), 4 (configuración y experimento nuevo) y 9; no
-repitas instalación ni preparación de señales. El entrenamiento empieza
-desde cero: el checkpoint anterior se conserva para evaluación, pero aún
-no se reanuda el optimizador.
-
-El notebook solicita acceso a Drive para guardar checkpoints, fuentes,
-configuración, entorno y log; las señales se preparan en el disco temporal
-de Colab. La celda 6 usa por defecto el archivo original desde Drive: busca
-en las carpetas habituales y después por nombre en Mi unidad, con límites
-de profundidad, carpetas y tiempo. También acepta la ruta completa obtenida
-con «Copiar ruta» en el panel Archivos de Colab o una ruta relativa a Mi unidad.
-Si no lo encuentra, muestra cómo indicar su ubicación; solo intenta descargar
-de Dryad cuando se selecciona expresamente ese origen. Comprueba tamaño y
-SHA-256 antes de publicar la copia local y reutiliza una copia local válida.
-La salida stdout/stderr de los scripts se muestra en la celda y los errores
-incluyen el motivo, además del código de salida. Colab puede interrumpir la
-sesión: los checkpoints
-actuales permiten evaluar e inferir, pero todavía no reanudar el optimizador.
-La duración del perfil original de 10.001 pasos sigue sin medirse. El perfil
-acortado ya fue ejecutado por el autor en Colab; las comprobaciones del
-lanzador y la documentación no volvieron a entrenar en el PC.
-
-Si cambias las fuentes o la configuración, actualiza la copia del notebook
-antes de subirlo de nuevo:
-
-```bash
-python scripts/export_colab.py
-```
-
-`configs/speech_original.yaml` reproduce los parámetros del [comando offline de los
-autores](https://github.com/fwillett/speechBCI/blob/522a9605ccf0818def80b6fd80007598e790408e/AnalysisExamples/rnn_step2_trainBaselineRNN.ipynb)
-y su [implementación TensorFlow](https://github.com/fwillett/speechBCI/blob/522a9605ccf0818def80b6fd80007598e790408e/NeuralDecoder/neuralDecoder/neuralSequenceDecoder.py):
-ruido blanco (SD 1) y offset por frase (SD 0,2) antes del suavizado, Adam con
-epsilon-hat 0,1, tasa lineal de 0,02 a 0 en 10.000 pasos, clipping de norma
-global a 10 y L2 de 1e-5 en kernels de entrada GRU y de la capa diaria activa.
-El bucle original incluye los índices 0–10.000: el YAML pide 10.001
-actualizaciones y la última tiene tasa cero. Los parámetros están en el YAML.
-La pérdida CTC se promedia por frase,
-sin dividir cada pérdida por su longitud de referencia.
-
-Para ajustarse a la memoria de la RTX 2060 se conserva el **lote efectivo de
-64 frases**, procesándolo en grupos de 4 (`entrenamiento.micro_batch_size`).
-Se acumula la suma CTC de cada grupo dividida por las 64 frases; L2,
-clipping, Adam y el avance del learning rate se aplican una sola vez por lote
-completo. No se recortan frases ni se reduce la arquitectura. Train conserva
-la extensión temporal del padding del lote original para añadir ruido antes
-del suavizado. El orden de los números aleatorios y el redondeo pueden cambiar
-respecto a procesar las 64 frases simultáneamente.
-
-Evaluación también usa grupos de 4 (`evaluacion.micro_batch_size`), recortando
-solo padding temporal sobrante y manteniendo todos los ejemplos y fonemas.
-W&B registra los picos de memoria CUDA asignada y reservada en MiB; también
-se imprimen con el avance del entrenamiento. El proceso usa dos hilos de CPU
-para limitar su carga en el equipo de escritorio.
-
-Cada evaluación registra CTC y **PER greedy = errores de edición totales /
-fonemas de referencia totales**, incluyendo SIL, con blank 40 y sin contar
-el padding. PER se guarda como proporción (0,25 equivale al 25 %) y puede
-superar 1 si hay muchas inserciones. Se registran también los recuentos y si
-se recorrió el test completo. No se calcula WER: falta el decodificador de
-palabras/modelo de lenguaje.
-
-El test publicado se monitoriza tras la primera actualización, cada 50 pasos
-después y al terminar, como en la referencia. Se guarda
-`ultimo.pt` por ID de ejecución, sin seleccionar el mejor por PER de test.
-Es una diferencia explícita respecto al original, que selecciona el mejor
-checkpoint sobre ese conjunto. Tampoco hay aún una validación independiente.
-El checkpoint contiene pesos, configuración, sesiones, vocabulario,
-estadísticas de normalización de train, firma de los datos y métricas;
-`ultimo.json` conserva los recuentos y las métricas. `--solo-evaluar` exige
-checkpoint y comprueba su compatibilidad. Estos checkpoints permiten evaluar
-e inferir; todavía no permiten reanudar el optimizador.
-
-W&B está configurado en **online**: sincroniza configuración, pérdidas, tasa,
-norma de gradiente, tiempos y métricas con el proyecto `tiiac-2026` de la
-cuenta autenticada. Antes del primer entrenamiento:
-
-```bash
+# Entrenar el modelo causal
 wandb login
+python run.py --config configs/entrenos_online/speech_online.yaml
+
+# Abrir la demo local en CPU, con los pesos y el trigrama preparados.
+python scripts/demo_speech_http.py
 ```
 
-Para trabajar sin conexión se puede usar `wandb.modo: offline` en el YAML;
-el historial queda bajo `runs/tracking/wandb/` y se puede subir después:
+El [notebook 12](notebooks/12_entrenamiento_online_colab.ipynb) prepara el entorno
+de Colab, entrena y evalúa el modelo. El [13](notebooks/13_trigrama_colab.ipynb)
+prepara el trigrama y su runtime. Los datos y pesos no se incluyen en Git.
+Sus rutas se configuran en los perfiles de la [demo](configs/entrenos_online/speech_demo_http.yaml)
+y del [trigrama](configs/entrenos_online/speech_trigrama_compacto.yaml).
 
-```bash
-wandb sync runs/tracking/wandb/offline-run-FECHA-ID
-```
-
-Se puede establecer la entidad en el YAML para usar un equipo concreto.
-La ejecución de habla rechaza el modo disabled y se detiene si falta W&B.
-`ejecucion.dispositivo: auto` elige CUDA cuando está disponible; también admite
-`cpu` o `cuda`. La versión completa no tiene un tiempo de entrenamiento medido
-ni cumple aún el límite docente de 20 minutos; la configuración reducida está
-pendiente. `python run.py --smoke` y `configs/default.yaml` conservan la plantilla
-sintética anterior y **no verifican el pipeline de habla**. La demo HTTP causal en CPU se describe más abajo.
-
-La primera comprobación de integración del 19 de octubre usó dos
-actualizaciones con lotes de dos frases y la arquitectura completa, en CPU
-y RTX 2060. No comprobaba la memoria necesaria para lotes de 64: el primer
-entrenamiento completo falló al llegar a un lote con 904 bins. Con acumulación
-en grupos de 4, el run de comprobación llegó al menos al paso 51, guardó un
-checkpoint y recorrió las 680 frases de test. PyTorch registró picos de
-1.342 MiB asignados y 2.098 MiB reservados en la RTX 2060. Otra comprobación
-con cinco frases reales, sin ruido ni dropout, verificó CTC y todos los
-gradientes al dividir el lote en 2+2+1 (diferencia máxima absoluta de gradiente
-2,87e-5), incluyendo L2 una sola vez.
-
-La comprobación prevista de 64 pasos quedó interrumpida por el bloqueo y
-reinicio del PC; no se completó. Tras el reinicio se comprobó el CRC del
-checkpoint guardado y se revisaron estos registros sin volver a entrenar.
-El registro del sistema no permite atribuir una causa concluyente al bloqueo.
-En el equipo local, las comprobaciones de cómputo se ejecutarán de una en una.
-El entrenamiento completo y su comparación de calidad siguen pendientes.
-No se añadieron archivos de pruebas; el lanzador de Colab se añadió después
-por petición expresa del autor.
-
-## Demo HTTP causal en CPU
-
-Desde la raíz del repositorio:
-
-```bash
-CUDA_VISIBLE_DEVICES='' OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 MKL_NUM_THREADS=2 \
-    .venv/bin/python scripts/demo_speech_http.py
-```
-
-Esperar al mensaje `Demo lista` y abrir **http://127.0.0.1:8766**. El perfil
-`configs/entrenos_online/speech_demo_http.yaml` identifica el checkpoint online, el perfil
-del trigrama compacto, el puerto y el tamaño de bloque. Requiere los pesos,
-el grafo compacto y su runtime CPU ya preparados; no descarga ni instala nada.
-El supervisor reutiliza el límite de 6 GiB y la reserva de 2 GiB del perfil
-del trigrama. Ctrl+C cierra el servidor y su trabajador nativo.
-
-Elegir una muestra, pulsar **Transmitir** y observar señal, texto parcial y
-bins pendientes. El navegador carga una frase aleatoria de val y envía la
-señal cruda en bloques de 4 bins, a 80 ms por bloque. El receptor acusa la
-recepción antes de calcular y un único trabajador conserva GRU/CTC/WFST entre
-bloques. El reloj de envío usa los tiempos de la grabación y la cola muestra
-lo recibido que aún no se ha procesado. Los parciales sustituyen al texto
-anterior. **Detener** descarta los bloques pendientes; otra transmisión usa
-estados nuevos y conserva los pesos y el grafo.
-
-La referencia solo sirve para la pantalla. No se transmite al motor ni se
-calculan PER/WER en esta demo. La vista muestra tx1 normalizado con estadísticas
-de train; el modelo recibe tx1 y spikePow crudos y aplica su preprocesamiento
-causal. Los registros de servidor y cada transmisión quedan en `runs/demo_http/`.
-
-API local: `GET /api/state`, `POST /api/sample`, `POST /api/start` con
-`sample_id`, y `POST /api/block`, `/api/finish`, `/api/cancel` con `stream_id`.
-Cada bloque añade `sequence` (desde cero) y `features` (bins × 256). Se comprueba
-el orden y el hash de la señal completa. Repetir exactamente un bloque devuelve
-su acuse sin procesarlo otra vez; cambiarlo o adelantarse se rechaza.
-`--port PUERTO` permite elegir otro puerto local.
-
-## Demo histórica de AHPSN con un checkpoint entrenado
-
-La referencia siguiente conserva la ejecución anterior con GPU. La demo vigente
-para este ordenador es la HTTP en CPU descrita arriba; no ejecutar los pasos
-históricos de GPU local.
-
-Abrir `notebooks/06_demo_ahpsn.ipynb` localmente en VS Code y seleccionar el
-kernel de `.venv`. Usa **CUDA en la GPU local** y dos hilos de CPU; no entrena
-ni abre W&B. La configuración está en `configs/speech_demo.yaml`.
-
-Espera `checkpoints/speech_original/unjiabqs/ultimo.pt`: copia ahí los pesos
-del entrenamiento de 2.001 pasos o cambia la ruta en el YAML. No sustituye
-ese archivo por otro checkpoint si falta. Los datos locales se leen de
-`data/speech_2023/competitionData`; no instala, descarga ni monta carpetas.
-
-Las cuatro celdas de código comprueban CUDA, cargan el checkpoint, dibujan
-la actividad de una frase test y predicen sus fonemas en la celda siguiente.
-Se comparan con g2p-en y se muestra el PER de esa frase. Arquitectura,
-vocabulario y estadísticas de train se leen del checkpoint. La demo usa
-directamente el código local y guarda figura/predicción en `runs/demo_ahpsn/`.
-
-La misma demo puede ejecutarse desde terminal:
-
-```bash
-python scripts/demo_speech.py preparar --checkpoint RUTA/ultimo.pt \
-    --corpus data/speech_2023/competitionData --salida runs/demo_ahpsn
-python scripts/demo_speech.py predecir --checkpoint RUTA/ultimo.pt \
-    --salida runs/demo_ahpsn
-```
-
-## Adaptación a Alice EEG
-
-Se reutilizan la clase `SpeechGRU`, el conversor a fonemas, lotes variables,
-CTC, Adam-TF y PER de T12, adaptando la entrada a 60 canales EEG y el tamaño
-del modelo. Las referencias son las palabras escuchadas; los pesos parten
-de cero. Separación por segmentos antes de filtrar y normalización solo con
-train. El checkpoint se elige con validación y test se evalúa al final.
-
-```bash
-python scripts/get_alice.py --catalogo docs/datasets/alice_eeg/catalogo_ctc.json
-python scripts/get_phoneme_resources.py --config configs/alice_ctc.yaml
-python scripts/prepare_alice_ctc.py --config configs/alice_ctc.yaml
-OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 MKL_NUM_THREADS=2 \
-    python run.py --config configs/alice_ctc.yaml
-```
-
-Son unos 91,5 MB de fuentes EEG/anotaciones, más los recursos g2p-en. La
-configuración pide 1.000 pasos con un límite suave de tres minutos en CPU y
-W&B online en `tiiac-2026`. La ejecución real completó todos los pasos, y la
-recarga en otro proceso conservó exactamente CTC/PER sin actualizar pesos.
-
-[Método, resultados y límites](docs/experimentos/alice_ctc.md) ·
-[Lanzador Colab](notebooks/05_alice_colab.ipynb) ·
-[Run W&B](https://wandb.ai/aaurre-deusto/tiiac-2026/runs/gk69kbxx).
-El notebook 05 utiliza ahora el **perfil CUDA T4 ampliado**: 27 participantes,
-cinco GRU de 512 unidades, lote 64/microlote 16 y hasta 10.001 pasos con límite
-suave de una hora. Descarga 2,47 GB y conserva fuentes, pesos y logs en Drive.
-Requiere CUDA y registra en `tiiac-2026`; falta ejecutarlo y medirlo en Colab.
-[Configuración y protocolo T4](docs/experimentos/alice_ctc_t4.md).
-Su snapshot se actualiza con
-`python scripts/export_colab.py --perfil alice`, conservando el notebook 04.
-
-El [piloto previo con sound_power](docs/experimentos/alice_piloto.md) se
-conserva como exploración histórica; su objetivo sigue en auditoría y no
-interviene en CTC. La [propuesta T15](docs/experimentos/voice_2025_plan.md)
-sigue sin grabaciones descargadas ni entrenamiento realizado.
+Con el servidor arrancado: [visor](http://127.0.0.1:8766/) y
+[llamadas](http://127.0.0.1:8766/llamada). Las llamadas requieren las dependencias
+de `requirements-llamadas.txt`, FFmpeg con Flite y las claves `LIVEKIT_URL`,
+`LIVEKIT_API_KEY` y `LIVEKIT_API_SECRET` en el `.env` privado.
+La voz del micrófono activa una muestra aleatoria; la respuesta es independiente de lo que se diga.
 
 ## Estructura
 
-```
-configs/      Todos los hiperparámetros. Ninguno escrito a fuego en el código
-src/data/     Carga, splits y transformaciones
-src/models/   La arquitectura replicada
-src/training/ Bucle de entrenamiento y evaluación
-src/app/      La capa de servicio: carga un checkpoint y responde
-scripts/      Descarga de datos y utilidades
-tests/        Tests de forma, invariancia y reproducibilidad
-run.py        Punto de entrada único
+```text
+configs/       Configuración de modelos y experimentos
+src/data/      Carga, particiones y preparación
+src/models/    GRU y salidas de fonemas
+src/training/  Entrenamiento y evaluación
+src/app/       Visor y llamadas
+scripts/       Descargas y utilidades
+notebooks/     Exploración y ejecuciones en Colab
+tests/         Pruebas
+run.py         Entrada de entrenamiento y evaluación
 ```
 
 ## Reproducibilidad
 
-- Semilla fijada en `src/utils/seed.py`, valor en `configs/`.
-- Dependencias con versión exacta en `requirements.txt`.
-- Presupuesto de cómputo declarado: **<tiempo real> en <hardware>**.
-- Qué se recortó respecto al paper y qué se pierde con ello: <explicación>.
-
-La [prueba de tiempo con GRU y frases reales](docs/prueba_tiempo_entrenamiento.md) contiene el código, las medidas en RTX 2060 y la estimación del recorte que queda por comprobar.
-
-La [presentación del pitch](docs/presentacion_pitch/index.html) resume el problema, el plan y el aplicativo en tres diapositivas blancas con animaciones. [Cómo abrirla y ensayar](docs/presentacion_pitch/README.md).
+- Semilla en `src/utils/seed.py`, configuración en `configs/` y dependencias fijadas en `requirements.txt`.
+- Modelo causal: **10.001 pasos en 34 min 52 s de bucle**, con validaciones y guardados, en una **A100 de 40 GB**. Run [jaovk23p](https://wandb.ai/aaurre-deusto/tiiac-2026/runs/jaovk23p).
+- Los pesos se seleccionan por PER de validación. El test queda fuera de la selección.
+- La réplica incluye GRU + CTC y trigrama no incluye rescoring con OPT por el momento.
 
 ## Decisiones donde el paper no especifica
 
-<La sección que distingue replicar de copiar. Lista lo que tuvisteis que
-decidir vosotros y con qué criterio. Sale de la ficha de replicación.>
+El paper y su código describen la base del sistema. Aquí se recogen las
+decisiones propias de la adaptación y los cambios respecto a esa base,
+incluidos los que afectan a aspectos que sí están especificados.
 
-| Ambigüedad del paper | Qué decidimos | Por qué |
+| **Aspecto del paper o de la adaptación** | **Qué he decidido** | **Por qué** |
 |---|---|---|
-| <no dice el schedule de lr> | <cosine con warmup de 5 épocas> | <es lo habitual en la familia de trabajos citada> |
+
+| Aspecto | Qué he decidido | Por qué |
+|---|---|---|
+| Cantidad de datos | El paper usa 10.850 frases de entrenamiento. He usado 19 sesiones, con 6.640 frases antes de separar validación. | Elegí este recorte de datos con la idea de que cupiese en el límite de los recursos |
+| Partición y selección de pesos | De las 6.640 frases, uso 5.180 para entrenar y reservo los últimos bloques de cada sesión, con 1.460 frases, para validar. Elijo los pesos con menor PER en validación y dejo aparte las 680 frases de test. | Así puedo elegir el modelo sin tocar el test, que queda para la evaluación final. Mantengo la misma partición para comparar las variantes con los mismos datos. |
+| Implementación y arquitectura base | He pasado la red de TensorFlow a PyTorch. Uso cinco capas GRU de 512 unidades, ventanas de 14 bins y avance de 4, como el modelo online del paper. Su baseline offline usa 1.024 unidades y ventanas de 32, en el mio sigo usando la misma configuración que en el online | También usé 512 unidades en la versión offline para que consumiera menos memoria y fuera más rápida en mi ordenador, aunque pudiera perder algo de precisión. |
+| Salidas intermedias | He añadido salidas en las capas 2 y 3, además de la final, con pesos CTC de 0,25/0,25/0,50. También he preparado versiones independientes de dos y tres capas para comparar. | Quería comprobar si podía obtener respuestas más rápidas usando menos capas y cuánta precisión perdería. Son pruebas experimentales, la demo sigue usando el modelo de cinco capas. |
+| Normalización de la señal | Calculo la media y la desviación con los datos de entrenamiento de cada sesión y las guardo con el modelo. | Preferí empezar con una normalización fija para simplificar el sistema y tener primero la demo funcionando. Dejé para más adelante la adaptación a los cambios de la señal durante el día que utiliza el paper. |
+| Memoria durante el entrenamiento | Proceso cada lote de 64 frases en cuatro grupos de 16, acumulando los gradientes antes de actualizar el modelo. | Así puedo entrenar con menos memoria de GPU sin tener que reducir la red ni el tamaño del lote. |
+| Modelo de lenguaje y OPT | Uso la GRU con el trigrama original de 125.000 palabras. Dejo para más adelante el 5-grama y OPT, que el paper utiliza para mejorar el resultado offline. | Quería tener primero la demo funcionando en la CPU de mi ordenador. OPT tiene 6.700 millones de parámetros y añadirlo exige bastante memoria. Además, el resultado online del 23,8 % con el que comparo tampoco utiliza OPT. |
+| RAM del trigrama | Lo he convertido a ConstFst y he cambiado su lectura para cargar en RAM solo las partes que se van usando, sin recortar el modelo. | No podía usar el trigrama original en mi ordenador sin quedarme sin memoria, con mi implementación el archivo puede ocupar más en disco, pero necesita menos RAM para funcionar. |
+
+
+
+
+Las dos arquitecturas de referencia se pueden consultar en la
+[configuración online de los autores](https://github.com/fwillett/speechBCI/blob/522a9605ccf0818def80b6fd80007598e790408e/NeuralDecoder/neuralDecoder/configs/model/gru_stack_inputNet.yaml)
+y en su [notebook del baseline offline](https://github.com/fwillett/speechBCI/blob/522a9605ccf0818def80b6fd80007598e790408e/AnalysisExamples/rnn_step2_trainBaselineRNN.ipynb).
+La normalización y OPT se describen en los [métodos suplementarios](docs/41586_2023_6377_MOESM1_ESM.pdf).
+Los cambios de la réplica están en los [perfiles causales](configs/entrenos_online/)
+y en el [conversor del trigrama](scripts/compact_speech_trigram.py).
 
 ## Tests
 
@@ -396,4 +134,4 @@ pytest tests/ -q
 
 ## Uso de IA
 
-Documentado en [`AI_USAGE.md`](AI_USAGE.md), según la guía docente.
+Documentado en [AI_USAGE.md](AI_USAGE.md).
