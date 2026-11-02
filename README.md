@@ -8,6 +8,8 @@ neuroprosthesis**, con las grabaciones del paciente **T12**.
 - **Experimentos:** [W&B · tiiac-2026](https://wandb.ai/aaurre-deusto/tiiac-2026).
 - **Autoría:** Asier Aurre.
 
+<img width="800" height="301" alt="demo" src="https://github.com/user-attachments/assets/152dc1bc-5ef9-4c01-ad6e-8561a39be824" />
+
 ## Resultado
 
 | Métrica | Paper, habla vocalizada | Réplica causal | Escala de la réplica |
