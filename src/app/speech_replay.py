@@ -38,9 +38,13 @@ class ReplaySample:
 
     def payload(self) -> dict[str, Any]:
         """Entrega al navegador los bins originales y las estadísticas de la vista."""
+        return {**self.metadata(), "features": self.raw.tolist()}
+
+    def metadata(self) -> dict[str, Any]:
+        """Describe la vista sin entregar señal futura a los observadores."""
         return {"id": self.id, "session": self.session, "trial_index": self.trial_index,
                 "split": "val", "bins": len(self.raw), "bin_ms": BIN_SECONDS * 1000,
-                "sha256": self.sha256, "features": self.raw.tolist(), "reference": self.reference,
+                "sha256": self.sha256, "reference": self.reference,
                 "view_mean": self.mean.tolist(), "view_scale": self.scale.tolist()}
 
 

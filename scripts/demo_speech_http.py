@@ -51,6 +51,9 @@ def run_server(cfg: dict, language_spec: dict) -> None:
         controller = DemoController(decoder, language, samples, cfg)
         server.controller = controller
         try:
+            if cfg.get("llamadas", {}).get("habilitado"):
+                from src.app.speech_calls import CallManager
+                server.calls = CallManager(controller, cfg["llamadas"])
             metadata = {"config": cfg, "checkpoint_sha256": file_sha256(Path(cfg["checkpoint"])),
                         "language_resources": language.resources, "device": "cpu",
                         "cpu_threads": language_spec["hilos_cpu"], "training_updates": 0,
@@ -58,8 +61,12 @@ def run_server(cfg: dict, language_spec: dict) -> None:
             (output / "servidor.json").write_text(json.dumps(metadata, indent=2) + "\n")
             print(f"Demo lista: http://{server.server_address[0]}:{server.server_address[1]}", flush=True)
             print("Registro:", output, flush=True)
+            if server.calls:
+                print("Llamadas: " + (server.calls.error or f"http://{server.server_address[0]}:{server.server_address[1]}/llamada"), flush=True)
             server.serve_forever(poll_interval=0.2)
         finally:
+            if server.calls:
+                server.calls.close()
             controller.close()
 
 
