@@ -44,8 +44,7 @@ def comprobar_datos_smoke(cfg: dict[str, Any]) -> tuple[dict[str, Any], dict[str
     missing = [str(path) for path, _ in originals if not path.is_file()]
     download_help = (
         "Descarga y extrae los datos con:\n"
-        "  python scripts/get_data.py --dataset speech_2023 --files competitionData.tar.gz\n"
-        "  tar -xzf data/speech_2023/competitionData.tar.gz -C data/speech_2023"
+        "  python scripts/get_data.py --dataset speech_2023 --files competitionData.tar.gz"
     )
     if missing:
         raise FileNotFoundError(f"Faltan {len(missing)} archivos originales de T12: "

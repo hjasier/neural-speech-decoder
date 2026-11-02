@@ -169,7 +169,7 @@ def test_smoke_fails_instead_of_skipping_the_word_decoder(tmp_path: Path) -> Non
     assert not list((tmp_path / "runs").rglob("smoke.json"))
 
 
-def test_smoke_missing_download_fails_with_download_and_extraction_commands(tmp_path: Path) -> None:
+def test_smoke_missing_download_fails_with_download_and_extraction_command(tmp_path: Path) -> None:
     """No inventa señales ni empieza a entrenar cuando falta competitionData."""
     _clean_copy(tmp_path)
     # La partición es una fuente del repositorio, incluso antes de descargar.
@@ -180,7 +180,7 @@ def test_smoke_missing_download_fails_with_download_and_extraction_commands(tmp_
     completed = _run_smoke(tmp_path)
     assert completed.returncode == 2
     assert "Faltan 38 archivos originales de T12" in completed.stderr
-    assert "python scripts/get_data.py" in completed.stderr and "tar -xzf" in completed.stderr
+    assert "python scripts/get_data.py" in completed.stderr and "tar -xzf" not in completed.stderr
     assert "Smoke OK" not in completed.stdout and not (tmp_path / "runs").exists()
 
 

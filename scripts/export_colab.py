@@ -3,7 +3,7 @@
     python scripts/export_colab.py --perfil speech_trigrama
 
 Solo incluye fuentes, configuración, dependencias y el manifiesto público
-de Dryad. No empaqueta datos, pesos, credenciales, Git ni el entorno local.
+del dataset. No empaqueta datos, pesos, credenciales, Git ni el entorno local.
 No instala paquetes ni ejecuta el modelo.
 """
 

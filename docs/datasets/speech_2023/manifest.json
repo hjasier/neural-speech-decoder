@@ -18,6 +18,12 @@
       "size_bytes": 3669638707,
       "sha256": "5b5c9784d80d5286e69352621366be2e4ff468e043e082e7aa7cbc90d18336b3",
       "file_id": 2547369,
+      "mirrors": [
+        {
+          "provider": "google_drive",
+          "url": "https://drive.google.com/file/d/1poJhxAJv2G9tcgf-g3CsFH_ej0uX_GsC/view?usp=sharing"
+        }
+      ],
       "url": "https://datadryad.org/downloads/file_stream/2547369"
     },
     {
@@ -67,6 +73,12 @@
       "size_bytes": 14106240558,
       "sha256": "7b64d36c64765dc0a5e890bb0cc795657c827b7d314fbf5ed5dc8778bd166d7e",
       "file_id": 2547356,
+      "mirrors": [
+        {
+          "provider": "google_drive",
+          "url": "https://drive.google.com/file/d/1wtu3grww2rAZ2xrVtVyr6Nr4rA96TnI7/view?usp=sharing"
+        }
+      ],
       "url": "https://datadryad.org/downloads/file_stream/2547356"
     },
     {
