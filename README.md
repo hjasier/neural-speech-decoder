@@ -108,14 +108,11 @@ El paper y su código describen la base del sistema. Aquí se recogen las
 decisiones propias de la adaptación y los cambios respecto a esa base,
 incluidos los que afectan a aspectos que sí están especificados.
 
-| **Aspecto del paper o de la adaptación** | **Qué he decidido** | **Por qué** |
-|---|---|---|
-
 | Aspecto | Qué he decidido | Por qué |
 |---|---|---|
 | Cantidad de datos | El paper usa 10.850 frases de entrenamiento. He usado 19 sesiones, con 6.640 frases antes de separar validación. | Elegí este recorte de datos con la idea de que cupiese en el límite de los recursos |
 | Partición y selección de pesos | De las 6.640 frases, uso 5.180 para entrenar y reservo los últimos bloques de cada sesión, con 1.460 frases, para validar. Elijo los pesos con menor PER en validación y dejo aparte las 680 frases de test. | Así puedo elegir el modelo sin tocar el test, que queda para la evaluación final. Mantengo la misma partición para comparar las variantes con los mismos datos. |
-| Implementación y arquitectura base | He pasado la red de TensorFlow a PyTorch. Uso cinco capas GRU de 512 unidades, ventanas de 14 bins y avance de 4, como el modelo online del paper. Su baseline offline usa 1.024 unidades y ventanas de 32, en el mio sigo usando la misma configuración que en el online | También usé 512 unidades en la versión offline para que consumiera menos memoria y fuera más rápida en mi ordenador, aunque pudiera perder algo de precisión. |
+| Implementación y arquitectura base | He pasado la red de TensorFlow a PyTorch. El modelo causal, que es el de la tabla de resultados y la demo, usa cinco capas GRU de 512 unidades, ventanas de 14 bins y avance de 4, como el modelo online del paper. Las variantes offline de la comparación de capas usan 1.024 unidades y ventanas de 32, como el baseline offline de los autores. | Cada modo sigue la configuración publicada por los autores para ese caso. El modelo de 512 unidades es además el que se ejecuta en la CPU de mi ordenador. |
 | Salidas intermedias | He añadido salidas en las capas 2 y 3, además de la final, con pesos CTC de 0,25/0,25/0,50. También he preparado versiones independientes de dos y tres capas para comparar. | Quería comprobar si podía obtener respuestas más rápidas usando menos capas y cuánta precisión perdería. Son pruebas experimentales, la demo sigue usando el modelo de cinco capas. |
 | Normalización de la señal | Calculo la media y la desviación con los datos de entrenamiento de cada sesión y las guardo con el modelo. | Preferí empezar con una normalización fija para simplificar el sistema y tener primero la demo funcionando. Dejé para más adelante la adaptación a los cambios de la señal durante el día que utiliza el paper. |
 | Memoria durante el entrenamiento | Proceso cada lote de 64 frases en cuatro grupos de 16, acumulando los gradientes antes de actualizar el modelo. | Así puedo entrenar con menos memoria de GPU sin tener que reducir la red ni el tamaño del lote. |
