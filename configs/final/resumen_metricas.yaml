@@ -1,0 +1,13 @@
+# Resumen de PER/WER con intervalos de confianza, a partir de predicciones.jsonl.
+# Bootstrap del percentil sobre frases, como el suplemento 4.1 del paper.
+bootstrap:
+  remuestreos: 10000
+  confianza: 0.95
+  seed: 0
+# Sesiones de habla silenciosa (suplemento 1.8: sesiones 15, 25, 26 y 27).
+# El resto de sesiones son de habla vocalizada; la Tabla 1 las separa.
+sesiones_silenciosas:
+- t12.2022.06.23
+- t12.2022.08.18
+- t12.2022.08.23
+- t12.2022.08.25
