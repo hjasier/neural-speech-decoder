@@ -10,7 +10,9 @@ from typing import Any
 
 import torch
 
-from src.data.preprocessing import GaussianSmoothing, TrainingNormalization, build_smoother
+from src.data.preprocessing import (
+    GaussianSmoothing, TrainingNormalization, build_smoother, normalization_spec,
+)
 from src.data.speech import BIN_SECONDS
 from src.models.factory import construir_modelo
 from src.models.speech_gru import SpeechGRU
@@ -23,10 +25,13 @@ def inference_format(cfg: dict[str, Any]) -> int:
     return 2 if cfg.get("protocolo") else 1
 
 
-def streaming_spec() -> dict[str, Any]:
+def streaming_spec(cfg: dict[str, Any]) -> dict[str, Any]:
     """Describe las convenciones de señal, reinicio y cierre del formato causal."""
+    mode = normalization_spec(cfg)["modo"]
     return {"feature_order": ["tx1_6v", "spikePow_6v"], "bin_seconds": BIN_SECONDS,
-            "normalization": "fixed_train_per_session", "reset": "per_phrase",
+            "normalization": {"train_fija": "fixed_train_per_session", "bloque": "per_block",
+                              "rodante": "rolling_previous_sentences"}[mode],
+            "reset": "per_phrase",
             "initial_filter_history": "normalized_zeros", "finish": "discard_incomplete_windows"}
 
 
@@ -66,7 +71,7 @@ def read_speech_checkpoint(path: Path) -> dict[str, Any]:
     ):
         raise ValueError("El checkpoint contiene configuración, sesiones o vocabulario inconsistentes.")
     if state["format_version"] == 3 and (
-        state.get("streaming") != streaming_spec()
+        state.get("streaming") != streaming_spec(cfg)
         or state.get("inference_sha256") != inference_signature(state)
     ):
         raise ValueError("La configuración temporal o los metadatos no coinciden con la firma de inferencia.")

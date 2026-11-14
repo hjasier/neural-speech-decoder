@@ -3,8 +3,10 @@
     python scripts/prepare_speech_data.py --config configs/speech_comparacion_t4.yaml
 
 Procesa una sesión cada vez, conserva todos sus ensayos y no suaviza ni añade
-ruido. Las estadísticas proceden únicamente de train y se guardan para test
-y el futuro checkpoint. Los archivos preparados quedan en data/, fuera de Git.
+ruido. Por defecto las estadísticas proceden únicamente de train y se guardan
+para test y el futuro checkpoint. Con preprocesamiento.normalizacion en modo
+bloque o rodante cada frase usa las suyas (señal sin etiquetas) y la carpeta
+preparada debe ser distinta. Los archivos quedan en data/, fuera de Git.
 """
 
 from __future__ import annotations
@@ -20,7 +22,9 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from src.data.preprocessing import fit_train_normalization
+from src.data.preprocessing import (
+    extract_model_features, fit_train_normalization, normalization_spec, session_trial_normalizations,
+)
 from src.data.speech import load_session
 from src.data.speech_dataset import file_sha256, preparation_signature, read_label_manifest
 from src.data.speech_protocol import read_speech_protocol
@@ -42,6 +46,7 @@ def prepare_signals(cfg: dict[str, Any]) -> dict[str, int]:
     files = []
     normalizations = {}
     totals = {"train": 0, "test": 0}
+    mode = normalization_spec(cfg)["modo"]
     for name in cfg["datos"]["sesiones"]:
         part = partitions.get(name)
         if part:
@@ -56,6 +61,11 @@ def prepare_signals(cfg: dict[str, Any]) -> dict[str, int]:
         if part:
             normalizations[name].update({"fit_trial_indices": part["train"],
                                          "fit_protocol_sha256": cfg["protocolo"]["sha256"]})
+        # En bloque/rodante cada frase tiene su propia media y desviación; las
+        # de train se conservan en el manifiesto como referencia de la sesión.
+        per_trial = None if mode == "train_fija" else session_trial_normalizations(
+            cfg, name, train_indices=part["train"] if part else None,
+        )
         for split in totals:
             relative = f"{split}/{name}.json"
             label_path = label_root / relative
@@ -83,7 +93,10 @@ def prepare_signals(cfg: dict[str, Any]) -> dict[str, int]:
                 partial, mode="w+", dtype=np.float32, shape=(offsets[-1], cfg["modelo"]["entrada"]),
             )
             for index, trial in enumerate(session.trials):
-                array[offsets[index]:offsets[index + 1]] = stats.transform(trial, name)
+                array[offsets[index]:offsets[index + 1]] = (
+                    stats.transform(trial, name) if per_trial is None
+                    else per_trial[split][index].transform_features(extract_model_features(trial), name)
+                )
             array.flush()
             del array
             partial.replace(destination)
@@ -106,6 +119,8 @@ def prepare_signals(cfg: dict[str, Any]) -> dict[str, int]:
     if protocol:
         manifest["protocol_sha256"] = cfg["protocolo"]["sha256"]
         manifest["source_totals"] = totals
+    if mode != "train_fija":
+        manifest["normalization"] = normalization_spec(cfg)
     partial_manifest = output_root / "manifest.json.part"
     partial_manifest.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     partial_manifest.replace(output_root / "manifest.json")

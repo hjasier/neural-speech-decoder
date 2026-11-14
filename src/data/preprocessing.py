@@ -135,6 +135,196 @@ def fit_train_normalization(
     )
 
 
+NORMALIZATION_MODES = ("train_fija", "bloque", "rodante")
+Statistics = tuple[NDArray[np.float64], NDArray[np.float64]]
+
+
+def normalization_spec(cfg: dict[str, Any]) -> dict[str, Any]:
+    """Devuelve el modo de normalización; sin la clave, la fija ajustada con train.
+
+    train_fija: una media y desviación por sesión, ajustadas solo con train.
+    bloque: estadísticas del bloque de grabación de cada frase (suplemento 5.1).
+    rodante: train por bloque; val y test con la estimación causal de la
+    ecuación 2 del suplemento 5.2, que solo usa frases anteriores. Su
+    desviación tiene un suelo relativo a la de train de la sesión: con pocas
+    frases previas un canal sin actividad daría una desviación nula.
+    Los modos bloque y rodante leen señal de evaluación, nunca sus etiquetas.
+    """
+    spec = cfg["preprocesamiento"].get("normalizacion")
+    if spec is None:
+        return {"modo": "train_fija"}
+    error = ValueError(
+        "preprocesamiento.normalizacion requiere modo train_fija, bloque o rodante; "
+        "rodante necesita además frases_mezcla y ventana_frases enteros positivos "
+        "y desviacion_minima_relativa entre cero y uno."
+    )
+    if not isinstance(spec, dict) or spec.get("modo") not in NORMALIZATION_MODES:
+        raise error
+    counts = ("frases_mezcla", "ventana_frases") if spec["modo"] == "rodante" else ()
+    floor = ("desviacion_minima_relativa",) if spec["modo"] == "rodante" else ()
+    if (set(spec) != {"modo", *counts, *floor}
+            or any(type(spec[key]) is not int or spec[key] <= 0 for key in counts)
+            or any(type(spec[key]) is not float or not 0 < spec[key] <= 1 for key in floor)):
+        raise error
+    return dict(spec)
+
+
+@dataclass(frozen=True)
+class TrialMoments:
+    """Sumas por canal de una frase, suficientes para combinar medias y desviaciones."""
+
+    block: int
+    frames: int
+    total: NDArray[np.float64]
+    squares: NDArray[np.float64]
+
+
+def trial_moments(trial: SpeechTrial) -> TrialMoments:
+    """Acumula en float64 las características tx1/spikePow de 6v de un ensayo."""
+    features = extract_model_features(trial).astype(np.float64)
+    return TrialMoments(trial.block, len(features), features.sum(axis=0), np.square(features).sum(axis=0))
+
+
+def pooled_statistics(moments: Sequence[TrialMoments]) -> Statistics:
+    """Media y desviación poblacional sobre todos los bins de las frases dadas."""
+    frames = sum(item.frames for item in moments)
+    if not moments or frames <= 0:
+        raise ValueError("Se necesita al menos una frase con bins para estimar estadísticas.")
+    mean = sum(item.total for item in moments) / frames
+    variance = sum(item.squares for item in moments) / frames - np.square(mean)
+    return mean, np.sqrt(np.maximum(variance, 0))
+
+
+def rolling_statistics(
+    block: Sequence[TrialMoments], previous: Statistics, *, blend: int, window: int,
+) -> list[Statistics]:
+    """Estadísticas causales por frase de un bloque (suplemento 5.2, ecuación 2).
+
+    La frase i, contada desde uno, nunca usa su propia señal ni la posterior.
+    En las primeras `blend` frases pondera el bloque anterior con peso
+    (blend + 1 - i) / blend y las frases previas del bloque actual con
+    (i - 1) / blend. Después usa solo las últimas `window` frases previas.
+    Las desviaciones se combinan igual que las medias.
+    """
+    if blend <= 0 or window <= 0:
+        raise ValueError("frases_mezcla y ventana_frases deben ser positivos.")
+    statistics = []
+    for position in range(1, len(block) + 1):
+        seen = block[:position - 1]
+        if position > blend:
+            statistics.append(pooled_statistics(seen[-window:]))
+            continue
+        current_weight = (position - 1) / blend
+        if not seen:
+            statistics.append((previous[0].copy(), previous[1].copy()))
+            continue
+        current = pooled_statistics(seen)
+        statistics.append(tuple(
+            (1 - current_weight) * before + current_weight * now
+            for before, now in zip(previous, current, strict=True)
+        ))
+    return statistics
+
+
+def session_statistics(
+    splits: dict[str, Sequence[TrialMoments]], spec: dict[str, Any],
+    *, train_indices: Sequence[int] | None,
+) -> dict[str, list[Statistics]]:
+    """Asigna media y desviación a cada frase de los archivos train/test de un día.
+
+    `train_indices` son las frases de train del protocolo dentro del archivo
+    train; None significa todo el archivo. En modo rodante esas frases usan
+    su bloque, como al entrenar en el paper, y el resto (val y test) la
+    estimación causal, cuyo bloque anterior se busca por número de bloque en
+    los dos archivos del día. Su desviación no baja de
+    desviacion_minima_relativa × la desviación de las frases de train del día;
+    un canal que tampoco varía en train se anula en vez de dividir por epsilon.
+    """
+    if spec["modo"] not in ("bloque", "rodante") or set(splits) != {"train", "test"}:
+        raise ValueError("Las estadísticas por frase requieren modo bloque o rodante y los splits train/test.")
+    groups: dict[tuple[str, int], list[int]] = {}
+    for split, moments in splits.items():
+        for index, item in enumerate(moments):
+            groups.setdefault((split, item.block), []).append(index)
+    block_statistics = {
+        key: pooled_statistics([splits[key[0]][index] for index in indices])
+        for key, indices in groups.items()
+    }
+    result = {split: [block_statistics[(split, item.block)] for item in moments]
+              for split, moments in splits.items()}
+    if spec["modo"] == "bloque":
+        return result
+    fitted = set(range(len(splits["train"]))) if train_indices is None else set(train_indices)
+    if not fitted:
+        raise ValueError("La normalización rodante necesita frases de train para fijar el suelo de la desviación.")
+    floor = spec["desviacion_minima_relativa"] * pooled_statistics(
+        [splits["train"][index] for index in sorted(fitted)]
+    )[1]
+    for (split, block), indices in groups.items():
+        causal = [index for index in indices if split != "train" or index not in fitted]
+        if not causal:
+            continue
+        if causal != indices:
+            raise ValueError("Un bloque mezcla frases de train y de evaluación; no admite normalización rodante.")
+        earlier = [key for key in groups if key[1] < block]
+        if not earlier:
+            raise ValueError(f"El bloque {block} de {split} no tiene un bloque anterior para la normalización rodante.")
+        previous = block_statistics[max(earlier, key=lambda key: key[1])]
+        rolled = rolling_statistics(
+            [splits[split][index] for index in indices], previous,
+            blend=spec["frases_mezcla"], window=spec["ventana_frases"],
+        )
+        for index, (mean, std) in zip(indices, rolled, strict=True):
+            scale = np.maximum(std, floor)
+            scale[scale == 0] = np.inf
+            result[split][index] = (mean, scale)
+    return result
+
+
+@dataclass(frozen=True)
+class TrialNormalization:
+    """Media y desviación de una frase concreta en los modos bloque y rodante."""
+
+    session: str
+    mean: NDArray[np.float64]
+    std: NDArray[np.float64]
+    epsilon: float
+
+    def transform_features(
+        self, features: NDArray[np.float32], session: str,
+    ) -> NDArray[np.float32]:
+        """Normaliza T × 256 en orden tx1/spikePow con las estadísticas de la frase."""
+        if session != self.session:
+            raise ValueError(f"Las estadísticas de {self.session} no corresponden a {session}.")
+        if features.ndim != 2 or features.shape[0] == 0 or features.shape[1] != len(self.mean):
+            raise ValueError("Se necesita un bloque no vacío con una columna por característica.")
+        normalized = ((features - self.mean) / (self.std + self.epsilon)).astype(np.float32)
+        if not np.isfinite(normalized).all():
+            raise ValueError("La señal normalizada contiene NaN o infinito.")
+        return normalized
+
+
+def session_trial_normalizations(
+    cfg: dict[str, Any], session_name: str, *, train_indices: Sequence[int] | None,
+) -> dict[str, list[TrialNormalization]]:
+    """Lee train/test crudos de un día y devuelve la normalización de cada frase.
+
+    Es la única fuente de estas estadísticas: la preparación, la evaluación
+    por bloques y el visor la llaman con la misma configuración y partición.
+    """
+    spec = normalization_spec(cfg)
+    root = Path(cfg["datos"]["raiz"])
+    moments = {
+        split: [trial_moments(trial) for trial in load_session(root / split / f"{session_name}.mat").trials]
+        for split in ("train", "test")
+    }
+    epsilon = cfg["preprocesamiento"]["normalizacion_epsilon"]
+    return {
+        split: [TrialNormalization(session_name, mean, std, epsilon) for mean, std in statistics]
+        for split, statistics in session_statistics(moments, spec, train_indices=train_indices).items()
+    }
+
+
 class GaussianSmoothing(nn.Module):
     """Suavizado gaussiano centrado o causal con padding cero.
 

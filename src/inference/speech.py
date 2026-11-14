@@ -11,6 +11,7 @@ from numpy.typing import NDArray
 import torch
 from torch import Tensor
 
+from src.data.preprocessing import TrainingNormalization, TrialNormalization, normalization_spec
 from src.inference.checkpoints import SpeechCheckpoint, load_inference_checkpoint
 from src.inference.ctc import IncrementalCTC
 from src.inference.preprocessing import OnlinePreprocessor
@@ -40,9 +41,16 @@ class OnlineSpeechDecoder:
         """Carga pesos y preprocesamiento autocontenidos, por defecto en CPU."""
         return cls(load_inference_checkpoint(path, device))
 
-    def start(self, session: str, *, layers: Sequence[int] | None = None) -> SpeechStream:
-        """Abre una frase de esa sesión con salidas fijadas hasta finish o reset."""
-        return SpeechStream(self.checkpoint, session, layers=layers)
+    def start(
+        self, session: str, *, layers: Sequence[int] | None = None,
+        normalization: TrialNormalization | None = None,
+    ) -> SpeechStream:
+        """Abre una frase de esa sesión con salidas fijadas hasta finish o reset.
+
+        Los checkpoints con normalización por bloque o rodante necesitan las
+        estadísticas de la frase; los de normalización fija no las admiten.
+        """
+        return SpeechStream(self.checkpoint, session, layers=layers, normalization=normalization)
 
 
 class SpeechStream:
@@ -50,8 +58,17 @@ class SpeechStream:
 
     def __init__(
         self, checkpoint: SpeechCheckpoint, session: str, *, layers: Sequence[int] | None = None,
+        normalization: TrialNormalization | None = None,
     ) -> None:
         """Vincula la frase a la normalización y al adaptador de su sesión."""
+        fixed = normalization_spec(checkpoint.config)["modo"] == "train_fija"
+        if fixed != (normalization is None) or (normalization is not None and normalization.session != session):
+            raise ValueError(
+                "La normalización por frase se pasa solo, y siempre, con checkpoints de modo bloque o rodante."
+            )
+        statistics: TrainingNormalization | TrialNormalization = (
+            checkpoint.normalization[session] if normalization is None else normalization
+        )
         selected = checkpoint.model.available_exits if layers is None else tuple(layers)
         if (not selected or len(set(selected)) != len(selected)
                 or any(type(depth) is not int or depth not in checkpoint.model.available_exits
@@ -60,7 +77,7 @@ class SpeechStream:
         self._layers = tuple(selected)
         self._checkpoint = checkpoint
         self._preprocessor = OnlinePreprocessor(
-            checkpoint.model, checkpoint.smoother, checkpoint.normalization[session], checkpoint.sessions,
+            checkpoint.model, checkpoint.smoother, statistics, checkpoint.sessions,
         )
         self._ctc = {depth: IncrementalCTC(checkpoint.blank_id) for depth in self.layers}
         self.reset()

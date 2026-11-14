@@ -12,7 +12,7 @@ from uuid import uuid4
 import numpy as np
 from numpy.typing import NDArray
 
-from src.data.preprocessing import extract_model_features
+from src.data.preprocessing import extract_model_features, normalization_spec
 from src.data.speech import BIN_SECONDS, load_session
 from src.data.speech_dataset import SpeechDataset, file_sha256, preparation_signature
 from src.inference.checkpoints import SpeechCheckpoint
@@ -54,6 +54,8 @@ class DemoSamples:
     def __init__(self, checkpoint: SpeechCheckpoint, seed: int) -> None:
         """Reutiliza la partición y las estadísticas guardadas al entrenar."""
         self.checkpoint = checkpoint
+        if normalization_spec(checkpoint.config)["modo"] != "train_fija":
+            raise ValueError("El visor todavía solo admite checkpoints con normalización fija de train.")
         self.dataset = SpeechDataset(checkpoint.config, "val")
         if (self.dataset.sessions != checkpoint.sessions
                 or preparation_signature(checkpoint.config) != checkpoint.data_signature):
