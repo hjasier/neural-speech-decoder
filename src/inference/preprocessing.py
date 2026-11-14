@@ -9,7 +9,7 @@ from numpy.typing import NDArray
 import torch
 from torch import Tensor
 
-from src.data.preprocessing import GaussianSmoothing, TrainingNormalization
+from src.data.preprocessing import GaussianSmoothing, TrainingNormalization, TrialNormalization
 from src.models.speech_gru import SpeechGRU
 
 
@@ -24,7 +24,7 @@ class OnlinePreprocessor:
 
     def __init__(
         self, model: SpeechGRU, smoother: GaussianSmoothing,
-        normalization: TrainingNormalization, sessions: Sequence[str],
+        normalization: TrainingNormalization | TrialNormalization, sessions: Sequence[str],
     ) -> None:
         """Vincula el flujo a una sesión y a un modelo en modo de evaluación."""
         if model.training:

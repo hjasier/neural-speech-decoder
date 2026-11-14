@@ -50,7 +50,7 @@ def save_checkpoint(
         state.update(exit_metrics=exit_metrics, selection_exit=cfg["modelo"]["capas"],
                      ctc_weights=cfg["entrenamiento"]["ctc_pesos"])
     if state["format_version"] == 3:
-        state["streaming"] = streaming_spec()
+        state["streaming"] = streaming_spec(cfg)
         state["inference_sha256"] = inference_signature(state)
     temporary = path.with_suffix(".tmp")
     torch.save(state, temporary)

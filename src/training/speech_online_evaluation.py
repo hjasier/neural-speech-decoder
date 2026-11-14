@@ -14,9 +14,12 @@ import numpy as np
 from numpy.typing import NDArray
 import torch
 
-from src.data.preprocessing import extract_model_features
+from src.data.preprocessing import (
+    TrialNormalization, extract_model_features, normalization_spec, session_trial_normalizations,
+)
 from src.data.speech import BIN_SECONDS, load_session
 from src.data.speech_dataset import SpeechDataset, file_sha256, preparation_signature
+from src.data.speech_protocol import read_speech_protocol
 from src.inference.ctc import decode_ctc
 from src.inference.speech import OnlineSpeechDecoder
 from src.training.metrics import edit_distance
@@ -32,6 +35,8 @@ class OnlineTrial:
     trial_index: int
     block: int
     reference_text: str
+    # Estadísticas de la frase en los modos bloque y rodante; None con normalización fija.
+    normalization: TrialNormalization | None = None
 
 
 def iter_online_trials(dataset: SpeechDataset, decoder: OnlineSpeechDecoder) -> Iterator[OnlineTrial]:
@@ -49,20 +54,28 @@ def iter_online_trials(dataset: SpeechDataset, decoder: OnlineSpeechDecoder) -> 
     manifest = json.loads((dataset.root / "manifest.json").read_text(encoding="utf-8"))
     source_split = "train" if dataset.split == "val" else "test"
     sources = {entry["session"]: entry for entry in manifest["files"] if entry["split"] == source_split}
+    fixed = normalization_spec(cfg)["modo"] == "train_fija"
+    protocol = read_speech_protocol(cfg)
+    partitions = {entry["session"]: entry["train"] for entry in protocol["sessions"]} if protocol else {}
     for day, name in enumerate(dataset.sessions):
         path = Path(cfg["datos"]["raiz"]) / source_split / f"{name}.mat"
         if file_sha256(path) != sources[name]["source_sha256"]:
             raise ValueError(f"La grabación cruda ha cambiado: {path}")
         recording = load_session(path)
+        per_trial = None if fixed else session_trial_normalizations(
+            cfg, name, train_indices=partitions.get(name),
+        )[source_split]
         for index in dataset.session_indices[day]:
             sample = dataset[index]
             trial = recording.trials[sample.trial_index]
             raw = extract_model_features(trial)
-            normalized = checkpoint.normalization[name].transform_features(raw, name)
+            statistics = None if per_trial is None else per_trial[sample.trial_index]
+            normalized = (statistics or checkpoint.normalization[name]).transform_features(raw, name)
             if (trial.index != sample.trial_index or trial.block != sample.block
                     or not np.array_equal(normalized, sample.features.numpy())):
                 raise ValueError("La señal cruda y sus estadísticas no reproducen el ensayo preparado.")
-            yield OnlineTrial(raw, tuple(sample.targets.tolist()), name, trial.index, trial.block, sample.reference)
+            yield OnlineTrial(raw, tuple(sample.targets.tolist()), name, trial.index, trial.block,
+                              sample.reference, statistics)
         del recording
 
 
@@ -80,7 +93,7 @@ def _run_profile(
     decoder: OnlineSpeechDecoder, trial: OnlineTrial, depth: int, block_bins: int,
 ) -> dict[str, Any]:
     device = decoder.checkpoint.model.initial_state.device
-    opening_ms, stream = _timed(lambda: decoder.start(trial.session, layers=(depth,)), device)
+    opening_ms, stream = _timed(lambda: decoder.start(trial.session, layers=(depth,), normalization=trial.normalization), device)
     processing_ms = opening_ms
     ready_ms = opening_ms
     first_input_ms = first_ready_ms = None
@@ -127,7 +140,8 @@ def _complete_logits(
 ) -> dict[int, torch.Tensor]:
     checkpoint = decoder.checkpoint
     session_id = checkpoint.sessions.index(trial.session)
-    normalized = checkpoint.normalization[trial.session].transform_features(trial.raw, trial.session)
+    statistics = trial.normalization or checkpoint.normalization[trial.session]
+    normalized = statistics.transform_features(trial.raw, trial.session)
     features = torch.from_numpy(normalized).unsqueeze(0).to(checkpoint.model.initial_state)
     return checkpoint.model.forward_exits(checkpoint.smoother(features),
                                          torch.tensor([session_id], device=features.device), layers=exits)
@@ -146,7 +160,7 @@ def _stream_logits(
 
     handle = head.register_forward_hook(capture)
     try:
-        stream = decoder.start(trial.session, layers=(depth,))
+        stream = decoder.start(trial.session, layers=(depth,), normalization=trial.normalization)
         for start in range(0, len(trial.raw), block_bins):
             stream.push(trial.raw[start:start + block_bins])
         stream.finish()

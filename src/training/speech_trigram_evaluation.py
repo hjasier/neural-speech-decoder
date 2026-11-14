@@ -36,7 +36,7 @@ def check_trigram_streaming(
     """Decodifica los mismos logits agrupados o por bloques, aislando el estado WFST."""
     profiles = {}
     for depth in _evaluation_exits(decoder, spec):
-        neural = decoder.start(trial.session, layers=(depth,))
+        neural = decoder.start(trial.session, layers=(depth,), normalization=trial.normalization)
         incremental = language.start()
         chunks = []
         for start in range(0, len(trial.raw), spec["bloque_bins"]):
@@ -63,7 +63,8 @@ def _profile(
     device = decoder.checkpoint.model.initial_state.device
 
     def open_streams() -> tuple:
-        return decoder.start(trial.session, layers=(depth,)), language.start()
+        return (decoder.start(trial.session, layers=(depth,), normalization=trial.normalization),
+                language.start())
 
     opening_ms, (neural, words) = _timed(open_streams, device)
     processing_ms = ready_ms = opening_ms
