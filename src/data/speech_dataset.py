@@ -14,6 +14,7 @@ from torch import Tensor
 from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import Dataset, Sampler
 
+from src.data.preprocessing import normalization_spec
 from src.data.speech_protocol import read_speech_protocol
 
 
@@ -61,6 +62,10 @@ def preparation_signature(cfg: dict[str, Any]) -> str:
     }
     if read_speech_protocol(cfg) is not None:
         state["protocol_sha256"] = cfg["protocolo"]["sha256"]
+    # La normalización fija conserva la firma de las cachés ya preparadas.
+    normalization = normalization_spec(cfg)
+    if normalization["modo"] != "train_fija":
+        state["normalization"] = normalization
     return hashlib.sha256(json.dumps(state, sort_keys=True).encode("utf-8")).hexdigest()
 
 
