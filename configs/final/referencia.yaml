@@ -1,0 +1,15 @@
+# Fase 1 de la entrega final: palabras e intervalos de la tabla de referencia.
+# scripts/evaluate_queue.py evalúa con el trigrama los checkpoints causales
+# que la cola ya terminó; scripts/build_reference_table.py reúne los resultados.
+plan: configs/final/cola_replica.yaml
+# Test se evalúa una sola vez en la Fase 5; aquí solo se admite val.
+split: val
+# Bloques de 80 ms en CPU, igual que la evaluación de la E1.
+evaluacion: configs/entrenos_online/speech_online_evaluacion.yaml
+# Grafo original de tres gramos y búsqueda del baseline de los autores, sin ajustar.
+lenguaje: configs/entrenos_online/speech_trigrama.yaml
+resumen: configs/final/resumen_metricas.yaml
+# Una carpeta por trabajo, con predicciones, métricas y resumen.
+salida: runs/final/referencia
+# Prefijo de la tabla: se escriben el .json y el .md.
+tabla: docs/resultados/t12_final_referencia
