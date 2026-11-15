@@ -1,0 +1,26 @@
+# Fase 1 de la entrega final: tabla de referencia de la réplica T12.
+# Se ejecuta con scripts/run_queue.py; cada trabajo es variante × semilla.
+# `cambios` sustituye claves completas del perfil base (notación a.b.c).
+# Cada modo de normalización necesita su propia carpeta de señales preparadas.
+semillas: [0, 1, 2, 3, 4]
+variantes:
+  # Referencias: modelo online del paper y baseline offline de los autores.
+  t12_causal:
+    config: configs/final/t12_causal.yaml
+  t12_offline:
+    config: configs/final/t12_offline.yaml
+  # Ablación de normalización sobre el modelo causal (Extended Data Fig. 5a).
+  t12_causal_bloque:
+    config: configs/final/t12_causal.yaml
+    semillas: [0, 1, 2]
+    cambios:
+      preprocesamiento.normalizacion:
+        modo: bloque
+      datos.preparados: data/speech_2023/preparados_final_v2_bloque
+  t12_causal_train_fija:
+    config: configs/final/t12_causal.yaml
+    semillas: [0, 1, 2]
+    cambios:
+      preprocesamiento.normalizacion:
+        modo: train_fija
+      datos.preparados: data/speech_2023/preparados_final_v2_train_fija

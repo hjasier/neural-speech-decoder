@@ -1,0 +1,22 @@
+# Fase 1 de la entrega final: ajuste de la búsqueda del trigrama en val.
+# scripts/tune_speech_trigram.py decodifica los mismos logits con cada
+# combinación de la rejilla y elige la de menor WER agregado entre semillas.
+plan: configs/final/cola_replica.yaml
+variante: t12_causal
+semillas: [0, 1, 2, 3, 4]
+# Solo val: los parámetros elegidos se evalúan en test una vez, en la Fase 5.
+split: val
+evaluacion: configs/entrenos_online/speech_online_evaluacion.yaml
+# Grafo y búsqueda de partida; la rejilla sustituye solo las claves que declara.
+lenguaje: configs/entrenos_online/speech_trigrama.yaml
+# Producto cartesiano. La combinación de partida se decodifica siempre, y la primera.
+# blank_penalty: 0, log 2, log 4 y log 7; los autores usan log 2 con tres
+# gramos y log 7 con cinco. acoustic_scale: 0,8 con tres gramos y 0,5 con cinco.
+rejilla:
+  acoustic_scale: [0.4, 0.5, 0.6, 0.8, 1.0]
+  blank_penalty: [0.0, 0.6931471805599453, 1.3862943611198906, 1.9459101090932196]
+  beam: [18.0]
+# resultados.jsonl guarda cada combinación al terminarla; relanzar continúa.
+salida: runs/final/ajuste_trigrama
+# Prefijo de la tabla: se escriben el .json y el .md.
+tabla: docs/resultados/t12_final_ajuste_trigrama

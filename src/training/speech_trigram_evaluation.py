@@ -160,3 +160,44 @@ def evaluate_trigram(
             "wer_normalization": "misma limpieza inglesa que etiquetas: minúsculas, letras, apóstrofos y guiones; split por espacios",
             "timing_scope": "GRU, normalización, filtro, ventanas, CTC, transferencia CPU, IPC y WFST; sin disco, métricas ni carga de modelos",
             "arrival_clock": "simulado sin red ni sleep; bloques disponibles en stop_bin * 20 ms; parciales revisables"}
+
+
+@torch.inference_mode()
+def collect_final_logits(
+    decoder: OnlineSpeechDecoder, trials: Iterable[OnlineTrial], spec: dict[str, Any], *, expected_trials: int,
+) -> list[dict[str, Any]]:
+    """Guarda los logits causales de la salida final de cada frase, calculados por bloques.
+
+    Son los mismos que recibe el WFST en evaluate_trigram; solo cambia su
+    agrupación, que check_trigram_streaming demuestra que no altera el texto.
+    Sirven para comparar parámetros de búsqueda sin repetir la GRU.
+    """
+    depth = max(_evaluation_exits(decoder, spec))
+    items = []
+    for trial in trials:
+        neural = decoder.start(trial.session, layers=(depth,), normalization=trial.normalization)
+        chunks = []
+        for start in range(0, len(trial.raw), spec["bloque_bins"]):
+            logits = neural.push_with_logits(trial.raw[start:start + spec["bloque_bins"]]).logits[depth]
+            if logits.shape[0]:
+                chunks.append(logits.cpu())
+        neural.finish()
+        if not chunks:
+            raise ValueError("El ensayo no produjo logits.")
+        items.append({"session": trial.session, "source_trial_index": trial.trial_index,
+                      "reference_text": trial.reference_text, "logits": torch.cat(chunks)})
+    if len(items) != expected_trials or not items:
+        raise ValueError("No se recorrió exactamente el split completo.")
+    return items
+
+
+def search_word_errors(language: TrigramDecoder, items: Iterable[dict[str, Any]]) -> tuple[list[int], list[int]]:
+    """Decodifica cada frase con la búsqueda vigente; devuelve errores y palabras por frase."""
+    errors, words = [], []
+    for item in items:
+        stream = language.start()
+        stream.push(item["logits"])
+        trial_errors, trial_words = word_error_counts(item["reference_text"], stream.finish())
+        errors.append(trial_errors)
+        words.append(trial_words)
+    return errors, words
