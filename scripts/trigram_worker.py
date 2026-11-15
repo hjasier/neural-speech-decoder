@@ -26,6 +26,14 @@ def respond(payload: dict[str, Any]) -> None:
     print(json.dumps({"ok": True, **payload}, allow_nan=False), flush=True)
 
 
+def decode_options(cfg: dict[str, Any]) -> Any:
+    """Traduce la búsqueda del perfil al orden posicional del binding oficial."""
+    return lm_decoder.DecodeOptions(
+        cfg["max_active"], cfg["min_active"], cfg["beam"], cfg["lattice_beam"],
+        cfg["acoustic_scale"], cfg["blank_skip_threshold"], cfg["length_penalty"], cfg["nbest"],
+    )
+
+
 def main() -> int:
     """Comparte recursos del grafo, con un BrainSpeechDecoder por frase activa."""
     respond({"python": platform.python_version(), "torch": str(torch.__version__), "numpy": np.__version__,
@@ -53,10 +61,7 @@ def main() -> int:
                 if hasattr(lm_decoder, "SetFstReadMode"):
                     lm_decoder.SetFstReadMode(read_mode)
                 blank_penalty = cfg["blank_penalty"]
-                options = lm_decoder.DecodeOptions(
-                    cfg["max_active"], cfg["min_active"], cfg["beam"], cfg["lattice_beam"],
-                    cfg["acoustic_scale"], cfg["blank_skip_threshold"], cfg["length_penalty"], cfg["nbest"],
-                )
+                options = decode_options(cfg)
                 resource = lm_decoder.DecodeResource(str(model / "TLG.fst"), "", "", str(model / "words.txt"), "")
                 mapped = mapped_bytes(model / "TLG.fst") if read_mode == "map" else 0
                 if read_mode == "map" and (not mapped or mapped < (model / "TLG.fst").stat().st_size - 4096):
@@ -64,6 +69,14 @@ def main() -> int:
                 graph_cache = MappedGraphCache(model / "TLG.fst", cache_policy) if cache_policy is not None else None
                 respond({"read_mode": read_mode, "mapped_graph_bytes": mapped,
                          "peak_rss_bytes": process_resource.getrusage(process_resource.RUSAGE_SELF).ru_maxrss * 1024})
+                continue
+            if operation == "options":
+                # Cambia la búsqueda sin releer el grafo; una frase abierta conservaría la anterior.
+                if resource is None or flows:
+                    raise ValueError("La búsqueda solo cambia con el grafo cargado y sin frases abiertas.")
+                blank_penalty = request["options"]["blank_penalty"]
+                options = decode_options(request["options"])
+                respond({})
                 continue
             identifier = request["flow"]
             if operation == "start":

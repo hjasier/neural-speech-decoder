@@ -151,6 +151,11 @@ class TrigramDecoder:
         self._request({"op": "start", "flow": self._next_id})
         return self._next_id
 
+    def configure(self, search: dict[str, Any]) -> None:
+        """Cambia los parámetros de búsqueda sin recargar el grafo; solo entre frases."""
+        self._request({"op": "options", "options": search})
+        self.spec = {**self.spec, "busqueda": dict(search)}
+
     def start(self) -> TrigramStream:
         """Inicia una frase con estado WFST propio y el grafo compartido."""
         return TrigramStream(self)
