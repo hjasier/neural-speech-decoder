@@ -1,0 +1,1296 @@
+{
+  "scope": "cifras observadas en val; sin interpretación estadística ni uso de test",
+  "split": "val",
+  "protocolo": "t12_bloques_v2",
+  "confianza": "95 %",
+  "busqueda_trigrama": {
+    "max_active": 7000,
+    "min_active": 200,
+    "beam": 18.0,
+    "lattice_beam": 8.0,
+    "acoustic_scale": 0.8,
+    "blank_skip_threshold": 1.0,
+    "blank_penalty": 0.6931471805599453,
+    "length_penalty": 0.0,
+    "nbest": 1
+  },
+  "sources_sha256": {
+    "configs/final/referencia.yaml": "6c63b9ea129bcbd33ad02cfbfc68c3e515c3c5ddfb4dd3a7f8b484c14b2934bc",
+    "configs/final/cola_replica.yaml": "a7e147d67d7599d74bd6bfc9c2d58212dc0131d4ae78b184961cabf46265e58e"
+  },
+  "sin_entrenar": [],
+  "variantes": [
+    {
+      "variante": "t12_causal",
+      "normalizacion": "rodante",
+      "suavizado": "causal",
+      "unidades": 512,
+      "kernel": 14,
+      "semillas": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "semillas_con_trigrama": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "per_val": {
+        "n": 5,
+        "media": 0.24812708522899607,
+        "desviacion": 0.005360192087862875,
+        "min": 0.23858811040339703,
+        "max": 0.2511563542614498
+      },
+      "wer": {
+        "n": 5,
+        "media": 0.28203098686426403,
+        "desviacion": 0.0068501965978846275,
+        "min": 0.2701246210845403,
+        "max": 0.2876389356685753
+      },
+      "per_bloques": {
+        "n": 5,
+        "media": 0.24813845920533817,
+        "desviacion": 0.005377895251365221,
+        "min": 0.23856915377616014,
+        "max": 0.25119426751592355
+      }
+    },
+    {
+      "variante": "t12_offline",
+      "normalizacion": "rodante",
+      "suavizado": "centered",
+      "unidades": 1024,
+      "kernel": 32,
+      "semillas": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "semillas_con_trigrama": [],
+      "per_val": {
+        "n": 5,
+        "media": 0.2080489839247801,
+        "desviacion": 0.0006562662789321249,
+        "min": 0.20748028510767363,
+        "max": 0.20916742493175614
+      },
+      "wer": null,
+      "per_bloques": null
+    },
+    {
+      "variante": "t12_causal_bloque",
+      "normalizacion": "bloque",
+      "suavizado": "causal",
+      "unidades": 512,
+      "kernel": 14,
+      "semillas": [
+        0,
+        1,
+        2
+      ],
+      "semillas_con_trigrama": [
+        0,
+        1,
+        2
+      ],
+      "per_val": {
+        "n": 3,
+        "media": 0.23907466383581033,
+        "desviacion": 0.0044866509675749065,
+        "min": 0.23405747649378222,
+        "max": 0.2427016985138004
+      },
+      "wer": {
+        "n": 3,
+        "media": 0.2652688896373639,
+        "desviacion": 0.006795135510347485,
+        "min": 0.2575783091950152,
+        "max": 0.27046143482654095
+      },
+      "per_bloques": {
+        "n": 3,
+        "media": 0.23909993933879284,
+        "desviacion": 0.0045039845285145905,
+        "min": 0.2340764331210191,
+        "max": 0.24277752502274796
+      }
+    },
+    {
+      "variante": "t12_causal_train_fija",
+      "normalizacion": "train_fija",
+      "suavizado": "causal",
+      "unidades": 512,
+      "kernel": 14,
+      "semillas": [
+        0,
+        1,
+        2
+      ],
+      "semillas_con_trigrama": [
+        0,
+        1,
+        2
+      ],
+      "per_val": {
+        "n": 3,
+        "media": 0.3208914669901931,
+        "desviacion": 0.005702269849896663,
+        "min": 0.3143387928419776,
+        "max": 0.3247270245677889
+      },
+      "wer": {
+        "n": 3,
+        "media": 0.3911530257101157,
+        "desviacion": 0.012935942617585527,
+        "min": 0.37622094981475246,
+        "max": 0.39895587739979793
+      },
+      "per_bloques": {
+        "n": 3,
+        "media": 0.32091042361743,
+        "desviacion": 0.005752214578510442,
+        "min": 0.3143008795875038,
+        "max": 0.32478389444949957
+      }
+    }
+  ],
+  "trabajos": [
+    {
+      "trabajo": "t12_causal_seed0",
+      "variante": "t12_causal",
+      "seed": 0,
+      "normalizacion": "rodante",
+      "suavizado": "causal",
+      "unidades": 512,
+      "kernel": 14,
+      "run_id": "ddmfz9oq",
+      "resultado_sha256": "92067b75244bd041f51e650f4c19b5bf2a4953bb7be9cd51816098d78dd216c5",
+      "paso_seleccionado": 9901,
+      "pasos": 10001,
+      "per_val": 0.23858811040339703,
+      "errores_fonemas": 12586,
+      "fonemas": 52752,
+      "frases": 1900,
+      "ctc_val": 24.772142847964638,
+      "segundos_entrenamiento": 341.6358187716687,
+      "hardware": "NVIDIA GeForce RTX 4090",
+      "trigrama": {
+        "wandb_run_id": "1h514nm2",
+        "checkpoint_sha256": "e19232dbfb1025db5590626240d02e593277634f6c285ca7f340d569d5ab187e",
+        "predicciones_sha256": "cbfb8750222a0cf544f127bba28154afbac57d77bc910c317aea9f07cfde7b37",
+        "metricas_sha256": "25efcc1f94b9e31055a3cb8522368df07225c4e3ebe1791dd48954b244cf7057",
+        "resumen_sha256": "f1b3a624cbe739ab90be735141d2bd54eb9b542297f8681ab4d362660c8ddea5",
+        "busqueda": {
+          "max_active": 7000,
+          "min_active": 200,
+          "beam": 18.0,
+          "lattice_beam": 8.0,
+          "acoustic_scale": 0.8,
+          "blank_skip_threshold": 1.0,
+          "blank_penalty": 0.6931471805599453,
+          "length_penalty": 0.0,
+          "nbest": 1
+        },
+        "rtf": 0.04074398383178832,
+        "wer": 0.2701246210845403,
+        "per": 0.23856915377616014,
+        "frases": 1900,
+        "errores_palabras": 3208,
+        "palabras": 11876,
+        "intervalos": {
+          "global": {
+            "per": {
+              "rate": 0.23856915377616014,
+              "low": 0.2321332516844959,
+              "high": 0.24489256201157483,
+              "trials": 1900
+            },
+            "wer": {
+              "rate": 0.2701246210845403,
+              "low": 0.2588531964553589,
+              "high": 0.28152048026767207,
+              "trials": 1900
+            }
+          },
+          "vocalizada": {
+            "per": {
+              "rate": 0.23877584547865474,
+              "low": 0.2315096591861382,
+              "high": 0.2461551904644895,
+              "trials": 1500
+            },
+            "wer": {
+              "rate": 0.270868288590604,
+              "low": 0.25821728522202797,
+              "high": 0.28359806289247197,
+              "trials": 1500
+            }
+          },
+          "silenciosa": {
+            "per": {
+              "rate": 0.23770087745243024,
+              "low": 0.22465762844111675,
+              "high": 0.2510486837601308,
+              "trials": 400
+            },
+            "wer": {
+              "rate": 0.2670940170940171,
+              "low": 0.24421952807385708,
+              "high": 0.2913493151552614,
+              "trials": 400
+            }
+          }
+        },
+        "bootstrap": {
+          "remuestreos": 10000,
+          "confianza": 0.95,
+          "seed": 0
+        }
+      }
+    },
+    {
+      "trabajo": "t12_causal_seed1",
+      "variante": "t12_causal",
+      "seed": 1,
+      "normalizacion": "rodante",
+      "suavizado": "causal",
+      "unidades": 512,
+      "kernel": 14,
+      "run_id": "a52ft9pz",
+      "resultado_sha256": "4847a057ce70eb0c4034958ff10deac366c2e9cb5b5a59d7a82aaeae5be82df1",
+      "paso_seleccionado": 9751,
+      "pasos": 10001,
+      "per_val": 0.24977252047315743,
+      "errores_fonemas": 13176,
+      "fonemas": 52752,
+      "frases": 1900,
+      "ctc_val": 25.59467538934005,
+      "segundos_entrenamiento": 341.672196862055,
+      "hardware": "NVIDIA GeForce RTX 4090",
+      "trigrama": {
+        "wandb_run_id": "d9tc2qhe",
+        "checkpoint_sha256": "9c3f14ce8f419d301130ab0015e1a381993fcea39253bcd7c905103dd6d0e4ca",
+        "predicciones_sha256": "499d69ec77056a8676a625117c3da7cd251a448101b2d294efc99f379ed78a4e",
+        "metricas_sha256": "6fd31b077f7ecf32303b280ec6a4160f2b8f910d4dcebeab2a0d1a8286842424",
+        "resumen_sha256": "980c4e8f47c84d720ea09aa13ac146b072ecaafdda6396386f0c8297cdd58d2e",
+        "busqueda": {
+          "max_active": 7000,
+          "min_active": 200,
+          "beam": 18.0,
+          "lattice_beam": 8.0,
+          "acoustic_scale": 0.8,
+          "blank_skip_threshold": 1.0,
+          "blank_penalty": 0.6931471805599453,
+          "length_penalty": 0.0,
+          "nbest": 1
+        },
+        "rtf": 0.04157147538279869,
+        "wer": 0.2876389356685753,
+        "per": 0.2497914771003943,
+        "frases": 1900,
+        "errores_palabras": 3416,
+        "palabras": 11876,
+        "intervalos": {
+          "global": {
+            "per": {
+              "rate": 0.2497914771003943,
+              "low": 0.2434362690868745,
+              "high": 0.2560087167929403,
+              "trials": 1900
+            },
+            "wer": {
+              "rate": 0.2876389356685753,
+              "low": 0.27630139709781304,
+              "high": 0.29922950346929184,
+              "trials": 1900
+            }
+          },
+          "vocalizada": {
+            "per": {
+              "rate": 0.2506512708582694,
+              "low": 0.24351987391050708,
+              "high": 0.25788311704606204,
+              "trials": 1500
+            },
+            "wer": {
+              "rate": 0.2897441275167785,
+              "low": 0.2767326399703175,
+              "high": 0.30264485956696074,
+              "trials": 1500
+            }
+          },
+          "silenciosa": {
+            "per": {
+              "rate": 0.246179631272799,
+              "low": 0.23275820511456574,
+              "high": 0.2600122816148245,
+              "trials": 400
+            },
+            "wer": {
+              "rate": 0.27905982905982907,
+              "low": 0.25522811696845676,
+              "high": 0.3040769031439938,
+              "trials": 400
+            }
+          }
+        },
+        "bootstrap": {
+          "remuestreos": 10000,
+          "confianza": 0.95,
+          "seed": 0
+        }
+      }
+    },
+    {
+      "trabajo": "t12_causal_seed2",
+      "variante": "t12_causal",
+      "seed": 2,
+      "normalizacion": "rodante",
+      "suavizado": "causal",
+      "unidades": 512,
+      "kernel": 14,
+      "run_id": "boetvrq2",
+      "resultado_sha256": "80618099b8f56c2eb21181536ed40a438ff23c021028e3f184ac6b241b6c11e5",
+      "paso_seleccionado": 9801,
+      "pasos": 10001,
+      "per_val": 0.2502274795268426,
+      "errores_fonemas": 13200,
+      "fonemas": 52752,
+      "frases": 1900,
+      "ctc_val": 25.38936651932566,
+      "segundos_entrenamiento": 341.470175919123,
+      "hardware": "NVIDIA GeForce RTX 4090",
+      "trigrama": {
+        "wandb_run_id": "dgqrr6n4",
+        "checkpoint_sha256": "d1c9ce8ce97c20fcb48c9bee309152bd35eb24463d59272f5f5b59ceb3e3a52f",
+        "predicciones_sha256": "d6f1734ccb26723d2564836c9f9c0e75dc744509b134c666df98c90350a369c0",
+        "metricas_sha256": "ad58da491b56efaa54c20eec6f22804bac1797b341c0d3575fbf1fd5471a854d",
+        "resumen_sha256": "0d172677397f9b21ebf8e66ded6771660f78cc5831b3f99bbda4531334fbc635",
+        "busqueda": {
+          "max_active": 7000,
+          "min_active": 200,
+          "beam": 18.0,
+          "lattice_beam": 8.0,
+          "acoustic_scale": 0.8,
+          "blank_skip_threshold": 1.0,
+          "blank_penalty": 0.6931471805599453,
+          "length_penalty": 0.0,
+          "nbest": 1
+        },
+        "rtf": 0.04083034770699501,
+        "wer": 0.28502862916807004,
+        "per": 0.2502274795268426,
+        "frases": 1900,
+        "errores_palabras": 3385,
+        "palabras": 11876,
+        "intervalos": {
+          "global": {
+            "per": {
+              "rate": 0.2502274795268426,
+              "low": 0.24400591945908606,
+              "high": 0.2563669227857523,
+              "trials": 1900
+            },
+            "wer": {
+              "rate": 0.28502862916807004,
+              "low": 0.2735986759911755,
+              "high": 0.29648649171883285,
+              "trials": 1900
+            }
+          },
+          "vocalizada": {
+            "per": {
+              "rate": 0.250440047877209,
+              "low": 0.24339718083589965,
+              "high": 0.25756329258399846,
+              "trials": 1500
+            },
+            "wer": {
+              "rate": 0.2900587248322148,
+              "low": 0.27681360479573114,
+              "high": 0.3033171273620747,
+              "trials": 1500
+            }
+          },
+          "silenciosa": {
+            "per": {
+              "rate": 0.24933451641526175,
+              "low": 0.23638647887822917,
+              "high": 0.26281753028206734,
+              "trials": 400
+            },
+            "wer": {
+              "rate": 0.26452991452991453,
+              "low": 0.24046326263419743,
+              "high": 0.2896998710414053,
+              "trials": 400
+            }
+          }
+        },
+        "bootstrap": {
+          "remuestreos": 10000,
+          "confianza": 0.95,
+          "seed": 0
+        }
+      }
+    },
+    {
+      "trabajo": "t12_causal_seed3",
+      "variante": "t12_causal",
+      "seed": 3,
+      "normalizacion": "rodante",
+      "suavizado": "causal",
+      "unidades": 512,
+      "kernel": 14,
+      "run_id": "c0mu8nug",
+      "resultado_sha256": "f87c913a86774e50ac959c75a70379828aee4a10e78460bb13faabd405e49bd0",
+      "paso_seleccionado": 9951,
+      "pasos": 10001,
+      "per_val": 0.25089096148013346,
+      "errores_fonemas": 13235,
+      "fonemas": 52752,
+      "frases": 1900,
+      "ctc_val": 25.442446160567435,
+      "segundos_entrenamiento": 343.37502492044587,
+      "hardware": "NVIDIA GeForce RTX 4090",
+      "trigrama": {
+        "wandb_run_id": "u19olpo3",
+        "checkpoint_sha256": "3e5f3e93a77268d38f4ebaa4ca8caa1caa679b27e40fe360421e77862924ae40",
+        "predicciones_sha256": "165d1508c28dede8df7ee0d3e256aaea1402c1e38a2bfc5728433eba50efd71f",
+        "metricas_sha256": "638b3a155cd04726109b89058ab0fa564e2d13dd36feeb5f32ac793de3bc54f4",
+        "resumen_sha256": "e2ffde621091ea56f0c8c96ea7a6277aaa41f36ed77a5b75dca1ad05d033d846",
+        "busqueda": {
+          "max_active": 7000,
+          "min_active": 200,
+          "beam": 18.0,
+          "lattice_beam": 8.0,
+          "acoustic_scale": 0.8,
+          "blank_skip_threshold": 1.0,
+          "blank_penalty": 0.6931471805599453,
+          "length_penalty": 0.0,
+          "nbest": 1
+        },
+        "rtf": 0.0414475452475416,
+        "wer": 0.283512967329067,
+        "per": 0.25090991810737034,
+        "frases": 1900,
+        "errores_palabras": 3367,
+        "palabras": 11876,
+        "intervalos": {
+          "global": {
+            "per": {
+              "rate": 0.25090991810737034,
+              "low": 0.24458713088157494,
+              "high": 0.25722875993271854,
+              "trials": 1900
+            },
+            "wer": {
+              "rate": 0.283512967329067,
+              "low": 0.2719813862986935,
+              "high": 0.29522242319004793,
+              "trials": 1900
+            }
+          },
+          "vocalizada": {
+            "per": {
+              "rate": 0.2513084090215682,
+              "low": 0.2441545729495349,
+              "high": 0.2583192019339815,
+              "trials": 1500
+            },
+            "wer": {
+              "rate": 0.2850251677852349,
+              "low": 0.27219992304017104,
+              "high": 0.29780666022751723,
+              "trials": 1500
+            }
+          },
+          "silenciosa": {
+            "per": {
+              "rate": 0.2492359262545598,
+              "low": 0.23610673368588742,
+              "high": 0.26283931142453565,
+              "trials": 400
+            },
+            "wer": {
+              "rate": 0.27735042735042736,
+              "low": 0.2525856542882405,
+              "high": 0.30322882569101917,
+              "trials": 400
+            }
+          }
+        },
+        "bootstrap": {
+          "remuestreos": 10000,
+          "confianza": 0.95,
+          "seed": 0
+        }
+      }
+    },
+    {
+      "trabajo": "t12_causal_seed4",
+      "variante": "t12_causal",
+      "seed": 4,
+      "normalizacion": "rodante",
+      "suavizado": "causal",
+      "unidades": 512,
+      "kernel": 14,
+      "run_id": "sy2g8c02",
+      "resultado_sha256": "50b49b75a74421a31e73bacbea44cf7a5bb01a317ed8cae95970f11acb8e870f",
+      "paso_seleccionado": 9951,
+      "pasos": 10001,
+      "per_val": 0.2511563542614498,
+      "errores_fonemas": 13249,
+      "fonemas": 52752,
+      "frases": 1900,
+      "ctc_val": 25.433026829769737,
+      "segundos_entrenamiento": 342.11388964846265,
+      "hardware": "NVIDIA GeForce RTX 4090",
+      "trigrama": {
+        "wandb_run_id": "n83ibtnb",
+        "checkpoint_sha256": "685f2ea7411502c3f33e0fd0da7bfbf1454b11aa57d6deffd1e60e9ec43897f6",
+        "predicciones_sha256": "a6bed631ccf602861df97dfb21dd7e84e81be5bb4c0df422537867f31f83d2ad",
+        "metricas_sha256": "8d9e07c865f4968a278d0477353626d26a1e76096350080b55441b439bc0e25e",
+        "resumen_sha256": "151a00a94cf084eeedb7d1f994393c69f9cc8806935411436acb3a42edd2ce27",
+        "busqueda": {
+          "max_active": 7000,
+          "min_active": 200,
+          "beam": 18.0,
+          "lattice_beam": 8.0,
+          "acoustic_scale": 0.8,
+          "blank_skip_threshold": 1.0,
+          "blank_penalty": 0.6931471805599453,
+          "length_penalty": 0.0,
+          "nbest": 1
+        },
+        "rtf": 0.04131771172524051,
+        "wer": 0.2838497810710677,
+        "per": 0.25119426751592355,
+        "frases": 1900,
+        "errores_palabras": 3371,
+        "palabras": 11876,
+        "intervalos": {
+          "global": {
+            "per": {
+              "rate": 0.25119426751592355,
+              "low": 0.24486946574583882,
+              "high": 0.25734492752263455,
+              "trials": 1900
+            },
+            "wer": {
+              "rate": 0.2838497810710677,
+              "low": 0.27260449654598223,
+              "high": 0.2951153820312397,
+              "trials": 1900
+            }
+          },
+          "vocalizada": {
+            "per": {
+              "rate": 0.251965547184867,
+              "low": 0.24486765593279752,
+              "high": 0.2588199993458907,
+              "trials": 1500
+            },
+            "wer": {
+              "rate": 0.2842911073825503,
+              "low": 0.2716337304836474,
+              "high": 0.297097009154848,
+              "trials": 1500
+            }
+          },
+          "silenciosa": {
+            "per": {
+              "rate": 0.2479542541654343,
+              "low": 0.2344752690295192,
+              "high": 0.2618536829879577,
+              "trials": 400
+            },
+            "wer": {
+              "rate": 0.28205128205128205,
+              "low": 0.2570321144183853,
+              "high": 0.30791921855071624,
+              "trials": 400
+            }
+          }
+        },
+        "bootstrap": {
+          "remuestreos": 10000,
+          "confianza": 0.95,
+          "seed": 0
+        }
+      }
+    },
+    {
+      "trabajo": "t12_offline_seed0",
+      "variante": "t12_offline",
+      "seed": 0,
+      "normalizacion": "rodante",
+      "suavizado": "centered",
+      "unidades": 1024,
+      "kernel": 32,
+      "run_id": "ozp0c1g7",
+      "resultado_sha256": "8b4c15404df71e53c6937da21258f4e219efbfe33e23c575d0d4d6ac73f277a9",
+      "paso_seleccionado": 9751,
+      "pasos": 10001,
+      "per_val": 0.2079352441613588,
+      "errores_fonemas": 10969,
+      "fonemas": 52752,
+      "frases": 1900,
+      "ctc_val": 23.695885555869655,
+      "segundos_entrenamiento": 694.970649934141,
+      "hardware": "NVIDIA GeForce RTX 4090",
+      "trigrama": null
+    },
+    {
+      "trabajo": "t12_offline_seed1",
+      "variante": "t12_offline",
+      "seed": 1,
+      "normalizacion": "rodante",
+      "suavizado": "centered",
+      "unidades": 1024,
+      "kernel": 32,
+      "run_id": "c03xy5om",
+      "resultado_sha256": "430196d2dc2b86f4a807b88f84ea4cca6ef9af1529138255bc665c53e75e4644",
+      "paso_seleccionado": 10001,
+      "pasos": 10001,
+      "per_val": 0.20916742493175614,
+      "errores_fonemas": 11034,
+      "fonemas": 52752,
+      "frases": 1900,
+      "ctc_val": 23.714448434930098,
+      "segundos_entrenamiento": 695.5349899342982,
+      "hardware": "NVIDIA GeForce RTX 4090",
+      "trigrama": null
+    },
+    {
+      "trabajo": "t12_offline_seed2",
+      "variante": "t12_offline",
+      "seed": 2,
+      "normalizacion": "rodante",
+      "suavizado": "centered",
+      "unidades": 1024,
+      "kernel": 32,
+      "run_id": "2xm6sgxu",
+      "resultado_sha256": "4e2a21c412c4406a2ee657665e108b1215a41d2714a8a16673d7841f449a01e6",
+      "paso_seleccionado": 9951,
+      "pasos": 10001,
+      "per_val": 0.20768880800727935,
+      "errores_fonemas": 10956,
+      "fonemas": 52752,
+      "frases": 1900,
+      "ctc_val": 23.820915655838817,
+      "segundos_entrenamiento": 693.7924552791519,
+      "hardware": "NVIDIA GeForce RTX 4090",
+      "trigrama": null
+    },
+    {
+      "trabajo": "t12_offline_seed3",
+      "variante": "t12_offline",
+      "seed": 3,
+      "normalizacion": "rodante",
+      "suavizado": "centered",
+      "unidades": 1024,
+      "kernel": 32,
+      "run_id": "5h7vi0lg",
+      "resultado_sha256": "9488c8741c8d8107a0975531f4a1b9b85c832cd88a9813f4a06ec0e0eff5788d",
+      "paso_seleccionado": 9151,
+      "pasos": 10001,
+      "per_val": 0.20797315741583258,
+      "errores_fonemas": 10971,
+      "fonemas": 52752,
+      "frases": 1900,
+      "ctc_val": 23.77685697856702,
+      "segundos_entrenamiento": 694.8890253519639,
+      "hardware": "NVIDIA GeForce RTX 4090",
+      "trigrama": null
+    },
+    {
+      "trabajo": "t12_offline_seed4",
+      "variante": "t12_offline",
+      "seed": 4,
+      "normalizacion": "rodante",
+      "suavizado": "centered",
+      "unidades": 1024,
+      "kernel": 32,
+      "run_id": "963yxi02",
+      "resultado_sha256": "39a44e3af1549a625be144e12c041b52a3ddea183c3a9fc75257c920449f8c4a",
+      "paso_seleccionado": 9701,
+      "pasos": 10001,
+      "per_val": 0.20748028510767363,
+      "errores_fonemas": 10945,
+      "fonemas": 52752,
+      "frases": 1900,
+      "ctc_val": 23.767920146741364,
+      "segundos_entrenamiento": 696.2792221741984,
+      "hardware": "NVIDIA GeForce RTX 4090",
+      "trigrama": null
+    },
+    {
+      "trabajo": "t12_causal_bloque_seed0",
+      "variante": "t12_causal_bloque",
+      "seed": 0,
+      "normalizacion": "bloque",
+      "suavizado": "causal",
+      "unidades": 512,
+      "kernel": 14,
+      "run_id": "mm610yn2",
+      "resultado_sha256": "5138420723c0a604f3e227f4ccc8180c56e57fd6532e2b4f260fe67278ad28db",
+      "paso_seleccionado": 9751,
+      "pasos": 10001,
+      "per_val": 0.23405747649378222,
+      "errores_fonemas": 12347,
+      "fonemas": 52752,
+      "frases": 1900,
+      "ctc_val": 23.552055856805097,
+      "segundos_entrenamiento": 341.9224288248224,
+      "hardware": "NVIDIA GeForce RTX 4090",
+      "trigrama": {
+        "wandb_run_id": "tx4ot3hi",
+        "checkpoint_sha256": "219e234458ea9889ef4e933fab7baa885d502e2583294aa4bdf3db9d78d2cf1b",
+        "predicciones_sha256": "5dff89c1b3b91ac0e8b6219c3fb17298111cb9c5d2325c381d5da8a0c9607e78",
+        "metricas_sha256": "d8f1ef93d92cbdb29df070f66795308468bb0f1a0eab547f3e98db2e6e0af7ee",
+        "resumen_sha256": "71b6ac9525125f83d894ad53e6bf04f199873a330fa4376008942b205fbb535f",
+        "busqueda": {
+          "max_active": 7000,
+          "min_active": 200,
+          "beam": 18.0,
+          "lattice_beam": 8.0,
+          "acoustic_scale": 0.8,
+          "blank_skip_threshold": 1.0,
+          "blank_penalty": 0.6931471805599453,
+          "length_penalty": 0.0,
+          "nbest": 1
+        },
+        "rtf": 0.039178300663347175,
+        "wer": 0.2575783091950152,
+        "per": 0.2340764331210191,
+        "frases": 1900,
+        "errores_palabras": 3059,
+        "palabras": 11876,
+        "intervalos": {
+          "global": {
+            "per": {
+              "rate": 0.2340764331210191,
+              "low": 0.22805939068137893,
+              "high": 0.24002799492706395,
+              "trials": 1900
+            },
+            "wer": {
+              "rate": 0.2575783091950152,
+              "low": 0.2469281957755858,
+              "high": 0.26791400978277263,
+              "trials": 1900
+            }
+          },
+          "vocalizada": {
+            "per": {
+              "rate": 0.23464526273791922,
+              "low": 0.22792201559016073,
+              "high": 0.24133717554363643,
+              "trials": 1500
+            },
+            "wer": {
+              "rate": 0.2602768456375839,
+              "low": 0.24829767364010152,
+              "high": 0.27233948195952984,
+              "trials": 1500
+            }
+          },
+          "silenciosa": {
+            "per": {
+              "rate": 0.23168687764961057,
+              "low": 0.2192191537086825,
+              "high": 0.24462541933401333,
+              "trials": 400
+            },
+            "wer": {
+              "rate": 0.2465811965811966,
+              "low": 0.22464651998179386,
+              "high": 0.269248113861588,
+              "trials": 400
+            }
+          }
+        },
+        "bootstrap": {
+          "remuestreos": 10000,
+          "confianza": 0.95,
+          "seed": 0
+        }
+      }
+    },
+    {
+      "trabajo": "t12_causal_bloque_seed1",
+      "variante": "t12_causal_bloque",
+      "seed": 1,
+      "normalizacion": "bloque",
+      "suavizado": "causal",
+      "unidades": 512,
+      "kernel": 14,
+      "run_id": "fmd5oakq",
+      "resultado_sha256": "605355d01f2e76657b9df1a317e2c579613772953976c76a8f75512bd48d78ae",
+      "paso_seleccionado": 9751,
+      "pasos": 10001,
+      "per_val": 0.24046481649984836,
+      "errores_fonemas": 12685,
+      "fonemas": 52752,
+      "frases": 1900,
+      "ctc_val": 24.252267777292353,
+      "segundos_entrenamiento": 342.19769042846747,
+      "hardware": "NVIDIA GeForce RTX 4090",
+      "trigrama": {
+        "wandb_run_id": "isbg74gu",
+        "checkpoint_sha256": "fe24ef303890af2fefe8f5a403830b7da80036dc6b7b8eac815bda6d7e2af770",
+        "predicciones_sha256": "e5b2a462e3de275969e9945359978c63dd5d448f5143db6ad23309d3ea5511cc",
+        "metricas_sha256": "05cdd6f71f1573cd1f3090833ed0250124bebb7b677b928fc15121ca8bff75a6",
+        "resumen_sha256": "f19fcbeed0c7a5aacdd18675f1b3cd9191f2b51ba00a22ce09fddf693040099f",
+        "busqueda": {
+          "max_active": 7000,
+          "min_active": 200,
+          "beam": 18.0,
+          "lattice_beam": 8.0,
+          "acoustic_scale": 0.8,
+          "blank_skip_threshold": 1.0,
+          "blank_penalty": 0.6931471805599453,
+          "length_penalty": 0.0,
+          "nbest": 1
+        },
+        "rtf": 0.04061199145338319,
+        "wer": 0.26776692489053555,
+        "per": 0.24044585987261147,
+        "frases": 1900,
+        "errores_palabras": 3180,
+        "palabras": 11876,
+        "intervalos": {
+          "global": {
+            "per": {
+              "rate": 0.24044585987261147,
+              "low": 0.23441121279596816,
+              "high": 0.2462879337801293,
+              "trials": 1900
+            },
+            "wer": {
+              "rate": 0.26776692489053555,
+              "low": 0.256886896802779,
+              "high": 0.27841177080209656,
+              "trials": 1900
+            }
+          },
+          "vocalizada": {
+            "per": {
+              "rate": 0.24154521345255697,
+              "low": 0.23486468462344143,
+              "high": 0.24810459073018015,
+              "trials": 1500
+            },
+            "wer": {
+              "rate": 0.27128775167785235,
+              "low": 0.2588936744411405,
+              "high": 0.2833933659576886,
+              "trials": 1500
+            }
+          },
+          "silenciosa": {
+            "per": {
+              "rate": 0.23582766439909297,
+              "low": 0.22357719485187605,
+              "high": 0.24821347249407036,
+              "trials": 400
+            },
+            "wer": {
+              "rate": 0.2534188034188034,
+              "low": 0.2313871915276029,
+              "high": 0.2766404666105518,
+              "trials": 400
+            }
+          }
+        },
+        "bootstrap": {
+          "remuestreos": 10000,
+          "confianza": 0.95,
+          "seed": 0
+        }
+      }
+    },
+    {
+      "trabajo": "t12_causal_bloque_seed2",
+      "variante": "t12_causal_bloque",
+      "seed": 2,
+      "normalizacion": "bloque",
+      "suavizado": "causal",
+      "unidades": 512,
+      "kernel": 14,
+      "run_id": "g4ljte2k",
+      "resultado_sha256": "83564d16a433368dacf572ceda51476cfb4d3333adcb9db592ebab83c4c03a4d",
+      "paso_seleccionado": 9801,
+      "pasos": 10001,
+      "per_val": 0.2427016985138004,
+      "errores_fonemas": 12803,
+      "fonemas": 52752,
+      "frases": 1900,
+      "ctc_val": 24.349436741879114,
+      "segundos_entrenamiento": 341.0107228355482,
+      "hardware": "NVIDIA GeForce RTX 4090",
+      "trigrama": {
+        "wandb_run_id": "0e3j00rq",
+        "checkpoint_sha256": "ed57f9e4dfa2988cf3835a7858079c76a1724cccf377d8a2cfa6d2e52f2cf961",
+        "predicciones_sha256": "49e1a2f405c140f14cd376907f8d08238d755d70680d130d8e65c45f72873797",
+        "metricas_sha256": "5ee506634c4eaaa25712ae3701ee7cf53c2e83d01fb9daabb036eed9670bb9f6",
+        "resumen_sha256": "fb636a92197de491f76b49c42e7248eb020305998b80c544e49ebbbcceb69630",
+        "busqueda": {
+          "max_active": 7000,
+          "min_active": 200,
+          "beam": 18.0,
+          "lattice_beam": 8.0,
+          "acoustic_scale": 0.8,
+          "blank_skip_threshold": 1.0,
+          "blank_penalty": 0.6931471805599453,
+          "length_penalty": 0.0,
+          "nbest": 1
+        },
+        "rtf": 0.04090787651462093,
+        "wer": 0.27046143482654095,
+        "per": 0.24277752502274796,
+        "frases": 1900,
+        "errores_palabras": 3212,
+        "palabras": 11876,
+        "intervalos": {
+          "global": {
+            "per": {
+              "rate": 0.24277752502274796,
+              "low": 0.23665976657811494,
+              "high": 0.2486511037350409,
+              "trials": 1900
+            },
+            "wer": {
+              "rate": 0.27046143482654095,
+              "low": 0.25948712586478867,
+              "high": 0.28146225996804164,
+              "trials": 1900
+            }
+          },
+          "vocalizada": {
+            "per": {
+              "rate": 0.2447604966086977,
+              "low": 0.23802674343073488,
+              "high": 0.25149339550141564,
+              "trials": 1500
+            },
+            "wer": {
+              "rate": 0.27380453020134227,
+              "low": 0.26107181401037893,
+              "high": 0.2863441561331016,
+              "trials": 1500
+            }
+          },
+          "silenciosa": {
+            "per": {
+              "rate": 0.23444740214926552,
+              "low": 0.22214296510187145,
+              "high": 0.24667726097911685,
+              "trials": 400
+            },
+            "wer": {
+              "rate": 0.2568376068376068,
+              "low": 0.23406734582647934,
+              "high": 0.2805724197745013,
+              "trials": 400
+            }
+          }
+        },
+        "bootstrap": {
+          "remuestreos": 10000,
+          "confianza": 0.95,
+          "seed": 0
+        }
+      }
+    },
+    {
+      "trabajo": "t12_causal_train_fija_seed0",
+      "variante": "t12_causal_train_fija",
+      "seed": 0,
+      "normalizacion": "train_fija",
+      "suavizado": "causal",
+      "unidades": 512,
+      "kernel": 14,
+      "run_id": "v5iqxuzd",
+      "resultado_sha256": "f7560699218b559e013c91b3fb2779ea6ddb8eedb27946cac20c7d9c446cdde2",
+      "paso_seleccionado": 9801,
+      "pasos": 10001,
+      "per_val": 0.3143387928419776,
+      "errores_fonemas": 16582,
+      "fonemas": 52752,
+      "frases": 1900,
+      "ctc_val": 36.4119429738898,
+      "segundos_entrenamiento": 340.50007737847045,
+      "hardware": "NVIDIA GeForce RTX 4090",
+      "trigrama": {
+        "wandb_run_id": "einfwzcm",
+        "checkpoint_sha256": "ce891f6313d4066768d7d1d42fcd841da4577732bd9395a8036f8ff141ccb1ee",
+        "predicciones_sha256": "79d7f2d6f3f3374f5c6a70b5eafdd6d350deec79ddf99e74b7356eba82f12501",
+        "metricas_sha256": "865ca668868c45e4db5f986d588bf4be963495657ab445992a83e52ac57df341",
+        "resumen_sha256": "eea1669dd86dbb22aa02131fba67a2e3b4c1b75360d2aa32569c68a3bd47beda",
+        "busqueda": {
+          "max_active": 7000,
+          "min_active": 200,
+          "beam": 18.0,
+          "lattice_beam": 8.0,
+          "acoustic_scale": 0.8,
+          "blank_skip_threshold": 1.0,
+          "blank_penalty": 0.6931471805599453,
+          "length_penalty": 0.0,
+          "nbest": 1
+        },
+        "rtf": 0.04297186131264276,
+        "wer": 0.37622094981475246,
+        "per": 0.3143008795875038,
+        "frases": 1900,
+        "errores_palabras": 4468,
+        "palabras": 11876,
+        "intervalos": {
+          "global": {
+            "per": {
+              "rate": 0.3143008795875038,
+              "low": 0.3061613031644584,
+              "high": 0.3225063744526912,
+              "trials": 1900
+            },
+            "wer": {
+              "rate": 0.37622094981475246,
+              "low": 0.3620640832905613,
+              "high": 0.39039636006272044,
+              "trials": 1900
+            }
+          },
+          "vocalizada": {
+            "per": {
+              "rate": 0.30777535262503225,
+              "low": 0.2988289938993198,
+              "high": 0.3164177627443488,
+              "trials": 1500
+            },
+            "wer": {
+              "rate": 0.36703020134228187,
+              "low": 0.35150797693757513,
+              "high": 0.38236300255224137,
+              "trials": 1500
+            }
+          },
+          "silenciosa": {
+            "per": {
+              "rate": 0.3417134969930001,
+              "low": 0.3211604826260629,
+              "high": 0.3623883687330897,
+              "trials": 400
+            },
+            "wer": {
+              "rate": 0.41367521367521365,
+              "low": 0.3784235005553499,
+              "high": 0.44915647086398386,
+              "trials": 400
+            }
+          }
+        },
+        "bootstrap": {
+          "remuestreos": 10000,
+          "confianza": 0.95,
+          "seed": 0
+        }
+      }
+    },
+    {
+      "trabajo": "t12_causal_train_fija_seed1",
+      "variante": "t12_causal_train_fija",
+      "seed": 1,
+      "normalizacion": "train_fija",
+      "suavizado": "causal",
+      "unidades": 512,
+      "kernel": 14,
+      "run_id": "cz8jubsh",
+      "resultado_sha256": "a27648e6eff82d9dc7593f89ff25d8837b35c566f11dd1cced89f29f4526aa45",
+      "paso_seleccionado": 9801,
+      "pasos": 10001,
+      "per_val": 0.32360858356081285,
+      "errores_fonemas": 17071,
+      "fonemas": 52752,
+      "frases": 1900,
+      "ctc_val": 36.08932822779605,
+      "segundos_entrenamiento": 342.83430037868675,
+      "hardware": "NVIDIA GeForce RTX 4090",
+      "trigrama": {
+        "wandb_run_id": "d5wzehfb",
+        "checkpoint_sha256": "717fdef8b968466cfaf7e33a12787fdb7aac189ed106bdabb973f23d741bd54c",
+        "predicciones_sha256": "9a29ed5896ffdf0b86a774e7c424fdd09d3480ac8554a5e487817e7c979ad3d4",
+        "metricas_sha256": "97e9ad93b6a654c4a1fae032f2eab9790da613f57ae00058e71eee58db1d931e",
+        "resumen_sha256": "66c83bccb7f3cade51bc49c7894adfdbeb9a521516314431f91d656f4732a120",
+        "busqueda": {
+          "max_active": 7000,
+          "min_active": 200,
+          "beam": 18.0,
+          "lattice_beam": 8.0,
+          "acoustic_scale": 0.8,
+          "blank_skip_threshold": 1.0,
+          "blank_penalty": 0.6931471805599453,
+          "length_penalty": 0.0,
+          "nbest": 1
+        },
+        "rtf": 0.044786280559671286,
+        "wer": 0.3982822499157966,
+        "per": 0.3236464968152866,
+        "frases": 1900,
+        "errores_palabras": 4730,
+        "palabras": 11876,
+        "intervalos": {
+          "global": {
+            "per": {
+              "rate": 0.3236464968152866,
+              "low": 0.31571500520273693,
+              "high": 0.3315245000105105,
+              "trials": 1900
+            },
+            "wer": {
+              "rate": 0.3982822499157966,
+              "low": 0.3841472304885087,
+              "high": 0.4125982255837685,
+              "trials": 1900
+            }
+          },
+          "vocalizada": {
+            "per": {
+              "rate": 0.31695181769109815,
+              "low": 0.3084723701704596,
+              "high": 0.3254033547452927,
+              "trials": 1500
+            },
+            "wer": {
+              "rate": 0.3873741610738255,
+              "low": 0.37171200410226246,
+              "high": 0.403043395837089,
+              "trials": 1500
+            }
+          },
+          "silenciosa": {
+            "per": {
+              "rate": 0.35176969338460023,
+              "low": 0.3316886166810548,
+              "high": 0.37204096752781995,
+              "trials": 400
+            },
+            "wer": {
+              "rate": 0.4427350427350427,
+              "low": 0.40856361395326557,
+              "high": 0.47768245558802835,
+              "trials": 400
+            }
+          }
+        },
+        "bootstrap": {
+          "remuestreos": 10000,
+          "confianza": 0.95,
+          "seed": 0
+        }
+      }
+    },
+    {
+      "trabajo": "t12_causal_train_fija_seed2",
+      "variante": "t12_causal_train_fija",
+      "seed": 2,
+      "normalizacion": "train_fija",
+      "suavizado": "causal",
+      "unidades": 512,
+      "kernel": 14,
+      "run_id": "877drtr6",
+      "resultado_sha256": "c0689924e9b32d819265293256070279b4f61b851739f41a7b59e2219cceaf69",
+      "paso_seleccionado": 9801,
+      "pasos": 10001,
+      "per_val": 0.3247270245677889,
+      "errores_fonemas": 17130,
+      "fonemas": 52752,
+      "frases": 1900,
+      "ctc_val": 37.5079248046875,
+      "segundos_entrenamiento": 341.7367556098616,
+      "hardware": "NVIDIA GeForce RTX 4090",
+      "trigrama": {
+        "wandb_run_id": "han720is",
+        "checkpoint_sha256": "54634c591804351f77061caa5e68b93ae79b38b2c2762ca3d07940ed37060162",
+        "predicciones_sha256": "adae760e406e8f6c8cfb852a3ca745a1857c22c2706e153c8f97c321a1346e1e",
+        "metricas_sha256": "1c3480f54f01ec604d8b89b19febadb1739da04a1f894be4c0bd830385667407",
+        "resumen_sha256": "68daa3487bbacf490a55ccd4a2a7c248f3a0f522454343fc0aba6b7d5e5e2e99",
+        "busqueda": {
+          "max_active": 7000,
+          "min_active": 200,
+          "beam": 18.0,
+          "lattice_beam": 8.0,
+          "acoustic_scale": 0.8,
+          "blank_skip_threshold": 1.0,
+          "blank_penalty": 0.6931471805599453,
+          "length_penalty": 0.0,
+          "nbest": 1
+        },
+        "rtf": 0.0443831073484024,
+        "wer": 0.39895587739979793,
+        "per": 0.32478389444949957,
+        "frases": 1900,
+        "errores_palabras": 4738,
+        "palabras": 11876,
+        "intervalos": {
+          "global": {
+            "per": {
+              "rate": 0.32478389444949957,
+              "low": 0.31661349395981186,
+              "high": 0.3329615607671496,
+              "trials": 1900
+            },
+            "wer": {
+              "rate": 0.39895587739979793,
+              "low": 0.38482812198078425,
+              "high": 0.4132688055729827,
+              "trials": 1900
+            }
+          },
+          "vocalizada": {
+            "per": {
+              "rate": 0.3201671008472389,
+              "low": 0.31119607904173124,
+              "high": 0.32913446141082303,
+              "trials": 1500
+            },
+            "wer": {
+              "rate": 0.38926174496644295,
+              "low": 0.3736872641123097,
+              "high": 0.4043500076659348,
+              "trials": 1500
+            }
+          },
+          "silenciosa": {
+            "per": {
+              "rate": 0.34417825101054916,
+              "low": 0.32488062932399336,
+              "high": 0.36360211465505127,
+              "trials": 400
+            },
+            "wer": {
+              "rate": 0.43846153846153846,
+              "low": 0.403356717117065,
+              "high": 0.47332508412387864,
+              "trials": 400
+            }
+          }
+        },
+        "bootstrap": {
+          "remuestreos": 10000,
+          "confianza": 0.95,
+          "seed": 0
+        }
+      }
+    }
+  ]
+}

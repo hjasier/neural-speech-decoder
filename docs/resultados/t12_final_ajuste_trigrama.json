@@ -1,0 +1,475 @@
+{
+  "scope": "ajuste en val; la cifra elegida es optimista hasta evaluarla en test",
+  "criterio": "mínimo WER agregado entre semillas; primera combinación en caso de empate",
+  "trabajos": [
+    "t12_causal_seed0",
+    "t12_causal_seed1",
+    "t12_causal_seed2",
+    "t12_causal_seed3",
+    "t12_causal_seed4"
+  ],
+  "frases_por_trabajo": 1900,
+  "partida": {
+    "acoustic_scale": 0.8,
+    "blank_penalty": 0.6931471805599453,
+    "beam": 18.0
+  },
+  "elegida": {
+    "acoustic_scale": 0.8,
+    "blank_penalty": 1.9459101090932196,
+    "beam": 18.0
+  },
+  "wer_partida": 0.2820309868642641,
+  "wer_elegida": 0.2710508588750421,
+  "combinaciones": [
+    {
+      "parametros": {
+        "acoustic_scale": 0.8,
+        "blank_penalty": 0.6931471805599453,
+        "beam": 18.0
+      },
+      "errores": 16747,
+      "palabras": 59380,
+      "wer": 0.2820309868642641,
+      "wer_por_semilla": {
+        "0": 0.2701246210845403,
+        "1": 0.2876389356685753,
+        "2": 0.28502862916807004,
+        "3": 0.283512967329067,
+        "4": 0.2838497810710677
+      },
+      "segundos_busqueda": 805.5102510220604,
+      "partida": true,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 0.4,
+        "blank_penalty": 0.0,
+        "beam": 18.0
+      },
+      "errores": 21811,
+      "palabras": 59380,
+      "wer": 0.36731222633883465,
+      "wer_por_semilla": {
+        "0": 0.34818120579319634,
+        "1": 0.36822162344223647,
+        "2": 0.371505557426743,
+        "3": 0.37251599865274504,
+        "4": 0.37613674637925226
+      },
+      "segundos_busqueda": 1934.701635095058,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 0.4,
+        "blank_penalty": 0.6931471805599453,
+        "beam": 18.0
+      },
+      "errores": 20525,
+      "palabras": 59380,
+      "wer": 0.34565510272819133,
+      "wer_por_semilla": {
+        "0": 0.3270461434826541,
+        "1": 0.34818120579319634,
+        "2": 0.35146513977770294,
+        "3": 0.3494442573256989,
+        "4": 0.3521387672617043
+      },
+      "segundos_busqueda": 1934.2009255759185,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 0.4,
+        "blank_penalty": 1.3862943611198906,
+        "beam": 18.0
+      },
+      "errores": 19489,
+      "palabras": 59380,
+      "wer": 0.3282081508925564,
+      "wer_por_semilla": {
+        "0": 0.3099528460761199,
+        "1": 0.3347928595486696,
+        "2": 0.33310879083866624,
+        "3": 0.32982485685415963,
+        "4": 0.3333614011451667
+      },
+      "segundos_busqueda": 1940.5961254750146,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 0.4,
+        "blank_penalty": 1.9459101090932196,
+        "beam": 18.0
+      },
+      "errores": 18915,
+      "palabras": 59380,
+      "wer": 0.3185415964971371,
+      "wer_por_semilla": {
+        "0": 0.3010272819131021,
+        "1": 0.3235938026271472,
+        "2": 0.32510946446615024,
+        "3": 0.32047827551364094,
+        "4": 0.322499157965645
+      },
+      "segundos_busqueda": 1950.2094681118615,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 0.5,
+        "blank_penalty": 0.0,
+        "beam": 18.0
+      },
+      "errores": 19684,
+      "palabras": 59380,
+      "wer": 0.331492084877063,
+      "wer_por_semilla": {
+        "0": 0.31441562815762886,
+        "1": 0.3305826877736612,
+        "2": 0.3386662175816773,
+        "3": 0.33538228359717076,
+        "4": 0.33841360727517683
+      },
+      "segundos_busqueda": 1536.1379074751167,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 0.5,
+        "blank_penalty": 0.6931471805599453,
+        "beam": 18.0
+      },
+      "errores": 18522,
+      "palabras": 59380,
+      "wer": 0.31192320646682387,
+      "wer_por_semilla": {
+        "0": 0.29723812731559446,
+        "1": 0.3153418659481307,
+        "2": 0.31828898619063656,
+        "3": 0.3122263388346245,
+        "4": 0.31652071404513304
+      },
+      "segundos_busqueda": 1528.9014990440337,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 0.5,
+        "blank_penalty": 1.3862943611198906,
+        "beam": 18.0
+      },
+      "errores": 17738,
+      "palabras": 59380,
+      "wer": 0.2987201077803974,
+      "wer_por_semilla": {
+        "0": 0.28469181542606936,
+        "1": 0.30397440215560795,
+        "2": 0.3006904681711014,
+        "3": 0.30026945099360053,
+        "4": 0.30397440215560795
+      },
+      "segundos_busqueda": 1516.4321395949228,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 0.5,
+        "blank_penalty": 1.9459101090932196,
+        "beam": 18.0
+      },
+      "errores": 17327,
+      "palabras": 59380,
+      "wer": 0.2917985853822836,
+      "wer_por_semilla": {
+        "0": 0.280481643651061,
+        "1": 0.29681711013809364,
+        "2": 0.2937015830245874,
+        "3": 0.2921859211855844,
+        "4": 0.2958066689120916
+      },
+      "segundos_busqueda": 1537.4527958298568,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 0.6,
+        "blank_penalty": 0.0,
+        "beam": 18.0
+      },
+      "errores": 18533,
+      "palabras": 59380,
+      "wer": 0.3121084540249242,
+      "wer_por_semilla": {
+        "0": 0.2970697204445941,
+        "1": 0.3154260693836308,
+        "2": 0.3167733243516335,
+        "3": 0.314499831593129,
+        "4": 0.3167733243516335
+      },
+      "segundos_busqueda": 1219.649071375141,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 0.6,
+        "blank_penalty": 0.6931471805599453,
+        "beam": 18.0
+      },
+      "errores": 17551,
+      "palabras": 59380,
+      "wer": 0.29557089929269115,
+      "wer_por_semilla": {
+        "0": 0.28081845739306166,
+        "1": 0.29858538228359716,
+        "2": 0.3006062647356012,
+        "3": 0.29866958571909735,
+        "4": 0.29917480633209836
+      },
+      "segundos_busqueda": 1210.52716804808,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 0.6,
+        "blank_penalty": 1.3862943611198906,
+        "beam": 18.0
+      },
+      "errores": 16907,
+      "palabras": 59380,
+      "wer": 0.28472549680026943,
+      "wer_por_semilla": {
+        "0": 0.2733243516335466,
+        "1": 0.2907544627820815,
+        "2": 0.28797574941057597,
+        "3": 0.28528123947457057,
+        "4": 0.2862916807005726
+      },
+      "segundos_busqueda": 1211.572112091002,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 0.6,
+        "blank_penalty": 1.9459101090932196,
+        "beam": 18.0
+      },
+      "errores": 16609,
+      "palabras": 59380,
+      "wer": 0.27970697204445943,
+      "wer_por_semilla": {
+        "0": 0.2678511283260357,
+        "1": 0.28427079824856855,
+        "2": 0.283512967329067,
+        "3": 0.2809026608285618,
+        "4": 0.281997305490064
+      },
+      "segundos_busqueda": 1217.895096616121,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 0.8,
+        "blank_penalty": 0.0,
+        "beam": 18.0
+      },
+      "errores": 17543,
+      "palabras": 59380,
+      "wer": 0.2954361737958909,
+      "wer_por_semilla": {
+        "0": 0.2819131020545638,
+        "1": 0.2987537891545975,
+        "2": 0.29892219602559783,
+        "3": 0.29858538228359716,
+        "4": 0.299006399461098
+      },
+      "segundos_busqueda": 815.0884253249969,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 0.8,
+        "blank_penalty": 1.3862943611198906,
+        "beam": 18.0
+      },
+      "errores": 16326,
+      "palabras": 59380,
+      "wer": 0.27494105759514986,
+      "wer_por_semilla": {
+        "0": 0.26557763556753117,
+        "1": 0.2803974402155608,
+        "2": 0.27576625126305154,
+        "3": 0.2761030650050522,
+        "4": 0.2768608959245537
+      },
+      "segundos_busqueda": 790.7915149498731,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 0.8,
+        "blank_penalty": 1.9459101090932196,
+        "beam": 18.0
+      },
+      "errores": 16095,
+      "palabras": 59380,
+      "wer": 0.2710508588750421,
+      "wer_por_semilla": {
+        "0": 0.26263051532502524,
+        "1": 0.2755978443920512,
+        "2": 0.27248231727854494,
+        "3": 0.27130346918154263,
+        "4": 0.2732401481980465
+      },
+      "segundos_busqueda": 791.4034341868246,
+      "partida": false,
+      "elegida": true
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 1.0,
+        "blank_penalty": 0.0,
+        "beam": 18.0
+      },
+      "errores": 17338,
+      "palabras": 59380,
+      "wer": 0.291983832940384,
+      "wer_por_semilla": {
+        "0": 0.27972381273155944,
+        "1": 0.29488043112158974,
+        "2": 0.29589087234759176,
+        "3": 0.2958066689120916,
+        "4": 0.29361737958908724
+      },
+      "segundos_busqueda": 567.9159539189423,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 1.0,
+        "blank_penalty": 0.6931471805599453,
+        "beam": 18.0
+      },
+      "errores": 16680,
+      "palabras": 59380,
+      "wer": 0.2809026608285618,
+      "wer_por_semilla": {
+        "0": 0.2697036039070394,
+        "1": 0.28283933984506565,
+        "2": 0.2843550016840687,
+        "3": 0.28368137420006734,
+        "4": 0.28393398450656787
+      },
+      "segundos_busqueda": 555.8955806029262,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 1.0,
+        "blank_penalty": 1.3862943611198906,
+        "beam": 18.0
+      },
+      "errores": 16278,
+      "palabras": 59380,
+      "wer": 0.27413270461434824,
+      "wer_por_semilla": {
+        "0": 0.2646513977770293,
+        "1": 0.2787133715055574,
+        "2": 0.27669248905355337,
+        "3": 0.27357696194004716,
+        "4": 0.27702930279555404
+      },
+      "segundos_busqueda": 549.4245690030511,
+      "partida": false,
+      "elegida": false
+    },
+    {
+      "parametros": {
+        "acoustic_scale": 1.0,
+        "blank_penalty": 1.9459101090932196,
+        "beam": 18.0
+      },
+      "errores": 16137,
+      "palabras": 59380,
+      "wer": 0.2717581677332435,
+      "wer_por_semilla": {
+        "0": 0.2614516672280229,
+        "1": 0.27618726844055236,
+        "2": 0.27652408218255303,
+        "3": 0.2719770966655439,
+        "4": 0.2726507241495453
+      },
+      "segundos_busqueda": 545.8359126839787,
+      "partida": false,
+      "elegida": false
+    }
+  ],
+  "config": {
+    "plan": "configs/final/cola_replica.yaml",
+    "variante": "t12_causal",
+    "semillas": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "split": "val",
+    "evaluacion": "configs/entrenos_online/speech_online_evaluacion.yaml",
+    "lenguaje": "configs/entrenos_online/speech_trigrama.yaml",
+    "rejilla": {
+      "acoustic_scale": [
+        0.4,
+        0.5,
+        0.6,
+        0.8,
+        1.0
+      ],
+      "blank_penalty": [
+        0.0,
+        0.6931471805599453,
+        1.3862943611198906,
+        1.9459101090932196
+      ],
+      "beam": [
+        18.0
+      ]
+    },
+    "salida": "runs/final/ajuste_trigrama",
+    "tabla": "docs/resultados/t12_final_ajuste_trigrama"
+  },
+  "busqueda_base": {
+    "max_active": 7000,
+    "min_active": 200,
+    "beam": 18.0,
+    "lattice_beam": 8.0,
+    "acoustic_scale": 0.8,
+    "blank_skip_threshold": 1.0,
+    "blank_penalty": 0.6931471805599453,
+    "length_penalty": 0.0,
+    "nbest": 1
+  },
+  "results_sha256": "d6c45f13480450fbe7e2101874fb42a337cc1f468a8bafebe98b76d4b56a352c",
+  "config_sha256": "99275ee3e7111d06b064e04868a02b6b9829ddae036cbc79e5f625b55df0cf70",
+  "language_config_sha256": "6e152961e29eaae9b307583b75f4e22ae91f3e6c4e301619ab3e065e13fdfe18",
+  "wandb_run_id": "sjygy6xd"
+}
