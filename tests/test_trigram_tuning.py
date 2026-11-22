@@ -149,3 +149,18 @@ def test_client_sends_the_whole_search_when_reconfiguring() -> None:
     TrigramDecoder.configure(client, {**BASE, "beam": 12.0})
     assert sent == [{"op": "options", "options": {**BASE, "beam": 12.0}}]
     assert client.spec["busqueda"]["beam"] == 12.0
+
+
+# La segunda ronda comparte carpeta con la primera: si un valor repetido cambiase
+# en un decimal, se volvería a decodificar y la tabla mezclaría dos búsquedas.
+def test_second_round_reuses_first_round_combinations() -> None:
+    from scripts.tune_speech_trigram import _key
+
+    first = tuning_spec(ROOT / "configs/final/ajuste_trigrama.yaml")
+    second = tuning_spec(ROOT / "configs/final/ajuste_trigrama_ronda2.yaml")
+    shared = ("plan", "variante", "semillas", "split", "evaluacion", "lenguaje", "salida")
+    assert {key: second[key] for key in shared} == {key: first[key] for key in shared}
+    assert second["tabla"] != first["tabla"]
+    done = {_key(item) for item in search_grid(BASE, first["rejilla"])}
+    reused = [item for item in search_grid(BASE, second["rejilla"]) if _key(item) in done]
+    assert len(reused) == 3 and reused[0] == {"acoustic_scale": 0.8, "blank_penalty": BASE["blank_penalty"], "beam": 18.0}

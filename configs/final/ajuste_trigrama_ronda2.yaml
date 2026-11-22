@@ -1,0 +1,22 @@
+# Segunda ronda del ajuste del trigrama en val (scripts/tune_speech_trigram.py).
+# En la primera (configs/final/ajuste_trigrama.yaml) el WER bajaba en todas las
+# filas al subir blank_penalty y el mínimo cayó en log 7, el valor más alto de
+# la rejilla. Esta ronda amplía blank_penalty por encima y acoustic_scale
+# alrededor de 0,8 y 1,0, que quedaron casi empatados.
+plan: configs/final/cola_replica.yaml
+variante: t12_causal
+semillas: [0, 1, 2, 3, 4]
+split: val
+evaluacion: configs/entrenos_online/speech_online_evaluacion.yaml
+lenguaje: configs/entrenos_online/speech_trigrama.yaml
+# blank_penalty: log 7, log 10, log 15 y log 22. log 7 se copia literal de la
+# primera ronda para reutilizar las combinaciones ya decodificadas.
+rejilla:
+  acoustic_scale: [0.8, 1.0, 1.2]
+  blank_penalty: [1.9459101090932196, 2.302585092994046, 2.70805020110221, 3.091042453358316]
+  beam: [18.0]
+# Misma carpeta que la primera ronda: con el mismo checkpoint y perfil, las
+# combinaciones repetidas no se vuelven a decodificar.
+salida: runs/final/ajuste_trigrama
+# Tabla aparte, para conservar la de la primera ronda.
+tabla: docs/resultados/t12_final_ajuste_trigrama_ronda2
