@@ -1,0 +1,31 @@
+# Fase 2 de la entrega final: mejoras del decodificador causal, fuera del paper.
+# Se ejecuta con scripts/run_queue.py. Cada variante cambia una sola cosa sobre
+# t12_causal (rodante, 10.001 pasos) y usa sus cinco semillas, para compararla
+# con la tabla de referencia. `cambios` sustituye claves completas.
+semillas: [0, 1, 2, 3, 4]
+variantes:
+  # Enmascarado temporal al estilo SpecAugment sobre la entrada ya suavizada.
+  # La mediana de train es de 297 bins (unos 6 s); dos tramos de hasta 20 bins
+  # (400 ms) tapan como mucho un 13 % de esa frase. Elección propia.
+  t12_causal_mascara:
+    config: configs/final/t12_causal.yaml
+    cambios:
+      entrenamiento.enmascarado_temporal:
+        mascaras: 2
+        ancho_max_bins: 20
+  # Layer norm a la salida de cada GRU, por paso de tiempo.
+  t12_causal_layernorm:
+    config: configs/final/t12_causal.yaml
+    cambios:
+      modelo.layer_norm: true
+  # El doble de pasos con el mismo decaimiento lineal hasta cero. En la
+  # referencia todos los checkpoints elegidos caen después del paso 9.000.
+  t12_causal_20k:
+    config: configs/final/t12_causal.yaml
+    cambios:
+      entrenamiento.pasos: 20001
+      entrenamiento.learning_rate:
+        inicio: 0.02
+        final: 0.0
+        decay_pasos: 20000
+        potencia: 1.0
