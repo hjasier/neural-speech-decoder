@@ -1,0 +1,27 @@
+# Línea A: modelos de ajuste cruzado para los pares fonemas → frase de train.
+# Cada variante es t12_causal sin uno de los cinco pliegues de train; el pliegue
+# son bloques contiguos de cada sesión (src/data/speech_protocol.py, fold_blocks).
+# Selección por PER de val como la referencia; val y test no cambian.
+# Después: scripts/export_phoneme_pairs.py predice con cada modelo su pliegue.
+semillas: [0]
+variantes:
+  t12_causal_pliegue0:
+    config: configs/final/t12_causal.yaml
+    cambios:
+      datos.pliegue: {pliegues: 5, excluido: 0}
+  t12_causal_pliegue1:
+    config: configs/final/t12_causal.yaml
+    cambios:
+      datos.pliegue: {pliegues: 5, excluido: 1}
+  t12_causal_pliegue2:
+    config: configs/final/t12_causal.yaml
+    cambios:
+      datos.pliegue: {pliegues: 5, excluido: 2}
+  t12_causal_pliegue3:
+    config: configs/final/t12_causal.yaml
+    cambios:
+      datos.pliegue: {pliegues: 5, excluido: 3}
+  t12_causal_pliegue4:
+    config: configs/final/t12_causal.yaml
+    cambios:
+      datos.pliegue: {pliegues: 5, excluido: 4}
