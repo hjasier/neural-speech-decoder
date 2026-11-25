@@ -52,6 +52,7 @@ def construir_modelo(cfg: dict) -> nn.Module:
             input_dropout=mcfg["dropout_entrada"],
             gru_dropout=mcfg["dropout_gru"],
             intermediate_layers=mcfg.get("salidas_intermedias", ()),
+            layer_norm=mcfg.get("layer_norm", False),
         )
     if nombre == "mi_modelo":
         return ModeloSmoke()

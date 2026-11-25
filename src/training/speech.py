@@ -60,6 +60,39 @@ def _training_features(batch: SpeechBatch, cfg: dict[str, Any]) -> Tensor:
     return features
 
 
+def time_mask_spec(cfg: dict[str, Any]) -> dict[str, int] | None:
+    """Lee entrenamiento.enmascarado_temporal; sin la clave no hay enmascarado."""
+    spec = cfg["entrenamiento"].get("enmascarado_temporal")
+    if spec is None:
+        return None
+    if (not isinstance(spec, dict) or set(spec) != {"mascaras", "ancho_max_bins"}
+            or any(type(spec[key]) is not int or spec[key] <= 0 for key in spec)):
+        raise ValueError("enmascarado_temporal necesita mascaras y ancho_max_bins enteros positivos.")
+    return spec
+
+
+def _time_mask(features: Tensor, input_lengths: Tensor, cfg: dict[str, Any]) -> Tensor:
+    """Pone a cero tramos de tiempo al azar de cada frase, solo en train.
+
+    Enmascarado temporal al estilo SpecAugment; no está en el paper. Se aplica
+    a la entrada del modelo, ya suavizada, donde cero es la media normalizada.
+    Cada frase recibe `mascaras` tramos de ancho uniforme entre 0 y
+    `ancho_max_bins`, dentro de su longitud real y sin tocar el relleno.
+    Sin la clave no consume números aleatorios: los runs anteriores no cambian.
+    """
+    spec = time_mask_spec(cfg)
+    if spec is None:
+        return features
+    device = features.device
+    lengths = input_lengths.to(device)[:, None]
+    shape = (features.shape[0], spec["mascaras"])
+    widths = torch.minimum((torch.rand(shape, device=device) * (spec["ancho_max_bins"] + 1)).long(), lengths)
+    starts = (torch.rand(shape, device=device) * (lengths - widths + 1)).long()
+    steps = torch.arange(features.shape[1], device=device)[None, None, :]
+    masked = ((steps >= starts[..., None]) & (steps < (starts + widths)[..., None])).any(dim=1)
+    return features.masked_fill(masked[..., None], 0.0)
+
+
 def _regularization(
     model: SpeechGRU, session_ids: Tensor, coefficient: float
 ) -> Tensor:
@@ -128,7 +161,7 @@ def _backward_microbatch(
     # El grafo de cada grupo se libera antes de procesar el siguiente.
     weights = _ctc_weights(cfg)
     batch = batch.to(device, non_blocking=cfg["datos"]["pin_memory"])
-    features = smoother(_training_features(batch, cfg))
+    features = _time_mask(smoother(_training_features(batch, cfg)), batch.input_lengths, cfg)
     if weights is None:
         logits = model(features, batch.session_ids)
         losses = _ctc_losses(
@@ -298,6 +331,7 @@ def entrenar_habla(
 def _validate_training_config(cfg: dict[str, Any]) -> None:
     """Comprueba los tamaños, límites y parámetros del optimizador."""
     training = cfg["entrenamiento"]
+    time_mask_spec(cfg)
     if cfg.get("protocolo") and cfg["evaluacion"]["max_lotes"] is not None:
         raise ValueError(
             "El protocolo de comparación requiere validación/test completos: max_lotes=null."

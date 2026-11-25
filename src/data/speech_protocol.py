@@ -28,6 +28,41 @@ def split_training_blocks(blocks: Sequence[int], fraction: float) -> tuple[list[
             [i for i, block in enumerate(blocks) if block in validation])
 
 
+def train_fold_spec(cfg: dict[str, Any]) -> dict[str, int] | None:
+    """Lee `datos.pliegue`: qué parte de train se aparta para el ajuste cruzado.
+
+    Sin la clave no se aparta nada y train queda igual que en la partición.
+    """
+    spec = cfg["datos"].get("pliegue")
+    if spec is None:
+        return None
+    if (not isinstance(spec, dict) or set(spec) != {"pliegues", "excluido"}
+            or any(type(spec[key]) is not int for key in spec)
+            or spec["pliegues"] < 2 or not 0 <= spec["excluido"] < spec["pliegues"]):
+        raise ValueError("datos.pliegue requiere los enteros pliegues >= 2 y 0 <= excluido < pliegues.")
+    return spec
+
+
+def fold_blocks(train_blocks: Sequence[int], folds: int, fold: int, rotation: int = 0) -> list[int]:
+    """Bloques de train que forman un pliegue: tramos contiguos casi iguales.
+
+    Cada bloque cae en un solo pliegue. Si el reparto no es exacto, los
+    primeros tramos tienen un bloque más; `rotation` (la posición de la
+    sesión) cambia qué pliegue recibe cada tramo, para que los bloques
+    sobrantes no se acumulen siempre en los mismos pliegues. Con menos
+    bloques que pliegues, alguno queda vacío en esa sesión. Apartar bloques
+    enteros conserva su normalización.
+    """
+    ordered = sorted(set(train_blocks))
+    base, extra = divmod(len(ordered), folds)
+    group = (fold + rotation) % folds
+    start = group * base + min(group, extra)
+    held = ordered[start:start + base + (group < extra)]
+    if len(held) == len(ordered):
+        raise ValueError("El pliegue apartaría todos los bloques de train de una sesión.")
+    return held
+
+
 def build_speech_protocol(cfg: dict[str, Any]) -> dict[str, Any]:
     """Construye la partición desde blockIdx y fija los hashes de los .mat."""
     spec = cfg["protocolo"]

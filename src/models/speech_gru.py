@@ -22,7 +22,9 @@ class SpeechGRU(nn.Module):
     entrada de NeuralSequenceDecoder en speechBCI. El estado inicial de
     la primera GRU es entrenable; los de las demás capas empiezan en cero.
     El dropout de las GRU se aplica a las entradas de cada capa, con una
-    máscara compartida en el tiempo, como en Keras 2.7.
+    máscara compartida en el tiempo, como en Keras 2.7. Con layer_norm, la
+    salida de cada GRU se normaliza por paso antes de la capa siguiente y de
+    las cabezas; no está en el paper y no cambia el estado recurrente.
     """
 
     def __init__(
@@ -39,6 +41,7 @@ class SpeechGRU(nn.Module):
         input_dropout: float,
         gru_dropout: float,
         intermediate_layers: Sequence[int] = (),
+        layer_norm: bool = False,
     ) -> None:
         """Construye el modelo con los tamaños y probabilidades del YAML."""
         super().__init__()
@@ -54,6 +57,8 @@ class SpeechGRU(nn.Module):
         if (any(type(depth) is not int or not 0 < depth < num_layers for depth in intermediate_layers)
                 or intermediate_layers != tuple(sorted(set(intermediate_layers)))):
             raise ValueError("Las salidas intermedias deben ser capas anteriores a la final, únicas y ordenadas.")
+        if type(layer_norm) is not bool:
+            raise ValueError("layer_norm debe ser verdadero o falso.")
 
         self.input_features = input_features
         self.hidden_size = hidden_size
@@ -89,6 +94,10 @@ class SpeechGRU(nn.Module):
         for head in self.intermediate_heads.values():
             nn.init.xavier_uniform_(head.weight)
             nn.init.zeros_(head.bias)
+        # Sin layer_norm no se crean módulos: claves y pesos anteriores intactos.
+        self.layer_norms = nn.ModuleList(
+            nn.LayerNorm(hidden_size) for _ in range(num_layers)
+        ) if layer_norm else None
 
     def _initialize_parameters(self) -> None:
         """Usa identidad, Glorot, ortogonal y sesgos cero como TensorFlow."""
@@ -195,6 +204,9 @@ class SpeechGRU(nn.Module):
                 state = self.initial_state.unsqueeze(0).expand(1, x.shape[0], -1).contiguous()
             x, state = layer(x, state)
             final_states.append(state)
+            if self.layer_norms is not None:
+                # Por paso de tiempo: conserva la causalidad y el modo por bloques.
+                x = self.layer_norms[depth - 1](x)
             if depth in requested:
                 head = self.output_layer if depth == self.num_layers else self.intermediate_heads[str(depth)]
                 outputs[depth] = head(x)

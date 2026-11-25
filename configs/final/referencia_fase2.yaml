@@ -1,0 +1,10 @@
+# WER e intervalos de la Fase 2, igual que configs/final/referencia.yaml pero
+# sobre configs/final/cola_fase2.yaml. Misma búsqueda del trigrama que la
+# referencia, para que las dos tablas sean comparables.
+plan: configs/final/cola_fase2.yaml
+split: val
+evaluacion: configs/entrenos_online/speech_online_evaluacion.yaml
+lenguaje: configs/entrenos_online/speech_trigrama.yaml
+resumen: configs/final/resumen_metricas.yaml
+salida: runs/final/fase2
+tabla: docs/resultados/t12_final_fase2
