@@ -15,7 +15,7 @@ from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import Dataset, Sampler
 
 from src.data.preprocessing import normalization_spec
-from src.data.speech_protocol import read_speech_protocol
+from src.data.speech_protocol import fold_blocks, read_speech_protocol, train_fold_spec
 
 
 def file_sha256(path: Path) -> str:
@@ -150,12 +150,24 @@ class SpeechDataset(Dataset[SpeechSample]):
     """Une señales preparadas y etiquetas verificadas sin cargar el corpus en RAM."""
 
     def __init__(self, cfg: dict[str, Any], split: str) -> None:
-        """Abre los metadatos y verifica cada sesión antes de exponer sus ensayos."""
+        """Abre los metadatos y verifica cada sesión antes de exponer sus ensayos.
+
+        Con `datos.pliegue`, train pierde los bloques del pliegue excluido y
+        `pliegue` devuelve solo esos bloques; val y test no cambian.
+        """
         protocol = read_speech_protocol(cfg)
+        self.fold = train_fold_spec(cfg)
+        if self.fold is not None and (protocol is None or normalization_spec(cfg)["modo"] == "train_fija"):
+            # La media fija se ajusta con todo train, también con el pliegue apartado.
+            raise ValueError("datos.pliegue requiere protocolo y normalización por bloque o rodante.")
         allowed = ("train", "val", "test") if protocol else ("train", "test")
+        if self.fold is not None:
+            allowed += ("pliegue",)
         if split not in allowed:
             raise ValueError(f"La configuración admite las particiones {allowed}.")
         self.split = split
+        self.source_split = "train" if split in ("val", "pliegue") else split
+        self._fold_trials = 0
         self.root = Path(cfg["datos"]["preparados"])
         labels = read_label_manifest(cfg)
         manifest = self._read_manifest(cfg, protocol)
@@ -173,7 +185,7 @@ class SpeechDataset(Dataset[SpeechSample]):
             if protocol
             else {}
         )
-        source_split = "train" if split == "val" else split
+        source_split = self.source_split
         for session_id, session in enumerate(self.sessions):
             entry = feature_files[(source_split, session)]
             self._add_session(
@@ -184,7 +196,10 @@ class SpeechDataset(Dataset[SpeechSample]):
                 label_files,
                 partitions.get(session),
             )
-        expected = protocol["totals"][split] if protocol else labels["totals"][split]
+        if self.fold is not None and split in ("train", "pliegue"):
+            expected = self._fold_trials
+        else:
+            expected = protocol["totals"][split] if protocol else labels["totals"][split]
         if len(self) != expected:
             raise ValueError(
                 "El número de ensayos no coincide con el manifiesto de etiquetas."
@@ -217,7 +232,7 @@ class SpeechDataset(Dataset[SpeechSample]):
     ) -> set[int] | None:
         if part is None:
             return None
-        source_split = "train" if self.split == "val" else self.split
+        source_split = self.source_split
         norm = self.normalization_states[part["session"]]
         offsets = entry["offsets"]
         if (
@@ -246,7 +261,13 @@ class SpeechDataset(Dataset[SpeechSample]):
                     raise ValueError(
                         "Los índices no corresponden a los bloques reservados."
                     )
-        return set(part[self.split])
+        if self.fold is None or self.split not in ("train", "pliegue"):
+            return set(part[self.split])
+        held = set(fold_blocks(part["train_blocks"], self.fold["pliegues"], self.fold["excluido"],
+                               rotation=self.sessions.index(part["session"])))
+        selected = {i for i in part["train"] if (entry["blocks"][i] in held) == (self.split == "pliegue")}
+        self._fold_trials += len(selected)
+        return selected
 
     def _add_session(
         self,
