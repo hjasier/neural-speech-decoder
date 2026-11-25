@@ -1,0 +1,13 @@
+# Línea A: pares fonemas predichos → frase, con scripts/export_phoneme_pairs.py.
+# Train: cada modelo de `pliegues` predice los bloques que no vio.
+# Val: cada semilla de la variante de referencia predice val completa.
+# Test no se exporta: queda para la Fase 5.
+pliegues: configs/final/cola_pliegues.yaml
+referencia:
+  plan: configs/final/cola_replica.yaml
+  variante: t12_causal
+dispositivo: cuda
+# Carpeta nueva por exportación: train.jsonl, val.jsonl y manifest.json.
+salida: data/lineaA/pares_ajuste_cruzado_v1
+# Prefijo de la tabla de PER por modelo: se escriben el .json y el .md.
+tabla: docs/resultados/lineaA_pares_ajuste_cruzado
