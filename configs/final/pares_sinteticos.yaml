@@ -1,0 +1,35 @@
+# Línea A: pares sintéticos texto externo → fonemas con errores.
+#   python scripts/get_text_corpus.py --config configs/final/pares_sinteticos.yaml
+#   python scripts/build_synthetic_pairs.py --config configs/final/pares_sinteticos.yaml
+# El texto se pasa a fonemas con el mismo g2p-en que las etiquetas de T12 y
+# recibe errores aprendidos de los pares de train por ajuste cruzado.
+corpus:
+  nombre: openwebtext
+  # Shard 0 de 80 de Skylion007/openwebtext (CC0), fijado por commit y SHA-256.
+  url: https://huggingface.co/datasets/Skylion007/openwebtext/resolve/79d93d786212f7344586290adb811d4ae6a1762c/plain_text/train-00000-of-00080.parquet
+  archivo: data/lineaA/corpus/openwebtext/train-00000-of-00080.parquet
+  sha256: caed9f4b7053d7cd4d1a13ce9ec9224d84a3bba1f11579193562a7e31ebe656e
+  columna: text
+  timeout_descarga: 60
+frases:
+  # Rango de palabras de las frases de T12 (1–18) sin las de una o dos palabras.
+  min_palabras: 3
+  max_palabras: 18
+  max_fonemas: 100
+  # Frases elegidas al azar entre las candidatas únicas.
+  maximo: 200000
+# Perfil del que se toman vocabulario de fonemas y recursos de g2p-en.
+etiquetas: configs/final/t12_causal.yaml
+# Textos de T12 (train y test de competitionData) que se retiran del corpus.
+excluir: data/speech_2023/fonemas_final_v2
+# Pares por ajuste cruzado: solo su train.jsonl alimenta el modelo de errores.
+errores: data/lineaA/pares_ajuste_cruzado_v1
+semilla: 20261127
+procesos: 8
+# PER de los sintéticos medido sobre sus primeras frases (alinear todas es lento).
+comprobacion_frases: 5000
+# Pares que se muestran en la tabla.
+ejemplos: 5
+# Carpeta nueva por generación: train.jsonl, modelo_errores.json y manifest.json.
+salida: data/lineaA/pares_sinteticos_v1
+tabla: docs/resultados/lineaA_pares_sinteticos

@@ -138,3 +138,29 @@ def test_repository_profile_is_valid() -> None:
     cfg = load_config(ROOT / "configs/final/decodificador_t5.yaml")
     assert cfg["modelo"]["base"] == "google/flan-t5-base" and cfg["wandb"]["proyecto"] == "tiiac-2026"
     assert cfg["datos"]["pares"] == "data/lineaA/pares_ajuste_cruzado_v1"
+
+
+# Los sintéticos solo entran en train: val sigue siendo la de los fonemas reales.
+def test_synthetic_pairs_are_read_checked_and_mixed_into_training(tmp_path: Path) -> None:
+    real, synthetic = tmp_path / "reales", tmp_path / "sinteticos"
+    real.mkdir()
+    _write_pairs(real, _rows("train"), _rows("val"))
+    synthetic.mkdir()
+    rows = [{**row, "model": "sintetico", "seed": None, "fold": None} for row in _rows("train")]
+    (synthetic / "train.jsonl").write_text("".join(json.dumps(row) + "\n" for row in rows))
+    (synthetic / "manifest.json").write_text(json.dumps({"files": {"train.jsonl": file_sha256(synthetic / "train.jsonl")}}))
+    cfg = _cfg(real)
+    cfg["datos"]["sinteticos"] = {"pares": str(synthetic), "proporcion": 0.5}
+    pairs, _ = read_pairs(cfg)
+    assert [len(pairs[key]) for key in ("train", "val", "sinteticos")] == [5, 5, 5]
+    tokenizer = _tokenizer()
+    result = train_text_decoder(_model(tokenizer), tokenizer, pairs, cfg, None, torch.device("cpu"), log=lambda _: None)
+    assert result["completed_steps"] == 40 and len(result["history"]) == 4
+
+    cfg["datos"]["sinteticos"]["proporcion"] = 1.0
+    with pytest.raises(ValueError, match="proporcion"):
+        read_pairs(cfg)
+    cfg["datos"]["sinteticos"]["proporcion"] = 0.5
+    (synthetic / "train.jsonl").write_text((synthetic / "train.jsonl").read_text() + "\n")
+    with pytest.raises(ValueError, match="han cambiado"):
+        read_pairs(cfg)

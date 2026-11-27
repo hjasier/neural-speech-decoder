@@ -1,13 +1,15 @@
 """Línea A: decodificador seq2seq de fonemas predichos a texto, con WER de val.
 
 Recibe el modelo y el tokenizador ya construidos, así que los tests usan un
-T5 diminuto sin descargar pesos. Train son los pares por ajuste cruzado; val,
-las predicciones de las cinco semillas de la referencia. Test no entra.
+T5 diminuto sin descargar pesos. Train son los pares por ajuste cruzado,
+opcionalmente mezclados con pares sintéticos; val, las predicciones de las
+cinco semillas de la referencia. Test no entra.
 """
 
 from __future__ import annotations
 
 from collections.abc import Callable, Sequence
+from functools import partial
 import json
 from pathlib import Path
 from time import perf_counter
@@ -16,7 +18,7 @@ from typing import Any
 import numpy as np
 import torch
 from torch import nn
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, WeightedRandomSampler
 
 from src.data.speech_dataset import file_sha256
 from src.training.bootstrap import bootstrap_rate_interval
@@ -27,21 +29,37 @@ from src.utils.tracking import registrar
 SPLITS = ("train", "val")
 
 
+def read_pair_split(root: Path, split: str, manifest: dict[str, Any]) -> list[dict[str, Any]]:
+    """Lee `<split>.jsonl` de una carpeta de pares tras comprobar su hash en el manifiesto."""
+    path = root / f"{split}.jsonl"
+    if file_sha256(path) != manifest["files"][path.name]:
+        raise ValueError(f"Los pares han cambiado desde su exportación: {path}")
+    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line]
+    if not rows or any(row["split"] != split for row in rows):
+        raise ValueError(f"{path} debe contener solo frases de {split}.")
+    return rows
+
+
 def read_pairs(cfg: dict[str, Any]) -> tuple[dict[str, list[dict[str, Any]]], dict[str, Any]]:
-    """Lee train.jsonl y val.jsonl tras comprobar los hashes del manifiesto."""
+    """Lee train.jsonl y val.jsonl tras comprobar los hashes del manifiesto.
+
+    Con `datos.sinteticos` lee además su train.jsonl como `sinteticos`; el
+    manifiesto devuelto es el de los pares reales.
+    """
     root = Path(cfg["datos"]["pares"])
     manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
     if set(manifest["files"]) != {f"{split}.jsonl" for split in SPLITS}:
         raise ValueError("El manifiesto de pares debe listar solo train.jsonl y val.jsonl.")
-    pairs = {}
-    for split in SPLITS:
-        path = root / f"{split}.jsonl"
-        if file_sha256(path) != manifest["files"][path.name]:
-            raise ValueError(f"Los pares han cambiado desde su exportación: {path}")
-        rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line]
-        if not rows or any(row["split"] != split for row in rows):
-            raise ValueError(f"{path} debe contener solo frases de {split}.")
-        pairs[split] = rows
+    pairs = {split: read_pair_split(root, split, manifest) for split in SPLITS}
+    synthetic = cfg["datos"].get("sinteticos")
+    if synthetic is not None:
+        if set(synthetic) != {"pares", "proporcion"} or not 0 < synthetic["proporcion"] < 1:
+            raise ValueError("datos.sinteticos requiere pares y una proporcion entre 0 y 1.")
+        root = Path(synthetic["pares"])
+        extra = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
+        if set(extra["files"]) != {"train.jsonl"}:
+            raise ValueError("El manifiesto de pares sintéticos debe listar solo train.jsonl.")
+        pairs["sinteticos"] = read_pair_split(root, "train", extra)
     return pairs, manifest
 
 
@@ -133,9 +151,21 @@ def train_text_decoder(
     training, evaluation = cfg["entrenamiento"], cfg["evaluacion"]
     train = encode_pairs(tokenizer, pairs["train"], cfg)
     val = encode_pairs(tokenizer, pairs["val"], cfg)
-    loader = DataLoader(train, batch_size=training["batch_size"], shuffle=True,
-                        generator=crear_generador(cfg["experimento"]["seed"]),
-                        collate_fn=lambda items: collate_pairs(items, tokenizer.pad_token_id))
+    collate = partial(collate_pairs, pad_id=tokenizer.pad_token_id)
+    generator = crear_generador(cfg["experimento"]["seed"])
+    if "sinteticos" in pairs:
+        # Cada ejemplo es sintético con probabilidad `proporcion`; con reemplazo,
+        # una sola pasada del muestreador cubre todos los pasos.
+        share = cfg["datos"]["sinteticos"]["proporcion"]
+        synthetic = encode_pairs(tokenizer, pairs["sinteticos"], cfg)
+        weights = torch.cat([torch.full((len(train),), (1 - share) / len(train), dtype=torch.double),
+                             torch.full((len(synthetic),), share / len(synthetic), dtype=torch.double)])
+        sampler = WeightedRandomSampler(weights, training["pasos"] * training["batch_size"], replacement=True,
+                                        generator=generator)
+        loader = DataLoader(train + synthetic, batch_size=training["batch_size"], sampler=sampler, collate_fn=collate)
+    else:
+        loader = DataLoader(train, batch_size=training["batch_size"], shuffle=True, generator=generator,
+                            collate_fn=collate)
     model.to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=training["learning_rate"],
                                   weight_decay=training["weight_decay"])

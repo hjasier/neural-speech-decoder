@@ -32,3 +32,5 @@ transformers==4.46.3
 tokenizers==0.20.3
 safetensors==0.4.5
 huggingface-hub==0.26.2
+# Línea A: lectura del corpus de texto de los pares sintéticos (parquet).
+pyarrow==18.1.0

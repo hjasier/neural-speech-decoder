@@ -3,7 +3,8 @@
     python scripts/train_text_decoder.py --dry-run
     python scripts/train_text_decoder.py
 
-Usa los pares de scripts/export_phoneme_pairs.py. Elige el paso de menor WER
+Usa los pares de scripts/export_phoneme_pairs.py y, si el perfil declara
+datos.sinteticos, los de scripts/build_synthetic_pairs.py. Elige el paso de menor WER
 de val y lo evalúa con el haz final, con intervalo por bootstrap para cada
 semilla de la GRU que generó los fonemas. Registra en W&B; no usa test.
 """
@@ -52,8 +53,12 @@ def render_markdown(result: dict[str, Any]) -> str:
              f"Modelo `{result['modelo']['base']}` (commit `{result['modelo']['commit']}`), "
              f"paso elegido {result['best_step']} de {result['completed_steps']} por WER de val.",
              f"Haz final {report['num_beams']}. Intervalos del {100 * result['bootstrap']['confianza']:g} % "
-             "por bootstrap de frases. El WER es optimista: se elige y se mide en val.", "",
-             "| Fonemas de | WER (%) | Intervalo (%) | Errores | Palabras |", "|---|---:|---:|---:|---:|"]
+             "por bootstrap de frases. El WER es optimista: se elige y se mide en val.", ""]
+    synthetic = result.get("config", {}).get("datos", {}).get("sinteticos")
+    if synthetic is not None:
+        lines[3:3] = [f"Train mezcla pares sintéticos de `{synthetic['pares']}` con proporción "
+                      f"{synthetic['proporcion']:g}."]
+    lines += ["| Fonemas de | WER (%) | Intervalo (%) | Errores | Palabras |", "|---|---:|---:|---:|---:|"]
     for name, value in report["por_modelo"].items():
         interval = value["intervalo"]
         lines.append(f"| {name} | {percent(value['wer'])} | {percent(interval['low'])}–{percent(interval['high'])} | "
@@ -74,6 +79,10 @@ def main() -> int:
         cfg = load_config(args.config)
         pairs, manifest = read_pairs(cfg)
         print(f"Pares: {len(pairs['train'])} de train y {len(pairs['val'])} de val ({cfg['datos']['pares']}).")
+        synthetic = cfg["datos"].get("sinteticos")
+        if synthetic is not None:
+            print(f"Pares sintéticos: {len(pairs['sinteticos'])}, proporción {synthetic['proporcion']} "
+                  f"({synthetic['pares']}).")
         if args.dry_run:
             return 0
         from transformers import AutoTokenizer, T5ForConditionalGeneration
@@ -103,6 +112,8 @@ def main() -> int:
                       "config_sha256": file_sha256(args.config), "bootstrap": cfg["bootstrap"],
                       "pares_manifest_sha256": file_sha256(Path(cfg["datos"]["pares"]) / "manifest.json"),
                       "pares_files": manifest["files"],
+                      "pares_sinteticos_manifest_sha256": None if synthetic is None else
+                      file_sha256(Path(synthetic["pares"]) / "manifest.json"),
                       "modelo": {"base": base, "revision": revision, "commit": commit},
                       "wandb_run_id": None if run is None else run.id,
                       "hardware": torch.cuda.get_device_name(device) if device.type == "cuda" else "CPU",

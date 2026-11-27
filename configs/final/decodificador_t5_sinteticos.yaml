@@ -1,0 +1,56 @@
+# Línea A: el T5 de decodificador_t5.yaml con pares sintéticos mezclados en train.
+#   python scripts/train_text_decoder.py --config configs/final/decodificador_t5_sinteticos.yaml
+# Val y selección no cambian: WER de val sobre los fonemas reales de la GRU.
+# Test no se toca: queda para la Fase 5.
+experimento:
+  nombre: lineaA_t5_sinteticos
+  seed: 0
+datos:
+  # Salida de scripts/export_phoneme_pairs.py; se comprueban los hashes de su manifiesto.
+  pares: data/lineaA/pares_ajuste_cruzado_v1
+  prefijo: "fonemas a texto: "
+  # Se rechaza una frase que no quepa: truncarla cambiaría su WER sin avisar.
+  max_tokens_entrada: 320
+  max_tokens_salida: 96
+  # Salida de scripts/build_synthetic_pairs.py. Cada ejemplo de train es
+  # sintético con esta probabilidad y real (ajuste cruzado) con la restante.
+  sinteticos:
+    pares: data/lineaA/pares_sinteticos_v1
+    proporcion: 0.5
+modelo:
+  nombre: t5_texto
+  base: google/flan-t5-base
+  # Commit que descargó el primer entrenamiento, para comparar con él.
+  revision: 7bcac572ce56db69c1ea7c8af255c5d7c9672fc2
+entrenamiento:
+  pasos: 16000
+  batch_size: 32
+  learning_rate: 3.0e-4
+  # Subida lineal hasta learning_rate y bajada lineal hasta cero al final.
+  calentamiento_pasos: 500
+  weight_decay: 0.01
+  clip_grad_norm: 1.0
+  imprimir_cada: 50
+evaluacion:
+  cada_pasos: 500
+  batch_size: 128
+  # La selección usa búsqueda voraz; la evaluación final del elegido, haz.
+  num_beams_seleccion: 1
+  num_beams_final: 4
+bootstrap:
+  remuestreos: 10000
+  confianza: 0.95
+  semilla: 20261127
+ejecucion:
+  dispositivo: cuda
+  hilos_cpu: 2
+  # bfloat16 en GPU; en CPU se ignora.
+  bf16: true
+salida:
+  directorio: checkpoints/lineaA/t5_sinteticos
+  tabla: docs/resultados/lineaA_t5_sinteticos
+wandb:
+  proyecto: tiiac-2026
+  entidad: null
+  modo: online
+  directorio: runs/tracking
