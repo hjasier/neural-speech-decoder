@@ -34,3 +34,6 @@ safetensors==0.4.5
 huggingface-hub==0.26.2
 # Línea A: lectura del corpus de texto de los pares sintéticos (parquet).
 pyarrow==18.1.0
+# Línea A: adaptadores LoRA del LLM decodificador de texto.
+peft==0.13.2
+accelerate==1.1.1

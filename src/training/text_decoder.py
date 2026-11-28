@@ -68,29 +68,78 @@ def target_text(text: str) -> str:
     return " ".join(word_tokens(text))
 
 
+def is_causal(cfg: dict[str, Any]) -> bool:
+    """True si el perfil es un LLM causal (solo decodificador) en vez de un seq2seq."""
+    return cfg["modelo"]["nombre"] == "llm_lora"
+
+
 def encode_pairs(tokenizer: Any, rows: Sequence[dict[str, Any]], cfg: dict[str, Any]) -> list[dict[str, list[int]]]:
-    """Tokeniza fonemas y texto; rechaza lo que exceda los máximos en vez de truncar."""
+    """Tokeniza fonemas y texto; rechaza lo que exceda los máximos en vez de truncar.
+
+    Seq2seq: entrada y objetivo por separado. Causal: una sola secuencia
+    `prefijo + fonemas + separador + texto + eos`, con la pérdida solo en el
+    texto y el eos, y `prompt_ids` para generar sin ver el objetivo.
+    """
     data = cfg["datos"]
-    inputs = tokenizer([data["prefijo"] + row["phones"] for row in rows])["input_ids"]
-    labels = tokenizer([target_text(row["reference_text"]) for row in rows])["input_ids"]
+    if is_causal(cfg):
+        inputs = tokenizer([data["prefijo"] + row["phones"] + data["separador"] for row in rows],
+                           add_special_tokens=False)["input_ids"]
+        labels = [ids + [tokenizer.eos_token_id] for ids in tokenizer(
+            [" " + target_text(row["reference_text"]) for row in rows], add_special_tokens=False)["input_ids"]]
+    else:
+        inputs = tokenizer([data["prefijo"] + row["phones"] for row in rows])["input_ids"]
+        labels = tokenizer([target_text(row["reference_text"]) for row in rows])["input_ids"]
     for kind, values, limit in (("entrada", inputs, data["max_tokens_entrada"]),
                                 ("salida", labels, data["max_tokens_salida"])):
         longest = max(len(item) for item in values)
         if longest > limit:
             raise ValueError(f"Una frase ocupa {longest} tokens de {kind}; max_tokens_{kind} es {limit}.")
+    if is_causal(cfg):
+        return [{"input_ids": source + target, "labels": [-100] * len(source) + target, "prompt_ids": source}
+                for source, target in zip(inputs, labels, strict=True)]
     return [{"input_ids": source, "labels": target} for source, target in zip(inputs, labels, strict=True)]
 
 
 def collate_pairs(items: Sequence[dict[str, list[int]]], pad_id: int) -> dict[str, torch.Tensor]:
-    """Rellena entradas con pad y objetivos con -100, que la pérdida ignora."""
+    """Rellena entradas con pad a la derecha y objetivos con -100, que la pérdida ignora.
+
+    La máscara sale de las longitudes, no del id de pad: en los LLM el pad
+    suele ser el mismo token que el eos del objetivo.
+    """
     width = max(len(item["input_ids"]) for item in items)
     height = max(len(item["labels"]) for item in items)
     inputs = torch.full((len(items), width), pad_id, dtype=torch.long)
+    mask = torch.zeros((len(items), width), dtype=torch.long)
     labels = torch.full((len(items), height), -100, dtype=torch.long)
     for row, item in enumerate(items):
         inputs[row, :len(item["input_ids"])] = torch.tensor(item["input_ids"])
+        mask[row, :len(item["input_ids"])] = 1
         labels[row, :len(item["labels"])] = torch.tensor(item["labels"])
-    return {"input_ids": inputs, "attention_mask": inputs.ne(pad_id).long(), "labels": labels}
+    return {"input_ids": inputs, "attention_mask": mask, "labels": labels}
+
+
+def collate_prompts(items: Sequence[dict[str, list[int]]], pad_id: int) -> dict[str, torch.Tensor]:
+    """Prompts de un LLM causal rellenados a la izquierda, para generar justo después."""
+    width = max(len(item["prompt_ids"]) for item in items)
+    inputs = torch.full((len(items), width), pad_id, dtype=torch.long)
+    mask = torch.zeros((len(items), width), dtype=torch.long)
+    for row, item in enumerate(items):
+        size = len(item["prompt_ids"])
+        inputs[row, width - size:] = torch.tensor(item["prompt_ids"])
+        mask[row, width - size:] = 1
+    return {"input_ids": inputs, "attention_mask": mask}
+
+
+def wrap_lora(model: nn.Module, cfg: dict[str, Any]) -> nn.Module:
+    """Congela el LLM y añade adaptadores LoRA en los módulos del perfil."""
+    from peft import LoraConfig, get_peft_model
+
+    spec = cfg["modelo"]["lora"]
+    if cfg["entrenamiento"]["gradient_checkpointing"]:
+        model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
+        model.enable_input_require_grads()
+    return get_peft_model(model, LoraConfig(r=spec["r"], lora_alpha=spec["alpha"], lora_dropout=spec["dropout"],
+                                            target_modules=list(spec["modulos"]), task_type="CAUSAL_LM"))
 
 
 def learning_rate_factor(step: int, warmup: int, total: int) -> float:
@@ -113,14 +162,19 @@ def generate_texts(
     """Genera el texto de cada frase en orden, por lotes, sin mirar el objetivo."""
     model.eval()
     texts: list[str] = []
-    size = cfg["evaluacion"]["batch_size"]
+    size, causal = cfg["evaluacion"]["batch_size"], is_causal(cfg)
     for start in range(0, len(encoded), size):
-        batch = collate_pairs(encoded[start:start + size], tokenizer.pad_token_id)
+        chunk = encoded[start:start + size]
+        batch = (collate_prompts if causal else collate_pairs)(chunk, tokenizer.pad_token_id)
         with _autocast(cfg, device):
             output = model.generate(input_ids=batch["input_ids"].to(device),
                                     attention_mask=batch["attention_mask"].to(device),
-                                    max_new_tokens=cfg["datos"]["max_tokens_salida"], num_beams=num_beams)
-        texts.extend(tokenizer.batch_decode(output, skip_special_tokens=True))
+                                    max_new_tokens=cfg["datos"]["max_tokens_salida"], num_beams=num_beams,
+                                    do_sample=False, pad_token_id=tokenizer.pad_token_id,
+                                    eos_token_id=tokenizer.eos_token_id)
+        if causal:
+            output = output[:, batch["input_ids"].shape[1]:]
+        texts.extend(text.strip() for text in tokenizer.batch_decode(output, skip_special_tokens=True))
     return texts
 
 
@@ -167,8 +221,9 @@ def train_text_decoder(
         loader = DataLoader(train, batch_size=training["batch_size"], shuffle=True, generator=generator,
                             collate_fn=collate)
     model.to(device)
-    optimizer = torch.optim.AdamW(model.parameters(), lr=training["learning_rate"],
-                                  weight_decay=training["weight_decay"])
+    # Con LoRA solo se entrenan los adaptadores; el resto queda congelado.
+    trainable = [parameter for parameter in model.parameters() if parameter.requires_grad]
+    optimizer = torch.optim.AdamW(trainable, lr=training["learning_rate"], weight_decay=training["weight_decay"])
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lambda step: learning_rate_factor(
         step, training["calentamiento_pasos"], training["pasos"]))
     best: dict[str, Any] | None = None
@@ -182,7 +237,7 @@ def train_text_decoder(
                 loss = model(**batch).loss
             optimizer.zero_grad(set_to_none=True)
             loss.backward()
-            norm = nn.utils.clip_grad_norm_(model.parameters(), training["clip_grad_norm"])
+            norm = nn.utils.clip_grad_norm_(trainable, training["clip_grad_norm"])
             optimizer.step()
             scheduler.step()
             step += 1
@@ -200,10 +255,15 @@ def train_text_decoder(
                 log(f"val: WER={score['wer']:.2%}  paso {step}")
                 if best is None or score["wer"] < best["wer"]:
                     best = {"step": step, "wer": score["wer"],
-                            "state": {key: value.detach().to("cpu", copy=True) for key, value in model.state_dict().items()}}
+                            "state": {name: value.detach().to("cpu", copy=True)
+                                      for name, value in model.named_parameters() if value.requires_grad}}
             if step == training["pasos"]:
                 break
-    model.load_state_dict(best["state"])
+    # Solo cambian los parámetros entrenables: se restauran esos (con LoRA, los adaptadores).
+    with torch.no_grad():
+        for name, value in model.named_parameters():
+            if name in best["state"]:
+                value.copy_(best["state"][name])
     return {"best_step": best["step"], "best_val_wer_seleccion": best["wer"], "history": history,
             "completed_steps": step, "training_seconds": perf_counter() - started}
 

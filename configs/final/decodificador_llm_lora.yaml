@@ -1,0 +1,63 @@
+# Línea A: LLM causal con LoRA que traduce los fonemas predichos por la GRU a texto.
+#   python scripts/train_text_decoder.py --config configs/final/decodificador_llm_lora.yaml
+# Mismos pares reales y sintéticos que decodificador_t5_sinteticos.yaml, misma
+# selección por WER de val y misma evaluación final. Test no se toca.
+experimento:
+  nombre: lineaA_llm_qwen3b
+  seed: 0
+datos:
+  pares: data/lineaA/pares_ajuste_cruzado_v1
+  # Secuencia: prefijo + fonemas + separador + " " + texto + eos.
+  prefijo: "fonemas: "
+  separador: "\ntexto:"
+  # Se rechaza una frase que no quepa: truncarla cambiaría su WER sin avisar.
+  max_tokens_entrada: 320
+  max_tokens_salida: 96
+  sinteticos:
+    pares: data/lineaA/pares_sinteticos_v1
+    proporcion: 0.5
+modelo:
+  nombre: llm_lora
+  base: Qwen/Qwen2.5-3B
+  # Commit fijado; resultado.json guarda también el que se descargó.
+  revision: 3aab1f1954e9cc14eb9509a215f9e5ca08227a9b
+  # Pesos base congelados en bfloat16; los adaptadores se entrenan en float32.
+  dtype: bfloat16
+  lora:
+    r: 16
+    alpha: 32
+    dropout: 0.05
+    modulos: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+entrenamiento:
+  pasos: 12000
+  batch_size: 16
+  learning_rate: 2.0e-4
+  # Subida lineal hasta learning_rate y bajada lineal hasta cero al final.
+  calentamiento_pasos: 300
+  weight_decay: 0.0
+  clip_grad_norm: 1.0
+  # Recalcula activaciones en el backward: menos memoria a cambio de tiempo.
+  gradient_checkpointing: true
+  imprimir_cada: 50
+evaluacion:
+  cada_pasos: 1000
+  batch_size: 64
+  # La selección usa búsqueda voraz; la evaluación final del elegido, haz.
+  num_beams_seleccion: 1
+  num_beams_final: 4
+bootstrap:
+  remuestreos: 10000
+  confianza: 0.95
+  semilla: 20261127
+ejecucion:
+  dispositivo: cuda
+  hilos_cpu: 2
+  bf16: true
+salida:
+  directorio: checkpoints/lineaA/llm_qwen3b
+  tabla: docs/resultados/lineaA_llm_qwen3b
+wandb:
+  proyecto: tiiac-2026
+  entidad: null
+  modo: online
+  directorio: runs/tracking

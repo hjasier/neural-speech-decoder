@@ -1,4 +1,4 @@
-"""Entrena el decodificador T5 de fonemas a texto de la Línea A y mide su WER en val.
+"""Entrena el decodificador de fonemas a texto de la Línea A (T5 o LLM con LoRA) y mide su WER en val.
 
     python scripts/train_text_decoder.py --dry-run
     python scripts/train_text_decoder.py
@@ -25,18 +25,24 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from src.data.speech_dataset import file_sha256
-from src.training.text_decoder import final_report, read_pairs, train_text_decoder
+from src.training.text_decoder import final_report, is_causal, read_pairs, train_text_decoder, wrap_lora
 from src.utils.seed import fijar_seed
 from src.utils.tracking import abrir_run
 
 SECTIONS = {"experimento", "datos", "modelo", "entrenamiento", "evaluacion", "bootstrap", "ejecucion", "salida", "wandb"}
+# Nombre del modelo → etiqueta de la tabla.
+MODELS = {"t5_texto": "T5", "llm_lora": "LLM con LoRA"}
 
 
 def load_config(path: Path) -> dict[str, Any]:
-    """Lee el perfil y exige sus secciones y un modelo seq2seq de texto."""
+    """Lee el perfil y exige sus secciones y un T5 o un LLM con LoRA."""
     cfg = yaml.safe_load(path.read_text(encoding="utf-8"))
-    if not isinstance(cfg, dict) or set(cfg) != SECTIONS or cfg["modelo"]["nombre"] != "t5_texto":
-        raise ValueError(f"El perfil requiere exactamente {sorted(SECTIONS)} y modelo.nombre t5_texto.")
+    if not isinstance(cfg, dict) or set(cfg) != SECTIONS or cfg["modelo"]["nombre"] not in MODELS:
+        raise ValueError(f"El perfil requiere exactamente {sorted(SECTIONS)} y modelo.nombre en {sorted(MODELS)}.")
+    if is_causal(cfg) and (not {"lora", "dtype"} <= set(cfg["modelo"]) or "separador" not in cfg["datos"]
+                           or "gradient_checkpointing" not in cfg["entrenamiento"]):
+        raise ValueError("Un LLM con LoRA requiere modelo.lora, modelo.dtype, datos.separador y "
+                         "entrenamiento.gradient_checkpointing.")
     if cfg["evaluacion"]["num_beams_seleccion"] < 1 or cfg["evaluacion"]["num_beams_final"] < 1:
         raise ValueError("Los haces de generación deben ser al menos 1.")
     return cfg
@@ -49,7 +55,8 @@ def render_markdown(result: dict[str, Any]) -> str:
 
     report = result["val"]
     deviation = report["desviacion_modelos"]
-    lines = ["# Línea A: decodificador T5 de fonemas a texto", "",
+    label = MODELS[result.get("config", {}).get("modelo", {}).get("nombre", "t5_texto")]
+    lines = [f"# Línea A: decodificador {label} de fonemas a texto", "",
              f"Modelo `{result['modelo']['base']}` (commit `{result['modelo']['commit']}`), "
              f"paso elegido {result['best_step']} de {result['completed_steps']} por WER de val.",
              f"Haz final {report['num_beams']}. Intervalos del {100 * result['bootstrap']['confianza']:g} % "
@@ -85,7 +92,7 @@ def main() -> int:
                   f"({synthetic['pares']}).")
         if args.dry_run:
             return 0
-        from transformers import AutoTokenizer, T5ForConditionalGeneration
+        from transformers import AutoModelForCausalLM, AutoTokenizer, T5ForConditionalGeneration
 
         torch.set_num_threads(cfg["ejecucion"]["hilos_cpu"])
         device = torch.device(cfg["ejecucion"]["dispositivo"])
@@ -94,8 +101,18 @@ def main() -> int:
         fijar_seed(cfg["experimento"]["seed"])
         base, revision = cfg["modelo"]["base"], cfg["modelo"]["revision"]
         tokenizer = AutoTokenizer.from_pretrained(base, revision=revision)
-        model = T5ForConditionalGeneration.from_pretrained(base, revision=revision)
+        if is_causal(cfg):
+            model = AutoModelForCausalLM.from_pretrained(base, revision=revision,
+                                                         torch_dtype=getattr(torch, cfg["modelo"]["dtype"]))
+            if tokenizer.pad_token_id is None:
+                tokenizer.pad_token = tokenizer.eos_token
+        else:
+            model = T5ForConditionalGeneration.from_pretrained(base, revision=revision)
         commit = getattr(model.config, "_commit_hash", None)
+        if is_causal(cfg):
+            model = wrap_lora(model, cfg)
+        trainable = sum(parameter.numel() for parameter in model.parameters() if parameter.requires_grad)
+        print(f"Parámetros entrenables: {trainable:,}.", flush=True)
         run = abrir_run(cfg)
         try:
             training = train_text_decoder(model, tokenizer, pairs, cfg, run, device,
@@ -109,6 +126,7 @@ def main() -> int:
                 for row in predictions:
                     stream.write(json.dumps(row, ensure_ascii=False) + "\n")
             result = {**training, "val": report, "test_evaluated": False, "config": cfg,
+                      "parametros_entrenables": trainable,
                       "config_sha256": file_sha256(args.config), "bootstrap": cfg["bootstrap"],
                       "pares_manifest_sha256": file_sha256(Path(cfg["datos"]["pares"]) / "manifest.json"),
                       "pares_files": manifest["files"],
